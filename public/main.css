@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300');
+
+body,html {
+    font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-size: 16px;
+
+    --text: black;
+    --textgray: gray;
+    --border: 1px solid gray;
+    --link: steelblue;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--link);
+}
+
+h2 {
+    font-size: 2em;
+}
+
+main {
+    flex: 1;
+}
+
+header.site {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+header.site a {
+    color: var(--text);
+}
+
+header.site h1 {
+    margin: .5em;
+    margin-right: auto;
+    font-family: 'Raleway', sans-serif;
+}
+
+header.site nav {
+    margin-left: 1em;
+}
+
+header.site ul {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+header.site li {
+    list-style: none;
+    margin-right: 1em;
+}
+
+.ad-wrapper {
+    width: 100%;
+    max-width: 800px;
+}
+
+footer.site {
+    color: var(--textgray);
+    display: flex;
+    justify-content: right;
+}
+
+footer.site p {
+    margin: .5em;
+}

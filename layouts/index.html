@@ -1,0 +1,26 @@
+{{ define "title" }}{{ .Site.Title }}{{ end }} {{ define "head" }}
+<meta name="description" content="{{ .Params.Excerpt }}">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+</style>
+{{ end }}{{ define "main" }}
+<h2>{{ .Title }}</h2>
+<p>{{ .Content }}</p>
+
+{{ range .Pages }} {{ if isset .Params "tags" }}
+<h3>
+    <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
+    <a href="{{.Permalink}}">{{ .Title }}</a>
+</h3>
+<p>
+    <time>{{ .Date.Format "2006-01-02" }}</time>
+    {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
+</p>
+<p>
+    {{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }}
+</p>
+{{ end }} {{ end }} {{ end }}

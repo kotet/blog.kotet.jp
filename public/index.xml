@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Kotet&#39;s Personal Blog</title>
+    <link>https://kotet.jp/</link>
+    <description>Recent content in Posts on Kotet&#39;s Personal Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Sat, 31 Dec 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://kotet.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JekyllでテキストをHTML用にエスケープする</title>
+      <link>https://kotet.jp/2016/12/2016-12-31-87e059092aed0a8aee9a/</link>
+      <pubDate>Sat, 31 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-31-87e059092aed0a8aee9a/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+Twitter cardsを設定するためにこちらの記事を参考にテンプレートを書いた。
+Jekyll で作成したサイトを Twitter Card に対応させる
+しかしこのまま使うとHTMLでエスケープすべき文字もそのまま埋め込まれてしまうため、うまく動かない時がある。
+&amp;lt;meta name=&amp;#34;twitter:title&amp;#34; content=&amp;#34;{{ page.title }}&amp;#34; /&amp;gt; 具体例 たとえばこちらの記事のように、タイトルにセミコロンが入っていたりするとおかしくなる。
+Jekyllのtheme&amp;rdquo;minima&amp;rdquo;のハンバーガーメニューがiOSで動作しないバグ
+| escape escapeフィルタをつければ大丈夫。
+&amp;lt;meta name=&amp;#34;twitter:title&amp;#34; content=&amp;#34;{{ page.title | escape}}&amp;#34; /&amp;gt; でもちょっとタイトルが長すぎるかもしれない。</description>
+    </item>
+    
+    <item>
+      <title>Twitterカードを設定した</title>
+      <link>https://kotet.jp/2016/12/2016-12-30-twitter-cards/</link>
+      <pubDate>Fri, 30 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-30-twitter-cards/</guid>
+      <description>Twitter cardsを設定してみた。
+test https://t.co/5H66x9AP5w
+&amp;mdash; Kotet (@kotetttt) 2016年12月29日 
+基本的には問題ないが、一部の記事はエスケープがうまくいっていなくて表示がおかしかったりする。 そんなに大事な記事でもないのでそのままにしておく。
+Twitter cardsの設定にあたってこちらの記事を参考にした。
+Jekyll で作成したサイトを Twitter Card に対応させる(blog.kakeragames.com)
+この記事の方法ではcard typeはsummaryで固定である。 今のところ大きくてきれいな画像のあるような記事を書く予定はないが、 必要に応じてsummary_large_imageに切り替えられるような仕組みを作る予定。
+自分はTwitterをよく使い、投稿のアナウンスもTwitter上でしているので少し見た目が寂しいように感じてcardsを設定した。 今まで普通に共有するとタイトルさえ表示されないただのURLだったので、かなり見た目が良くなった。 Facebookなどでも同じようなものはあるのだろうが、設定しておいた方がいいのだろうか? 自分はFacebookでの活動はほぼ何もないのだが、Facebookユーザはここにやってくるのか? そもそもTwitterでもリツイートされなければインプレッションは寂しい状態なので、ユーザ数を考えて行動なんてのは無意味だろう。 いくら目にとまっても他人の日記なんてよほどの物好きでないかぎり見ない。 ただの日記で本気で数字を稼ごうとするというのはおかしいかもしれない。 contributionが途切れそうになった時にちょこちょこやる感じで行こう。</description>
+    </item>
+    
+    <item>
+      <title>日本むかしっぽい話 「ビッグな男」</title>
+      <link>https://kotet.jp/2016/12/2016-12-28-tale-of-the-man/</link>
+      <pubDate>Wed, 28 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-28-tale-of-the-man/</guid>
+      <description>「大きさを認識できない人たち」という言葉を見て、しばらく反芻していたらおはなしができたので書く。
+むかしむかし、あるところに一人の男がおりました。 彼は昔からビッグな男になれと育てられてきて、ビッグな男になることにこだわりを持っていました。 しかし彼はビッグな男にはなれませんでした。 彼は飛脚の仕事をしていました。 でも、根っこが強ければどんな時でも大丈夫といって、心の強い人間に育てられていたので彼は諦めずひたすら走り続けました。
+ある時、彼はあまりの激務に倒れてしまいました。 途中の村の人に助けてもらい、目が覚めた時に彼は歩けなくなっていることに気がつきました。 まるで足に根が生えたようです。 実際に彼の意識は根のように広がり、向こうの山まで届くほど広く、深く掘ればきりがないほど広く深い巨大なネットワークを形成していました。
+彼は自分の足元で何が起きているのかわかりませんでしたが、自分の感覚が、意識がとても大きくなっているのを感じました。 感覚を研ぎ澄ませれば隣の村の家で人が歩く様子も感じ取ることができました。
+僕はビッグな男になったんだ!
+いち早く皆にそれを教えたかったのですが、いかんせん動くことができないので村の人がやってくるまで待ちました。 しかし村の人は彼のビッグさを理解しませんでした。 動けないと飛脚の仕事はできません。 彼はただの穀潰しです。 そのうえ本当に隣の家の動きがわかるのなら、これはプライバシーの侵害です。 適当なことを言って村の人間を無用に怖がらせたと訴訟を起こされそうになりました。 モグラの位置を当てることができると気がつきましたが、若者はみんな大物ユーチューバーになるんだと言って農業を継がないので、畑を掘り返せる体力のある人は村にいませんでした。
+しかし、彼の言うことを信じてくれるやさしい人もいました。 やさしい人たちは彼に食事を分け与えてくれたので、彼は飢え死にしないですみました。
+ある日男がいつものようにモグラの観察をしていると、底のほうに熱いものを感じました。 どんどん上のほうに上ってきます。 何か嫌な予感がしたので、彼は逃げるように村の人に言いました。 大半の人間は無視しましたが、やさしくしてくれた人たちは彼の言葉を信じてできるかぎり遠くへ避難しました。
+彼は信じてくれた人たちが意識の外まで行って感じ取れなくなるのを「見届け」て、安心しました。 しかし彼は動けません。 得体の知れない何かはどんどん上がってきます。
+村の近くの山が噴火しました。 火砕流が村を襲い、村にいた人は全員死にました。 しかし男の言葉を信じて避難した人たちは助かりました。 皆はビッグな男だったと言って彼に感謝しました。
+この話は海の向こうまで伝わり、ドライアドとして逆輸入され、今でも多数のエロ同人創作がうまれています。 めでたしめでたし</description>
+    </item>
+    
+    <item>
+      <title>GitHubで草を生やす話</title>
+      <link>https://kotet.jp/2016/12/2016-12-27-grass-of-contribution/</link>
+      <pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-27-grass-of-contribution/</guid>
+      <description>記録の上では27日付の日記であるし、実際今この文を書いているのは12月27日である。 しかしこの投稿がサイトに反映されるのは27日ではなく、少し間がある。 これはわざとやっていることだ。
+GitHubにはcontribution calendarというものがある。 GitHub上でmasterブランチにコミットしたり、PRを投げたり、issueを作ったりするとそれが記録されてカレンダーが緑色になる。 前の記事もモチベーション維持についての話だが、今日もそうである。 カレンダーをできるだけ途切れないように緑色に染めるというのを目標にしている。 実際に現時点で既に1ヶ月くらい途切れず草が生い茂っているのではないだろうか。 もちろん実際に毎日&amp;rdquo;contribute&amp;rdquo;するのは難しい。自分は特に体調を崩しやすいし、そもそも一応受験を控えた学生である。 そこで、1日にまとめて色々書いてそれを少しづつマージしていくことでカレンダーをつないでいくことにした。 ズルじゃないかとか、無意味だとか思うかもしれないが、今のところ自分のカレンダーを見て能力を真面目にはかろうとするような人もいないだろうし、自分的にはセーフのつもりである。
+……セーフのつもりであったがどうなんだろう、やはりこうして考えてみると無意味な気がしてきた。 今はstreakも表示されなくなっているし、こんな手を使ってまで草を毎日生やし続けることにこだわらなくてもいいのではないだろうか？ contributionを薄く伸ばすことに意味はあるのか？ 1日も途切れないことよりも、途切れた日が目立たないほうが大事だし有意義なことなんじゃないか？ 今日はいつもより体調が悪いので思考力が落ちているかもしれない。 日を改めてもう一度考えてみよう。</description>
+    </item>
+    
+    <item>
+      <title>Anonymous Adsについて</title>
+      <link>https://kotet.jp/2016/12/2016-12-26-about-advertising/</link>
+      <pubDate>Mon, 26 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-26-about-advertising/</guid>
+      <description>前から悩んでいたことだったのだが、自分はブログを更新しなさすぎる。 毎度毎度ポツポツと記事を書いたら長期間放置して、 サイトをイチから作りなおしてしまうというのを何度も繰り返している。 これはよくない。ちょっと更新されてすぐ消える、そんなサイトははじめから存在している必要などないのだ。 最近はQiitaでいくらか記事を書いている。割と反応ももらえて嬉しい。 しかしこのサイトは更新しない。なぜか?書くことがないからだ! 技術の話をQiitaに書いてしまったら、もうここに書くことは何も残っていないのだ!
+そういうわけで自分の薄っぺらさにも気づいてしまったので、なんとかしてこのサイトを更新していきたい。 簡単なことだ。Twitterで長文を投下したくなったらここに来れば良いのだ。 読む側が面白いかどうかは別の話だが……
+こう決意してもなにか仕組みを変えなければしばらくすればいつもの状態に戻ってしまうのは目に見えている。 何かしらモチベーションとなるものを少しでも増やしていかなければならない。 そういうわけでこのサイトに広告を貼ってみることにした。下の方に小さなテキスト広告があると思う。 まあこのサイトのアクセス数は本当に寂しい感じなので実際に収入になることはないだろうが、 報酬が全くのゼロよりはマシではないか。
+今回貼った広告はAnonymous Adsというもの。 個人情報やクレジットカードの登録が必要ないというのが選択した理由である。 さすがにこんなサイトのためにクレジットカードとかをあれこれするのは事が大きすぎる。 クリックやPVの数によって報酬が決まり、ビットコインで支払われる。 最低0.0001BTC(今相場見たら10円くらいだった)分の収入があれば一度に支払われるそうだが、はたして最初の10円が支払われるのさえいつになるだろうか……
+基本的に派手な画像広告は嫌いなので、テキスト広告のみを許可するようにしている。 それ以外のフィルタリングは今のところしていない。 どんなに不快な内容でもこれくらいのサイズでテキストオンリーならそんなにひどいことにはならないと思っているが、実際に広告を見てあまりに内容がひどいとわかったらその辺の設定もしようと思う。
+さて、広告も貼ったしこれから更新していかなければ。 何を書くか考えよう。</description>
+    </item>
+    
+    <item>
+      <title>文字列の長さを取得するときはlengthを使ってはいけない</title>
+      <link>https://kotet.jp/2016/12/2016-12-23-b6f1630928af176147e4/</link>
+      <pubDate>Fri, 23 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-23-b6f1630928af176147e4/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+自分の進捗表示用パッケージprogressにPRが来た。
+Bars: bug on narrow terminals when non-ascii fill character is used
+どうやら文字列の長さを得るときはlengthではいけない時があるそうだ。
+どういうことか import std.stdio; void main() { string ascii = &amp;#34;a&amp;#34;; string non_ascii = &amp;#34;あ&amp;#34;; writeln(ascii.length); writeln(non_ascii.length); }1 3 &amp;quot;a&amp;quot;も&amp;quot;あ&amp;quot;も1文字のはずだが、&amp;quot;あ&amp;quot;.lengthは3になってしまっている。
+writeln(cast(void[]) ascii); writeln(cast(void[]) non_ascii);[97] [227, 129, 130] lengthは文字列のバイト数を返しているようだ。
+std.range.primitives.walkLength std.range.primitives.walkLengthは、empty == trueになるまで何回popFront()ができるか実際に試してみて、それで得られた長さを返す。
+import std.stdio; import std.range : walkLength; void main() { string ascii = &amp;#34;a&amp;#34;; string non_ascii = &amp;#34;あ&amp;#34;; writeln(ascii.walkLength); writeln(non_ascii.walkLength); }1 1 ちゃんと正しい文字数が得られている。</description>
+    </item>
+    
+    <item>
+      <title>〜D言語くんの分裂に関する更なる考察〜(代理投稿)</title>
+      <link>https://kotet.jp/2016/12/2016-12-22-9c377a3c5befbb55620d/</link>
+      <pubDate>Thu, 22 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-22-9c377a3c5befbb55620d/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+自分の記事を見て友人がD言語くんになったので記事を代理投稿する。D言語クラスタが怖いのか頑なに匿名を希望するため文中で仮名を使用している。リンクのついていないイラストはすべて彼の描いたものであり、クリエイティブ・コモンズ 表示 4.0 国際 ライセンスの下に提供されている。
+〜D言語くんの分裂に関する更なる考察〜 友人が期末考査2日目のテスト後のスタバにて公開前の新説を出して危うくキャラメルマキアートを噴き出しそうになった事から全ては始まる
+私はこう思いました
+「D言語くんについて一筆書きたい」
+その一心であり決して友人のview数が伸びてるから何となく妬ましいとか、そういう訳ではないのです
+とりあえず新説するには知能が足りなかったので、考察を深めようと思ってここにD言語くんの単為生殖について深めた考察を展開しようと思うました
+ここで参考とするのは@gobori氏と、我が友@kotet氏でありますが、実際に考察を深めるのは@gobori氏の提唱したD言語くんの単為生殖についてである
+とりあえず両氏により求められたD言語くんについての結論は以下の通りでした
+ D言語くんは生殖方法が何であれ必要であり、D言語くんは某究極生命体のように生殖行動が不必要という訳ではない。 →故にD言語くんは、外敵が存在しない環境もしくは寿命以外に於ける死亡要因が存在しないに置かれている限り、そのままであると鼠算式に増えていって世界はD言語くんに包まれてしまう。  ……然しながらそれは起こっていないのです。D言語くんはそんな世界を包む程確認はされていませんから。1
+つまり、D言語くんは個体数が減るという外敵が存在する環境ないし寿命以外に於ける死亡要因があると言えるのでは無いでしょうか。
+ではここで更に考察を深めようと思います
+まず外敵が存在する環境についてです。
+これは恐らく他言語が存在するのでしょう。何とは言わないが英文字３番目っぽい言語だとか多分そんな所だと思います。
+D言語くん新宿に現わる pic.twitter.com/aRCIO4Do8G
+&amp;mdash; FETバスターA.C.S. (@ishtarmk2) 2016年12月18日 外敵が存在するというのは自然界に於いても実際に確認されており、それは爆発的増殖を防ぐ大自然によりもたらされる抑制装置なのです。
+しかしこれはD言語くんは当てはまらないと言えるのです。
+それは何故か。
+それはD言語くんが常に存在しているからである。
+@gobori氏は増殖について、
+ D言語くんは並列でふえることができない。よって繁殖期のD言語くんは常に1匹である。もしお腹があるD言語くんを見つけても、そっとしておいてあげよう。
+ と言及している。
+常に1匹であり、現在までD言語くんの存在が確認されているという事はD言語くんの繁殖期に阻害等が起こっていないのであり、D言語くんのDNAが受け継がれている(分裂している)証拠である
+そしてそれは１度も途絶えることは無かったという事より
+D言語くんには外敵が存在しないと言えるのではないだろうか？
+……ここで更なる問題が発生する
+では外敵が存在しない事で減ることないD言語くんは何故世界を覆い尽くさないのか
+というものです
+確かに外敵が存在しないならば単為生殖だとしても減ることは無い。それに加え単為生殖によって本来ウイルス等大発生時によるボトルネックの望みも薄いが、今までD言語が途絶えることは無かった事よりそこの問題は無視して構わないでしょう。
+要するに『死なないD言語くんはどうやって死んでるの？』みたいな哲学が発生する。
+お気づきの方も居るだろう……
+そこで出てくるのが寿命以外に於ける死亡要因だ。
+人間のみならず生物にはアポトーシスというのが存在する。
+細かい説明を省くとプログラムされた死である。
+ここで注意して欲しいのは寿命とアポトーシスは別物であるという事です。2
+プログラムされた死とは、特定の期間や特定の状況下に於いて発生します。
+本来なら自身を即座に死に至らしめるアポトーシスなどは殆ど存在しません。
+然し、身体を死に至らしめる程のアポトーシスが発生すれば当然死ぬという事であり、D言語くんはそれによって爆発的増殖が防がれているのではないだろうか。
+こう、生命活動(心臓とか)を止めるアポトーシスとか。
+こらそこ、それを寿命と言うのでは？とか言わないで下さい
+ホラ、あれです。この身体を死に至らしめる程のアポトーシスは、生命力あり余ってるけど「死亡の時間やで彡( )( )」って感じに死ぬって思ってください、つまり別物として区分してるんですお願いします。
+……生物にそれは不利であり、自己保存ないし種の存続を第一と考えるのが生物というものだから有り得ないのでは？と思うかも知れないだろう。
+しかしそれは木村資生氏によって提唱された『中立説』を基にすれば、自身に対して不利益な成長というのは説明がつく
+例:バビルサ……中立説に基づき、必ずしも自己に有利な進化をする訳では無いという中立的な進化により現代まで種は存続された。結果として下顎の牙が成長し過ぎて自身の脳天に刺さったり、その牙が成長し過ぎて顎の開閉が困難になり餌の摂取に難航する等、明らかに不利益な進化の結果が起こっている
+取り敢えずさて置き、察しの良い皆様は１つ気がついた事があるのではないでしょうか
+『プログラムされた死』 ･･････『プログラム』
+D言語＝プログラミング言語
+プログラミング言語＝プログラムを組むのに必要なモノ
+アポトーシス＝死というものについて組まれたプログラム
+つまり、D言語くんはD言語によってDNAにアポトーシスという死のプログラムを組まれていたのです。</description>
+    </item>
+    
+    <item>
+      <title>GitHubのissueを悪用して画像をホストする</title>
+      <link>https://kotet.jp/2016/12/2016-12-14-a2203a400136ba50b41e/</link>
+      <pubDate>Wed, 14 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-14-a2203a400136ba50b41e/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+知らなかったので投稿。
+DashというDで書かれたゲームエンジンがあるのだが、そのreadmeの一番上にあるでっかいロゴの画像ファイルがどこにおいてあるのか気になった。
+リポジトリ内には見当たらない……しかしURLがgithubusercontent.comなのでGitHubのどこかに上げているんだろう。
+[![Dash Logo](https://cloud.githubusercontent.com/assets/512416/2726786/6618d624-c5c2-11e3-9049-23637e5a1739.png)](https://github.com/Circular-Studios/Dash/wiki) 調べたらこのような記事が出てきた。issueの画像アップロード機能を&amp;rdquo;abuse&amp;rdquo;するのがおすすめ、とある。
+Using issues to host GitHub Pages screenshots
+issueのコメントに画像を貼り付けるとその場でアップロードされコードが生成される。このとき実際にissueを投稿しなくても同じURLで画像は存在し続けているようだ。
+試しにやってみた。
+![fzil2ccg](https://cloud.githubusercontent.com/assets/8435623/21176246/3b5aa50a-c229-11e6-8d23-eed54044ede4.jpg) この画像が実際に投稿されたissueはどこにも存在しないが、ちゃんと画像はそのまま見える状態のはずである。とても便利。</description>
+    </item>
+    
+    <item>
+      <title>待ち時間をD言語くんで彩る - 進捗表示ライブラリを作った</title>
+      <link>https://kotet.jp/2016/12/2016-12-14-a4a26bfcc71b9dc2d511/</link>
+      <pubDate>Wed, 14 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-14-a4a26bfcc71b9dc2d511/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+かのマハトマ・ガンジーも &amp;gt; もし、私にD言語くんがなければ、これほど長く苦しい戦いには耐えられなかったでしょう。
+と言ったように、生活の中でD言語くんを忘れないようにすることはとても大切です。退屈な待ち時間でもそこにD言語くんがいれば幸せになれるのではないでしょうか。 そこでPythonのprogressを参考にライブラリprogressを作りました。dubに登録してあります。
+つかいかた 九九を教えてくれるD言語くん import progress.dman; import core.thread : Thread,dur; import std.string : format; void main() { auto dman = new DmanSpinner; foreach(i;0 .. 9*9) { dman.message = { auto left = (i/9)+1; auto right = (i%9)+1; return &amp;#34;%s * %s = %s&amp;#34;.format(left,right,left*right); }; dman.next(); Thread.sleep(dur!(&amp;#34;msecs&amp;#34;)(500)); } dman.finish(); } これであなたのプログラムにもD言語くん要素を入れることができます!
+それではよいD言語くんライフを!</description>
+    </item>
+    
+    <item>
+      <title>サッと一時ブランチを作って作業して捨てる</title>
+      <link>https://kotet.jp/2016/12/2016-12-07-d84f1638de9d50129faa/</link>
+      <pubDate>Wed, 07 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-07-d84f1638de9d50129faa/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+なにかちょこっとだけ作業するたびにトピックブランチをつくって終わったら消すということをしている。
+ git branch &amp;lt;branch-name&amp;gt; [&amp;lt;start-point&amp;gt;] git checkout &amp;lt;branch-name&amp;gt; 作業 add &amp;amp; commit &amp;amp; push git checkout &amp;lt;some-branch&amp;gt; git branch -D &amp;lt;branch-name&amp;gt;  めんどくさくなってきたので専用コマンドを作った。こういうものを書くのは初めてなのでこちらの記事のものを書き換えて作った。
+.bashrc tmpbranch() { ( d=$(mktemp -d &amp;#34;${TMPDIR:-/tmp}/${1:-$2}.XXXXXXXXXX&amp;#34;) &amp;amp;&amp;amp; git worktree add $d $1 -b $2 &amp;amp;&amp;amp; pushd &amp;#34;$d&amp;#34; || exit 1 &amp;#34;$SHELL&amp;#34; s=$? if [[ $s == 0 ]]; then rm -rf &amp;#34;$d&amp;#34; popd git worktree prune git branch -D $2 else echo &amp;#34;Directory &amp;#39;$d&amp;#39; still exists.</description>
+    </item>
+    
+    <item>
+      <title>改行とかのある文字列をエスケープしないで書きたい</title>
+      <link>https://kotet.jp/2016/12/2016-12-06-170d11cc6b82592a8404/</link>
+      <pubDate>Tue, 06 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-06-170d11cc6b82592a8404/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+AAなどの文字列はエスケープすると超絶見難くなるのでそのまま書きたくなった。
+エスケープされ見るも無残な姿になってしまったD言語くん1 string dman = &amp;#34; ____\n L__L|\n / \\\n / \\\n / _______ \\\n \\ \\#/ \\/ \\ /\n \\|#| O| O|#\\\n |#L _L__ #|\n |###| |##|\n /###/ /##|\n /###/ /##|\n /###/___/###/\n /###########/\n /##########/\n / \\\n \\ /\n _ \\ /__\n |__/ |__/&amp;#34;; Delimited Stringsというものがある。2デリミタ、文字列の終了を表す記号のある文字列である。それを使って以下のように書ける。
+string s = q&amp;#34;/123&amp;#34;\n\n&amp;#34;/&amp;#34;;//string dman = &amp;#34;123\&amp;#34;\\n\\n\&amp;#34;&amp;#34;; writeln(s); このように出力される 123&amp;#34;\n\n&amp;#34; 通常エスケープしなければならない&amp;quot;がそのまま出力され、改行を表すはずの\nがそのまま出力されている。うれしい。この場合/がデリミタとなって、それに囲まれた部分で自由に書ける。ただしデリミタである/は書けない。
+string s = q&amp;#34;/a/a/&amp;#34;;//エラーになる ただしNesting Delimiterという特殊なデリミタもある。
+string s1 = q&amp;#34;((a)())&amp;#34;;//(a)() string s2 = q&amp;#34;(a(a)&amp;#34;;//これはだめ たくさんのカッコで囲まれた文字列とかを書くときに必要かもしれない。</description>
+    </item>
+    
+    <item>
+      <title>D言語くんの繁殖についての新説</title>
+      <link>https://kotet.jp/2016/12/2016-12-03-b2bb34b3a139ceeb519e/</link>
+      <pubDate>Tue, 29 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-03-b2bb34b3a139ceeb519e/</guid>
+      <description>この記事はQiitaに投稿されたもののフォークです。
+これはD言語くん Advent Calendar 2016 3日目の記事です。
+新個体の出現 2015年に繁殖期のD言語くんが発見され、D言語くんが単為生殖で増殖するようすが明らかになった。
+しかしこの繁殖方法は
+ 並列で増えることができない 繁殖期のD言語くんが増えない  等の問題点を抱えており、同時にD言語くんの絶滅が危惧された。
+だが、最近現地の住民の証言からD言語くんが別の繁殖方法を獲得したらしいことがわかった。その様子を撮影しようと試みたが、その姿をカメラに捉える前に12月になり、D言語くんはクリスマスの装飾に擬態して見えなくなってしまった。かわりに現地住民のスケッチを用いて紹介しよう。
+2匹で行われる繁殖 現地住民から得られた情報により再現されるD言語くんの繁殖は以下のようなプロセスを経る。
+ 2匹が密着する 餅のように伸びる 伸びた部分が膨らんでくる スライスされ、分離する  ここで注目したいのは、スケッチ上でのD言語くんの胴体に穴が開いていることである。これがD言語くんの通常個体ならば1匹しかいない繁殖期のD言語くんに頼ることなく繁殖することが可能ということで、特定の個体に依存する繁殖方法から脱したということだ。タスマニアデビルがデビル顔面腫瘍性疾患に適応したように、D言語くんが突然変異により進化しているということが考えられる。おせちのカマボコにお餅のエッセンスがmixinしたのだ。また、さらに証言を集めるととんでもない長さに伸びたD言語くんの目撃情報も得られた。
+超絶キモい可愛らしい。並列で増える能力を獲得したことによりD言語くんは今後ますます発展していくだろう。
+それはともかく D言語には並列処理を簡単に行う方法がある。
+import std.stdio; import std.math : log; import std.range : iota; import std.string : format; import std.parallelism : TaskPool; void main() { auto pool = new TaskPool(); foreach(index,c;pool.parallel(iota(10))) { writeln(format(&amp;#34;%s: %s&amp;#34;,index,log(index))); } pool.finish(); } /* 出力: 0: -inf 3: 1.09861 5: 1.60944 8: 2.</description>
+    </item>
+    
+    <item>
+      <title>Jekyllのtheme&#34;minima&#34;のハンバーガーメニューがiOSで動作しないバグ</title>
+      <link>https://kotet.jp/2016/11/2016-11-29-hamburger-menu-not-working/</link>
+      <pubDate>Tue, 29 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/11/2016-11-29-hamburger-menu-not-working/</guid>
+      <description>現在このブログのハンバーガーメニューはうまく機能していない。
+今日はこの問題を解決しようと思って調べた。どうやら自分がなにかやらかしていたわけではなく、このブログのthemeであるminimaのバグのようだ。
+Hamburger menu doesn&amp;rsquo;t work on iOS · Issue #80 · jekyll/minima
+すでにPRが送られているが、マージされてはいない。
+fix hamburger menu for iOs by melaniewalsh · Pull Request #85 · jekyll/minima
+とりあえず修正できないか頑張る。
+PRの内容通り8行目のspanにダミーハンドラonclick=&amp;quot;void(0)&amp;quot;を追加してみる。これによってiOSのブラウザはその要素をクリック可能なものとして認識するようだ。
+- &amp;lt;span class=&amp;#34;menu-icon&amp;#34;&amp;gt; + &amp;lt;span class=&amp;#34;menu-icon&amp;#34; onclick=&amp;#34;void(0)&amp;#34;&amp;gt;  これで無事に動いた。めでたし。</description>
+    </item>
+    
+    <item>
+      <title>「ゆるやかな大麻コミュニティ」から妄想した「美しくなる文化」の芽生え</title>
+      <link>https://kotet.jp/2016/12/2016-12-02-a-delusion-about-grass-community/</link>
+      <pubDate>Tue, 29 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-02-a-delusion-about-grass-community/</guid>
+      <description>新しい発想とは他者との会話の中で生まれるものなんだなあと実感することが多々ある。今日も友人との会話の中で面白い結論に達したので書き留めたい。
+「ゆるやかな大麻コミュニティ」というインパクトのあるワードで有名になった事件があった。限界集落にたくさんの若者が一斉に移り住み、そこで大麻コミュニティを形成していたということだ。
+限界集落は日本国内にいくらでもあるので、今後違法だったり反社会的なことをしたい人たちが集まって限界集落に移住するようなことが多くなるのだろう。いや、すでに見つかっていないだけで多くのコミュニティがあるのかもしれない。
+一方話は変わって、「流行語大賞がまったく流行していない問題」がある。「神ってる」があんな使い方をされているなんて聞いたこともなかったし、「聖地巡礼」の受賞対象があんなものだとも予想していなかった。
+これはつまり流行語大賞を決める人たちとそれを受け取る人たちに溝があるか、間違った層に届いてしまっているということだろう。多様な価値観が認められるようになった現代において社会全体の「流行」をひとつに決めることができなくなってしまったのかもしれない。
+さらに、ライセンス料の安い漫画などを原作にしたクソ映画が量産されているというできごともある。
+しかしクソ映画なのにテレビで大きく宣伝され、衰退することなく量産され続けているということはある程度の売り上げがあるということだ。つまりどこか自分には見えない地平線の向こうに、あの映画たちを喜んで見て、しかも結構楽しめて、また同じような映画を見ようと思うような人がたくさんいるということだ。未だにそういう人を見つけられていないあたり、自分の世界はかなり狭いということだろう。
+限界集落に集団で移住する人たちがいる。また、価値観が多様になり一人の人間ではまったく理解できないようになっている。ここで自分はあるシナリオを妄想した。今後価値観を同じくした人が集団で限界集落に移住し、そこ独自のコミュニティを形成する。するとそこで新たな文化が生まれてくるのではないだろうか?
+現代はグローバル化が進み、多くの国の文化が均質化されつつある。皆が同じ文化を持つことで、その土地独自の文化が失われつつある。そういう「美しい文化」が失われていくのは止められないかもしれないが、限界集落に移住した人たちによって、これから「美しくなるだろう文化」が作り上げられて行くのではないだろうか?
+限界集落に移り住み意見の同じ人が集まると、多少変なことをしても批判されることはない。すると集団のなかにある習慣が何者にも邪魔されることなくすくすくと育ち、磨かれ、研ぎ澄まされて文化になって行く。現代の伝統はそういうところから生まれるのではないだろうか。
+たとえば大麻を吸うことを悪だと思っていない人が集まれば「ゆるやかな大麻コミュニティ」が生まれる。あれももっと発展したら大麻を使った新しい「郷土料理」が生まれていたかもしれない。
+また、不倫は文化だという人が集まれば不倫が文化になるんだろう。そこでは不倫されても怒ることはないし、不倫された人が不倫することもあるだろう。新しい家族の形ができるかもしれない。
+パリピが集まれば奇祭ができるのではないか?
+殺人を悪いこととしない人が集まれば、生にとらわれていてはできなかった斬新なスポーツができるかもしれないし、優勝商品をいかした郷土料理ができるかもしれない。
+法律に違反することになるだろうというのはまた別の話だ。今現在の法律ではこれらの文化は存在しえないし、存在するなら見つけ出して適切な処分が必要だろう。しかし、価値観が今よりさらに多様になり、維持すべき「あるべき姿」を決めることができなくなってしまったら、法律で特定の価値観だけを優遇するようなまねは馬鹿らしくなってくるかもしれない。
+人々の考えが細切れのバラバラになったら、文明が衰退し人類は滅んでしまうだろうか?そんなことはないと思う。広い土地でバラバラになって、それぞれまったく違う独自の文化を作って、ひとつひとつは小さなコミュニティだが全体としては人間が増え、繁栄している……というのは土地が十分広ければ可能だと思う。
+極端な話をすると人類がこれから火星や、とてつもなく広い太陽系外のもっと想像もしないようなところで暮らしていくには、全部の星で同じ価値観を共有するというのは非効率的だし不可能だ。環境に合わせて価値観も適応させていくことが必要なのだ。
+それに、全く違う方向で思考を発展させてきた人が話し合うことでもっと面白いことが起きるかもしれない。
+そういうわけで、人口が都市に集中したことによって「美しい文化」が失われたかわりにできた限界集落と言う名のフロンティアで「美しくなるだろう文化」が生まれることを想像した。考えるだけなら面白い。</description>
+    </item>
+    
+    <item>
+      <title>ローカルのdubプロジェクトに依存するdubプロジェクト</title>
+      <link>https://kotet.jp/2016/11/2016-11-27-4ef5039d17c521ec5dc7/</link>
+      <pubDate>Sun, 27 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/11/2016-11-27-4ef5039d17c521ec5dc7/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+自作のライブラリを別のdubプロジェクトにしたかったので調べたけどすぐには見つからなかったので書く。わかれば簡単なことだった。タイトルはこれで適切なんだろうか?
+$ tree . ├── app │ ├── dub.json │ └── source │ └── app.d └── lib ├── dub.json └── source └── lib.d lib/source/lib.d:
+module lib; import std.stdio; void func() { writeln(&amp;#34;hello!&amp;#34;); } app/source/app.d:
+import lib; void main() { func();//モジュールlibの関数 } lib/dub.json:
+{ &amp;#34;name&amp;#34;: &amp;#34;lib&amp;#34;, &amp;#34;targetType&amp;#34;:&amp;#34;library&amp;#34; } app/dub.json:
+{ &amp;#34;name&amp;#34;: &amp;#34;app&amp;#34;, &amp;#34;dependencies&amp;#34;:{ &amp;#34;lib&amp;#34;: &amp;#34;*&amp;#34; } } このままではlibが見つからないので実行できない。
+$ dub run Selected package lib ~master doesn&amp;#39;t exist. Using latest matching version instead.</description>
+    </item>
+    
+    <item>
+      <title>どどんとふ on windows</title>
+      <link>https://kotet.jp/2016/11/2016-11-17-fca7f3550b554ee7cfd3/</link>
+      <pubDate>Thu, 17 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/11/2016-11-17-fca7f3550b554ee7cfd3/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+主に友人に需要があるそうなのでWindows上でどどんとふサーバーを動かせるか頑張った。
+XAMPPのインストール Apache httpdのWindows版は公式で配布していないらしい。XAMPPをインストールする。
+Apache以外は入れなくていい。
+Rubyのインストール こちらの記事を参照。インストール時に「PATHを設定する」にチェックする。
+インストールに成功しているかコマンドプロンプトでruby -vしてみる。
+どどんとふの設置 どどんとふをダウンロードしてくる。
+public_html内のDodontoFとimageUploadSpaceをドキュメントルート内に展開。ファイルの改行コードを全部変換。 kanjitranslatorが便利だった。
+一つ上にsaveDataを展開。
+DodontoF/DodontoFServer.rbのshebangを編集。PATHを通してあるのでrubyとだけ書けばいい。
+一行目 #!ruby Apacheを起動し、ブラウザでlocalhost/DodontoF/DodontoFServer.rbにアクセスしてみる。 すでにポートは解放されているので、ルータとかの設定をすればもう使える。 セキュリティは考えていない。Windowsでは何をすればセキュリティを考えたことになるのかまた調べておきたい。</description>
+    </item>
+    
+    <item>
+      <title>Welcome to Jekyll!</title>
+      <link>https://kotet.jp/2016/11/2016-11-13-welcome-to-jekyll/</link>
+      <pubDate>Sun, 13 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/11/2016-11-13-welcome-to-jekyll/</guid>
+      <description>またサイトを作りなおした。もう何回目かわからない。
+今回はGitHub PagesのJekyllをつかったもの。もうなんかめんどくさいのでテーマもデフォルトのもの。 前回は静的サイトジェネレータを自分のマシン上で動かさなければならなかったため、ちょっと面倒くさかった。 頻繁にOSをクリーンインストールしていたため、記事を書くたびに環境を再構築している感じだった。 今度のはHTMLの生成はGitHubの方でやってくれるので、やろうと思えばスマホからでも記事が投稿できる。 ファイル名がちょっとめんどくさいが、さすがにそれくらいで記事を書くのを諦めるほどめんどくさがりでないと自分を信じたい。
+しかし自分で作ったサイトとか作品とかは後で見返すと恥ずかしいものだ。 サイトを作りなおす過程で過去の記事は全て消えたし、投稿していた動画とかもいくらか非公開にした。 非公開にしただけで削除しないあたりに未練を感じる。 Twitterのツイートも似たようなもののような気がするが、それは別に消してはいない。 なぜだろうか?
+おそらく恥ずかしくなるかどうかには参照のしやすさが関係している気がする。 ブログの記事や動画はそんなに数がないので、サイトにアクセスすればものの数分ですべてをチェックできる。 一方Twitterのつぶやきはほぼ毎日してしまっているので、過去のツイートはどんどん流れていって、 例えば1年前のツイートを見ようと思っても比較的大変である。 そもそも直視する機会が少ない上に、他人がみる確率もかなり少ないのでそんなに恥ずかしくないのであろう。 かなり少ないとはいっても、たとえば自分が炎上したりすれば過去のツイートはすべて掘り返されるのだろう。 それを危惧して一定以上経過したツイートをすべて消してしまうような人もいるが、じぶんは労力を払ってまでそうしない。 過去のツイートを消しても過去の行いがなかったことになるわけではないし、 大抵過去の悪行というのは自分が覚えていないところから発掘されるので、制御することができないと諦めているからだ。 自分は記憶力がないので、過去に何か変なツイートをしたことも一切覚えていない。 炎上して過去のツイートが掘り返されたらものすごいびっくりするだろう。</description>
+    </item>
+    
+    <item>
+      <title>JSONValueにJSONValueを入れる</title>
+      <link>https://kotet.jp/2016/10/2016-10-29-94ac71bb6d196dff6f47/</link>
+      <pubDate>Sat, 29 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/10/2016-10-29-94ac71bb6d196dff6f47/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+語彙が足りなくて適切なタイトルが出てこない。
+とにかくそういう事をするときは、JSONValue[string]という状態でないといけないようだ。
+import std.json : JSONValue,toJSON; auto json = JSONValue([&amp;#34;Dman&amp;#34;:&amp;#34;&amp;#34;]); json[&amp;#34;Dman&amp;#34;].object = JSONValue([&amp;#34;is&amp;#34;:&amp;#34;GOD&amp;#34;]).object; //json[&amp;#34;dman&amp;#34;].object = JSONValue([&amp;#34;is&amp;#34;:&amp;#34;GOD&amp;#34;]); &amp;lt;-こうはできない assert(toJSON(&amp;amp;json) == `{&amp;#34;dman&amp;#34;:{&amp;#34;is&amp;#34;:&amp;#34;GOD&amp;#34;}}`); キーを後から追加したりすることはできないのかな?</description>
+    </item>
+    
+    <item>
+      <title>D言語でBasic認証</title>
+      <link>https://kotet.jp/2016/10/2016-10-26-21bdd7902454434ab1ce/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/10/2016-10-26-21bdd7902454434ab1ce/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+std.net.curlを使えば簡単にできた。探すのにすこし時間がかかったのでサンプル的なものを書く。
+import std.stdio : writeln; import std.net.curl : HTTP,get; void main() { auto url = &amp;#34;URL&amp;#34;; auto user = &amp;#34;USER&amp;#34;; auto pass = &amp;#34;PASS&amp;#34;; auto http = HTTP(); http.authenticationMethod = HTTP.AuthMethod.basic; http.setAuthentication(user,pass); auto content = get(url,http); writeln(content); } HTTP.AuthMethodはetc.c.curl.CurlAuthのエイリアス。</description>
+    </item>
+    
+    <item>
+      <title>Dでつくるbrainfu*kのインタプリタ</title>
+      <link>https://kotet.jp/2016/08/2016-08-12-0028bc07f5277fff4d8d/</link>
+      <pubDate>Fri, 12 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/08/2016-08-12-0028bc07f5277fff4d8d/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+brainf*ckの処理系はすでにいろんな人が作っているけど勉強になりそうだったので自分で書いてみた。
+import std.stdio; import std.getopt; import core.stdc.stdio; import std.file; import std.conv; const BUFFSIZE = 30000; void main(string[] args) { string filename = args[1]; string code = readText(filename); size_t ptr = 0; size_t codeptr = 0; ubyte[] memory = new ubyte[BUFFSIZE]; while(codeptr &amp;lt; code.length) { switch(code[codeptr]) { case &amp;#39;+&amp;#39;: memory[ptr]++; break; case &amp;#39;-&amp;#39;: memory[ptr]--; break; case &amp;#39;&amp;gt;&amp;#39;: ptr++; break; case &amp;#39;&amp;lt;&amp;#39;: ptr--; break; case &amp;#39;.&amp;#39;: putchar(memory[ptr]); break; case &amp;#39;,&amp;#39;: int tmp = getchar(); if(tmp == EOF) return; memory[ptr] = tmp.</description>
+    </item>
+    
+    <item>
+      <title>OpenGL/GLFWはじめての人がD言語でウィンドウを表示するまで</title>
+      <link>https://kotet.jp/2016/06/2016-06-28-16583bad8631623e9bcc/</link>
+      <pubDate>Tue, 28 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/06/2016-06-28-16583bad8631623e9bcc/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+DでOpenGLとかそういうのが使いたくなったので練習をした。
+Dubを使って環境構築した記事がなかなか見つからなかったのでまとめ記事を書く。
+Ubuntu 16.04 LTS。
+OpenGLとGLFWの導入 OpenGL $sudo apt install mesa-utils GLFW $sudo apt install xorg-dev $git clone https://github.com/glfw/glfw.git $cd glfw ここで共有ライブラリを作るようにCMakeLists.txtを書き換える。
+でないと実行時にこうなる。
+エラー libglfw3.so - libglfw3.so: cannot open shared object file: No such file or directory libglfw.so.3 - libglfw.so.3: cannot open shared object file: No such file or directory CMakeLists.txt -option(BUILD_SHARED_LIBS &amp;#34;Build shared libraries&amp;#34; OFF) +option(BUILD_SHARED_LIBS &amp;#34;Build shared libraries&amp;#34; ON) $cmake . $make $sudo make install -- Installing: /usr/local/lib/libglfw.</description>
+    </item>
+    
+    <item>
+      <title>自分以外のユーザの作ったリストを取得する</title>
+      <link>https://kotet.jp/2016/06/2016-06-03-a206127cf8e75cc7a719/</link>
+      <pubDate>Fri, 03 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/06/2016-06-03-a206127cf8e75cc7a719/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+フォローイング/フォロワーの作ったリストのリストが欲しくなって、そういうものを作るツールを作った時のメモ。
+はじめTweepyでやろうと思ったんだけど、自分以外の持っているリストを取得する、つまりlists/list、lists/ownerships、lists/subscriptionsなどに対応する機能が見つけられなかった。
+結局自力でやることになった。なんで無いんだろう……
+from requests_oauthlib import OAuth1Session import json session = OAuth1Session(consumer_key, consumer_secret, access_token, access_token_secret) api_url = &amp;#39;https://api.twitter.com/1.1/lists/ownerships.json&amp;#39; params = {&amp;#39;user_id&amp;#39;: userid} req = session.get(api_url, params=params) if req.status_code == 200: jsn = json.loads(req.text) for item in jsn[&amp;#39;lists&amp;#39;]: print(item[&amp;#39;name&amp;#39;]) else: print(&amp;#39;Error: %d&amp;#39; % req.</description>
+    </item>
+    
+    <item>
+      <title>行列と高速化の練習をした</title>
+      <link>https://kotet.jp/2016/05/2016-05-12-c3b3c20f4257f83dce8c/</link>
+      <pubDate>Thu, 12 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/05/2016-05-12-c3b3c20f4257f83dce8c/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+行列に興味がある。しかし数Cは廃止され、行列の勉強はしないとのことなので少しづつ自主学習。
+とりあえず行列の積について理解できたのでプログラムにしてみる。ついでに前からやってみたかった並列処理とかを試して速度をはかる。
+テンプレート 100次の正方行列を1000回かける。
+//import略 alias int[][] matrix; matrix matrix_product(matrix A,matrix B) in{ assert(A[0].length == B.length); } body{ //ここに処理を書く } void init_matrix(ref matrix A){ foreach(ref row;A){ foreach(ref n;row){ n = uniform(-10,10); } } } void main(){ matrix A = [ [2,-1], [-3,4]]; matrix B = [ [1], [2]]; matrix C = [ [1,-1], [-2,3]]; matrix D = [ [1,2], [3,4]]; matrix E = [ [1,2]]; matrix F = [ [2,-1], [-3,4]]; assert(matrix_product(A,B) == [[0],[5]]); assert(matrix_product(C,D) == [[-2,-2],[7,8]]); assert(matrix_product(E,F) == [[-4,7]]); StopWatch sw; int n = 1000; matrix[][] testdata = new matrix[][](n,2); foreach(i;0.</description>
+    </item>
+    
+    <item>
+      <title>どどんとふ1.46.00を最小構成のCentOS7から構築できた時の手順</title>
+      <link>https://kotet.jp/2016/03/2016-03-30-ec6701540ea336083405/</link>
+      <pubDate>Wed, 30 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/03/2016-03-30-ec6701540ea336083405/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+こちらやこちらの手順にしたがってどどんとふのセットアップをしていたが、それだけでは動かなかったのでほんの少し追記したものを自分でもう一度まとめて書く。CentOS7をminimumな感じでインストールしたあとから始める。
+必要なものどもを取得 $ sudo yum update $ sudo yum install wget libyaml-devel gcc httpd unzip policycoreutils-python rubyのセットアップ $ wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.6.tar.gz $ tar -zxvf ruby-2.1.6.tar.gz $ cd ruby-2.1.6 $ ./configure $ sudo make install どどんとふのセットアップ //どどんとふの取得&amp;amp;展開 $ cd ~ $ wget http://www.dodontof.com/Download/DodontoF_release/DodontoF_Ver.1.46.00_MASTERPIECE.zip $ unzip DodontoF_Ver.1.46.00_MASTERPIECE.zip $ sudo mv DodontoF_WebSet/* /var/www/ //所有権とかセキュリティコンテクストとか権限の変更 $ cd /var/www $ sudo chown -R apache:apache public_html/ saveData/ $ sudo chcon -R -t httpd_sys_content_t public_html/ saveData/ $ cd public_html/DodontoF $ sudo chmod -R 705 saveDataTempSpace fileUploadSpace replayDataUploadSpace .</description>
+    </item>
+    
+    <item>
+      <title>ズンドコキヨシ with D</title>
+      <link>https://kotet.jp/2016/03/2016-03-13-9d170a372434caf0c876/</link>
+      <pubDate>Sun, 13 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/03/2016-03-13-9d170a372434caf0c876/</guid>
+      <description> この記事はQiitaに投稿されたものの転載です。
+元ネタを読んで一番最初に思いついたやり方です。
+main.d import std.stdio; import std.random; void main(){ string[] words = [&amp;#34;ズン&amp;#34;,&amp;#34;ドコ&amp;#34;]; int[] history = []; while(true){ history ~= dice(1,1); words[history[$-1]].write(); if (5 &amp;lt;= history.length) { if (history[$-5 .. $] == [0,0,0,0,1]){ &amp;#34;キ・ヨ・シ！&amp;#34;.writeln(); return; } } } }</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://kotet.jp/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/about/</guid>
+      <description>このサイトと自分について、それと関連するサイトへの案内
+このブログについて ここはKotetが2，3ツイート以上の長文を書きたくなった時にそれを書いたり、 プログラミングをしていて得たググっても日本語の記事が少なかった知識を残したりするところ。
+学んだことを書いていくので、学習途中で間違ったことを書いていたりするかもしれない。 このサイトはGitHub Pagesで生成、ホスティングされており、記事やサイトのソースは完全にGitHub上で公開されている。 すべてのページの上部にソース、コミットログ、編集ページへのリンクをつけており、Web上でファイルを編集してPRを送れるようにしている。
+ 誤字/脱字があった この記事にはこんなタグをつけるべき/つけるべきではない 内容に誤りがあった そもそも記事の存在そのものが間違っているので消すべき  という場合、IssueやPull requestを投げつけてくれると喜ぶ。
+Kotet 名前の読み方は自分でも決めていないので、いまタイトルを頭の中で読み上げた時の発音で読んでくれればいい。
+アイコンは数年前に適当に描いたもの。 もとは鳥か何かのアイコンを使っていたのだが、権利的にクリーンなアイコンが欲しくなって現アイコンを作った。 たまに描いてみるがどうしても同じ雰囲気が出せない(Twitterのアイコンはオリジナルを上からなぞったもの)。 画力が皆無な自分が描いた「奇跡の1枚」である。
+主にD言語をやってるがすごいレベルには全く達していない。 D言語ツアー の翻訳に 関わっている。
+坂 一哲 (Ban Kazutoshi) 名字の読みを定期的に間違えられる。
+POTS:体位性頻脈により1年間療養、その後愛知県立大学情報科学部に入学。 ちなみにまだ治ってはいない。
+アカウント Twitter : @kotetttt
+GitHub : @kotet
+Qiita : @kotet
+Niconico : @kotet
+Facebook : @kazutoshi.ban.7
+LINE : QRコード
+Bitcoin : 1PqMAkVY5GbmgfXs1ogJv2uWpsaf6yMhKY
+Ethereum : 0xcBC1160e9F806d3a7D7FdB624fAce3d0841Af853</description>
+    </item>
+    
+    <item>
+      <title>Products</title>
+      <link>https://kotet.jp/products/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/products/</guid>
+      <description>非プログラマ向けリンク集。
+Aviutl_Bezier ベジェ曲線を使ったアニメーションが作れるAviutl拡張編集スクリプト。
+v1.0.0 - ダウンロード
+【AviUtl】簡単に複雑で滑らかなアニメーションができるスクリプト
+AviUtl_Bezier2 上のやつの改良版。より直感的。
+v1.0.0 - ダウンロード
+【AviUtl】もっと簡単に滑らかなアニメーションができるスクリプト</description>
+    </item>
+    
+  </channel>
+</rss>

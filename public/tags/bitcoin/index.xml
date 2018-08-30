@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bitcoin on Kotet&#39;s Personal Blog</title>
+    <link>https://kotet.jp/tags/bitcoin/</link>
+    <description>Recent content in Bitcoin on Kotet&#39;s Personal Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Mon, 26 Dec 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://kotet.jp/tags/bitcoin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Anonymous Adsについて</title>
+      <link>https://kotet.jp/2016/12/2016-12-26-about-advertising/</link>
+      <pubDate>Mon, 26 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-26-about-advertising/</guid>
+      <description>前から悩んでいたことだったのだが、自分はブログを更新しなさすぎる。 毎度毎度ポツポツと記事を書いたら長期間放置して、 サイトをイチから作りなおしてしまうというのを何度も繰り返している。 これはよくない。ちょっと更新されてすぐ消える、そんなサイトははじめから存在している必要などないのだ。 最近はQiitaでいくらか記事を書いている。割と反応ももらえて嬉しい。 しかしこのサイトは更新しない。なぜか?書くことがないからだ! 技術の話をQiitaに書いてしまったら、もうここに書くことは何も残っていないのだ!
+そういうわけで自分の薄っぺらさにも気づいてしまったので、なんとかしてこのサイトを更新していきたい。 簡単なことだ。Twitterで長文を投下したくなったらここに来れば良いのだ。 読む側が面白いかどうかは別の話だが……
+こう決意してもなにか仕組みを変えなければしばらくすればいつもの状態に戻ってしまうのは目に見えている。 何かしらモチベーションとなるものを少しでも増やしていかなければならない。 そういうわけでこのサイトに広告を貼ってみることにした。下の方に小さなテキスト広告があると思う。 まあこのサイトのアクセス数は本当に寂しい感じなので実際に収入になることはないだろうが、 報酬が全くのゼロよりはマシではないか。
+今回貼った広告はAnonymous Adsというもの。 個人情報やクレジットカードの登録が必要ないというのが選択した理由である。 さすがにこんなサイトのためにクレジットカードとかをあれこれするのは事が大きすぎる。 クリックやPVの数によって報酬が決まり、ビットコインで支払われる。 最低0.0001BTC(今相場見たら10円くらいだった)分の収入があれば一度に支払われるそうだが、はたして最初の10円が支払われるのさえいつになるだろうか……
+基本的に派手な画像広告は嫌いなので、テキスト広告のみを許可するようにしている。 それ以外のフィルタリングは今のところしていない。 どんなに不快な内容でもこれくらいのサイズでテキストオンリーならそんなにひどいことにはならないと思っているが、実際に広告を見てあまりに内容がひどいとわかったらその辺の設定もしようと思う。
+さて、広告も貼ったしこれから更新していかなければ。 何を書くか考えよう。</description>
+    </item>
+    
+  </channel>
+</rss>

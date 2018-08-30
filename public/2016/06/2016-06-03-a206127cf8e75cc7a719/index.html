@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+自分以外のユーザの作ったリストを取得する - Kotet&#39;s Personal Blog
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> <meta name="generator" content="Hugo 0.46" />
+    
+<meta name="description" content="フォローイング/フォロワーの作ったリストのリストが欲しくなって、そういうものを作るツールを作った時のメモ。">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    #TableOfContents > ul {  
+        padding: 0;
+    }
+    #TableOfContents > ul > li > ul {  
+        padding: 0;
+    }
+    #TableOfContents li {
+        list-style: none;
+    }
+    #TableOfContents > ul > li > ul > li > ul li {
+        list-style-type: initial;
+    }
+    aside {
+        padding: .5em 1em;
+        background: #EEE;
+    }
+</style>
+
+</head>
+
+<body>
+    <header class="site">
+        <h1><a href="/">Kotet&#39;s Personal Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/products">PRODUCTS</a></li>
+                <li><a href="/tags">TAGS</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+<h2>自分以外のユーザの作ったリストを取得する</h2>
+<aside>
+    <p>Table of Contents</p>
+    
+</aside>
+<article><p>この記事はQiitaに投稿されたものの転載です。</p>
+
+<hr />
+
+<p>フォローイング/フォロワーの作ったリストのリストが欲しくなって、<a href="https://gist.github.com/kotet/ad067397124278804718366b88c12ff2">そういうものを作るツール</a>を作った時のメモ。<br />
+はじめTweepyでやろうと思ったんだけど、自分以外の持っているリストを取得する、つまり<code>lists/list</code>、<code>lists/ownerships</code>、<code>lists/subscriptions</code>などに対応する機能が見つけられなかった。<br />
+結局自力でやることになった。なんで無いんだろう……</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> requests_oauthlib <span style="color:#f92672">import</span> OAuth1Session
+<span style="color:#f92672">import</span> json
+
+session <span style="color:#f92672">=</span> OAuth1Session(consumer_key, consumer_secret, access_token, access_token_secret)
+
+api_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://api.twitter.com/1.1/lists/ownerships.json&#39;</span>
+params <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;user_id&#39;</span>: userid}
+req <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>get(api_url, params<span style="color:#f92672">=</span>params)
+
+<span style="color:#66d9ef">if</span> req<span style="color:#f92672">.</span>status_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span>:
+    jsn <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(req<span style="color:#f92672">.</span>text)
+    <span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> jsn[<span style="color:#e6db74">&#39;lists&#39;</span>]:
+        <span style="color:#66d9ef">print</span>(item[<span style="color:#e6db74">&#39;name&#39;</span>])
+<span style="color:#66d9ef">else</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Error: </span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> req<span style="color:#f92672">.</span>status_code)</code></pre></div></article>
+
+        <div class="ad-wrapper"></div>
+    </main>
+    <footer class="site">
+    <p>This site compiled at <time>2018-08-02T22:40:09&#43;0200</time></p>
+</footer>
+</body>
+
+</html>

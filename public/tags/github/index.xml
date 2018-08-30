@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Github on Kotet&#39;s Personal Blog</title>
+    <link>https://kotet.jp/tags/github/</link>
+    <description>Recent content in Github on Kotet&#39;s Personal Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Wed, 14 Dec 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://kotet.jp/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GitHubのissueを悪用して画像をホストする</title>
+      <link>https://kotet.jp/2016/12/2016-12-14-a2203a400136ba50b41e/</link>
+      <pubDate>Wed, 14 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-14-a2203a400136ba50b41e/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+知らなかったので投稿。
+DashというDで書かれたゲームエンジンがあるのだが、そのreadmeの一番上にあるでっかいロゴの画像ファイルがどこにおいてあるのか気になった。
+リポジトリ内には見当たらない……しかしURLがgithubusercontent.comなのでGitHubのどこかに上げているんだろう。
+[![Dash Logo](https://cloud.githubusercontent.com/assets/512416/2726786/6618d624-c5c2-11e3-9049-23637e5a1739.png)](https://github.com/Circular-Studios/Dash/wiki) 調べたらこのような記事が出てきた。issueの画像アップロード機能を&amp;rdquo;abuse&amp;rdquo;するのがおすすめ、とある。
+Using issues to host GitHub Pages screenshots
+issueのコメントに画像を貼り付けるとその場でアップロードされコードが生成される。このとき実際にissueを投稿しなくても同じURLで画像は存在し続けているようだ。
+試しにやってみた。
+![fzil2ccg](https://cloud.githubusercontent.com/assets/8435623/21176246/3b5aa50a-c229-11e6-8d23-eed54044ede4.jpg) この画像が実際に投稿されたissueはどこにも存在しないが、ちゃんと画像はそのまま見える状態のはずである。とても便利。</description>
+    </item>
+    
+  </channel>
+</rss>

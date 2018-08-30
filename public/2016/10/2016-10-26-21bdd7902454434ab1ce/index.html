@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+D言語でBasic認証 - Kotet&#39;s Personal Blog
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> <meta name="generator" content="Hugo 0.46" />
+    
+<meta name="description" content="std.net.curlを使えば簡単にできた。探すのにすこし時間がかかったのでサンプル的なものを書く。">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    #TableOfContents > ul {  
+        padding: 0;
+    }
+    #TableOfContents > ul > li > ul {  
+        padding: 0;
+    }
+    #TableOfContents li {
+        list-style: none;
+    }
+    #TableOfContents > ul > li > ul > li > ul li {
+        list-style-type: initial;
+    }
+    aside {
+        padding: .5em 1em;
+        background: #EEE;
+    }
+</style>
+
+</head>
+
+<body>
+    <header class="site">
+        <h1><a href="/">Kotet&#39;s Personal Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/products">PRODUCTS</a></li>
+                <li><a href="/tags">TAGS</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+<h2>D言語でBasic認証</h2>
+<aside>
+    <p>Table of Contents</p>
+    
+</aside>
+<article><p>この記事はQiitaに投稿されたものの転載です。</p>
+
+<hr />
+
+<p><a href="https://dlang.org/phobos/std_net_curl.html">std.net.curl</a>を使えば簡単にできた。探すのにすこし時間がかかったのでサンプル的なものを書く。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-d" data-lang="d">import std.stdio : writeln;
+import std.net.curl : HTTP,get;
+void main()
+{
+    auto url = &#34;URL&#34;;
+    auto user = &#34;USER&#34;;
+    auto pass = &#34;PASS&#34;;
+
+    auto http = HTTP();
+    http.authenticationMethod = HTTP.AuthMethod.basic;
+    http.setAuthentication(user,pass);
+
+    auto content = get(url,http);
+    writeln(content);
+}</code></pre></div>
+<p>HTTP.AuthMethodは<a href="https://dlang.org/phobos/etc_c_curl.html#.CurlAuth">etc.c.curl.CurlAuth</a>のエイリアス。</p>
+</article>
+
+        <div class="ad-wrapper"></div>
+    </main>
+    <footer class="site">
+    <p>This site compiled at <time>2018-08-02T22:40:09&#43;0200</time></p>
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+どどんとふ on windows - Kotet&#39;s Personal Blog
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> <meta name="generator" content="Hugo 0.46" />
+    
+<meta name="description" content="主に友人に需要があるそうなのでWindows上でどどんとふサーバーを動かせるか頑張った。">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    #TableOfContents > ul {  
+        padding: 0;
+    }
+    #TableOfContents > ul > li > ul {  
+        padding: 0;
+    }
+    #TableOfContents li {
+        list-style: none;
+    }
+    #TableOfContents > ul > li > ul > li > ul li {
+        list-style-type: initial;
+    }
+    aside {
+        padding: .5em 1em;
+        background: #EEE;
+    }
+</style>
+
+</head>
+
+<body>
+    <header class="site">
+        <h1><a href="/">Kotet&#39;s Personal Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/products">PRODUCTS</a></li>
+                <li><a href="/tags">TAGS</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+<h2>どどんとふ on windows</h2>
+<aside>
+    <p>Table of Contents</p>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#xamppのインストール">XAMPPのインストール</a></li>
+<li><a href="#rubyのインストール">Rubyのインストール</a></li>
+<li><a href="#どどんとふの設置">どどんとふの設置</a>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#一行目">一行目</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+<article>
+
+<p>この記事はQiitaに投稿されたものの転載です。</p>
+
+<hr />
+
+<p>主に友人に需要があるそうなのでWindows上でどどんとふサーバーを動かせるか頑張った。</p>
+
+<h1 id="xamppのインストール">XAMPPのインストール</h1>
+
+<p>Apache httpdのWindows版は公式で配布していないらしい。<a href="https://www.apachefriends.org/jp/">XAMPP</a>をインストールする。<br />
+<img src="/assets/qiita/0/57768/8a070a33-cd64-75c8-3e6c-57f022032a72.png" alt="2016-11-16.png" /><br />
+Apache以外は入れなくていい。</p>
+
+<h1 id="rubyのインストール">Rubyのインストール</h1>
+
+<p><a href="http://qiita.com/machu/items/91038f4d4a3b9b5bd6f1">こちらの記事</a>を参照。インストール時に「PATHを設定する」にチェックする。<br />
+インストールに成功しているかコマンドプロンプトで<code>ruby -v</code>してみる。</p>
+
+<h1 id="どどんとふの設置">どどんとふの設置</h1>
+
+<p><a href="http://www.dodontof.com/index.php?option=com_content&amp;view=article&amp;id=246&amp;Itemid=126">どどんとふ</a>をダウンロードしてくる。<br />
+public_html内のDodontoFとimageUploadSpaceをドキュメントルート内に展開。ファイルの改行コードを全部変換。  <a href="http://www.kashim.com/kanjitranslator/">kanjitranslator</a>が便利だった。<br />
+一つ上にsaveDataを展開。<br />
+DodontoF/DodontoFServer.rbのshebangを編集。PATHを通してあるので<code>ruby</code>とだけ書けばいい。</p>
+
+<h4 id="一行目">一行目</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#75715e">#!ruby</span></code></pre></div>
+<p><img src="/assets/qiita/0/57768/a1b95ec1-2693-a74c-9d79-64042f60b2ea.png" alt="2016-11-17.png" /></p>
+
+<p>Apacheを起動し、ブラウザでlocalhost/DodontoF/DodontoFServer.rbにアクセスしてみる。
+すでにポートは解放されているので、ルータとかの設定をすればもう使える。
+セキュリティは考えていない。Windowsでは何をすればセキュリティを考えたことになるのかまた調べておきたい。</p>
+</article>
+
+        <div class="ad-wrapper"></div>
+    </main>
+    <footer class="site">
+    <p>This site compiled at <time>2018-08-02T22:40:09&#43;0200</time></p>
+</footer>
+</body>
+
+</html>

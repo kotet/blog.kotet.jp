@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+Jekyllのtheme&#34;minima&#34;のハンバーガーメニューがiOSで動作しないバグ - Kotet&#39;s Personal Blog
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> <meta name="generator" content="Hugo 0.46" />
+    
+<meta name="description" content="現在このブログのハンバーガーメニューはうまく機能していない。今日はこの問題を解決しようと思って調べた。どうやら自分がなにかやらかしていたわけではなく、このブログのthemeであるminimaのバグのようだ。">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    #TableOfContents > ul {  
+        padding: 0;
+    }
+    #TableOfContents > ul > li > ul {  
+        padding: 0;
+    }
+    #TableOfContents li {
+        list-style: none;
+    }
+    #TableOfContents > ul > li > ul > li > ul li {
+        list-style-type: initial;
+    }
+    aside {
+        padding: .5em 1em;
+        background: #EEE;
+    }
+</style>
+
+</head>
+
+<body>
+    <header class="site">
+        <h1><a href="/">Kotet&#39;s Personal Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/products">PRODUCTS</a></li>
+                <li><a href="/tags">TAGS</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+<h2>Jekyllのtheme&#34;minima&#34;のハンバーガーメニューがiOSで動作しないバグ</h2>
+<aside>
+    <p>Table of Contents</p>
+    
+</aside>
+<article><p>現在このブログのハンバーガーメニューはうまく機能していない。<br />
+今日はこの問題を解決しようと思って調べた。どうやら自分がなにかやらかしていたわけではなく、このブログのthemeであるminimaのバグのようだ。</p>
+
+<p><a href="https://github.com/jekyll/minima/issues/80">Hamburger menu doesn&rsquo;t work on iOS · Issue #80 · jekyll/minima</a></p>
+
+<p>すでにPRが送られているが、マージされてはいない。</p>
+
+<p><a href="https://github.com/jekyll/minima/pull/85">fix hamburger menu for iOs by melaniewalsh · Pull Request #85 · jekyll/minima</a></p>
+
+<p>とりあえず修正できないか頑張る。</p>
+
+<p>PRの内容通り8行目のspanにダミーハンドラ<code>onclick=&quot;void(0)&quot;</code>を追加してみる。これによってiOSのブラウザはその要素をクリック可能なものとして認識するようだ。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#f92672">-      &lt;span class=&#34;menu-icon&#34;&gt;
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+      &lt;span class=&#34;menu-icon&#34; onclick=&#34;void(0)&#34;&gt;
+</span><span style="color:#a6e22e"></span></code></pre></div>
+<p>これで無事に動いた。めでたし。</p>
+</article>
+
+        <div class="ad-wrapper"></div>
+    </main>
+    <footer class="site">
+    <p>This site compiled at <time>2018-08-02T22:40:09&#43;0200</time></p>
+</footer>
+</body>
+
+</html>

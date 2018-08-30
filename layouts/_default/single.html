@@ -1,0 +1,46 @@
+{{ define "title" }}{{ if isset .Params "tags" }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
+<meta name="description" content="{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }}">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    #TableOfContents>ul {
+        /* h1 */
+        padding: 0;
+    }
+
+    #TableOfContents>ul>li>ul {
+        /* h2 */
+        padding: 0;
+    }
+
+    #TableOfContents li {
+        list-style: none;
+    }
+
+    #TableOfContents>ul>li>ul>li>ul li {
+        list-style-type: initial;
+    }
+
+    aside {
+        padding: .5em 1em;
+        background: #EEE;
+    }
+</style>
+{{ end }}{{ define "main" }}
+<h2>
+    {{ if isset .Params "tags" }}
+    <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
+    {{ end }}
+    {{ .Title }}
+</h2>
+<p>
+    {{ if isset .Params "date" }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+    {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
+</p>
+{{ partial "toc" . }}
+<article>{{ .Content }}</article>
+{{ end }}

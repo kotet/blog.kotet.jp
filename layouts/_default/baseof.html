@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ block "title" . }}Kotet.jp{{ end }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> {{ .Hugo.Generator }}
+    {{ block "head" . }}{{ end }}
+</head>
+
+<body>
+    <header class="site">
+        <h1><a href="/">{{ .Site.Title }}</a></h1>
+        <nav>
+            <ul>{{ block "header" . }}
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/products">PRODUCTS</a></li>
+                <li><a href="/tags">TAGS</a></li>
+                {{ end }}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {{ block "main" . }}{{ end }}
+        <div class="ad-wrapper"></div>
+    </main>
+    {{ partial "footer" . }}
+</body>
+
+</html>

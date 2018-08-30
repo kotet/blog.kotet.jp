@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dlang on Kotet&#39;s Personal Blog</title>
+    <link>https://kotet.jp/tags/dlang/</link>
+    <description>Recent content in Dlang on Kotet&#39;s Personal Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language>
+    <lastBuildDate>Fri, 23 Dec 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://kotet.jp/tags/dlang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>文字列の長さを取得するときはlengthを使ってはいけない</title>
+      <link>https://kotet.jp/2016/12/2016-12-23-b6f1630928af176147e4/</link>
+      <pubDate>Fri, 23 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-23-b6f1630928af176147e4/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+自分の進捗表示用パッケージprogressにPRが来た。
+Bars: bug on narrow terminals when non-ascii fill character is used
+どうやら文字列の長さを得るときはlengthではいけない時があるそうだ。
+どういうことか import std.stdio; void main() { string ascii = &amp;#34;a&amp;#34;; string non_ascii = &amp;#34;あ&amp;#34;; writeln(ascii.length); writeln(non_ascii.length); }1 3 &amp;quot;a&amp;quot;も&amp;quot;あ&amp;quot;も1文字のはずだが、&amp;quot;あ&amp;quot;.lengthは3になってしまっている。
+writeln(cast(void[]) ascii); writeln(cast(void[]) non_ascii);[97] [227, 129, 130] lengthは文字列のバイト数を返しているようだ。
+std.range.primitives.walkLength std.range.primitives.walkLengthは、empty == trueになるまで何回popFront()ができるか実際に試してみて、それで得られた長さを返す。
+import std.stdio; import std.range : walkLength; void main() { string ascii = &amp;#34;a&amp;#34;; string non_ascii = &amp;#34;あ&amp;#34;; writeln(ascii.walkLength); writeln(non_ascii.walkLength); }1 1 ちゃんと正しい文字数が得られている。</description>
+    </item>
+    
+    <item>
+      <title>〜D言語くんの分裂に関する更なる考察〜(代理投稿)</title>
+      <link>https://kotet.jp/2016/12/2016-12-22-9c377a3c5befbb55620d/</link>
+      <pubDate>Thu, 22 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-22-9c377a3c5befbb55620d/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+自分の記事を見て友人がD言語くんになったので記事を代理投稿する。D言語クラスタが怖いのか頑なに匿名を希望するため文中で仮名を使用している。リンクのついていないイラストはすべて彼の描いたものであり、クリエイティブ・コモンズ 表示 4.0 国際 ライセンスの下に提供されている。
+〜D言語くんの分裂に関する更なる考察〜 友人が期末考査2日目のテスト後のスタバにて公開前の新説を出して危うくキャラメルマキアートを噴き出しそうになった事から全ては始まる
+私はこう思いました
+「D言語くんについて一筆書きたい」
+その一心であり決して友人のview数が伸びてるから何となく妬ましいとか、そういう訳ではないのです
+とりあえず新説するには知能が足りなかったので、考察を深めようと思ってここにD言語くんの単為生殖について深めた考察を展開しようと思うました
+ここで参考とするのは@gobori氏と、我が友@kotet氏でありますが、実際に考察を深めるのは@gobori氏の提唱したD言語くんの単為生殖についてである
+とりあえず両氏により求められたD言語くんについての結論は以下の通りでした
+ D言語くんは生殖方法が何であれ必要であり、D言語くんは某究極生命体のように生殖行動が不必要という訳ではない。 →故にD言語くんは、外敵が存在しない環境もしくは寿命以外に於ける死亡要因が存在しないに置かれている限り、そのままであると鼠算式に増えていって世界はD言語くんに包まれてしまう。  ……然しながらそれは起こっていないのです。D言語くんはそんな世界を包む程確認はされていませんから。1
+つまり、D言語くんは個体数が減るという外敵が存在する環境ないし寿命以外に於ける死亡要因があると言えるのでは無いでしょうか。
+ではここで更に考察を深めようと思います
+まず外敵が存在する環境についてです。
+これは恐らく他言語が存在するのでしょう。何とは言わないが英文字３番目っぽい言語だとか多分そんな所だと思います。
+D言語くん新宿に現わる pic.twitter.com/aRCIO4Do8G
+&amp;mdash; FETバスターA.C.S. (@ishtarmk2) 2016年12月18日 外敵が存在するというのは自然界に於いても実際に確認されており、それは爆発的増殖を防ぐ大自然によりもたらされる抑制装置なのです。
+しかしこれはD言語くんは当てはまらないと言えるのです。
+それは何故か。
+それはD言語くんが常に存在しているからである。
+@gobori氏は増殖について、
+ D言語くんは並列でふえることができない。よって繁殖期のD言語くんは常に1匹である。もしお腹があるD言語くんを見つけても、そっとしておいてあげよう。
+ と言及している。
+常に1匹であり、現在までD言語くんの存在が確認されているという事はD言語くんの繁殖期に阻害等が起こっていないのであり、D言語くんのDNAが受け継がれている(分裂している)証拠である
+そしてそれは１度も途絶えることは無かったという事より
+D言語くんには外敵が存在しないと言えるのではないだろうか？
+……ここで更なる問題が発生する
+では外敵が存在しない事で減ることないD言語くんは何故世界を覆い尽くさないのか
+というものです
+確かに外敵が存在しないならば単為生殖だとしても減ることは無い。それに加え単為生殖によって本来ウイルス等大発生時によるボトルネックの望みも薄いが、今までD言語が途絶えることは無かった事よりそこの問題は無視して構わないでしょう。
+要するに『死なないD言語くんはどうやって死んでるの？』みたいな哲学が発生する。
+お気づきの方も居るだろう……
+そこで出てくるのが寿命以外に於ける死亡要因だ。
+人間のみならず生物にはアポトーシスというのが存在する。
+細かい説明を省くとプログラムされた死である。
+ここで注意して欲しいのは寿命とアポトーシスは別物であるという事です。2
+プログラムされた死とは、特定の期間や特定の状況下に於いて発生します。
+本来なら自身を即座に死に至らしめるアポトーシスなどは殆ど存在しません。
+然し、身体を死に至らしめる程のアポトーシスが発生すれば当然死ぬという事であり、D言語くんはそれによって爆発的増殖が防がれているのではないだろうか。
+こう、生命活動(心臓とか)を止めるアポトーシスとか。
+こらそこ、それを寿命と言うのでは？とか言わないで下さい
+ホラ、あれです。この身体を死に至らしめる程のアポトーシスは、生命力あり余ってるけど「死亡の時間やで彡( )( )」って感じに死ぬって思ってください、つまり別物として区分してるんですお願いします。
+……生物にそれは不利であり、自己保存ないし種の存続を第一と考えるのが生物というものだから有り得ないのでは？と思うかも知れないだろう。
+しかしそれは木村資生氏によって提唱された『中立説』を基にすれば、自身に対して不利益な成長というのは説明がつく
+例:バビルサ……中立説に基づき、必ずしも自己に有利な進化をする訳では無いという中立的な進化により現代まで種は存続された。結果として下顎の牙が成長し過ぎて自身の脳天に刺さったり、その牙が成長し過ぎて顎の開閉が困難になり餌の摂取に難航する等、明らかに不利益な進化の結果が起こっている
+取り敢えずさて置き、察しの良い皆様は１つ気がついた事があるのではないでしょうか
+『プログラムされた死』 ･･････『プログラム』
+D言語＝プログラミング言語
+プログラミング言語＝プログラムを組むのに必要なモノ
+アポトーシス＝死というものについて組まれたプログラム
+つまり、D言語くんはD言語によってDNAにアポトーシスという死のプログラムを組まれていたのです。</description>
+    </item>
+    
+    <item>
+      <title>待ち時間をD言語くんで彩る - 進捗表示ライブラリを作った</title>
+      <link>https://kotet.jp/2016/12/2016-12-14-a4a26bfcc71b9dc2d511/</link>
+      <pubDate>Wed, 14 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-14-a4a26bfcc71b9dc2d511/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+かのマハトマ・ガンジーも &amp;gt; もし、私にD言語くんがなければ、これほど長く苦しい戦いには耐えられなかったでしょう。
+と言ったように、生活の中でD言語くんを忘れないようにすることはとても大切です。退屈な待ち時間でもそこにD言語くんがいれば幸せになれるのではないでしょうか。 そこでPythonのprogressを参考にライブラリprogressを作りました。dubに登録してあります。
+つかいかた 九九を教えてくれるD言語くん import progress.dman; import core.thread : Thread,dur; import std.string : format; void main() { auto dman = new DmanSpinner; foreach(i;0 .. 9*9) { dman.message = { auto left = (i/9)+1; auto right = (i%9)+1; return &amp;#34;%s * %s = %s&amp;#34;.format(left,right,left*right); }; dman.next(); Thread.sleep(dur!(&amp;#34;msecs&amp;#34;)(500)); } dman.finish(); } これであなたのプログラムにもD言語くん要素を入れることができます!
+それではよいD言語くんライフを!</description>
+    </item>
+    
+    <item>
+      <title>改行とかのある文字列をエスケープしないで書きたい</title>
+      <link>https://kotet.jp/2016/12/2016-12-06-170d11cc6b82592a8404/</link>
+      <pubDate>Tue, 06 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-06-170d11cc6b82592a8404/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+AAなどの文字列はエスケープすると超絶見難くなるのでそのまま書きたくなった。
+エスケープされ見るも無残な姿になってしまったD言語くん1 string dman = &amp;#34; ____\n L__L|\n / \\\n / \\\n / _______ \\\n \\ \\#/ \\/ \\ /\n \\|#| O| O|#\\\n |#L _L__ #|\n |###| |##|\n /###/ /##|\n /###/ /##|\n /###/___/###/\n /###########/\n /##########/\n / \\\n \\ /\n _ \\ /__\n |__/ |__/&amp;#34;; Delimited Stringsというものがある。2デリミタ、文字列の終了を表す記号のある文字列である。それを使って以下のように書ける。
+string s = q&amp;#34;/123&amp;#34;\n\n&amp;#34;/&amp;#34;;//string dman = &amp;#34;123\&amp;#34;\\n\\n\&amp;#34;&amp;#34;; writeln(s); このように出力される 123&amp;#34;\n\n&amp;#34; 通常エスケープしなければならない&amp;quot;がそのまま出力され、改行を表すはずの\nがそのまま出力されている。うれしい。この場合/がデリミタとなって、それに囲まれた部分で自由に書ける。ただしデリミタである/は書けない。
+string s = q&amp;#34;/a/a/&amp;#34;;//エラーになる ただしNesting Delimiterという特殊なデリミタもある。
+string s1 = q&amp;#34;((a)())&amp;#34;;//(a)() string s2 = q&amp;#34;(a(a)&amp;#34;;//これはだめ たくさんのカッコで囲まれた文字列とかを書くときに必要かもしれない。</description>
+    </item>
+    
+    <item>
+      <title>D言語くんの繁殖についての新説</title>
+      <link>https://kotet.jp/2016/12/2016-12-03-b2bb34b3a139ceeb519e/</link>
+      <pubDate>Tue, 29 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/12/2016-12-03-b2bb34b3a139ceeb519e/</guid>
+      <description>この記事はQiitaに投稿されたもののフォークです。
+これはD言語くん Advent Calendar 2016 3日目の記事です。
+新個体の出現 2015年に繁殖期のD言語くんが発見され、D言語くんが単為生殖で増殖するようすが明らかになった。
+しかしこの繁殖方法は
+ 並列で増えることができない 繁殖期のD言語くんが増えない  等の問題点を抱えており、同時にD言語くんの絶滅が危惧された。
+だが、最近現地の住民の証言からD言語くんが別の繁殖方法を獲得したらしいことがわかった。その様子を撮影しようと試みたが、その姿をカメラに捉える前に12月になり、D言語くんはクリスマスの装飾に擬態して見えなくなってしまった。かわりに現地住民のスケッチを用いて紹介しよう。
+2匹で行われる繁殖 現地住民から得られた情報により再現されるD言語くんの繁殖は以下のようなプロセスを経る。
+ 2匹が密着する 餅のように伸びる 伸びた部分が膨らんでくる スライスされ、分離する  ここで注目したいのは、スケッチ上でのD言語くんの胴体に穴が開いていることである。これがD言語くんの通常個体ならば1匹しかいない繁殖期のD言語くんに頼ることなく繁殖することが可能ということで、特定の個体に依存する繁殖方法から脱したということだ。タスマニアデビルがデビル顔面腫瘍性疾患に適応したように、D言語くんが突然変異により進化しているということが考えられる。おせちのカマボコにお餅のエッセンスがmixinしたのだ。また、さらに証言を集めるととんでもない長さに伸びたD言語くんの目撃情報も得られた。
+超絶キモい可愛らしい。並列で増える能力を獲得したことによりD言語くんは今後ますます発展していくだろう。
+それはともかく D言語には並列処理を簡単に行う方法がある。
+import std.stdio; import std.math : log; import std.range : iota; import std.string : format; import std.parallelism : TaskPool; void main() { auto pool = new TaskPool(); foreach(index,c;pool.parallel(iota(10))) { writeln(format(&amp;#34;%s: %s&amp;#34;,index,log(index))); } pool.finish(); } /* 出力: 0: -inf 3: 1.09861 5: 1.60944 8: 2.</description>
+    </item>
+    
+    <item>
+      <title>ローカルのdubプロジェクトに依存するdubプロジェクト</title>
+      <link>https://kotet.jp/2016/11/2016-11-27-4ef5039d17c521ec5dc7/</link>
+      <pubDate>Sun, 27 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/11/2016-11-27-4ef5039d17c521ec5dc7/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+自作のライブラリを別のdubプロジェクトにしたかったので調べたけどすぐには見つからなかったので書く。わかれば簡単なことだった。タイトルはこれで適切なんだろうか?
+$ tree . ├── app │ ├── dub.json │ └── source │ └── app.d └── lib ├── dub.json └── source └── lib.d lib/source/lib.d:
+module lib; import std.stdio; void func() { writeln(&amp;#34;hello!&amp;#34;); } app/source/app.d:
+import lib; void main() { func();//モジュールlibの関数 } lib/dub.json:
+{ &amp;#34;name&amp;#34;: &amp;#34;lib&amp;#34;, &amp;#34;targetType&amp;#34;:&amp;#34;library&amp;#34; } app/dub.json:
+{ &amp;#34;name&amp;#34;: &amp;#34;app&amp;#34;, &amp;#34;dependencies&amp;#34;:{ &amp;#34;lib&amp;#34;: &amp;#34;*&amp;#34; } } このままではlibが見つからないので実行できない。
+$ dub run Selected package lib ~master doesn&amp;#39;t exist. Using latest matching version instead.</description>
+    </item>
+    
+    <item>
+      <title>JSONValueにJSONValueを入れる</title>
+      <link>https://kotet.jp/2016/10/2016-10-29-94ac71bb6d196dff6f47/</link>
+      <pubDate>Sat, 29 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/10/2016-10-29-94ac71bb6d196dff6f47/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+語彙が足りなくて適切なタイトルが出てこない。
+とにかくそういう事をするときは、JSONValue[string]という状態でないといけないようだ。
+import std.json : JSONValue,toJSON; auto json = JSONValue([&amp;#34;Dman&amp;#34;:&amp;#34;&amp;#34;]); json[&amp;#34;Dman&amp;#34;].object = JSONValue([&amp;#34;is&amp;#34;:&amp;#34;GOD&amp;#34;]).object; //json[&amp;#34;dman&amp;#34;].object = JSONValue([&amp;#34;is&amp;#34;:&amp;#34;GOD&amp;#34;]); &amp;lt;-こうはできない assert(toJSON(&amp;amp;json) == `{&amp;#34;dman&amp;#34;:{&amp;#34;is&amp;#34;:&amp;#34;GOD&amp;#34;}}`); キーを後から追加したりすることはできないのかな?</description>
+    </item>
+    
+    <item>
+      <title>D言語でBasic認証</title>
+      <link>https://kotet.jp/2016/10/2016-10-26-21bdd7902454434ab1ce/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/10/2016-10-26-21bdd7902454434ab1ce/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+std.net.curlを使えば簡単にできた。探すのにすこし時間がかかったのでサンプル的なものを書く。
+import std.stdio : writeln; import std.net.curl : HTTP,get; void main() { auto url = &amp;#34;URL&amp;#34;; auto user = &amp;#34;USER&amp;#34;; auto pass = &amp;#34;PASS&amp;#34;; auto http = HTTP(); http.authenticationMethod = HTTP.AuthMethod.basic; http.setAuthentication(user,pass); auto content = get(url,http); writeln(content); } HTTP.AuthMethodはetc.c.curl.CurlAuthのエイリアス。</description>
+    </item>
+    
+    <item>
+      <title>Dでつくるbrainfu*kのインタプリタ</title>
+      <link>https://kotet.jp/2016/08/2016-08-12-0028bc07f5277fff4d8d/</link>
+      <pubDate>Fri, 12 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/08/2016-08-12-0028bc07f5277fff4d8d/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+brainf*ckの処理系はすでにいろんな人が作っているけど勉強になりそうだったので自分で書いてみた。
+import std.stdio; import std.getopt; import core.stdc.stdio; import std.file; import std.conv; const BUFFSIZE = 30000; void main(string[] args) { string filename = args[1]; string code = readText(filename); size_t ptr = 0; size_t codeptr = 0; ubyte[] memory = new ubyte[BUFFSIZE]; while(codeptr &amp;lt; code.length) { switch(code[codeptr]) { case &amp;#39;+&amp;#39;: memory[ptr]++; break; case &amp;#39;-&amp;#39;: memory[ptr]--; break; case &amp;#39;&amp;gt;&amp;#39;: ptr++; break; case &amp;#39;&amp;lt;&amp;#39;: ptr--; break; case &amp;#39;.&amp;#39;: putchar(memory[ptr]); break; case &amp;#39;,&amp;#39;: int tmp = getchar(); if(tmp == EOF) return; memory[ptr] = tmp.</description>
+    </item>
+    
+    <item>
+      <title>OpenGL/GLFWはじめての人がD言語でウィンドウを表示するまで</title>
+      <link>https://kotet.jp/2016/06/2016-06-28-16583bad8631623e9bcc/</link>
+      <pubDate>Tue, 28 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/06/2016-06-28-16583bad8631623e9bcc/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+DでOpenGLとかそういうのが使いたくなったので練習をした。
+Dubを使って環境構築した記事がなかなか見つからなかったのでまとめ記事を書く。
+Ubuntu 16.04 LTS。
+OpenGLとGLFWの導入 OpenGL $sudo apt install mesa-utils GLFW $sudo apt install xorg-dev $git clone https://github.com/glfw/glfw.git $cd glfw ここで共有ライブラリを作るようにCMakeLists.txtを書き換える。
+でないと実行時にこうなる。
+エラー libglfw3.so - libglfw3.so: cannot open shared object file: No such file or directory libglfw.so.3 - libglfw.so.3: cannot open shared object file: No such file or directory CMakeLists.txt -option(BUILD_SHARED_LIBS &amp;#34;Build shared libraries&amp;#34; OFF) +option(BUILD_SHARED_LIBS &amp;#34;Build shared libraries&amp;#34; ON) $cmake . $make $sudo make install -- Installing: /usr/local/lib/libglfw.</description>
+    </item>
+    
+    <item>
+      <title>行列と高速化の練習をした</title>
+      <link>https://kotet.jp/2016/05/2016-05-12-c3b3c20f4257f83dce8c/</link>
+      <pubDate>Thu, 12 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/05/2016-05-12-c3b3c20f4257f83dce8c/</guid>
+      <description>この記事はQiitaに投稿されたものの転載です。
+行列に興味がある。しかし数Cは廃止され、行列の勉強はしないとのことなので少しづつ自主学習。
+とりあえず行列の積について理解できたのでプログラムにしてみる。ついでに前からやってみたかった並列処理とかを試して速度をはかる。
+テンプレート 100次の正方行列を1000回かける。
+//import略 alias int[][] matrix; matrix matrix_product(matrix A,matrix B) in{ assert(A[0].length == B.length); } body{ //ここに処理を書く } void init_matrix(ref matrix A){ foreach(ref row;A){ foreach(ref n;row){ n = uniform(-10,10); } } } void main(){ matrix A = [ [2,-1], [-3,4]]; matrix B = [ [1], [2]]; matrix C = [ [1,-1], [-2,3]]; matrix D = [ [1,2], [3,4]]; matrix E = [ [1,2]]; matrix F = [ [2,-1], [-3,4]]; assert(matrix_product(A,B) == [[0],[5]]); assert(matrix_product(C,D) == [[-2,-2],[7,8]]); assert(matrix_product(E,F) == [[-4,7]]); StopWatch sw; int n = 1000; matrix[][] testdata = new matrix[][](n,2); foreach(i;0.</description>
+    </item>
+    
+    <item>
+      <title>ズンドコキヨシ with D</title>
+      <link>https://kotet.jp/2016/03/2016-03-13-9d170a372434caf0c876/</link>
+      <pubDate>Sun, 13 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://kotet.jp/2016/03/2016-03-13-9d170a372434caf0c876/</guid>
+      <description> この記事はQiitaに投稿されたものの転載です。
+元ネタを読んで一番最初に思いついたやり方です。
+main.d import std.stdio; import std.random; void main(){ string[] words = [&amp;#34;ズン&amp;#34;,&amp;#34;ドコ&amp;#34;]; int[] history = []; while(true){ history ~= dice(1,1); words[history[$-1]].write(); if (5 &amp;lt;= history.length) { if (history[$-5 .. $] == [0,0,0,0,1]){ &amp;#34;キ・ヨ・シ！&amp;#34;.writeln(); return; } } } }</description>
+    </item>
+    
+  </channel>
+</rss>

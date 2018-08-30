@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+文字列の長さを取得するときはlengthを使ってはいけない - Kotet&#39;s Personal Blog
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> <meta name="generator" content="Hugo 0.46" />
+    
+<meta name="description" content="自分の進捗表示用パッケージprogressにPRが来た。どうやら文字列の長さを得るときはlengthではいけない時があるそうだ。">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    #TableOfContents > ul {  
+        padding: 0;
+    }
+    #TableOfContents > ul > li > ul {  
+        padding: 0;
+    }
+    #TableOfContents li {
+        list-style: none;
+    }
+    #TableOfContents > ul > li > ul > li > ul li {
+        list-style-type: initial;
+    }
+    aside {
+        padding: .5em 1em;
+        background: #EEE;
+    }
+</style>
+
+</head>
+
+<body>
+    <header class="site">
+        <h1><a href="/">Kotet&#39;s Personal Blog</a></h1>
+        <nav>
+            <ul>
+                <li><a href="/about">ABOUT</a></li>
+                <li><a href="/products">PRODUCTS</a></li>
+                <li><a href="/tags">TAGS</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+<h2>文字列の長さを取得するときはlengthを使ってはいけない</h2>
+<aside>
+    <p>Table of Contents</p>
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#どういうことか">どういうことか</a></li>
+<li><a href="#std-range-primitives-walklength">std.range.primitives.walkLength</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+<article>
+
+<p>この記事はQiitaに投稿されたものの転載です。</p>
+
+<hr />
+
+<p>自分の進捗表示用パッケージ<a href="https://github.com/kotet/progress">progress</a>にPRが来た。</p>
+
+<p><a href="https://github.com/kotet/progress/issues/31">Bars: bug on narrow terminals when non-ascii fill character is used</a></p>
+
+<p>どうやら文字列の長さを得るときは<code>length</code>ではいけない時があるそうだ。</p>
+
+<h2 id="どういうことか">どういうことか</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-d" data-lang="d">import std.stdio;
+
+void main()
+{
+    string ascii = &#34;a&#34;;
+    string non_ascii = &#34;あ&#34;;
+    writeln(ascii.length);
+    writeln(non_ascii.length);
+}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text:出力結果" data-lang="text:出力結果">1
+3</code></pre></div>
+<p><code>&quot;a&quot;</code>も<code>&quot;あ&quot;</code>も1文字のはずだが、<code>&quot;あ&quot;.length</code>は<code>3</code>になってしまっている。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-d" data-lang="d">writeln(cast(void[]) ascii);
+writeln(cast(void[]) non_ascii);</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text:出力結果" data-lang="text:出力結果">[97]
+[227, 129, 130]</code></pre></div>
+<p><code>length</code>は文字列のバイト数を返しているようだ。</p>
+
+<h2 id="std-range-primitives-walklength">std.range.primitives.walkLength</h2>
+
+<p><code>std.range.primitives.walkLength</code>は、<code>empty == true</code>になるまで何回<code>popFront()</code>ができるか実際に試してみて、それで得られた長さを返す。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-d" data-lang="d">import std.stdio;
+import std.range : walkLength;
+
+void main()
+{
+    string ascii = &#34;a&#34;;
+    string non_ascii = &#34;あ&#34;;
+    writeln(ascii.walkLength);
+    writeln(non_ascii.walkLength);
+}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text:出力結果" data-lang="text:出力結果">1
+1</code></pre></div>
+<p>ちゃんと正しい文字数が得られている。</p>
+</article>
+
+        <div class="ad-wrapper"></div>
+    </main>
+    <footer class="site">
+    <p>This site compiled at <time>2018-08-02T22:40:09&#43;0200</time></p>
+</footer>
+</body>
+
+</html>

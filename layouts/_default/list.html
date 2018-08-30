@@ -1,0 +1,16 @@
+{{ define "title" }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
+<meta name="description" content="{{ .Params.Excerpt }}">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+</style>
+{{ end }}{{ define "main" }}
+<h2>{{ .Title }}</h2>
+<p>{{ .Content }}</p>
+
+{{ range .Pages }}
+<a href="{{.Permalink}}"><h3>{{ .Title }}</h3></a>
+{{ end }} {{ end }}
