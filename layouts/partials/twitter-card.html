@@ -3,6 +3,8 @@
 <meta name="og:description" content="{{ if .IsPage }}{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }} {{ else }}{{ .Site.Params.description }}{{ end }}" />
 {{ if .Params.image }}
 <meta name="og:image" content="{{ .Site.BaseURL }}{{ .Params.image }}" />
+{{ else }}
+<meta name="twitter:image" content="{{ .Site.BaseURL }}/assets/logo.png" />
 {{ end }}
 <meta name="twitter:url" content="{{ .Permalink }}" />
 <meta name="twitter:site" content="@kotetttt" />
