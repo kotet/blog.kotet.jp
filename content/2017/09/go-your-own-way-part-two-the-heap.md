@@ -33,7 +33,7 @@ discusses stack allocation. Here, we’ll look at allocating memory from the non
 この投稿はD プログラミング言語のガベージコレクションについての
 [進行中のシリーズ](https://dlang.org/blog/the-gc-series/)の一部であり、
 GCの外のメモリのアロケーションに関する2番目の投稿です。
-[パート1](/2017/07/2017-07-15-go-your-own-way-part-one-the-stack)[^1]
+[パート1](/2017/07/go-your-own-way-part-one-the-stack)[^1]
 ではスタックアロケーションについて論じました。
 今回は非GCヒープからのメモリのアロケーティングについて見て行きます。
 
@@ -62,7 +62,7 @@ Fewer GC allocations means fewer opportunities for a collection to trigger.
 Less total memory allocated from the GC heap means less total memory to scan. -->
 
 何度でも力説しますが、効率的なガベージコレクションにはGCへのストレスを減らすことが必要です。
-[最初](/2017/04/2017-04-16-dont-fear-the-reaper)[^2]からこのシリーズで続けて強調しているように、
+[最初](/2017/04/dont-fear-the-reaper)[^2]からこのシリーズで続けて強調しているように、
 それは必ずしもGCを完全に回避することを意味しません。
 どれくらいの頻度で、どれくらいの量のGCメモリをアロケートするかについて考えるということです。
 GCアロケーションの回数を減らす事はコレクションが発生する可能性を減らす事を意味します。

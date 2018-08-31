@@ -817,4 +817,4 @@ excerpt: これはブロックチェーンの列車に(ほとんど)乗り遅れ
 参加、貢献したい場合、コメントを残してください！Uhm、非中央集権型なやり方でコメントをサポートする方法を出来るだけ早く調べます。
 それまでは、私 [@pors](https://twitter.com/pors)にツイートしてください！
 
-[続き](/2017/11/2017-11-05-picking-a-decentralized-storage-system)
+[続き](/2017/11/picking-a-decentralized-storage-system)

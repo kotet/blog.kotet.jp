@@ -9,7 +9,7 @@ excerpt: "かなり前に円周率をたくさん求めたくなって、 せっ
 
 かなり前に円周率をたくさん求めたくなって、
 せっかくだからD言語だけで書いてみようと思い、
-[こちら](http://tanakh.jp/posts/2012-03-08-pi.html)の記事を参考に[bigfixed](https://github.com/kotet/bigfixed)というライブラリを作った。
+[こちら](http://tanakh.jp/posts/pi.html)の記事を参考に[bigfixed](https://github.com/kotet/bigfixed)というライブラリを作った。
 これは`std.bigint`を使って固定小数点計算をするものである。
 しかし作っているうちに飽きてしまい完成する頃には円周率はどうでも良くなってきた。
 とりあえず計算の簡単な平方根を求めてみることにした。

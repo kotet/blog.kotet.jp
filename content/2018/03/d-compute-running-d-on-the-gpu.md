@@ -46,7 +46,7 @@ DComputeはGPUやその他アクセラレータを使う計算集約型コード
 <!-- This is the second article on [DCompute](https://github.com/libmir/dcompute). In the [previous article](https://dlang.org/blog/2017/07/17/dcompute-gpgpu-with-native-d-for-opencl-and-cuda/), we looked at the development of DCompute and some trivial examples. While we were able to successfully build kernels, there was no way to run them short of using them with an existing framework or doing everything yourself. This is no longer the case. As of [v0.1.0](https://github.com/libmir/dcompute/releases/tag/v0.1.0), DCompute now comes with native wrappers for both OpenCL and CUDA, enabling kernel dispatch as easily as CUDA. -->
 
 これは[DCompute](https://github.com/libmir/dcompute)の2つ目の記事です。
-[前回の記事](/2018/03/2018-03-07-dcompute-gpgpu-with-native-d-for-opencl-and-cuda)[^1]
+[前回の記事](/2018/03/dcompute-gpgpu-with-native-d-for-opencl-and-cuda)[^1]
 では、DComputeの発展と小さな例を扱いました。
 カーネルをビルドすることには成功しましたが、それを既存のフレームワークや自力で簡単に実行する方法はありませんでした。
 しかし今はそんなことはありません。

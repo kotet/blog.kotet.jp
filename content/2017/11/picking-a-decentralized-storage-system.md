@@ -673,18 +673,18 @@
 # the library.  If this is what you want to do, use the GNU Lesser General
 # Public License instead of this License.  But first, please read
 # <http://www.gnu.org/philosophy/why-not-lgpl.html>.
-date: 2017-11-09
-title: "IPFSを理解する【翻訳】"
+date: 2017-11-05
+title: "非中央集権型ストレージシステムを選ぶ【翻訳】"
 tags:
 - blockchain_train_journal
 - tech
 - translation
 - ipfs
-excerpt: "この記事はBlockchain train journalの3本目の記事です。まずこちらから読み始めましょう:"
+excerpt: "この記事はBlockchain train journalのパート2です、こちらから読み始めましょう:"
 ---
 
 この記事は、
-[Getting to know IPFS](http://decentralized.blog/getting-to-know-ipfs.html)
+[Picking a Decentralized Storage System](http://decentralized.blog/picking-a-decentralized-storage-system.html)
 を自分用に翻訳したものを
 [許可を得て](https://twitter.com/pors/status/925987521078743040)
 公開するものである。
@@ -695,350 +695,248 @@ excerpt: "この記事はBlockchain train journalの3本目の記事です。ま
 
 ---
 
-<!-- # [Getting to know IPFS](http://decentralized.blog/getting-to-know-ipfs.html) -->
+<!-- # [Picking a Decentralized Storage System](http://decentralized.blog/picking-a-decentralized-storage-system.html) -->
 
-<!-- # IPFSを理解する -->
+<!-- # 非中央集権型ストレージシステムを選ぶ -->
 
-<!-- This article is part 3 of the Blockchain train journal, start reading here: [Catching the Blockchain Train](catching-the-blockchain-train.html). -->
+<!-- This article is part 2 of the Blockchain train journal, start reading here: [Catching the Blockchain Train](catching-the-blockchain-train.html). -->
 
-この記事はBlockchain train journalの3本目の記事です。
-まずこちらから読み始めましょう:
-[まだ間に合うブロックチェーン【翻訳】](/2017/11/2017-11-03-catching-the-blockchain-train)
+この記事はBlockchain train journalのパート2です、こちらから読み始めましょう:
+[まだ間に合うブロックチェーン【翻訳】](/2017/11/catching-the-blockchain-train)
 
-<!-- ## Let's read a bit (reading is good for you!) -->
+<!-- ## Some reading material to get started -->
 
-### 読み込んでみましょう
+### はじめに読むもの
 
-<!-- I already listed this article in the previous episode, but I mention it again because it is a great place to start to understand IPFS and its context: [HTTP is obsolete. It's time for the distributed, permanent web](https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html). -->
+<!-- A couple of articles that I found useful when learning about decentralized storage: -->
 
-すでに前の記事で出しましたが、IPFSとそのコンテキストを理解するのに最適な記事なのでもう一度言及します:
-[HTTP is obsolete. It's time for the distributed, permanent web](https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html)
+非中央集権型ストレージについて学ぶのに役に立った記事です:
 
-<!-- A couple of things we can pick up from it (a bit simplified): -->
+<!-- *   [Decentralized Storage: The Backbone of the Third Web](https://media.consensys.net/decentralized-storage-the-backbone-of-the-third-web-d4bc54e79700)
+*   [HTTP is obsolete. It's time for the distributed, permanent web](https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html)
+*   [What is the difference between Swarm and IPFS?](https://ethereum.stackexchange.com/a/2422/16115) -->
 
-この記事からはいくつかのことがわかります(要約します):
+*   [Decentralized Storage: The Backbone of the Third Web](https://media.consensys.net/decentralized-storage-the-backbone-of-the-third-web-d4bc54e79700)
+*   [HTTP is obsolete. It's time for the distributed, permanent web](https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html)
+*   [What is the difference between Swarm and IPFS?](https://ethereum.stackexchange.com/a/2422/16115)
 
-<!-- *   IPFS consists of a network of peer-to-peer nodes (aka computers that talk to each other directly)
-*   These nodes can store content (any type of file)
-*   Content is represented by a hash and is immutable (if the content changes, so does the hash)
-*   A node can request content from other nodes by using this hash. This is pretty cool: there is a permanent relation between the hash and the content itself. Unlike the current web where the content behind a URL can change.
-*   Nodes can decide to store a copy of any content
-*   The more nodes store a piece of content the harder it is to get rid of it (the permanent web).
-*   The network also gets faster that way, similar to bittorrent getting faster when the number of seeders goes up (IPFS is partly based on the bittorrent protocol, but one of the differences is that it [prevents duplicate pieces of identical content](https://www.reddit.com/r/ipfs/comments/48ab4z/why_do_people_say_ipfs_is_permanent_torrents/d0z08of/)) -->
-
-- IPFSはpeer-to-peerノード(他のコンピュータと直接話すコンピュータ)のネットワークからなる
--  ノードはコンテンツ(任意のタイプのファイル)を保持できる
-- コンテンツはハッシュによって表現され、イミュータブルである(コンテンツが変化すると、ハッシュも変化する)
-- ノードはハッシュを使って他のノードにコンテンツを要求できる。これは素晴らしいです。ハッシュとコンテンツの間には不変の関係があります。現在のWebではURLと対応したコンテンツは変わってしまうことがあります
-- ノードはコンテンツのコピーを保持できる
-- 多くのノードがコンテンツを保持するほど、コンテンツは消失しにくくなる(パーマネントWeb)
-- シーダーが増えるほどBitTorrentが速くなるのと同じように、このネットワークも速くなる(IPFSは一部BitTorrentプロトコルをベースにしていますが、[同一のコンテンツの重複を排除するところ](https://www.reddit.com/r/ipfs/comments/48ab4z/why_do_people_say_ipfs_is_permanent_torrents/d0z08of/)が異なります)
-
-<!-- A bit more detail: -->
-
-さらに詳しく見ていきます:
-
-<!-- *   Content (files) is broken up into blocks, and each block gets a hash
-*   Duplicate blocks (identical content but different hash) are removed from the network
-*   IPFS has a directory concept (another hash) that points to the hashes of the content inside
-*   Git like version control is used for blocks
-*   To solve the problem of finding the last version of some content is solved by IPNS
-*   IPNS allows anyone to create a unique public link to any content that is out there.
-*   So an IPFS hash points to some immutable content, regardless the version; the IPNS address points to some file or directory determined by the creator of that address
-*   This IPNS address is implemented as a pubkeyhash which is similar to the public address in a Bitcoin wallet.
-*   IPNS hashes are long and ugly. Also, browsers don't speak IPFS. There are a couple of solutions to bridge the gap to the current time that we will look into later. -->
-
-- コンテンツ(ファイル)はブロックに分割され、各ブロックにハッシュが与えられる
--  内容が同じなのにハッシュが異なる重複したブロックはネットワークから削除される
-- IPFSにはコンテンツのハッシュを指すディレクトリの概念がある
-- ブロックによりGitのようなバージョン管理ができる
-- IPNSによりコンテンツの最新版を探すことができる
-- IPNSにより誰もがコンテンツへのユニークなパブリックリンクを作ることができる
-- IPFSハッシュはバージョンに関係なくイミュータブルなコンテンツへのポインタとなる。IPNSアドレスはそのアドレスの作者が決めたファイルやディレクトリへのポインタである
-- IPNSアドレスはBitcoinウォレットのパブリックアドレスと同じpubkeyhashとして実装されている
-- IPNSアドレスは長く醜いし、ブラウザはIPFSに対応していない。これを解決する方法がいくつかあるので後に見ていく
-
-<!-- To read and discover more about IPFS, this page on github is a great starting point [ipfs/ipfs](https://github.com/ipfs/ipfs). Make sure to check out the [quick summary](https://github.com/ipfs/ipfs#quick-summary). -->
+<!-- ## Comparing decentralized storage systems -->
 
-IPFSについてもっと知るのに、GitHubの[ipfs/ipfs](https://github.com/ipfs/ipfs)は良い開始地点でしょう。 [quick summary](https://github.com/ipfs/ipfs#quick-summary)を見てください。
-
-<!-- OK, it is all still a bit abstract I guess, so time to play. -->
+### 非中央集権型ストレージシステムを比較する
 
-抽象的なところは大体わかったので、早速始めましょう。
-
-<!-- ## Terminal time (move those fingers buddy!) -->
+<!-- Our decentralized blog pages are in need of some sort of decentralized hosting. To build that from scratch seems like a lot of work and will probably result in a blockchain train crash. -->
 
-### ターミナルを使おう
+非中央集権型ブログページには何らかの非中央集権型ホスティングが必要です。
+ゼロから作るのはひじょうに多くの作業を必要とし、ブロックチェーン列車の脱線を招くでしょう。
 
-<!-- Now we understand the basics lets start playing a bit. -->
+<!-- So let's see what is already out there we could use for our project. -->
 
-私たちには少し行動を始めるための知識がついています。
+すでにあるものを見ていきましょう。
 
-<!-- To get up and running and to be able to play along, first [install](https://ipfs.io/docs/install) (I recommend the ipfs-update approach) and follow the [getting started](https://ipfs.io/docs/getting-started/). -->
+<!-- I searched a bit and came up with: -->
 
-まず[インストール](https://ipfs.io/docs/install)し（ipfs-updateを使うやり方をおすすめします）、[getting started](https://ipfs.io/docs/getting-started/)に従いましょう。
+ちょっと調べたところ以下のような物たちを見つけました:
 
-<!-- Now it is time to set the first step into making this blog decentralized. BTW what a great domain this site has! Well, as long as you are reading the centralized version :) -->
+<!-- *   [Storj](https://storj.io/)
+*   [SIA](https://sia.tech/)
+*   [MaidSafe](https://maidsafe.net/)
+*   [IPFS](https://ipfs.io/)
+*   [ZeroNet](https://zeronet.io/)
+*   [Ethereum Swarm](https://www.ethereum.org/)
+*   [BigchainDB](https://www.bigchaindb.com/)
+*   did I forget a serious contender? Please [let me know](https://twitter.com/pors). -->
 
-ブログを非中央集権化する最初の一歩を踏み出す時です。
-ところで、このサイトのドメインは素晴らしいと思いませんか！ええ、あなたが中央集権バージョンを読んでいる間までの話ですが :)
+*   [Storj](https://storj.io/)
+*   [SIA](https://sia.tech/)
+*   [MaidSafe](https://maidsafe.net/)
+*   [IPFS](https://ipfs.io/)
+*   [ZeroNet](https://zeronet.io/)
+*   [Ethereum Swarm](https://www.ethereum.org/)
+*   [BigchainDB](https://www.bigchaindb.com/)
+*   忘れてるものがありますか？私に[教えてください](https://twitter.com/pors)。
 
-<!-- I uploaded the statically generated website to my server and it looks like this: -->
+<!-- I’m not yet qualified to compare these technologies (still trying to catch the train!), but I’ll add some observations for each: -->
 
-私は静的に生成したウェブサイトを私のサーバーにアップロードしており、それはこのようなものです:
+私にはまだこれらのテクノロジーを比較する資格はありません（列車に飛び乗ろうとしているところです！）が、いくらかの観測を付け加えておきます:
 
-<!-- ```
-├── archives.html
-├── author
-│   └── mark-pors.html
-├── authors.html
-├── catching-the-blockchain-train.html
-├── categories.html
-├── category
-│   └── blockchain-train-journal.html
-├── feeds
-│   ├── all.atom.xml
-│   └── blockchain-train-journal.atom.xml
-├── getting-to-know-ipfs.html
-├── index.html
-├── picking-a-decentralized-storage-system.html
-├── tags.html
-└── theme
-    ├── css
-     ... // ...
-            └── youtube.png
-``` -->
+<!-- ### Storj -->
 
-```
-├── archives.html
-├── author
-│   └── mark-pors.html
-├── authors.html
-├── catching-the-blockchain-train.html
-├── categories.html
-├── category
-│   └── blockchain-train-journal.html
-├── feeds
-│   ├── all.atom.xml
-│   └── blockchain-train-journal.atom.xml
-├── getting-to-know-ipfs.html
-├── index.html
-├── picking-a-decentralized-storage-system.html
-├── tags.html
-└── theme
-    ├── css
-     ... // ...
-            └── youtube.png
-```
-
-<!-- To shoot a file into the interplanetary file system, we simply do: -->
-
-ファイルを惑星間ファイルシステムに向けて打ち上げるには、このようにします:
-
-<!-- ```console
-$ ipfs init # this creates your node's peer ID
-$ ipfs daemon # start your local node
-$ ipfs add catching-the-blockchain-train.html
-added QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4 catching-the-blockchain-train.html
-``` -->
-
-```console
-$ ipfs init # これはノードのピアIDを生成します
-$ ipfs daemon # ローカルノードを開始します
-$ ipfs add catching-the-blockchain-train.html
-added QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4 catching-the-blockchain-train.html
-```
-
-<!-- Now my node can serve this file and tell the network there is a piece of content (my first blog post!) available, just in case someone requests this hash: `QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4`. -->
-
-私のノードはこのファイルを配信できるようになり、ネットワークに向けて誰かが以下のハッシュを要求した場合に利用できるコンテンツ（私の最初のブログポストです！）があると発信します:
-
-`QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4`
-
-<!-- So, in your terminal: -->
-
-あなたのターミナルで:
-
-<!-- ```console
-ipfs cat QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4
-``` -->
-
-```console
-ipfs cat QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4
-```
-
-<!-- should return the same as (for as long as I host it over HTTP of course): -->
-
-は以下と同じ結果を返します（もちろん私がファイルをHTTPでホストしている間に限った話です）:
-
-<!-- ```
-curl http://decentralized.blog/catching-the-blockchain-train.html
-``` -->
-
-```console
-curl http://decentralized.blog/catching-the-blockchain-train.html
-```
-
-<!-- Notice that when you request the file for the second time through ipfs, it gets it very fast. That is because your node now has a copy of the content locally. Pretty cool huh? -->
-
-あなたのこのファイルをIPFSで2度リクエストした場合、結果は非常に早く返ってきます。
-これはノードがコンテンツのコピーをローカルに保つためです。
-クールでしょう？
-
-<!-- The ipfs node comes with an HTTP gateway, so we can also access the file in a browser: [http://decentralized.blog:8080/ipfs/QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4](http://decentralized.blog:8080/ipfs/QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4) -->
-
-IPFSノードにはHTTPゲートウェイが付属しているため、ブラウザからもファイルにアクセスできます: [http://decentralized.blog:8080/ipfs/QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4](http://decentralized.blog:8080/ipfs/QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4)
-
-<!-- This is what happened here (from the getting started document): -->
-
-このようなことが起きています（getting startedより）:
-
-<!-- > The gateway served a file from your computer. The gateway queried the DHT, found your machine, requested the file, your machine sent it to the gateway, and the gateway sent it to your browser. -->
-
-> ゲートウェイはあなたのコンピュータからファイルを配信します。
-> ゲートウェイはDHTにクエリを投げ、あなたのマシンを見つけ、ファイルを要求し、あなたのマシンはゲートウェイにそれを送り、ゲートウェイはあなたのブラウザにそのファイルを送ります。
-
-<!-- Note: this obviously introduces a central server into the picture, but at least anyone can run such a gateway. So it is still sort-of-decentralized. We have to look for something better later on. -->
-
-Note: これは明らかに中央サーバがありますが、少なくともゲートウェイは誰でも実行が可能です。
-なのでこれは非中央集権の一種です。
-あとでより良い何かが必要でしょう。
-
-<!-- ## Decentralize it! At last some progress -->
-
-### 非中央集権化！ついに進捗
-
-<!-- To push the whole website onto the interplanetary file system can't be more simple, just add the `-r` flag and point to the directory containing all static files. -->
-
-Webサイト全体を惑星間ファイルシステムにプッシュするのはこれ以上ないほど簡単で、`-r`フラグをつけてすべての静的ファイルを含むディレクトリを指定するだけです。
-
-<!-- ```console
-$ ipfs add -r ../../www/dcb
-added QmWu4hsywXoSrw5JRhjUadyMnDuxuvcgExwVD62cWeLVjb dcb/archives.html
-added QmUCJ6z2EfikXEDUYbxfjdkrX2zw62XCAM93HHC61Qrmwg dcb/author/mark-pors.html
-added QmV13vUiKU64oHoxbp5MN7bnehraW46de82PLvndbisn64 dcb/authors.html
-added QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4 dcb/catching-the-blockchain-train.html
-added QmRiWHfYLQEJoKz2dDq2sXnW2keiKZG1nHbnaN55TTXN8b dcb/categories.html
-added QmSCx2eV3BjHJWoXMBc7rKakPv3fAcewyroFCRmovcsYSy dcb/category/blockchain-train-journal.html
-added QmVxVLT22KLGasBLxzSv6yXofx3GVXmWEd3HqSjPp1X6Zz dcb/feeds/all.atom.xml
-added QmdKJY5VVd8Qm5xsLt8Vj5XwvTbe5mCQhK6DnZ9LkqTHwz dcb/feeds/blockchain-train-journal.atom.xml
-added QmYpyQ3MXYZum3q2E9pRxUWnJXK74cLvFbuMDYukK9ivK1 dcb/index.html
-added QmXkfv9ZXb9evxPXTMJC8fvgeZymYpTQo3CVFv7mDoSRTN dcb/picking-a-decentralized-storage-system.html
-added QmSyuSjmzhwkoj6qH7s4MmKeB98Ub1DZ1Hm5anBBnR9yVu dcb/tags.html
-added QmSfLETTMQc1b9cBJENH1S4NK5qniXSf79KSP8h5CbU3U8 dcb/theme/css/main.css
-... // ...
-added QmU8CmEYWV5aUuqoToq1xiyqftdY8MHQ8MdViA2ex23uyV dcb/theme/images/icons/youtube.png
-added QmYBVeJkBRdJYj8jr3YTGWE537h26YqcfjvbX4ttjZ65X2 dcb/author
-added QmPwQPX86RQi6MrZQigh2tWgztcbf46EjhRg1hzMzELvHN dcb/category
-added QmfRxCPp417G3NTqEpBmwtGwtUKFzgQjBRvxNBq88HhC9F dcb/feeds
-added QmYUnPcDPcnKA3WFembvNYG48m1oUWa7QLNWZxrkLv1vcE dcb/theme/css
-added QmfBq8BDXxhu9cLAG4qhxqY6K5xDQCBWyoYqX5fTmQbfwW dcb/theme/images/icons
-added Qme4Dt6vQ1eAVcEs7dY55cAMhTsRJxTakANhZjX9EKvGfF dcb/theme/images
-added QmciTMAUiEqMpar2u9n1dJNJStmrP6fjMESyH6ZS5eo56H dcb/theme
-added QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ dcb
-``` -->
-
-```console
-$ ipfs add -r ../../www/dcb
-added QmWu4hsywXoSrw5JRhjUadyMnDuxuvcgExwVD62cWeLVjb dcb/archives.html
-added QmUCJ6z2EfikXEDUYbxfjdkrX2zw62XCAM93HHC61Qrmwg dcb/author/mark-pors.html
-added QmV13vUiKU64oHoxbp5MN7bnehraW46de82PLvndbisn64 dcb/authors.html
-added QmXyZcrThrfWQSTKzPiNT4Nd2RcqcVQ3tr7rmFqHYZ3fq4 dcb/catching-the-blockchain-train.html
-added QmRiWHfYLQEJoKz2dDq2sXnW2keiKZG1nHbnaN55TTXN8b dcb/categories.html
-added QmSCx2eV3BjHJWoXMBc7rKakPv3fAcewyroFCRmovcsYSy dcb/category/blockchain-train-journal.html
-added QmVxVLT22KLGasBLxzSv6yXofx3GVXmWEd3HqSjPp1X6Zz dcb/feeds/all.atom.xml
-added QmdKJY5VVd8Qm5xsLt8Vj5XwvTbe5mCQhK6DnZ9LkqTHwz dcb/feeds/blockchain-train-journal.atom.xml
-added QmYpyQ3MXYZum3q2E9pRxUWnJXK74cLvFbuMDYukK9ivK1 dcb/index.html
-added QmXkfv9ZXb9evxPXTMJC8fvgeZymYpTQo3CVFv7mDoSRTN dcb/picking-a-decentralized-storage-system.html
-added QmSyuSjmzhwkoj6qH7s4MmKeB98Ub1DZ1Hm5anBBnR9yVu dcb/tags.html
-added QmSfLETTMQc1b9cBJENH1S4NK5qniXSf79KSP8h5CbU3U8 dcb/theme/css/main.css
-... // ...
-added QmU8CmEYWV5aUuqoToq1xiyqftdY8MHQ8MdViA2ex23uyV dcb/theme/images/icons/youtube.png
-added QmYBVeJkBRdJYj8jr3YTGWE537h26YqcfjvbX4ttjZ65X2 dcb/author
-added QmPwQPX86RQi6MrZQigh2tWgztcbf46EjhRg1hzMzELvHN dcb/category
-added QmfRxCPp417G3NTqEpBmwtGwtUKFzgQjBRvxNBq88HhC9F dcb/feeds
-added QmYUnPcDPcnKA3WFembvNYG48m1oUWa7QLNWZxrkLv1vcE dcb/theme/css
-added QmfBq8BDXxhu9cLAG4qhxqY6K5xDQCBWyoYqX5fTmQbfwW dcb/theme/images/icons
-added Qme4Dt6vQ1eAVcEs7dY55cAMhTsRJxTakANhZjX9EKvGfF dcb/theme/images
-added QmciTMAUiEqMpar2u9n1dJNJStmrP6fjMESyH6ZS5eo56H dcb/theme
-added QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ dcb
-```
+#### Storj
 
-<!-- Note: my first try failed when I tried to add a symlink to the network, that doesn't work. -->
+<!-- From the home page: -->
 
-Note: 私は最初シンボリックリンクをネットワークに追加しようとして失敗しました。
+ホームページより:
 
-<!-- See that the hash for `dcb/catching-the-blockchain-train.html` is the same as we previously got? That's the de-duplication in action. -->
+<!-- > Blockchain-based, end-to-end encrypted, distributed object storage, where only you have access to your data. -->
 
-`dcb/catching-the-blockchain-train.html`のハッシュは先程のものと同じです。これが重複排除です。
+> ブロックチェーンベースで、end-to-end暗号化がされた、分散オブジェクトストレージです。あなただけがデータにアクセスできます。
 
-<!-- Now when we take the bottom hash from this list and feed it to the gateway, we see the blog: [http://decentralized.blog:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/](http://decentralized.blog:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/). All relative links work just fine; it's beautiful! -->
+<!-- That doesn't sound like something that is handy for a blog, where we want content to be public. -->
 
-このリストから1番下のハッシュを取ってゲートウェイに送ると、ブログが閲覧できます:
-[http://decentralized.blog:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/](http://decentralized.blog:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/)
-すべての相対リンクはちゃんと動作します。
-素晴らしい！
+これはコンテンツを公開するブログにとって便利だとは思えません。
 
-<!-- In case my gateway is down, just try the one provided by IPFS: [https://gateway.ipfs.io/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/](https://gateway.ipfs.io/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/) or your local gateway: [http://127.0.0.1:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/](http://127.0.0.1:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/). Now is that cool or what? -->
+<!-- Storj looks like a great product though, it is a bit like [Resilio Sync](https://www.resilio.com/), but with a blockchain added to create a marketplace for buying or renting out disk space on the network. -->
 
-私のゲートウェイがダウンしている場合は、IPFSが提供しているもの: [https://gateway.ipfs.io/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/](https://gateway.ipfs.io/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/)
-またはあなたのローカルゲートウェイ:
-[http://127.0.0.1:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/](http://127.0.0.1:8080/ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ/)
-を使ってみてください。
-まさにクールでしょう？
+Storjは素晴らしいプロダクトだと思います。
+[Resilio Sync](https://www.resilio.com/)にちょっとだけ似ていますが、ネットワークからディスクスペースを購入、レンタルするマーケットプレイスのためのブロックチェーンがあります。
 
-<!-- There is still a small issue: it is the previous version of the blog because I'm still writing this article and when I upload it when I'm done the hash changes, but then the new hash won't be in the article... -->
+<!-- ### SIA -->
 
-ちょっと問題があります:
-これはこのブログの古いバージョンです。
-私はこの記事を書いてアップロードしている途中であり、アップロードするとハッシュが変わり、そのハッシュは最新の記事には含まれることがないからです……
+#### SIA
 
-<!-- There is a solution for that: -->
+<!-- SIA is another Dropbox killer, more or less the same as Storj. -->
 
-解決方法はあります:
+SIAはStorjと同じようなDropboxキラーです。
 
-<!-- ## A permanent address for this blog with IPNS -->
+<!-- ### MaidSafe -->
 
-### IPNSによるこのブログの不変のアドレス
+#### MaidSafe
 
-<!-- The usage of IPNS is explained here: [The Inter-Planetary Naming System](https://ipfs.io/ipfs/QmNZiPk974vDsPmQii3YbrMKfi12KTSNM7XMiYyiea4VYZ/example#/ipfs/QmP8WUPq2braGQ8iZjJ6w9di6mzgoTWyRLayrMRjjDoyGr/ipns/readme.md). -->
+<!-- Where Storj and SIA pitch their service as a faster and cheaper way to store your data, Maidsafe promotes their SAFE network by scaring you. Cloud providers, government, and hackers can not be trusted is the message in their video. Apart from the funny name, it is very similar to the two services above. -->
 
-IPNSの使い方はこちらで説明されています:
-[The Inter-Planetary Naming System](https://ipfs.io/ipfs/QmNZiPk974vDsPmQii3YbrMKfi12KTSNM7XMiYyiea4VYZ/example#/ipfs/QmP8WUPq2braGQ8iZjJ6w9di6mzgoTWyRLayrMRjjDoyGr/ipns/readme.md)
+StorjやSIAがデータを保存する高速で安価な方法を提供するように、Mindsafeも恐ろしく**安全な**ネットワークを提供します。
+クラウドプロバイダ、政府、ハッカーは信用できないというのがそのビデオのメッセージです。
+面白い名前に反して、上の2つと同じようなサービスです。
 
-<!-- So in our case, on the node that runs on my server, I do: -->
+<!-- ### IPFS -->
 
-私たちの、ノードが自分のサーバーで動いているケースでは、このようにします:
+#### IPFS
 
-<!-- ```console
-$ ipfs name publish QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ
-Published to QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN: /ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ
-``` -->
+<!-- Now, this is a different beast. The first three services are `incentive platforms`, which means they have their own cryptocurrency to support their marketplace. IPFS also has such a thing, [FileCoin](https://filecoin.io/), but it is neatly split from IPFS which is more like a decentralized storage protocol. -->
 
-```console
-$ ipfs name publish QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ
-Published to QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN: /ipfs/QmcPx9ZQboyHw8T7Afe4DbWFcJYocef5Pe4H3u7eK1osnQ
-```
+一方、これは違います。
+最初の3つのサービスは`incentive platforms`、つまりマーケットプレイスをサポートするための暗号通貨があります。
+IPFSも[FileCoin](https://filecoin.io/)というものがありますが、それはIPFSとはっきり分かれており、IPFSはより分散ストレージプロトコルのようです。
 
-<!-- This results in an address for the blog that won't change: `QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN`. -->
+<!-- IPFS stands for `interplanetary file system`, but they hide the original name from their homepage. Too funny for a serious business! -->
 
-このブログのアドレスは変化しません:
-`QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN`
+IPFSは`interplanetary file system`の略ですが、IPFSがホームページからオリジナルの名前を隠しています。
+面白くて奇妙なビジネスです！
 
-<!-- This address points (when I executed the command just right now) to the directory containing the static files (index.html is served when it is in that directory BTW). -->
+<!-- On the home page it says: -->
 
-このアドレスは（私が先ほどのように実行した場合）静的ファイルを含むディレクトリを指し示します（index.htmlがそのディレクトリにある場合それが配信されます）。
+ホームページによると:
 
-<!-- When you read this, the address `QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN` is still the home page address, but it will contain new content (I will do another `publish` when I'm done writing this post). -->
+<!-- > IPFS is the Distributed Web
+> 
+> A peer-to-peer hypermedia protocol to make the web faster, safer, and more open. -->
 
-あなたがこれを読んでいる時も、アドレス`QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN`はまだホームページアドレスですが、コンテンツは新しいものになっています（記事を書いたら`publish`しなおします）。
+> IPFSは分散Web
+>
+> Webを高速、安全、オープンにするpeer-to-peerのハイパーメディアプロトコルです。
 
-<!-- So our static blog is now decentralized and available through [http://decentralized.blog:8080/ipns/QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN/](http://decentralized.blog:8080/ipns/QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN/). Note the `ipns` part instead of `ipfs` this time. -->
+<!-- IPFS seems like an great option for our project. -->
 
-こうして、私たちの静的ブログは非中央集権化され、[http://decentralized.blog:8080/ipns/QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN/](http://decentralized.blog:8080/ipns/QmRf4ERGvYpVo6HRa2VueZT8pWi8YvyLS3rW6ad2y83tdN/)で利用できるようになりました。
-今度は`ipfs`のかわりに`ipns`となっていることに注意してください。
+IPFSは私達のプロジェクトに適した選択肢のようです。
 
-<!-- IPFS is pretty cool, and it makes our lives much easier. Before we move on to improving our blog I'd like to look a little bit under the hood the understand the workings of IPFS (and IPNS) a bit more... -->
+<!-- ### ZeroNet -->
 
-IPFSは超クールであり、人生をより簡単にします。
-ブログを改善する前に、ちょっとIPFS（とIPNS）の内部動作について見ていきたいです。
+#### ZeroNet
+
+<!-- ZeroNet doesn't have a cheesy video on their home page, so I had to actually _read_. However, their awesome presentation is 100x better than the four videos from the others combined: [ZeroNet preso](https://docs.google.com/presentation/d/1_2qK1IuOKJ51pgBvllZ9Yu7Au2l551t3XBgyTSvilew/pub?start=false&loop=false&delayms=3000&slide=id.g9a1cce9ee_0_4). -->
+
+ZeroNetはホームページに安っぽいビデオがないため、私は実際に**読む**必要がありました。
+しかし、プレゼンテーションは他の4つのビデオより100倍素晴らしいものでした:
+[ZeroNet preso](https://docs.google.com/presentation/d/1_2qK1IuOKJ51pgBvllZ9Yu7Au2l551t3XBgyTSvilew/pub?start=false&loop=false&delayms=3000&slide=id.g9a1cce9ee_0_4)
+
+<!-- They also seem to operate a lot less like a serious business compared to the others, showing more of the idealistic open source spirit. -->
+
+また、他のものと比べてビジネス感が少なく、より理想的なオープンソースの精神を持っているようでした。
+
+<!-- On the home page: -->
+
+ホームページによると:
+
+<!-- > Open, free and uncensorable websites, using Bitcoin cryptography and BitTorrent network -->
+
+> BitcoinクリプトグラフィとBitTorrentネットワークを使った、オープン、フリーで、検閲されないウェブサイト
+
+<!-- Oh, oh, that is what _we_ are trying to do here! A competitor! Nah, let's just keep an eye on the code, maybe we can learn a thing or two. -->
+
+Oh, oh,まさに**我々が**やろうとしていることではないですか！
+競争相手だ！
+コードを見てみましょう。
+何か学びがあるかもしれません。
+
+<!-- ### Ethereum Swarm -->
+
+#### Ethereum Swarm
+
+<!-- On our trip to become blockchain developers, we have no other choice than to dive into Ethereum. We will address that in a future episode. But their decentralized file storage system, named Swarm, must be considered here. -->
+
+ブロックチェーンデベロッパになる旅のなかで、かならずEthereumに触れることになるでしょう。
+将来のエピソードで扱います。
+しかしSwarmという名の非中央集権型ファイルストレージシステムについてはここで検討する必要があります。
+
+<!-- It took me a while to find the source code for this project, but [here it is](https://github.com/ethereum/go-ethereum/tree/master/swarm)! -->
+
+このプロジェクトのソースコードを見つけるのに手間取りましたが、[ここにあります](https://github.com/ethereum/go-ethereum/tree/master/swarm)！
+
+<!-- From the [documentation](http://swarm-guide.readthedocs.io/en/latest/introduction.html#introduction): -->
+
+[ドキュメンテーション](http://swarm-guide.readthedocs.io/en/latest/introduction.html#introduction)によると:
+
+<!-- > Swarm is a distributed storage platform and content distribution service, a native base layer service of the ethereum web 3 stack. The primary objective of Swarm is to provide a sufficiently decentralized and redundant store of Ethereum’s public record, in particular to store and distribute dapp code and data as well as block chain data. -->
+
+> Swarmは分散ストレージプラットフォーム、コンテンツ分散サービスであり、ethereum web 3スタックのネイティブレイヤサービスです。
+> Swarmの第一の目的は十分に非中央集権化、冗長化されたEthereumパブリックレコードのストアを提供すること、特にDappのコードやブロックチェーンデータを保存、分散することです。
+
+<!-- It seems that Swarm is an incentive platform enforced with Ethereum smart contracts, so not the best choice for our purpose. We gotta stay hands-on here. We want to add a coin later ourselves! -->
+
+SwarmはEthereumのスマートコントラクトにより動くインセンティブプラットフォームなので、私達の用途には最適ではないでしょう。
+ここでは行動を控えます。
+コインを追加したい！
+
+<!-- ### BigchainDB -->
+
+#### BigchainDB
+
+<!-- From their site: -->
+
+サイトによると:
+
+<!-- > BigchainDB is complementary to decentralized storage, processing and communication building blocks. It can be used side by side with higher-level decentralized computing platforms and applications, and protocols for identity, financial assets, intellectual property and sidechains. BigchainDB fills a gap in the decentralized stack. -->
+
+> BigchainDBは分散ストレージ、処理、コミュニケーションビルディングブロックを補完します。
+> 上位レベルの分散コンピューティングプラットフォームやアプリケーション、アイデンティティ、金融資産、知的財産権、サイドチェーンなどのプロトコルと並行して使用できます。
+> BigchainDBは非中央集権スタックのギャップを埋めるものです。
+
+<!-- This is a brilliant solution, almost too good to be true. It is not just decentralized storage, but a full blown database. -->
+
+これは素晴らしいソリューションで、ちょっと眉唾ものでさえあります。
+これは非中央集権型ストレージというだけでなく、完全なデータベースです。
+
+<!-- It is built on top of MongoDB and decentralized, so data is immutable, and there is no central authority. -->
+
+MongoDBの上に構築され、非中央集権化されており、データはイミュータブルで、中央権限はありません。
+
+<!-- For our current project it might be a bit overkill, but let's keep an eye on it. -->
+
+現在の私達のプロジェクトにはいささかオーバーキルでしょうし、見守ることにしましょう。
+
+<!-- ## The winning decentralized storage system -->
+
+### 非中央集権型ストレージシステムの勝者
+
+<!-- OK, I’ll be honest, I already picked one before I did this quick research what is around :-) -->
+
+OK, 正直に言うと、私はすでにこの中から1つ選んでいます :-)
+
+<!-- **_The winner is IPFS! Yay!_** -->
+
+**勝者はIPFSです！ Yay!**
+
+<!-- The runner-up we might have a look at at a later stage: BigchainDB! -->
+
+準優勝は、また後で扱うかもしれません: BigchainDB!
+
+<!-- Even in retrospect, IPFS seems like a good choice: all competitors have their "flaws" in the context of this project. By applying "selection by deduction", only IPFS remains. -->
+
+振り返ってみてもIPFSは良い選択肢に思えます: すべての競合はこのプロジェクトの文脈で「欠点」を持っています。
+消去法を適用すると、IPFSだけが残ります。
+
+<!-- After this very scientific approach in picking IPFS, let's hope it is indeed useful for us. -->
+
+非常に科学的なアプローチでIPFSを選択したので、それが私達にとって有益であることを願いましょう。
+
+[続きはこちら](/2017/11/getting-to-know-ipfs)
