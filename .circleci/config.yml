@@ -50,6 +50,7 @@ jobs:
           key: hugo-cache-public
       - run:
           command: |
+            echo "blog.kotet.jp" > CNAME
             git config --global user.name "CircleCI"
             git config --global user.email "circleci@example.com"
             git add --all
