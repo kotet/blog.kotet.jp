@@ -55,8 +55,8 @@ workflows:
     jobs:
       - checkout_code
       - build:
-        requires:
-          - checkout_code
+          requires:
+            - checkout_code
       - deploy:
           filters:
             branches:
