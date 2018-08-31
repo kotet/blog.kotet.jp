@@ -1,5 +1,1 @@
-_site
-.sass-cache
-.jekyll-metadata
-.ruby-version
-vendor/bundle/
+public/
