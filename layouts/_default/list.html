@@ -1,0 +1,34 @@
+{{ define "title" }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
+<meta name="description" content="{{ .Params.Excerpt }}">
+<style>
+    main {
+        width: 800px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    main>article {
+        margin: 1em;
+    }
+    main>article>h2 svg {
+        height: 1ex;
+    }
+</style>
+{{ end }}{{ define "main" }}
+<article>
+        <h2>{{ .Title }}
+            <a href="./index.xml" title="rss feed">
+
+                <svg xmlns="http://www.w3.org/2000/svg" aria-label="RSS" role="img" viewBox="0 0 512 512">
+                    <rect width="512" height="512" rx="15%"></rect>
+                    <circle cx="145" cy="367" r="35" fill="#fff"></circle>
+                    <path fill="none" stroke="#fff" stroke-width="60" d="M109 241c89 0 162 73 162 162M109 127c152 0 276 124 276 276"></path>
+                </svg>
+            </a>
+        </h2>
+        <p>{{ .Content }}</p>
+        
+        {{ range .Pages }}
+        <a href="{{.Permalink}}"><h3>{{ .Title }}</h3></a>
+        {{ end }}
+</article>
+{{ end }}

@@ -1,0 +1,14 @@
+baseURL: "https://kotet.jp"
+languageCode: "ja"
+
+title: "Kotet's Personal Blog"
+
+params:
+    description: "Kotetのサイト。主にブログ。"
+
+taxonomies:
+  tag: "tags"
+
+pygmentsCodeFences: true
+PygmentsOptions: "nobackground=true"
+hasCJKLanguage: true
