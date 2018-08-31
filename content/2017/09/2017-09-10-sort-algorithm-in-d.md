@@ -717,4 +717,4 @@ Test heap.v2.sort:
     N = 10^^6 avg: 351.185 msecs (sample: 1)
 ```
 
-[つづく]({% include relative %}{% post_url 2017/09/2017-09-16-sort-algorithm-in-d-2 %})
+[つづく](/2017/09/2017-09-16-sort-algorithm-in-d-2)

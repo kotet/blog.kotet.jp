@@ -702,7 +702,7 @@ excerpt: "この記事はBlockchain train journalのパート2です、こちら
 <!-- This article is part 2 of the Blockchain train journal, start reading here: [Catching the Blockchain Train](catching-the-blockchain-train.html). -->
 
 この記事はBlockchain train journalのパート2です、こちらから読み始めましょう:
-[まだ間に合うブロックチェーン【翻訳】]({% include relative %}{% post_url 2017/11/2017-11-03-catching-the-blockchain-train %})
+[まだ間に合うブロックチェーン【翻訳】](/2017/11/2017-11-03-catching-the-blockchain-train)
 
 <!-- ## Some reading material to get started -->
 
@@ -939,4 +939,4 @@ OK, 正直に言うと、私はすでにこの中から1つ選んでいます :-
 
 非常に科学的なアプローチでIPFSを選択したので、それが私達にとって有益であることを願いましょう。
 
-[続きはこちら]({% include relative %}{% post_url 2017/11/2017-11-09-getting-to-know-ipfs %})
+[続きはこちら](/2017/11/2017-11-09-getting-to-know-ipfs)

@@ -45,7 +45,7 @@ mathjax: on
 
 \\(
     \begin{align}
-    f(A,B,C,D) &= B \overline{C} \overline{D} + A \overline{D} + A C\\\
+    f(A,B,C,D) &= B \overline{C} \overline{D} + A \overline{D} + A C\\\\ \\
     &= B \overline{C} \overline{D} + A \overline{B} + A C
     \end{align}    
 \\)
@@ -199,7 +199,7 @@ unittest
 
 \\(
     \begin{align}
-    X\cdot P + \overline{X}\cdot P &= (X + \overline{X})\cdot P\\\
+    X\cdot P + \overline{X}\cdot P &= (X + \overline{X})\cdot P\\\\ \\
     &= I\cdot P = P
     \end{align}
 \\)

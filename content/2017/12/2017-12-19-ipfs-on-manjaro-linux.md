@@ -8,12 +8,6 @@ tags:
 excerpt: "いままでUbuntuを使っていたのだが、Manjaro Linuxに乗り換えて、こうして記事がかけるところまで環境構築ができた。"
 ---
 
-[前回]({% include relative %}{% post_url 2017/11/2017-11-29-ipfs-wikipedia %})
-:
-[次回]({% include relative %}{% post_url 2017/12/2017-12-20-ipfs-soundcloud %})
-
----
-
 いままで[Ubuntu](https://www.ubuntu.com/)を使っていたのだが、[Manjaro Linux](https://manjaro.org/)に乗り換えて、こうして記事がかけるところまで環境構築ができた。
 ひとつ記事タイトルと関係ないことを言うと、vscodeのパッケージはvisual-studio-codeから[code](https://aur.archlinux.org/packages/code/)という名前に変わっており、
 それをインストールすると`code-oss`が使えるようになる。
@@ -35,9 +29,3 @@ ipfs version 0.4.13
 ```
 
 ちゃんと現時点の最新版である[`v0.4.13`](https://github.com/ipfs/go-ipfs/blob/v0.4.13/CHANGELOG.md)がインストールされた。
-
----
-
-[前回]({% include relative %}{% post_url 2017/11/2017-11-29-ipfs-wikipedia %})
-:
-[次回]({% include relative %}{% post_url 2017/12/2017-12-20-ipfs-soundcloud %})

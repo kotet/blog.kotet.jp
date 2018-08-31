@@ -6,7 +6,7 @@ tags:
 - tech
 ---
 
-[以前]({% include relative %}{% post_url 2017/01/2017-01-31-dlang-import-expression %})に
+[以前](/2017/01/2017-01-31-dlang-import-expression)に
 `import`を使って大きな文字列を別のファイルから読み込んだが、
 同じ手を使って画像や動的リンクライブラリなどのテキストでないデータも読み込んで埋め込むことができるようだ。
 

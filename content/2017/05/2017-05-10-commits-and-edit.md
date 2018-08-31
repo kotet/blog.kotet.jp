@@ -7,7 +7,7 @@ tags:
 - github
 ---
 
-**追記：現在は以下のテンプレートは動かないかもしれない。[更新版]({% include relative %}{% post_url 2018/01/2018-01-01-jekyll-templates-update %})**
+**追記：現在は以下のテンプレートは動かないかもしれない。[更新版](/2018/01/2018-01-01-jekyll-templates-update)**
 
 このサイトの各ページの下にある"Improve this page"について書く。
 GitHub Pagesでは、GitHubリポジトリの名前、ブランチ、現在のページに対応するソースファイルのパスが変数として得られる。
@@ -18,7 +18,7 @@ GitHub Pagesでは、GitHubリポジトリの名前、ブランチ、現在の�
 ### 現在のページの編集(commit)履歴
 
 ```
-{% raw %}https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }}{% endraw %}
+https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
 [サンプル](https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }})
@@ -26,7 +26,7 @@ GitHub Pagesでは、GitHubリポジトリの名前、ブランチ、現在の�
 ### 現在のページの編集リクエスト(editing)ページ
 
 ```
-{% raw %}https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }}{% endraw %}
+https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
 [サンプル](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})
@@ -34,7 +34,7 @@ GitHub Pagesでは、GitHubリポジトリの名前、ブランチ、現在の�
 ### Markdownで本文を見る(raw)
 
 ```
-{% raw %}https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }}{% endraw %}
+https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
 [サンプル](https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }})

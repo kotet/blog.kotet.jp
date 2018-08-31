@@ -703,7 +703,7 @@ excerpt: "この記事はBlockchain train journalの3本目の記事です。ま
 
 この記事はBlockchain train journalの3本目の記事です。
 まずこちらから読み始めましょう:
-[まだ間に合うブロックチェーン【翻訳】]({% include relative %}{% post_url 2017/11/2017-11-03-catching-the-blockchain-train %})
+[まだ間に合うブロックチェーン【翻訳】](/2017/11/2017-11-03-catching-the-blockchain-train)
 
 <!-- ## Let's read a bit (reading is good for you!) -->
 

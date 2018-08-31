@@ -42,7 +42,7 @@ kramdownにもToC生成機能があるらしい。
 `_layouts`以下の好きなファイルの好きな場所で`_includes/toc.html`をincludeする。
 
 ```
-{% raw %}{% include toc.html html=content %}{% endraw %}
+{% include toc.html html=content %}
 ```
 
 これで`content`内のhタグを探して自動的にToCを生成してくれる。
@@ -53,7 +53,7 @@ kramdownにもToC生成機能があるらしい。
 最初気が付かずにテンプレートの改造をしてしまったのだが、このテンプレートにはそういうときのための機能もある。
 
 ```
-{% raw %}{% include toc.html html=content sanitize=true %}{% endraw %}
+{% include toc.html html=content sanitize=true %}
 ```
 
 こうするとToCの要素がリンクなどを外したプレインテキストになる。

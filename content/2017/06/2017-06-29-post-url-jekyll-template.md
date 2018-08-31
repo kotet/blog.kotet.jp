@@ -23,32 +23,32 @@ Jekyllの`post_url`テンプレートについて日本語の情報が見つか�
 まず[日本語ドキュメント](http://jekyllrb-ja.github.io/docs/templates/#post--url)には2つの例が載っている。
 
 ```markdown
-{% raw %}{% post_url 2010-07-21-name-of-post %}{% endraw %}
+{% post_url 2010-07-21-name-of-post %}
 ```
 
 ```markdown
-{% raw %}{% post_url /subdir/2010-07-21-name-of-post %}{% endraw %}
+{% post_url /subdir/2010-07-21-name-of-post %}
 ```
 
 これを真似してリンクを貼ってみる。
 
 ```markdown
-{% raw %}{% post_url 2017-06-26-life-in-the-fast-lane %}{% endraw %}
+{% post_url 2017-06-26-life-in-the-fast-lane %}
 ```
 
 ```
-{% raw %}Deprecation: A call to '{{ post_url 2017-06-26-life-in-the-fast-lane }}' did not match a post using the new matching method of checking name (path-date-slug) equality. Please make sure that you change this tag to match the post's name exactly.{% endraw %}
+Deprecation: A call to '{{ post_url 2017-06-26-life-in-the-fast-lane }}' did not match a post using the new matching method of checking name (path-date-slug) equality. Please make sure that you change this tag to match the post's name exactly.
 ```
 
 ファイル名だけを指定しても一応動作するようだが、`_posts`直下でなくサブディレクトリ内の記事を指定するとDeprecationエラーが出る。
 `_posts`直下にファイルがある場合はこれでも大丈夫。
 
 ```markdown
-{% raw %}{% post_url /_posts/2017/06/2017-06-26-life-in-the-fast-lane %}{% endraw %}
+{% post_url /_posts/2017/06/2017-06-26-life-in-the-fast-lane %}
 ```
 
 ```
-{% raw %}Deprecation: A call to '{{ post_url /_posts/2017/06/2017-06-26-life-in-the-fast-lane }}' did not match a post using the new matching method of checking name (path-date-slug) equality. Please make sure that you change this tag to match the post's name exactly.{% endraw %}
+Deprecation: A call to '{{ post_url /_posts/2017/06/2017-06-26-life-in-the-fast-lane }}' did not match a post using the new matching method of checking name (path-date-slug) equality. Please make sure that you change this tag to match the post's name exactly.
 ```
 
 こちらも動作はするもののエラーが出てしまう。
@@ -56,16 +56,14 @@ Jekyllの`post_url`テンプレートについて日本語の情報が見つか�
 ### 正しいっぽい書き方
 
 ```markdown
-{% raw %}[test]({% post_url 2017/06/2017-06-26-life-in-the-fast-lane %}){% endraw %}
+[test]({% post_url 2017/06/2017-06-26-life-in-the-fast-lane %})
 ```
 
-[test]({% post_url 2017/06/2017-06-26-life-in-the-fast-lane %})
-
 このテンプレートでは`/2017/06/26/life-in-the-fast-lane.html`という文字列が生成される。
-`{% raw %}{{ site.baseurl }}{% endraw %}`と組み合わせて
+`{{ site.baseurl }}`と組み合わせて
 
 ```markdown
-{% raw %}{{ site.baseurl }}{% post_url 2017/06/2017-06-26-life-in-the-fast-lane %}{% endraw %}
+{{ site.baseurl }}{% post_url 2017/06/2017-06-26-life-in-the-fast-lane %}
 ```
 
 とすると確実である。

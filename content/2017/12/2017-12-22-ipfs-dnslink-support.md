@@ -8,7 +8,7 @@ tags:
 excerpt: "IPFSのブラウザ拡張について書いた以前の記事 には理解できなかったものが抜けている。 ipfs体験記12回めのこの記事ではその中のDNSLINK Supportという項目を理解できたので書く。"
 ---
 
-[IPFSのブラウザ拡張について書いた以前の記事]({% include relative %}{% post_url 2017/10/2017-10-20-ipfs-browser-extention %})
+[IPFSのブラウザ拡張について書いた以前の記事](/2017/10/2017-10-20-ipfs-browser-extention)
 には理解できなかったものが抜けている。
 [ipfs体験記](/tags/#ipfs体験記)12回めのこの記事ではその中のDNSLINK Supportという項目を理解できたので書く。
 

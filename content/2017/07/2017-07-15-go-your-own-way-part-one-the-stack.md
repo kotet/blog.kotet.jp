@@ -28,11 +28,11 @@ tags:
 これは[GCシリーズ](https://dlang.org/blog/category/gc/)
 (訳注: [翻訳版](/tags/#dlang_gc_series))の3番めの投稿です。
 [最初の投稿](https://dlang.org/blog/2017/03/20/dont-fear-the-reaper/)
-(訳注: [翻訳版]({% include relative %}{% post_url 2017/04/2017-04-16-dont-fear-the-reaper %}))で、
+(訳注: [翻訳版](/2017/04/2017-04-16-dont-fear-the-reaper))で、
 私はDのガベージコレクタとそれを必要とする言語機能を紹介し、
 それを効率的に使うシンプルな戦略に触れました。
 [2番めの投稿](https://dlang.org/blog/2017/06/16/life-in-the-fast-lane/)
-(訳注: [翻訳版]({% include relative %}{% post_url 2017/06/2017-06-26-life-in-the-fast-lane %}))では、
+(訳注: [翻訳版](/2017/06/2017-06-26-life-in-the-fast-lane))では、
 言語機能とライブラリによって提供される、コードベースの特定の部分でGCを無効にしたり禁止したりするツールや、
 そのような努力の助けになるコンパイラの使い方を紹介し、
 また最初からGCを含むようDプログラムを書き、その影響を軽減するためのシンプルな戦略を利用し、

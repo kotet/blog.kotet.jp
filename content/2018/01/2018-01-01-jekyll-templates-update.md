@@ -8,7 +8,7 @@ tags:
 excerpt: "以前書いた記事 のJekyllテンプレートが動かなくなっていた。現在でも使えるように書き換えていく。"
 ---
 
-[以前書いた記事]({% include relative %}{% post_url 2017/05/2017-05-10-commits-and-edit %})
+[以前書いた記事](/2017/05/2017-05-10-commits-and-edit)
 のJekyllテンプレートが動かなくなっていた。
 
 現在でも使えるように書き換えていく。
@@ -26,7 +26,7 @@ excerpt: "以前書いた記事 のJekyllテンプレートが動かなくなっ
 ### Commit log
 
 ```
-{% raw %}https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }}{% endraw %}
+https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
 [サンプル](https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }})
@@ -34,7 +34,7 @@ excerpt: "以前書いた記事 のJekyllテンプレートが動かなくなっ
 ### Editing page
 
 ```
-{% raw %}https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }}{% endraw %}
+https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
 [サンプル](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})
@@ -42,7 +42,7 @@ excerpt: "以前書いた記事 のJekyllテンプレートが動かなくなっ
 ### Raw file
 
 ```
-{% raw %}https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }}{% endraw %}
+https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
 [サンプル](https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }})

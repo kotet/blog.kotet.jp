@@ -26,7 +26,7 @@ SoundCloud的ウェブサイトがあった。
 音声などのデータをIPFS上に保存しており、たとえば
 [https://gateway.ipfsstore.it:8443/ipfs/QmQV535FtqctNyKb82Qh5XUbdh2bdmjyzS5AHcwEPWTaJS](https://gateway.ipfsstore.it:8443/ipfs/QmQV535FtqctNyKb82Qh5XUbdh2bdmjyzS5AHcwEPWTaJS)
 のように内部でパブリックゲートウェイを使ってアクセスしている。
-[以前紹介したブラウザ拡張]({% include relative %}{% post_url 2017/10/2017-10-20-ipfs-browser-extention %})
+[以前紹介したブラウザ拡張](/2017/10/2017-10-20-ipfs-browser-extention)
 を有効にした状態で閲覧するとこのURLがローカルゲートウェイのものに書き換えられ、自分のIPFSノードからダウンロードされるようになる。
 または、ログインするとローカルゲートウェイを使うよう設定できるらしい。
 するとIPFSの効果により負荷が分散されるというわけだ。

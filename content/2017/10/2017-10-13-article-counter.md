@@ -19,7 +19,7 @@ excerpt: "タグページではタグごとの記事数を見ることができ�
 それに[`size`](https://shopify.github.io/liquid/filters/size/)フィルタをかけると長さが取得できる。
 
 ```html
-  {% raw %}<h1 class="page-heading">{{ site.posts | size }} Posts</h1>{% endraw %}
+  <h1 class="page-heading">{{ site.posts | size }} Posts</h1>
 ```
 
 すると以下のように総記事数を表示できる。
@@ -36,5 +36,5 @@ excerpt: "タグページではタグごとの記事数を見ることができ�
 以下のようにドット記法を使っても同じ結果が得られるが、なんだか普通のプロパティと区別がつかなくてバグを発生させそうなのでふつうにフィルタを使ったほうがいいと思う。
 
 ```html
-  {% raw %}<h1 class="page-heading">{{ site.posts.size }} Posts</h1>{% endraw %}
+  <h1 class="page-heading">{{ site.posts.size }} Posts</h1>
 ```

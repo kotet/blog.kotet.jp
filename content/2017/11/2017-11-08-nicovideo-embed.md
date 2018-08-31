@@ -16,7 +16,7 @@ excerpt: "ニコニコ動画のプレーヤー等の埋め込みコードがよ�
 ### プレーヤー
 
 ```
-{% raw %}<script type="application/javascript" src="https://embed.nicovideo.jp/watch/sm27881238/script?w=320&h=180"></script><noscript><a href="http://www.nicovideo.jp/watch/sm27881238">【AviUtl】もっと簡単に滑らかなアニメーションができるスクリプト</a></noscript>{% endraw %}
+<script type="application/javascript" src="https://embed.nicovideo.jp/watch/sm27881238/script?w=320&h=180"></script><noscript><a href="http://www.nicovideo.jp/watch/sm27881238">【AviUtl】もっと簡単に滑らかなアニメーションができるスクリプト</a></noscript>
 ```
 
 <script type="application/javascript" src="https://embed.nicovideo.jp/watch/sm27881238/script?w=320&h=180"></script><noscript><a href="http://www.nicovideo.jp/watch/sm27881238">【AviUtl】もっと簡単に滑らかなアニメーションができるスクリプト</a></noscript>
@@ -30,7 +30,7 @@ excerpt: "ニコニコ動画のプレーヤー等の埋め込みコードがよ�
 ### 動画情報とサムネイル
 
 ```
-{% raw %}<iframe width="312" height="176" src="https://ext.nicovideo.jp/thumb/sm27881238" scrolling="no" style="border:solid 1px #ccc;" frameborder="0"><a href="http://www.nicovideo.jp/watch/sm27881238">【AviUtl】もっと簡単に滑らかなアニメーションができるスクリプト</a></iframe>{% endraw %}
+<iframe width="312" height="176" src="https://ext.nicovideo.jp/thumb/sm27881238" scrolling="no" style="border:solid 1px #ccc;" frameborder="0"><a href="http://www.nicovideo.jp/watch/sm27881238">【AviUtl】もっと簡単に滑らかなアニメーションができるスクリプト</a></iframe>
 ```
 
 <iframe width="312" height="176" src="https://ext.nicovideo.jp/thumb/sm27881238" scrolling="no" style="border:solid 1px #ccc;" frameborder="0"><a href="http://www.nicovideo.jp/watch/sm27881238">【AviUtl】もっと簡単に滑らかなアニメーションができるスクリプト</a></iframe>
@@ -72,14 +72,14 @@ Javascriptを切った時のための`noscript`タグを削除したが、まあ
 
 ```html
 <div class="nicovideo-wrapper">
-    <script type="application/javascript" src="https://embed.nicovideo.jp/watch/{% raw %}{{ include.id }}{% endraw %}/script"></script>
+    <script type="application/javascript" src="https://embed.nicovideo.jp/watch/{{ include.id }}/script"></script>
 </div>
 ```
 
 すると以下のように画面幅に合わせていい感じに縦横比を保ちつつ伸縮してくれるプレーヤーを埋め込むことができる。
 
 ```
-{% raw %}{% include nicovideo.html id="sm27881238" %}{% endraw %}
+{% include nicovideo.html id="sm27881238" %}
 ```
 
 {% include nicovideo.html id="sm27881238" %}

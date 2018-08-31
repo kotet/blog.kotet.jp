@@ -10,7 +10,7 @@ excerpt: '"D言語なら、この程度の処理はマイナス時間で完了�
 > [D言語なら、この程度の処理はマイナス時間で完了する。
 コンパイル時にメッセージまで出力し、プログラムが開始する前に全てを終わらせられるのだ。 - outland_karasuのコメント / はてなブックマーク](http://b.hatena.ne.jp/entry/348113957/comment/outland_karasu)
 
-[前回]({% include relative %}{% post_url 2017/05/2017-05-13-compile-time-fizzbuzz %})からdmdのバージョンが上がり、
+[前回](/2017/05/2017-05-13-compile-time-fizzbuzz)からdmdのバージョンが上がり、
 `static foreach`も入ったので[D言語 Advent Calendar 2017](https://qiita.com/advent-calendar/2017/dlang) 5日目の記事としてもう一度fizzbuzzを書いてみる。
 
 しかし自分は記憶力がないのでそもそもfizzbuzzとは何かを忘れている。

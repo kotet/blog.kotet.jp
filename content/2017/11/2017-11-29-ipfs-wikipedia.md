@@ -8,12 +8,6 @@ tags:
 excerpt: "IPFS上にWikipediaを構築することにより政府がWikipediaをブロックするのを妨害するというプロジェクトがある。今回はそれに参加してみる。"
 ---
 
-[前回]({% include relative %}{% post_url 2017/11/2017-11-10-ipfs-trap %})
-:
-[次回]({% include relative %}{% post_url 2017/12/2017-12-19-ipfs-on-manjaro-linux %})
-
----
-
 IPFS上にWikipediaを構築することにより政府がWikipediaをブロックするのを妨害するというプロジェクトがある。
 
 [Uncensorable Wikipedia on IPFS](https://ipfs.io/blog/24-uncensorable-wikipedia/)
@@ -59,9 +53,3 @@ $ ipfs pin add QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX --progress
 
 自分はトルコ語を使えないので特に何もできることがない。
 というわけでこの記事はここで終わりである。
-
----
-
-[前回]({% include relative %}{% post_url 2017/11/2017-11-10-ipfs-trap %})
-:
-[次回]({% include relative %}{% post_url 2017/12/2017-12-19-ipfs-on-manjaro-linux %})

@@ -7,7 +7,7 @@ tags:
 excerpt: "前回の記事から月日は流れ、 Anonymous adsもいくらか改善された。 categoryがいまだに”Blogs”でなく”Links & Catalogs”になっちゃってるし、この機会にAd unitを作りなおしてみることにした。 ついでに知識のない人のために一連の作業を文章化しておく。"
 ---
 
-[前回の記事]({% include relative %}{% post_url 2016/12/2016-12-26-about-advertising %})から月日は流れ、
+[前回の記事](/2016/12/2016-12-26-about-advertising)から月日は流れ、
 Anonymous adsもいくらか改善された。
 categoryがいまだに"Blogs"でなく"Links & Catalogs"になっちゃってるし、この機会にAd unitを作りなおしてみることにした。
 ついでに知識のない人のために一連の作業を文章化しておく。

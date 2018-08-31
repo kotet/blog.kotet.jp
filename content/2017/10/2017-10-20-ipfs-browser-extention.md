@@ -11,11 +11,6 @@ excerpt: "ブラウザ上でのIPFSの使用を補助する目的で作られた
 今日はあまり体調が良くないが、だからこそあまり頭が記憶を整理してくれないため、記憶を外に書き出しておかないとそれだけで一杯になってしまうので少しだけ書く。"
 ---
 
-[前回]({% include relative %}{% post_url 2017/10/2017-10-19-ipfs-config %}):
-[次回]({% include relative %}{% post_url 2017/10/2017-10-24-ipfs-chrome-extention %})
-
----
-
 ブラウザ上でのIPFSの使用を補助する目的で作られたブラウザ拡張が存在する。
 公式のものはFirefoxにも対応しているようだが、ここではChrome版についてのみ述べる。
 今日はあまり体調が良くないが、だからこそあまり頭が記憶を整理してくれないため、記憶を外に書き出しておかないとそれだけで一杯になってしまうので少しだけ書く。
@@ -71,8 +66,3 @@ https://ipfs.io/ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/readme
 現状ではこの形式を使うのが最良の選択だろう。
 
 次回に続く。
-
----
-
-[前回]({% include relative %}{% post_url 2017/10/2017-10-19-ipfs-config %}):
-[次回]({% include relative %}{% post_url 2017/10/2017-10-24-ipfs-chrome-extention %})

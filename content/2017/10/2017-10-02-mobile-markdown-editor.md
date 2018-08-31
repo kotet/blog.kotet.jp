@@ -6,7 +6,7 @@ tags:
 - tech
 ---
 
-[前回]({% include relative %}{% post_url 2017/09/2017-09-30-go-your-own-way-part-two-the-heap %})書いた翻訳記事は、かなりの分量がiPhone上で書かれている。
+[前回](/2017/09/2017-09-30-go-your-own-way-part-two-the-heap)書いた翻訳記事は、かなりの分量がiPhone上で書かれている。
 iPhoneとデスクトップ両方を使ってmarkdownの翻訳記事を書くためにさまざまなツールを使ったので、
 ここにまとめておこうと思う。
 

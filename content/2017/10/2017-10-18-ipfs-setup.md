@@ -10,10 +10,6 @@ image: 2017/10/18/twitter.png
 excerpt: "“InterPlanetary File System“というあまりにも魅力的な名前から、 以前よりIPFSを試してみたかった。 やってみたいなーとずっと言っているだけなのもアレなので、少しづつ触っていこうと思う。 今後「IPFS体験記」として投稿するのは、その記録である。 試したことをただ時系列順に書くだけなので、参考にするには読みづらいかもしれない。"
 ---
 
-:[次回]({% include relative %}{% post_url 2017/10/2017-10-19-ipfs-config %})
-
----
-
 "[InterPlanetary File System](https://ipfs.io/)"というあまりにも魅力的な名前から、
 以前よりIPFSを試してみたかった。
 やってみたいなーとずっと言っているだけなのもアレなので、少しづつ触っていこうと思う。
@@ -206,7 +202,3 @@ Created symlink from /home/kotet/.config/systemd/user/default.target.wants/ipfs.
 
 - [IPFS Docs](https://ipfs.io/ipns/ipfs.io/docs/)
 - [IPFS - ArchWiki](https://wiki.archlinux.jp/index.php/IPFS#.E3.82.B5.E3.83.BC.E3.83.93.E3.82.B9.E3.82.92.E4.BD.BF.E3.81.A3.E3.81.A6.E3.83.87.E3.83.BC.E3.83.A2.E3.83.B3.E3.82.92.E8.B5.B7.E5.8B.95)
-
----
-
-:[次回]({% include relative %}{% post_url 2017/10/2017-10-19-ipfs-config %})
