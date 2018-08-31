@@ -6,7 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{ block "title" . }}Kotet.jp{{ end }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> {{ .Hugo.Generator }}
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
+    <link rel="canonical" href="{{ .Permalink }}" />
+    <script defer src="//www.googletagmanager.com/gtag/js?id={{ .Site.Params.GoogleAnalytics }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ .Site.Params.GoogleAnalytics }}');
+    </script>
+    <link rel="icon" href="/favicon.ico">
+    {{ partial "twitter-card" . }}
+    {{ .Hugo.Generator }}
     {{ block "head" . }}{{ end }}
 </head>
 

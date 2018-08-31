@@ -1,10 +1,11 @@
-baseURL: "https://kotet.jp"
+baseURL: "https://blog.kotet.jp"
 languageCode: "ja"
 
 title: "Kotet's Personal Blog"
 
 params:
     description: "Kotetのサイト。主にブログ。"
+    GoogleAnalytics: UA-88180620-1
 
 taxonomies:
   tag: "tags"
