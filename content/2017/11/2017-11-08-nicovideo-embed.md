@@ -81,5 +81,3 @@ Javascriptを切った時のための`noscript`タグを削除したが、まあ
 ```
 {% include nicovideo.html id="sm27881238" %}
 ```
-
-{% include nicovideo.html id="sm27881238" %}
