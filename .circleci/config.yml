@@ -12,16 +12,6 @@ jobs:
           paths:
             - ~/hugo
 
-  textlint:
-    docker:
-      - image: circleci/node:9.2.0
-    working_directory: ~/hugo/.circleci
-    steps:
-      - restore_cache:
-          keys:
-            - hugo-cache
-            - hugo-nodemodules-{{ checksum "package.json" }}
-
   build:
     docker:
       - image: circleci/golang:1.8
@@ -62,7 +52,7 @@ workflows:
   build_and_deploy:
     jobs:
       - checkout_code
-      - build:
+      - build
       - deploy:
           filters:
             branches:
