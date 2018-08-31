@@ -1,4 +1,4 @@
-{{ define "title" }}{{ if isset .Params "tags" }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
+{{ define "title" }}{{ if .Params.tags }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
 <meta name="description" content="{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }}">
 <style>
     main {
