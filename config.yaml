@@ -9,8 +9,6 @@ params:
 taxonomies:
   tag: "tags"
 
-permalinks:
-  blog: /:year/:month/:day/:filename
-
 pygmentsCodeFences: true
+PygmentsOptions: "nobackground=true"
 hasCJKLanguage: true

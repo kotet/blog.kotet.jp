@@ -7,6 +7,14 @@
         margin: 0 auto;
     }
 
+    main > header {
+        margin: 1em;
+    }
+
+    main > article {
+        margin: 1em;
+    }
+
     #TableOfContents>ul {
         /* h1 */
         padding: 0;
@@ -30,17 +38,20 @@
         background: #EEE;
     }
 </style>
+<script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 {{ end }}{{ define "main" }}
-<h2>
-    {{ if isset .Params "tags" }}
-    <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
-    {{ end }}
-    {{ .Title }}
-</h2>
-<p>
-    {{ if isset .Params "date" }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
-    {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
-</p>
-{{ partial "toc" . }}
+<header>
+    <h2>
+        {{ if isset .Params "tags" }}
+        <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
+        {{ end }}
+        {{ .Title }}
+    </h2>
+    <p>
+        {{ if isset .Params "date" }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+        {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
+    </p>
+    {{ partial "toc" . }}
+</header>
 <article>{{ .Content }}</article>
 {{ end }}

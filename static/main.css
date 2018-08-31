@@ -22,6 +22,12 @@ a {
     color: var(--link);
 }
 
+img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
 h2 {
     font-size: 2em;
 }
@@ -76,4 +82,8 @@ footer.site {
 
 footer.site p {
     margin: .5em;
+}
+
+div.highlight pre {
+    overflow-x: auto;
 }
