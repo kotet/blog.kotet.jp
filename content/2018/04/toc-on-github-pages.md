@@ -1,5 +1,7 @@
 ---
 date: 2018-04-11
+aliases:
+- /2018/04/11/toc-on-github-pages.html
 title: "GitHub Pagesでも目次(ToC)は作れる"
 tags:
 - jekyll

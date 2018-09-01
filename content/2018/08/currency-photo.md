@@ -1,5 +1,7 @@
 ---
 date: 2018-08-07
+aliases:
+- /2018/08/07/currency-photo.html
 title: "仮想通貨の写真素材を手に入れた"
 tags:
 - essay

@@ -1,5 +1,7 @@
 ---
 date: 2018-08-02
+aliases:
+- /2018/08/02/writing.html
 title: "長文を書けるようになりたい"
 tags:
 - essay

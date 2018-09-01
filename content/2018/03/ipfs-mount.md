@@ -1,5 +1,7 @@
 ---
 date: 2018-03-02
+aliases:
+- /2018/03/02/ipfs-mount.html
 title: "15:ipfs mount"
 tags:
 - ipfs体験記

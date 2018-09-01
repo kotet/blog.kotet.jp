@@ -1,5 +1,7 @@
 ---
 date: 2018-01-03
+aliases:
+- /2018/01/03/a-ads.html
 title: "「三方よし」の広告プラットフォーム Anonymous Adsのすゝめ"
 tags:
 - log

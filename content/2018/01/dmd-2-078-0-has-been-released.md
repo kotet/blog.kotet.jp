@@ -1,5 +1,7 @@
 ---
 date: 2018-01-19
+aliases:
+- /2018/01/19/dmd-2-078-0-has-been-released.html
 title: "DMD 2.078.0 Has Been Released【翻訳】"
 tags:
 - dlang

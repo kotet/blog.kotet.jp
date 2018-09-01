@@ -1,5 +1,7 @@
 ---
 date: 2018-07-01
+aliases:
+- /2018/07/01/quine-mccluskey-d.html
 title: "Dで書くクワイン・マクラスキー法"
 tags:
 - dlang

@@ -1,5 +1,7 @@
 ---
 date: 2018-08-08
+aliases:
+- /2018/08/08/dpp.html
 title: "dppでCのヘッダファイルを自動変換"
 tags:
 - dlang

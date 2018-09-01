@@ -1,5 +1,7 @@
 ---
 date: 2018-04-12
+aliases:
+- /2018/04/12/dlang-environment.html
 title: "KotetのD言語作業環境2018年春"
 tags:
 - dlang
