@@ -1,5 +1,7 @@
 ---
-date: 2016-11-29
+date: 2016-12-02
+aliases:
+- /2016/12/02/a-delusion-about-grass-community.html
 title:  '「ゆるやかな大麻コミュニティ」から妄想した「美しくなる文化」の芽生え'
 tags:
 - essay

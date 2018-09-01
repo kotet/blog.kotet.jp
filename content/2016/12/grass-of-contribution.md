@@ -1,5 +1,7 @@
 ---
 date: 2016-12-27
+aliases:
+- /2016/12/27/grass-of-contribution.html
 title:  "GitHubで草を生やす話"
 tags:
 - log

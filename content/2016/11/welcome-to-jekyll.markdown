@@ -1,5 +1,7 @@
 ---
 date: 2016-11-13
+aliases:
+- /2016/11/13/welcome-to-jekyll.html
 title:  "Welcome to Jekyll!"
 tags:
 - log

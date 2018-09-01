@@ -1,5 +1,7 @@
 ---
 date: 2016-11-29
+aliases:
+- /2016/11/29/hamburger-menu-not-working.html
 title:  'Jekyllのtheme"minima"のハンバーガーメニューがiOSで動作しないバグ'
 tags:
 - jekyll

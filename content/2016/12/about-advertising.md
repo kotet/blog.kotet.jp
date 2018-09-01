@@ -1,5 +1,7 @@
 ---
 date: 2016-12-26
+aliases:
+- /2016/12/26/about-advertising.html
 title:  "Anonymous Adsについて"
 tags:
 - log

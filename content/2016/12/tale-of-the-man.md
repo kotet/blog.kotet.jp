@@ -1,5 +1,7 @@
 ---
 date: 2016-12-28
+aliases:
+- /2016/12/28/tale-of-the-man.html
 title:  "日本むかしっぽい話 「ビッグな男」"
 tags:
 - tale
