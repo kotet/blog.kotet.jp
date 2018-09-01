@@ -1,5 +1,7 @@
 ---
 date: 2018-03-04
+aliases:
+- /2018/03/04/vanquish-forever-these-bugs-that-blasted-your-kingdom.html
 title: "プログラムの城を粉々にしてしまうバグを永久に克服する【翻訳】"
 tags:
 - dlang

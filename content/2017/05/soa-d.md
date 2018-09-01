@@ -1,5 +1,7 @@
 ---
 date: 2017-05-19
+aliases:
+- /2017/05/19/soa-d.html
 title: "なぜ、どういう時にSOAを使うべきなのか【翻訳】"
 tags:
 - dlang

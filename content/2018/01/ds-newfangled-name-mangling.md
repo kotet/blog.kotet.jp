@@ -1,5 +1,7 @@
 ---
 date: 2018-01-15
+aliases:
+- /2018/01/15/ds-newfangled-name-mangling.html
 title: "Dの新しい名前修飾【抄訳】"
 tags:
 - dlang

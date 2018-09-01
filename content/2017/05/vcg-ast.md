@@ -1,5 +1,7 @@
 ---
 date: 2017-05-08
+aliases:
+- /2017/05/08/vcg-ast.html
 title: "処理後の結果を見られるdmdのスイッチ -vcg-ast"
 tags:
 - dlang

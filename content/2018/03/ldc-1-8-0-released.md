@@ -1,5 +1,7 @@
 ---
 date: 2018-03-10
+aliases:
+- /2018/03/10/ldc-1-8-0-released.html
 title: "LDC 1.8.0 Released【翻訳】"
 tags:
 - dlang

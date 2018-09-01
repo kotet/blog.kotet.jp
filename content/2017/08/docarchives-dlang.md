@@ -1,5 +1,7 @@
 ---
 date: 2017-08-09
+aliases:
+- /2017/08/09/docarchives-dlang.html
 title: "ドキュメントの過去版を見る"
 tags:
 - dlang

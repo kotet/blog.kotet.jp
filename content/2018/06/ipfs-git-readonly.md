@@ -1,5 +1,7 @@
 ---
 date: 2018-06-04
+aliases:
+- /2018/06/04/ipfs-git-readonly.html
 title: "非中央集権静的Gitホスティング"
 tags:
 - ipfs

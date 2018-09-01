@@ -1,5 +1,7 @@
 ---
 date: 2017-11-10
+aliases:
+- /2017/11/10/ipfs-trap.html
 title: "IPFS体験記8:IPFS網漁"
 tags:
 - ipfs

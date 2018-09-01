@@ -1,5 +1,7 @@
 ---
 date: 2017-12-07
+aliases:
+- /2017/12/07/d-install-script.html
 title: "インストールスクリプトの使い方"
 tags:
 - dlang

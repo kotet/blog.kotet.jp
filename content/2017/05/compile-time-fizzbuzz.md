@@ -1,5 +1,7 @@
 ---
 date: 2017-05-13
+aliases:
+- /2017/05/13/compile-time-fizzbuzz.html
 title: "コンパイル時fizzbuzzと謎のaliasSeqOf"
 tags:
 - dlang

@@ -1,5 +1,7 @@
 ---
 date: 2018-03-20
+aliases:
+- /2018/03/20/vision-2018h1.html
 title: "D言語のビジョン2018年前半期【翻訳】"
 tags:
 - dlang

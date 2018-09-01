@@ -1,5 +1,7 @@
 ---
 date: 2017-11-08
+aliases:
+- /2017/11/08/nicovideo-embed.html
 title: "ニコニコ動画のプレーヤーを埋め込むJekyllテンプレート"
 tags:
 - jekyll

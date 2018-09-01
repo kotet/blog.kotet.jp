@@ -1,5 +1,7 @@
 ---
 date: 2017-12-28
+aliases:
+- /2017/12/28/ipfs-archive.html
 title: "13:非中央集権型ウェブ魚拓"
 tags:
 - ipfs体験記

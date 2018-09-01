@@ -1,5 +1,7 @@
 ---
 date: 2017-06-26
+aliases:
+- /2017/06/26/life-in-the-fast-lane.html
 title: "駆け足の人生:GCを減らすための工夫【翻訳】"
 tags:
 - dlang

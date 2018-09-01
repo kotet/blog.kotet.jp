@@ -1,5 +1,7 @@
 ---
 date: 2017-07-05
+aliases:
+- /2017/07/05/binary-h-in-d.html
 title: "binary.h in D"
 tags:
 - dlang

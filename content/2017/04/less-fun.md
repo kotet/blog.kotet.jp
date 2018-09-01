@@ -1,5 +1,7 @@
 ---
 date: 2017-04-26
+aliases:
+- /2017/04/26/less-fun.html
 title: "Dのメタプログラミングは面白くない - C++との比較【翻訳】"
 tags:
 - dlang

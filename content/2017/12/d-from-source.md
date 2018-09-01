@@ -1,5 +1,7 @@
 ---
 date: 2017-12-04
+aliases:
+- /2017/12/04/d-from-source.html
 title: "DMDとDUBをソースからインストールする"
 tags:
 - dlang

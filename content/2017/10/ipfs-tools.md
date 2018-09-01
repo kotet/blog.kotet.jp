@@ -1,5 +1,7 @@
 ---
 date: 2017-10-26
+aliases:
+- /2017/10/26/ipfs-tools.html
 title: "IPFS体験記6:ipget"
 tags:
 - ipfs

@@ -1,5 +1,7 @@
 ---
 date: 2018-01-22
+aliases:
+- /2018/01/22/network-latencies-and-speed-of-light.html
 title: "ネットワーク遅延と光速度【翻訳】"
 tags:
 - tech

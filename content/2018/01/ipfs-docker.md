@@ -1,5 +1,7 @@
 ---
 date: 2018-01-25
+aliases:
+- /2018/01/25/ipfs-docker.html
 title: "14:IPFSとDocker"
 tags:
 - ipfs体験記

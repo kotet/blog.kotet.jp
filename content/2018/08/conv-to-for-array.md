@@ -1,5 +1,7 @@
 ---
 date: 2018-08-13
+aliases:
+- /2018/08/13/conv-to-for-array.html
 title: "標準ライブラリの to で配列を変換する"
 tags:
 - dlang

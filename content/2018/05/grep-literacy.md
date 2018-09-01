@@ -1,5 +1,7 @@
 ---
 date: 2018-05-10
+aliases:
+- /2018/05/10/grep-literacy.html
 title: "同じ文字の繰り返しが3回続く単語にマッチする正規表現"
 tags:
 - regexp

@@ -1,5 +1,7 @@
 ---
 date: 2017-12-20
+aliases:
+- /2017/12/20/ipfs-soundcloud.html
 title: "11:IPFSによる分散型SoundCloud"
 tags:
 - ipfs体験記

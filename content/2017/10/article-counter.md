@@ -1,5 +1,7 @@
 ---
 date: 2017-10-13
+aliases:
+- /2017/10/13/article-counter.html
 title: "GitHub Pagesで総記事数を表示する"
 tags:
 - jekyll

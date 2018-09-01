@@ -1,5 +1,7 @@
 ---
 date: 2018-03-09
+aliases:
+- /2018/03/09/tilt-of-the-dead.html
 title: "検査で気絶したので現状を記録しておく"
 tags:
 - log

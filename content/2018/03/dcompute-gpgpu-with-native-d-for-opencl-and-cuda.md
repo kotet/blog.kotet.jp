@@ -1,5 +1,7 @@
 ---
 date: 2018-03-07
+aliases:
+- /2018/03/07/dcompute-gpgpu-with-native-d-for-opencl-and-cuda.html
 title: "DCompute:ネイティブDによるOpenCLやCUDAのGPGPU【翻訳】"
 tags:
 - dlang

@@ -1,5 +1,7 @@
 ---
 date: 2017-04-11
+aliases:
+- /2017/04/11/gitlab-progress-reporting.html
 title: "Gitlabのissueのタスクの進捗をまとめるシェルスクリプト"
 tags:
 - tech 

@@ -1,5 +1,7 @@
 ---
 date: 2017-01-15
+aliases:
+- /2017/01/15/trivial-things0115.html
 title:  "よしなしごと 1/15"
 tags:
 - trivial_things

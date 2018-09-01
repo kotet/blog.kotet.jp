@@ -1,5 +1,7 @@
 ---
 date: 2017-11-01
+aliases:
+- /2017/11/01/beep.html
 title: "コマンド終了時に毎回音を鳴らす"
 tags:
 - tech

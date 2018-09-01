@@ -1,5 +1,7 @@
 ---
 date: 2017-12-05
+aliases:
+- /2017/12/05/compile-time-fizzbuzz.html
 title: "マイナス時間で完了するfizzbuzz"
 tags:
 - dlang

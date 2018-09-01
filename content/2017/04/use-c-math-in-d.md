@@ -1,5 +1,7 @@
 ---
 date: 2017-04-29
+aliases:
+- /2017/04/29/use-c-math-in-d.html
 title: "dubで自力でCのsqrt()を呼び出す"
 tags:
 - dlang

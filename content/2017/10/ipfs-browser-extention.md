@@ -1,5 +1,7 @@
 ---
 date: 2017-10-20
+aliases:
+- /2017/10/20/ipfs-browser-extention.html
 title: "永続Web、IPFS体験記3:ブラウザ拡張1"
 tags:
 - ipfs

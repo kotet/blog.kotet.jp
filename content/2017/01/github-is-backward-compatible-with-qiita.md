@@ -1,5 +1,7 @@
 ---
 date: 2017-01-29
+aliases:
+- /2017/01/29/github-is-backward-compatible-with-qiita.html
 title: "サイトの内容をGitHubのリポジトリと同期するメリット3つ"
 tags:
 - essay

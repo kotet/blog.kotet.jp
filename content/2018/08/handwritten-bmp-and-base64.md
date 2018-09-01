@@ -1,5 +1,7 @@
 ---
 date: 2018-08-21
+aliases:
+- /2018/08/21/handwritten-bmp-and-base64.html
 title: "紙とペンでビットマップ画像を生成してbase64としてツイート"
 tags:
 - tech

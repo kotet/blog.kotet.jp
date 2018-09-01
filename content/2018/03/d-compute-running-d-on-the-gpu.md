@@ -1,5 +1,7 @@
 ---
 date: 2018-03-08
+aliases:
+- /2018/03/08/d-compute-running-d-on-the-gpu.html
 title: "DCompute:GPU上で走るD【翻訳】"
 tags:
 - dlang

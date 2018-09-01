@@ -1,5 +1,7 @@
 ---
 date: 2017-08-14
+aliases:
+- /2017/08/14/sqrt-2.html
 title: "2の平方根をDだけで1万桁求める"
 tags:
 - dlang

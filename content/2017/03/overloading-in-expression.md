@@ -1,5 +1,7 @@
 ---
 date: 2017-03-29
+aliases:
+- /2017/03/29/overloading-in-expression.html
 title: "In式のオーバーロード2種"
 tags:
 - dlang

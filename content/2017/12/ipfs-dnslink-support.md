@@ -1,5 +1,7 @@
 ---
 date: 2017-12-22
+aliases:
+- /2017/12/22/ipfs-dnslink-support.html
 title: "12:ブラウザ拡張のDNSLINKサポート"
 tags:
 - ipfs体験記

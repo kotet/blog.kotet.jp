@@ -1,5 +1,7 @@
 ---
 date: 2017-01-31
+aliases:
+- /2017/01/31/dlang-import-expression.html
 title: "コンパイル時にファイルから文字列を読み込む"
 tags:
 - dlang

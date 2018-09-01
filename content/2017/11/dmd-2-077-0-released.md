@@ -1,5 +1,7 @@
 ---
 date: 2017-11-04
+aliases:
+- /2017/11/04/dmd-2-077-0-released.html
 title: "DMD 2.077.0 Released【翻訳】"
 tags:
 - dlang

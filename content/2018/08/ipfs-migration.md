@@ -1,5 +1,7 @@
 ---
 date: 2018-08-02
+aliases:
+- /2018/08/02/ipfs-migration.html
 title: "16:fs-repo-migrationsをつかった最新版への移行"
 tags:
 - ipfs体験記

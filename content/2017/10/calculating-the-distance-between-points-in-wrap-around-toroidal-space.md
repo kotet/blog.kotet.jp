@@ -1,5 +1,7 @@
 ---
 date: 2017-10-04
+aliases:
+- /2017/10/04/calculating-the-distance-between-points-in-wrap-around-toroidal-space.html
 title: "「ラップアラウンド」（トロイダル）な空間における2点間の距離の計算【翻訳】"
 tags:
 - tech

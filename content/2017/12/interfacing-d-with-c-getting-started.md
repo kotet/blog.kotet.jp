@@ -1,5 +1,7 @@
 ---
 date: 2017-12-10
+aliases:
+- /2017/12/10/interfacing-d-with-c-getting-started.html
 title: "DとCのインターフェース:入門編【翻訳】"
 tags:
 - dlang

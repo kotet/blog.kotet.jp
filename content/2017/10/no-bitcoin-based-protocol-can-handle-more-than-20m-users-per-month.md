@@ -1,5 +1,7 @@
 ---
 date: 2017-10-15
+aliases:
+- /2017/10/15/no-bitcoin-based-protocol-can-handle-more-than-20m-users-per-month.html
 title: "現Bitcoinベースのプロトコルでは月に2000万を超えるユーザに対応できない【翻訳】"
 tags:
 - tech

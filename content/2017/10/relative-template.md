@@ -1,5 +1,7 @@
 ---
 date: 2017-10-23
+aliases:
+- /2017/10/23/relative-template.html
 title: "GitHub Pagesで相対パスを使う"
 tags:
 - jekyll

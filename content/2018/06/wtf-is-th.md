@@ -1,5 +1,7 @@
 ---
 date: 2018-06-01
+aliases:
+- /2018/06/01/wtf-is-th.html
 title: "Th(x)ってなんだ"
 tags:
 - russian

@@ -1,5 +1,7 @@
 ---
 date: 2017-04-09
+aliases:
+- /2017/04/09/gitlab.html
 title: "便利なオンラインメモ帳を訪ねて三千里"
 tags:
 - log 

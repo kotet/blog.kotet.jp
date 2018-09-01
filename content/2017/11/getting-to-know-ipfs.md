@@ -674,6 +674,8 @@
 # Public License instead of this License.  But first, please read
 # <http://www.gnu.org/philosophy/why-not-lgpl.html>.
 date: 2017-11-09
+aliases:
+- /2017/11/09/getting-to-know-ipfs.html
 title: "IPFSを理解する【翻訳】"
 tags:
 - blockchain_train_journal

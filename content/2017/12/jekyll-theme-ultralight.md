@@ -1,5 +1,7 @@
 ---
 date: 2017-12-27
+aliases:
+- /2017/12/27/jekyll-theme-ultralight.html
 title: "超軽量、IPFS対応レスポンシブJekyll theme ”ultralight”を作った"
 tags:
 - jekyll

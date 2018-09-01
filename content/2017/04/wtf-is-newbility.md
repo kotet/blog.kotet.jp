@@ -1,5 +1,7 @@
 ---
 date: 2017-04-03
+aliases:
+- /2017/04/03/wtf-is-newbility.html
 title:  'ネイティブも知らない"newbility"、その意味と成り立ち'
 tags:
 - english

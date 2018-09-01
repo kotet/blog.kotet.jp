@@ -1,5 +1,7 @@
 ---
 date: 2017-01-12
+aliases:
+- /2017/01/12/automatic-driving-vehicle.html
 title:  "自動運転車を信頼できる人とできない人の違いについて"
 tags:
 - essay

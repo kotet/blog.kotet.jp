@@ -1,5 +1,7 @@
 ---
 date: 2017-10-27
+aliases:
+- /2017/10/27/post-100.html
 title: "🏁100🎊"
 tags:
 - log

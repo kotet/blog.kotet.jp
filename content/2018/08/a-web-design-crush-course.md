@@ -1,5 +1,7 @@
 ---
 date: 2018-08-23
+aliases:
+- /2018/08/23/a-web-design-crush-course.html
 title: "非デザイナーによる非デザイナーのための短期集中Webデザイン講座【翻訳】"
 tags:
 - webdesign

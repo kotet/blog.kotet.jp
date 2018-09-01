@@ -1,5 +1,7 @@
 ---
 date: 2018-01-01
+aliases:
+- /2018/01/01/jekyll-templates-update.html
 title: "記事の編集履歴、PR作成、ソース表示 in GitHub Pages 2018"
 tags:
 - jekyll
