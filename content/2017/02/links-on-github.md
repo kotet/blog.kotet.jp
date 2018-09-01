@@ -1,5 +1,7 @@
 ---
 date: 2017-02-28
+aliases:
+- /2017/02/28/links-on-github.html
 title: "コミットメッセージ上で他のリポジトリの特定のコミットを参照する等"
 tags:
 - github

@@ -1,5 +1,7 @@
 ---
 date: 2017-06-18
+aliases:
+- /2017/06/18/automem-hands-free-raii-for-d.html
 title: "automem: DのハンズフリーRAII【翻訳】"
 tags:
 - dlang

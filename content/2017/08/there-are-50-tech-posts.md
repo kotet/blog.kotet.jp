@@ -1,5 +1,7 @@
 ---
 date: 2017-08-11
+aliases:
+- /2017/08/11/there-are-50-tech-posts.html
 title: 'techタグの記事が50本を突破'
 tags:
 - log

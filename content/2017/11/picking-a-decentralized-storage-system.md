@@ -674,6 +674,8 @@
 # Public License instead of this License.  But first, please read
 # <http://www.gnu.org/philosophy/why-not-lgpl.html>.
 date: 2017-11-05
+aliases:
+- /2017/11/05/picking-a-decentralized-storage-system.html
 title: "非中央集権型ストレージシステムを選ぶ【翻訳】"
 tags:
 - blockchain_train_journal

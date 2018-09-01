@@ -1,5 +1,7 @@
 ---
 date: 2017-09-28
+aliases:
+- /2017/09/28/slow-talking.html
 title: "音声入力日記 - スローテンポな話術"
 tags:
 - log

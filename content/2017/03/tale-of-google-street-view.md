@@ -1,5 +1,7 @@
 ---
 date: 2017-03-25
+aliases:
+- /2017/03/25/tale-of-google-street-view.html
 title: "Google ストリートビュー神話 第1章"
 tags:
 - tale

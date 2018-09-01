@@ -1,5 +1,7 @@
 ---
 date: 2017-07-09
+aliases:
+- /2017/07/09/compile-time-sort-in-d.html
 title: "Dにおけるコンパイル時ソート【翻訳】"
 tags:
 - dlang

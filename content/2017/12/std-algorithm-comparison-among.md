@@ -1,5 +1,7 @@
 ---
 date: 2017-12-01
+aliases:
+- /2017/12/01/std-algorithm-comparison-among.html
 title: "「どれかと等しい」を簡潔に書く"
 tags:
 - dlang

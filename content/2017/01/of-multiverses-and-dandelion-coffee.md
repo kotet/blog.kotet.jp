@@ -1,5 +1,7 @@
 ---
 date: 2017-01-22
+aliases:
+- /2017/01/22/of-multiverses-and-dandelion-coffee.html
 title:  "多元宇宙とたんぽぽのコーヒーについて(制作記)"
 tags:
 - log

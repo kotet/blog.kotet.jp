@@ -1,5 +1,7 @@
 ---
 date: 2017-02-15
+aliases:
+- /2017/02/15/new-import-idiom.html
 title: "Lazyな新しいimportについての議論"
 tags:
 - dlang

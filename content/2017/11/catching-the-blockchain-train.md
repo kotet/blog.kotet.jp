@@ -674,6 +674,8 @@
 # Public License instead of this License.  But first, please read
 # <http://www.gnu.org/philosophy/why-not-lgpl.html>.
 date: 2017-11-03
+aliases:
+- /2017/11/03/catching-the-blockchain-train.html
 title: "まだ間に合うブロックチェーン【翻訳】"
 tags:
 - blockchain_train_journal

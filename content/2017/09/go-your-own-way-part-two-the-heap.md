@@ -1,5 +1,7 @@
 ---
 date: 2017-09-30
+aliases:
+- /2017/09/30/go-your-own-way-part-two-the-heap.html
 title: "オウン・ウェイ - GCを避けたアロケーション (Part2: ヒープ)【翻訳】"
 tags:
 - dlang

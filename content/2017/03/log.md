@@ -1,5 +1,7 @@
 ---
 date: 2017-03-13
+aliases:
+- /2017/03/13/log.html
 title: "ForestとSiri等9件"
 tags:
 - log

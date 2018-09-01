@@ -1,5 +1,7 @@
 ---
 date: 2017-05-03
+aliases:
+- /2017/05/03/use-c-sha256-in-d.html
 title: "dubで自力でOpenSSLを呼び出す"
 tags:
 - dlang

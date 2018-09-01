@@ -1,5 +1,7 @@
 ---
 date: 2017-02-18
+aliases:
+- /2017/02/18/olympic-pocket-warmer.html
 title: "オリンピック懐炉"
 tags:
 - log

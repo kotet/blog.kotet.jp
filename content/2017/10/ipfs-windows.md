@@ -1,5 +1,7 @@
 ﻿---
 date: 2017-10-30
+aliases:
+- /2017/10/30/ipfs-windows.html
 title: "IPFS体験記7:Windows"
 tags:
 - ipfs

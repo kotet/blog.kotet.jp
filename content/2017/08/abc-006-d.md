@@ -1,5 +1,7 @@
 ---
 date: 2017-08-15
+aliases:
+- /2017/08/15/abc-006-d.html
 title: "AtCoder Beginner Contest 006 - D"
 tags:
 - dlang

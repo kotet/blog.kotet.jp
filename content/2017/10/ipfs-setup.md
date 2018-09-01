@@ -1,5 +1,7 @@
 ---
 date: 2017-10-18
+aliases:
+- /2017/10/18/ipfs-setup.html
 title: "惑星間ファイルシステムIPFS体験記1:セットアップ"
 tags:
 - ipfs

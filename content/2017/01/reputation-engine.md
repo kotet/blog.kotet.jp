@@ -1,5 +1,7 @@
 ---
 date: 2017-01-07
+aliases:
+- /2017/01/07/reputation-engine.html
 title:  "読書記録:ブランドの暗殺、悪意あるデマ"
 tags:
 - essay

@@ -1,5 +1,7 @@
 ---
 date: 2017-01-30
+aliases:
+- /2017/01/30/cogito-ergo-sum.html
 title: "何かを思い出すたびに記憶が飛んだり変わったりする系男子"
 tags:
 - tale

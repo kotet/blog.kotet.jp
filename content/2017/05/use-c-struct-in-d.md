@@ -1,5 +1,7 @@
 ---
 date: 2017-05-04
+aliases:
+- /2017/05/04/use-c-struct-in-d.html
 title: "dubで自力でCの構造体を使う"
 tags:
 - dlang

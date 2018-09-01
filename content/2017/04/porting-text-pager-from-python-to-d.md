@@ -1,5 +1,7 @@
 ---
 date: 2017-04-23
+aliases:
+- /2017/04/23/porting-text-pager-from-python-to-d.html
 title: "テキストページャをPythonからDに移植する【翻訳】"
 tags:
 - dlang

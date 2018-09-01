@@ -1,5 +1,7 @@
 ---
 date: 2017-04-12
+aliases:
+- /2017/04/12/mandelbrot-command-line-interface.html
 title: "Dでマンデルブロ集合を書く"
 tags:
 - dlang

@@ -1,5 +1,7 @@
 ---
 date: 2017-02-12
+aliases:
+- /2017/02/12/voldemort-types.html
 title: "名前を言ってはいけないあの型 - Voldemort Types"
 tags:
 - dlang

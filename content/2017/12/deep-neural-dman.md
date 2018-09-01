@@ -1,5 +1,7 @@
 ---
 date: 2017-12-12
+aliases:
+- /2017/12/12/deep-neural-dman.html
 title: "Deep Neural D-man"
 tags:
 - dlangman

@@ -1,5 +1,7 @@
 ---
 date: 2017-06-29
+aliases:
+- /2017/06/29/post-url-jekyll-template.html
 title: "GitHub Pagesで内部リンクを貼るpost_urlテンプレートについて"
 tags:
 - jekyll

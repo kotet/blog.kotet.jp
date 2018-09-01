@@ -1,5 +1,7 @@
 ---
 date: 2017-03-22
+aliases:
+- /2017/03/22/difference-between-run-and-execute.html
 title: "Run と Execute の違いは何か"
 tags:
 - english

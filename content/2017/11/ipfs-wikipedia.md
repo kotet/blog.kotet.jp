@@ -1,5 +1,7 @@
 ---
 date: 2017-11-29
+aliases:
+- /2017/11/29/ipfs-wikipedia.html
 title: "IPFS体験記9:Wikipediaミラープロジェクト"
 tags:
 - ipfs

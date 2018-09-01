@@ -1,5 +1,7 @@
 ---
 date: 2017-01-19
+aliases:
+- /2017/01/19/github-contribution-calendar.html
 title:  "53日間GitHubで草を生やし続けて気づいたnつのこと"
 tags:
 - log

@@ -1,5 +1,7 @@
 ---
 date: 2017-01-09
+aliases:
+- /2017/01/09/64fd38ef5e10bf8ae3fa.html
 title: "Qiitaの記事をJekyllの投稿の形式に変換してバックアップする"
 tags:
 - qiita

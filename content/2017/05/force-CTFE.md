@@ -1,5 +1,7 @@
 ---
 date: 2017-05-14
+aliases:
+- /2017/05/14/force-CTFE.html
 title: "CTFEを強制するテンプレート"
 tags:
 - dlang

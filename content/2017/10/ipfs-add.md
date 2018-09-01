@@ -1,5 +1,7 @@
 ---
 date: 2017-10-25
+aliases:
+- /2017/10/25/ipfs-add.html
 title: "P2PプロトコルIPFS体験記5:アップロード"
 tags:
 - ipfs

@@ -1,5 +1,7 @@
 ---
 date: 2017-07-06
+aliases:
+- /2017/07/06/fix-mathjax-cdn.html
 title: "MathJaxのCDNが警告を発しつつも使えてしまっていた"
 tags:
 - jekyll

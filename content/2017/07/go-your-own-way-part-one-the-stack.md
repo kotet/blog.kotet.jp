@@ -1,5 +1,7 @@
 ---
 date: 2017-07-15
+aliases:
+- /2017/07/15/go-your-own-way-part-one-the-stack.html
 title: "オウン・ウェイ - GCを避けたアロケーション (Part1: スタック)【翻訳】"
 tags:
 - dlang

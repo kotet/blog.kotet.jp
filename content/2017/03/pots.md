@@ -1,5 +1,7 @@
 ---
 date: 2017-03-06
+aliases:
+- /2017/03/06/pots.html
 title: "POTSと診断された事等3件"
 tags:
 - log

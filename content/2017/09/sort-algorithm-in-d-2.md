@@ -1,5 +1,7 @@
 ---
 date: 2017-09-16
+aliases:
+- /2017/09/16/sort-algorithm-in-d-2.html
 title: "Dで巡るソートアルゴリズム その2"
 tags:
 - log

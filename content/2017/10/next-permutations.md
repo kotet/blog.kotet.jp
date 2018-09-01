@@ -1,5 +1,7 @@
 ---
 date: 2017-10-14
+aliases:
+- /2017/10/14/next-permutations.html
 title: "D言語の2つのnext_permutation"
 tags:
 - dlang

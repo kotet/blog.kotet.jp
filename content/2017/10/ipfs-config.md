@@ -1,5 +1,7 @@
 ---
 date: 2017-10-19
+aliases:
+- /2017/10/19/ipfs-config.html
 title: "分散ファイルシステムIPFS体験記2:設定一覧"
 tags:
 - ipfs

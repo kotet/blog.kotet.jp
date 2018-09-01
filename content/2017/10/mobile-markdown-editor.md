@@ -1,5 +1,7 @@
 ---
 date: 2017-10-02
+aliases:
+- /2017/10/02/mobile-markdown-editor.html
 title: "iPhoneとデスクトップでmarkdownを書くために用意したツール集"
 tags:
 - translation

@@ -1,5 +1,7 @@
 ---
 date: 2017-10-24
+aliases:
+- /2017/10/24/ipfs-chrome-extention.html
 title: "非中央集権型Web、IPFS体験記4:ブラウザ拡張2"
 tags:
 - ipfs

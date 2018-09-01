@@ -1,5 +1,7 @@
 ---
 date: 2017-08-06
+aliases:
+- /2017/08/06/anonymous-ads.html
 title: "Anonymous adsについて その2"
 tags:
 - log

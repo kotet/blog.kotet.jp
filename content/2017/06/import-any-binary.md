@@ -1,5 +1,7 @@
 ---
 date: 2017-06-28
+aliases:
+- /2017/06/28/import-any-binary.html
 title: "importでコンパイル時にファイルを埋め込む"
 tags:
 - dlang

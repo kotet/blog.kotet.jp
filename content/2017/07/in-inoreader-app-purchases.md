@@ -1,5 +1,7 @@
 ---
 date: 2017-07-13
+aliases:
+- /2017/07/13/in-inoreader-app-purchases.html
 title: "Inoreaderが無料アカウントの機能を減らすらしいがアプリ内課金が不便"
 tags:
 - log

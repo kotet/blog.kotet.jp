@@ -1,5 +1,7 @@
 ---
 date: 2017-12-19
+aliases:
+- /2017/12/19/ipfs-on-manjaro-linux.html
 title: "IPFS体験記10: `pacman -S go-ipfs`"
 tags:
 - ipfs

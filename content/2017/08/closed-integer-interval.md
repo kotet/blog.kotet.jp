@@ -1,5 +1,7 @@
 ---
 date: 2017-08-08
+aliases:
+- /2017/08/08/closed-integer-interval.html
 title: "整数閉区間のRange"
 tags:
 - dlang
