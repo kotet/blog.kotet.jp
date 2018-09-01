@@ -1,5 +1,7 @@
 ---
 date: 2016-12-30
+aliases:
+- /2016/12/30/twitter-cards.html
 title:  "Twitterカードを設定した"
 tags:
 - log
