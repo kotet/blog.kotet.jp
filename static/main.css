@@ -36,6 +36,14 @@ main {
     flex: 1;
 }
 
+main p {
+    word-break: break-word;
+}
+
+main p, main li {
+    line-height: 2;
+}
+
 header.site {
     display: flex;
     flex-direction: row;
