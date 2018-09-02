@@ -11,7 +11,7 @@ About this blog, me, and related links.
 This blog is Kotet's study notes.
 It may contains false information because I'm a beginner.
 The source of this site is in GitHub.
-If you found:
+If you find:
 
 - Typo / grammatical errors
 - Wrong Tags
