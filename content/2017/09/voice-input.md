@@ -1,7 +1,7 @@
 ---
 date: 2017-09-27
 aliases:
-- /2017/09/10/voice-input.html
+- /2017/09/27/voice-input.html
 title: "修正もせずに100％音声入力する日記"
 tags:
 - log
