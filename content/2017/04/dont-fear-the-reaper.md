@@ -1,7 +1,8 @@
 ---
-date: 2017-04-13
+date: 2017-04-16
 aliases:
 - /2017/04/13/dont-fear-the-reaper.html
+- /2017/04/16/dont-fear-the-reaper.html
 title: "死神を恐れないで - GCについて知る【翻訳】"
 tags:
 - dlang
