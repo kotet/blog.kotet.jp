@@ -18,7 +18,7 @@ excerpt: "数週間前、私はこのような記事を書きました: tp, a si
 [許可を得て](https://jugad2.blogspot.com/2017/04/porting-text-pager-from-python-to-d.html?showComment=1492862188174#c3380262533412109352)
 公開するものである。
 誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

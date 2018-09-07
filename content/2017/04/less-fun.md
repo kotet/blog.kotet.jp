@@ -18,8 +18,8 @@ excerpt: "講演者の静かな声と、ほとんどC++のコードのみを映�
 [許可を得て](https://epi.github.io/2017/03/18/less_fun.html#comment-3271891957)
 公開するものである。
 コードのコメントも翻訳してある。
-[ソース](https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }})に原文を併記してあるので、誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+ソースに原文を併記してあるので、誤字や誤訳などを見つけたら今すぐ
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

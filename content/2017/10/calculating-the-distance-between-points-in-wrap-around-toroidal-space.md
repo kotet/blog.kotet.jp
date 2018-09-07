@@ -19,7 +19,7 @@ image: 2017/10/04/wraparound.png
 
 ソース中にコメントの形で原文を残している。
 誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

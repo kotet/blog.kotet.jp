@@ -19,13 +19,14 @@ excerpt: Co-maintainerのDavid NadlingerがDConf 2013のトークで話したよ
 
 ソース中にコメントの形で原文を残している。
 何か気になるところがあれば
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 
 <!-- ![](https://i1.wp.com/dlang.org/blog/wp-content/uploads/2017/07/ldc.png?resize=160%2C160)LDC, the D compiler using [the LLVM backend](https://llvm.org), has been actively developed for going on a dozen years, as laid out by co-maintainer David Nadlinger in [his DConf 2013 talk](http://youtube.com/watch?v=ntdKZWSiJdY). It is considered one of two production compilers for D, along with [GDC](https://www.gdcproject.org), which uses the gcc backend and [has been accepted for inclusion into the gcc tree](https://www.phoronix.com/scan.php?page=news_item&px=GCC-D-Language-Approved). -->
 
-![ldc](/assets/2018/03/ldc.png){:align="left"}
+<img src="/assets/2018/03/ldc.png" align="left" alt="ldc">
+
 Co-maintainerのDavid Nadlingerが[DConf 2013のトーク](http://youtube.com/watch?v=ntdKZWSiJdY)で話したように、
 LDC、[LLVMバックエンド](https://llvm.org)を使ったD言語コンパイラはここ十数年活発に開発されてきました。
 GCCバックエンドを使い[GCCへ追加された](https://www.phoronix.com/scan.php?page=news_item&px=GCC-D-Language-Approved)

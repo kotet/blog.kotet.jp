@@ -19,7 +19,7 @@ excerpt: "D言語の短期的な設計目標の一つにCとのインターフ�
 
 ソース中にコメントの形で原文を残している。
 自分の能力が微妙に届かず誤字や誤訳などが多いと思うので、気になったら
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})
+[Pull request](https://github.com/kotet/blog.kotet.jp)
 を投げつけてくれると喜ぶ。
 
 ---

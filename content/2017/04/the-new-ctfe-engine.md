@@ -21,7 +21,7 @@ excerpt: "9ヶ月前、私はNewCTFEと呼ばれる、Dコンパイラフロン�
 [無事承諾していただけた](https://dlang.org/blog/2017/04/10/the-new-ctfe-engine/#comment-1335)
 のでここに公開する。
 翻訳できていないところや訳の怪しいところがあるので、気になったら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})
+[Pull request](https://github.com/kotet/blog.kotet.jp)
 だ!
 
 ---

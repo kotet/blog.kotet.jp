@@ -17,7 +17,7 @@ tags:
 [許可を得て](https://maikklein.github.io/post/soa-d/#comment-3309967000)
 公開するものである。
 コードのコメントも一部翻訳されている。
-ところどころ訳が怪しいところがあるので、なにか見つけた人は[contribute](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+ところどころ訳が怪しいところがあるので、なにか見つけた人は[contribute](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

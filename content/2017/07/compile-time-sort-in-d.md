@@ -21,7 +21,7 @@ excerpt: "DフォーラムでのRussel Winderの挑発的な問い、「きっ�
 公開するものである。
 
 誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

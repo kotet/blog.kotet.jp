@@ -23,22 +23,16 @@ GitHub Pagesでは、GitHubリポジトリの名前、ブランチ、現在の�
 https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
-[サンプル](https://github.com/{{ site.github.repository_nwo }}/commits/{{ site.github.source.branch }}/{{ page.path }})
-
 ### 現在のページの編集リクエスト(editing)ページ
 
 ```
 https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }}
 ```
 
-[サンプル](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})
-
 ### Markdownで本文を見る(raw)
 
 ```
 https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }}
 ```
-
-[サンプル](https://raw.githubusercontent.com/{{ site.github.repository_nwo }}/{{ site.github.source.branch }}/{{ page.path }})
 
 多分他にもいろいろできると思う。

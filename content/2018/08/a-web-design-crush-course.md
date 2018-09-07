@@ -19,7 +19,7 @@ excerpt: "先に言っておくと、私はプロのデザイナーではあり�
 
 ソース中にコメントの形で原文を残している。
 何か気になるところがあれば
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

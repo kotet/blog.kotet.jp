@@ -24,13 +24,7 @@ excerpt: "タグページではタグごとの記事数を見ることができ�
   <h1 class="page-heading">{{ site.posts | size }} Posts</h1>
 ```
 
-すると以下のように総記事数を表示できる。
-
----
-
-<h1 class="page-heading">{{ site.posts | size }} Posts</h1>
-
----
+すると総記事数を表示できる。
 
 記事執筆時点ではこの記事を含め90件だった。
 もうすぐ100件だ!
