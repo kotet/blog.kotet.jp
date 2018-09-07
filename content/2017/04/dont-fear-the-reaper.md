@@ -21,7 +21,7 @@ excerpt: ‪"Dには、こんにち使用されている多くの言語と同じ
 [許可をもらえた](http://dlang.org/blog/2017/03/20/dont-fear-the-reaper/#comment-1355)
 ので、ここに公開する。
 誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

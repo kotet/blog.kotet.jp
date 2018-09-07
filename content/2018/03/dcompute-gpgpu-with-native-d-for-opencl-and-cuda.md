@@ -19,7 +19,7 @@ excerpt: "DComputeはGPUやその他アクセラレータを使う計算集約�
 
 ソース中にコメントの形で原文を残している。
 誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 
@@ -36,7 +36,8 @@ DComputeの作業をしてそれについてD Blogに書く時間ができまし
 <!-- ![](https://i1.wp.com/dlang.org/blog/wp-content/uploads/2017/07/ldc.png?resize=160%2C160) -->
 <!-- DCompute is a framework and compiler extension to support writing native kernels for OpenCL and CUDA in D to utilise GPUs and other accelerators for computationally intensive code. In development are drivers to automate the interactions between user code and the tedious and error prone compute APIs with the goal of enabling the rapid development of high performance D libraries and applications. -->
 
-![ldc](/assets/2018/03/ldc.png){:align="left"}
+<img src="/assets/2018/03/ldc.png" align="left" alt="ldc">
+
 DComputeはGPUやその他アクセラレータを使う計算集約型コードのためにOpenCLやCUDA用のネイティブカーネルをDで書くことをサポートするフレームワークでありコンパイラ拡張です。
 ハイパフォーマンスDライブラリやアプリケーションの高速な開発を可能にすることを目標にユーザーコードと退屈なものとエラーを起こしがちなコンピュートAPIとの相互作用を自動化するドライバが開発中です。
 

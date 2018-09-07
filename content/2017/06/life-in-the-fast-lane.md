@@ -22,7 +22,7 @@ excerpt: "この記事は、Life in the Fast Lane – The D Blogを自分用に�
 公開するものである。
 
 今回だいぶ翻訳が怪しいので、誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 

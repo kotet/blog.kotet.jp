@@ -135,7 +135,7 @@ Windows 式なので40バイト。
 ピクセル数。
 幅、高さの順番にどちらも符号付き32ビット整数。
 高さは通常正の数にするが、負にすると上下が反転して
-[後述する](#post20180821imagelineorder)
+[後述する](#画像データ)
 画像データの並びがわかりやすくなるらしい。
 わざわざ負数にして計算ミスを起こしたくないし、変なことして表示されなかったら悲しいので、
 ここはお行儀よくしておく。
@@ -198,7 +198,6 @@ Windows 式なので40バイト。
 ```
 
 #### 画像データ
-{: #post20180821imagelineorder}
 
 いよいよ絵を**書いて**いく。
 いくつか注意点がある。
@@ -351,7 +350,7 @@ $ echo "Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 ### 完成、そしてツイート
 
-![ノート](/assets/2018/08/bitmap.png){:style="width: 400px;"}
+<img src="/assets/2018/08/bitmap.png" alt="ノート" width="400">
 
 ノート1ページ (と複数の失敗ページ) の計算の結果、base64にエンコードされたビットマップ画像が完成した。
 後は`data:image/bmp;base64,`をくっつけてツイートするだけだ。

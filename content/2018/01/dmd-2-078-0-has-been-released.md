@@ -19,7 +19,7 @@ excerpt: "DMDのメジャーリリース、2.078.0が新年にパッケージさ
 
 ソース中にコメントの形で原文を残している。
 誤字や誤訳など気になったら
-[Pull requestを投げつけて](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})
+[Pull requestを投げつけて](https://github.com/kotet/blog.kotet.jp)
 くれると喜ぶ。
 
 ---

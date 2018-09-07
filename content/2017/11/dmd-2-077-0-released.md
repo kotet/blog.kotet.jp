@@ -19,7 +19,7 @@ excerpt: "D FoundationはDMD 2.077.0を発表しました。 このDプログラ
 
 ソース中にコメントの形で原文を残している。
 内容が理解できる程度のざっくりした翻訳であり誤字や誤訳などが多いので、気になったら
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 <!-- # DMD 2.077.0 Released -->

@@ -17,7 +17,7 @@ excerpt: "Bitcoinのスケーラビリティー問題を解決するために、
 
 ソース中にコメントの形で原文を残している。
 誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 <!-- To solve Bitcoin’s scalability challenge, many so-called _layer 2_ protocols have been proposed. All of these protocols operate on the same, relatively simple, principle: -->

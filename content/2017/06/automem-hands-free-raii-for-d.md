@@ -19,7 +19,7 @@ excerpt: "ガベージコレクトをする言語はフレーム問題に苦し�
 [許可を得て](http://dlang.org/blog/2017/04/28/automem-hands-free-raii-for-d/#comment-1616)
 公開するものである。
 誤字や誤訳などを見つけたら今すぐ
-[Pull request](https://github.com/{{ site.github.repository_nwo }}/edit/{{ site.github.source.branch }}/{{ page.path }})だ!
+[Pull request](https://github.com/kotet/blog.kotet.jp)だ!
 
 ---
 
