@@ -1,0 +1,71 @@
+main {
+    width: 800px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+main > header {
+    margin: 1em;
+}
+
+main > article {
+    margin: 1em;
+}
+
+main > footer {
+    color: var(--textgray);
+    border-top: var(--border);
+    padding: 1em;
+}
+
+main > footer a {
+    color: var(--textgray);
+}
+
+main > footer h2 {
+    display: inline;
+    font-size: 1em;
+}
+
+main > footer p {
+    display: inline;
+    margin-left: 1em;
+}
+
+#TableOfContents>ul {
+    /* h1 */
+    padding: 0;
+}
+
+#TableOfContents>ul>li>ul {
+    /* h2 */
+    padding: 0;
+}
+
+#TableOfContents li {
+    list-style: none;
+}
+
+#TableOfContents>ul>li>ul>li>ul li {
+    list-style-type: initial;
+}
+
+aside {
+    padding: .5em 1em;
+    background: #EEE;
+}
+
+article svg {
+    display: block;
+    margin: 0 auto;
+}
+
+article blockquote {
+    margin: 0;
+    border-left: .5em double lightgray;
+    padding-left: 1em;
+}
+
+div.highlight pre {
+    padding: 1em;
+}
