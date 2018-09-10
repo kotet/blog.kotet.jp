@@ -21,7 +21,7 @@ excerpt: "今回はWindowsでIPFSを使ってみる。
 `install.sh`は特に使うわけではないっぽい。
 以下Powershell。
 
-```
+```console
 PS C:\Users\kotet_000\Downloads\ipfs-update_v1.5.2_windows-amd64\ipfs-update> ./ipfs-update
 NAME:
    ipfs-update.exe - Update ipfs.
@@ -50,7 +50,7 @@ GLOBAL OPTIONS:
 
 大丈夫そうに見える。さっそく最新の安定板をインストールする。
 
-```
+```console
 PS C:\Users\kotet_000\Downloads\ipfs-update_v1.5.2_windows-amd64\ipfs-update> ./ipfs-update versions
 v0.3.2
 v0.3.4
@@ -94,7 +94,7 @@ error initializing with new binary: exec: "C:\\Users\\KOTET_~1\\AppData\\Local\\
 READMEも改行コードがWindows仕様になってないし、やはりバイナリ以外は不要である。
 `ipfs.exe`をPATHの通っているところに置くのだがやはりめんどくさいのでデスクトップに置く。
 
-```
+```console
 PS C:\Users\kotet_000\Desktop> ./ipfs version
 ipfs version 0.4.11
 PS C:\Users\kotet_000\Desktop> ./ipfs init
@@ -138,7 +138,7 @@ Check out some of the other files in this directory:
 デーモンも起動してみる。
 ファイアウォールで通信がブロックされ、ダイアログが出るのでアクセスを許可する。
 
-```
+```console
 PS C:\Users\kotet_000\Desktop> ./ipfs daemon
 Initializing daemon...
 Swarm listening on /ip4/127.0.0.1/tcp/4001
