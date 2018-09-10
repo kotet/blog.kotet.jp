@@ -1,7 +1,7 @@
 ---
 date: 2017-01-24
 aliases:
-- /2017/01/03/trivial-things.html
+- /2017/01/24/trivial-things.html
 title: "よしなしごと 1/24"
 tags:
 - trivial_things
