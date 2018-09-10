@@ -79,20 +79,20 @@ Cのコードで構造体は`struct SHA256state_st`として定義され、そ�
 の記事にあるように、以下のコードは同じ意味になる。
 
 > ```
->// In C
->typedef struct foo_s
->{
->	int x;
->	struct foo_s *next;
->} foo_t;
->
->// In D
->struct foo_t
->{
->	int x;
->	foo_t *next;
->}
->```
+// In C
+typedef struct foo_s
+{
+	int x;
+	struct foo_s *next;
+} foo_t;
+
+// In D
+struct foo_t
+{
+	int x;
+	foo_t *next;
+}
+```
 
 なので`SHA256state_st`はどこかになくなっている。
 
