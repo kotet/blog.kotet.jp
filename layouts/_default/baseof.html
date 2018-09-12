@@ -18,7 +18,6 @@
 
 <body>
     <header class="site">
-        <h1><a href="/">{{ .Site.Title }}</a></h1>
         <nav>
             <ul>{{ block "header" . }}
                 <li><a href="/about">ABOUT</a></li>
@@ -28,6 +27,7 @@
                 {{ end }}
             </ul>
         </nav>
+        <h1><a href="/">KOTET'S PERSONAL BLOG</a></h1>
     </header>
     <main>
         {{ block "main" . }}{{ end }}

@@ -13,16 +13,18 @@ main > article {
 }
 
 main > footer {
-    color: var(--textgray);
-    border-top: var(--border);
+    color: #999;
+    border-top: 1px solid #444;
     padding: 1em;
 }
 
 main > footer a {
-    color: var(--textgray);
+    color: orchid;
 }
 
 main > footer h2 {
+    color: #999;
+    border: none;
     display: inline;
     font-size: 1em;
 }

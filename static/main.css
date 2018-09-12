@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway:300');
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 
 body,html {
     font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
@@ -6,11 +6,7 @@ body,html {
     padding: 0;
     min-height: 100vh;
     font-size: 16px;
-
-    --text: black;
-    --textgray: gray;
-    --border: 1px solid gray;
-    --link: steelblue;
+    color: #444;
 }
 
 body {
@@ -19,7 +15,8 @@ body {
 }
 
 a {
-    color: var(--link);
+    color: darkorchid;
+    text-decoration: none;
 }
 
 img {
@@ -29,7 +26,20 @@ img {
 }
 
 h2 {
-    font-size: 2em;
+    font-size: 2.5em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+h2,h3,h4,h5 {
+    border-bottom: .1em solid darkorchid;
+    word-break: break-word;
+}
+
+h2 {
+    border-bottom-style: dashed;
 }
 
 main {
@@ -46,35 +56,54 @@ main p, main li {
 
 header.site {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
+    flex-direction: column;
+    align-items: center;
 }
 
-header.site a {
-    color: var(--text);
+header.site h1 a {
+    color: white;
 }
 
 header.site h1 {
-    margin: .5em;
-    margin-right: auto;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Oswald', sans-serif;
+    background: darkorchid;
+    font-size: 10vw;
+    margin-top: 0;
+    width: 100%;
+    text-align: center;
+}
+
+@media(min-width: 800px){
+    header.site h1 {
+        font-size: 5em;
+    }
 }
 
 header.site nav {
-    margin-left: 1em;
+    width: 100%;
+    max-width: 800px;
+}
+
+header.site nav a {
+    color: #444;
 }
 
 header.site ul {
     padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
 }
 
 header.site li {
     list-style: none;
-    margin-right: 1em;
+    font-family: 'Oswald', sans-serif;
+    margin: 1em;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid #ccc;
 }
 
 .ad-wrapper {
