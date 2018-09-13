@@ -17,7 +17,7 @@ jobs:
       - save_cache:
           key: hugo-cache-public-{{ epoch }}
           paths:
-            - ~/hugo/public
+            - ~/project/public
 
   deploy:
     machine:
