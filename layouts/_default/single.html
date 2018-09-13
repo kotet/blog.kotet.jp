@@ -1,6 +1,9 @@
 {{ define "title" }}{{ if .Params.tags }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
 <meta name="description" content="{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }}">
-<link rel="stylesheet" type="text/css" href="/single.css" />
+
+{{ $style := resources.Get "/sass/single.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.Permalink }}">
+
 {{ partial "head/mathjax" . }}
 {{ end }}{{ define "main" }}
 <header>

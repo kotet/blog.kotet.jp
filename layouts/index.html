@@ -1,15 +1,8 @@
 {{ define "title" }}{{ .Site.Title }}{{ end }} {{ define "head" }}
 <meta name="description" content="{{ .Params.Excerpt }}">
-<style>
-    main {
-        width: 800px;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-    main>article {
-        margin: 1em;
-    }
-</style>
+
+{{ $style := resources.Get "/sass/index.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.Permalink }}">
 {{ end }}{{ define "main" }}
 <article>
     <h2>{{ .Title }}</h2>

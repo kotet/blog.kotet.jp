@@ -1,25 +1,8 @@
 {{ define "title" }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
 <meta name="description" content="{{ .Params.Excerpt }}">
-<style>
-    main {
-        width: 800px;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-    main>article {
-        margin: 1em;
-    }
-    main>article>h2 svg {
-        height: 1.5ex;
-        fill: #444;
-    }
-    main ul {
-        padding: 0;
-    }
-    main li {
-        list-style: none;
-    }
-</style>
+
+{{ $style := resources.Get "/sass/terms.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.Permalink }}">
 {{ end }}{{ define "main" }}
 <article>
         <h2>{{ .Title }}

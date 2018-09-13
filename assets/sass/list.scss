@@ -1,0 +1,14 @@
+@import "main";
+
+main {
+    width: 800px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+main>article {
+    margin: 1em;
+}
+main>article>h2 svg {
+    height: 1.5ex;
+    fill: #444;
+}
