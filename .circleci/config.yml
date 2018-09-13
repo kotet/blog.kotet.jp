@@ -6,28 +6,20 @@ jobs:
     working_directory: ~/project
     steps:
       - checkout
-      - restore_cache:
-          key: hugo-cache
+      - run:
+          command: |
+            HUGO_ENV=production hugo --minify
+
+  deploy:
+    machine:
+      enabled: true
+    working_directory: ~/project
+    steps:
       - run:
           command: |
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
             rm -rf public/
             git clone git@github.com:kotet/kotet.github.io.git public
-            HUGO_ENV=production hugo --minify
-      - save_cache:
-          key: hugo-cache-public-{{ epoch }}
-          paths:
-            - ~/project/public
-
-  deploy:
-    machine:
-      enabled: true
-    working_directory: ~/project/public
-    steps:
-      - restore_cache:
-          key: hugo-cache-public
-      - run:
-          command: |
             echo "blog.kotet.jp" > CNAME
             git config --global user.name "CircleCI"
             git config --global user.email "circleci@example.com"
