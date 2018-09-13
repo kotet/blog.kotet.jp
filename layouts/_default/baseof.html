@@ -4,16 +4,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {{ block "head" . }}
+    {{ $style := resources.Get "/sass/main.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+    {{ end }}
     <title>{{ block "title" . }}Kotet.jp{{ end }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/main.css" />
     <link rel="canonical" href="{{ .Permalink }}" />
-    {{ partial "head/analytics" . }}
-    {{ partial "head/ads.html" . }}
     <link rel="icon" href="/favicon.ico">
     {{ partial "head/twitter-card" . }}
     {{ .Hugo.Generator }}
-    {{ block "head" . }}{{ end }}
+    {{ partial "head/analytics" . }}
+    {{ partial "head/ads.html" . }}
 </head>
 
 <body>
