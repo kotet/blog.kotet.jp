@@ -109,10 +109,24 @@ hr {
 .ad-wrapper {
     width: 100%;
     max-width: 800px;
+    display: flex;
+    justify-content: center;
+}
+
+.adsbygoogle {
+    width: 320px;
+    height: 100px;
+}
+
+@media(min-width: 800px) {
+    .adsbygoogle {
+        width: 728px;
+        height: 90px;
+    }
 }
 
 footer.site {
-    color: var(--textgray);
+    color: #444;
     display: flex;
     justify-content: right;
 }
