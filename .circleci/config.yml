@@ -27,7 +27,7 @@ jobs:
             go get -u -v github.com/gohugoio/hugo
             rm -rf public/*
             sudo cp /usr/share/zoneinfo/Japan /etc/localtime
-            hugo
+            hugo --minify
       - save_cache:
           key: hugo-cache-public-{{ epoch }}
           paths:
