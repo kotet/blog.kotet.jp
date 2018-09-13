@@ -11,8 +11,8 @@ jobs:
             HUGO_ENV=production hugo --minify
 
   deploy:
-    machine:
-      enabled: true
+    docker:
+      - image: cibuilds/hugo
     working_directory: ~/project
     steps:
       - run:
