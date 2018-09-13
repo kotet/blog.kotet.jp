@@ -15,6 +15,7 @@ jobs:
       - image: cibuilds/hugo
     working_directory: ~/project
     steps:
+      - checkout
       - run:
           command: |
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
