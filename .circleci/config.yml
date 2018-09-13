@@ -1,22 +1,11 @@
 version: 2
-
 jobs:
-  checkout_code:
-    docker:
-      - image: circleci/golang:1.8
-    working_directory: ~/hugo
-    steps:
-      - checkout
-      - save_cache:
-          key: hugo-cache-{{ epoch }}
-          paths:
-            - ~/hugo
-
   build:
     docker:
-      - image: circleci/golang:1.8
-    working_directory: ~/hugo
+      - image: cibuilds/hugo
+    working_directory: ~/project
     steps:
+      - checkout
       - restore_cache:
           key: hugo-cache
       - run:
@@ -24,10 +13,7 @@ jobs:
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
             rm -rf public/
             git clone git@github.com:kotet/kotet.github.io.git public
-            go get -u -v github.com/gohugoio/hugo
-            rm -rf public/*
-            sudo cp /usr/share/zoneinfo/Japan /etc/localtime
-            hugo --minify
+            HUGO_ENV=production hugo --minify
       - save_cache:
           key: hugo-cache-public-{{ epoch }}
           paths:
@@ -53,10 +39,7 @@ workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - checkout_code
-      - build:
-          requires:
-            - checkout_code
+      - build
       - deploy:
           filters:
             branches:
