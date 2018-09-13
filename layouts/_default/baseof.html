@@ -31,7 +31,9 @@
     </header>
     <main>
         {{ block "main" . }}{{ end }}
-        <div class="ad-wrapper"></div>
+        <div class="ad-wrapper">
+            {{ partial "adsbygoogle" . }}
+        </div>
     </main>
     {{ partial "footer" . }}
 </body>
