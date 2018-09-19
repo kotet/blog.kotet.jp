@@ -17,6 +17,7 @@
         {{ if isset .Params "date" }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
     </p>
+    {{ partial "old-post" . }}
     {{ partial "toc" . }}
 </header>
 <article>{{ .Content }}</article>
