@@ -25,7 +25,8 @@ image: 2017/07/06/twitter.png
 しかしどうもMathJaxは変わらず数式をレンダリングし続けてくれているように見える。
 なぜだろう?と思って更に読み込んだところ上のページに追記があった。
 
-> ## Temporary redirect starting May 1, 2017
+> **Temporary redirect starting May 1, 2017**
+>
 > **[Updated 2017/04/10]**
 >
 > We will implement a temporary redirect on cdn.mathjax.org to redirect users to cdnjs.

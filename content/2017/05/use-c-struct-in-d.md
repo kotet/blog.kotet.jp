@@ -78,7 +78,7 @@ Cのコードで構造体は`struct SHA256state_st`として定義され、そ�
 [こちら](https://www.gamedev.net/resources/_/technical/game-programming/binding-d-to-c-r3122)
 の記事にあるように、以下のコードは同じ意味になる。
 
-> ```
+> ```txt
 // In C
 typedef struct foo_s
 {

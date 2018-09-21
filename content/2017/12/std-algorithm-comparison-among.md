@@ -54,8 +54,8 @@ if (arr[i] == tok!"static" && (arr[i + 1] == tok!"if"
 
 > I would `import std.algorithm : among` and make this
 > ```d
-> arr[i + 1].among!(tok!"if", tok!"else", tok!"foreach", tok!"foreach_reverse")
-> ```
+arr[i + 1].among!(tok!"if", tok!"else", tok!"foreach", tok!"foreach_reverse")
+```
 > because it has a lot of cases now [^1]
 
 [^1]: [github.com/dlang-community/dfmt/pull/304#discussion_r153042727](https://github.com/dlang-community/dfmt/pull/304#discussion_r153042727)
