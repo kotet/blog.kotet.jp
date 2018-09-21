@@ -182,8 +182,8 @@ for lin in fil.byLine()
 これについてコメント:
 
 > ```python
-> for lin in fil.byLine()
-> ```
+for lin in fil.byLine()
+```
 >
 >必ずしも有効なPythonではないですが、byLineメソッドがfileオブジェクトにあるとすれば、読めないことはないです :)
 
