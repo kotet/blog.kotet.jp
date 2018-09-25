@@ -3,6 +3,7 @@ title: Products
 excerpt: "非プログラマ向けリンク集。"
 aliases:
 - /blog/2015/12/25/aviutl-bezier2/
+- /pages/Aviutl_bezier/Aviutl_bezier.html
 ---
 
 Links for non-programmer.
