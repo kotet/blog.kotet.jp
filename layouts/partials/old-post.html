@@ -1,3 +1,4 @@
+{{ if isset .Params "Date" }}
 {{ if gt (now.AddDate -1 0 0) .Date }}
 <div style="border: 1em solid darkgoldenrod;padding-left:1em;margin-bottom:1em;">
 <p style="font-weight: bold;">
@@ -7,4 +8,5 @@
     ここに書かれている情報、見解は現在のものとは異なっている場合があります。
 </p>
 </div>
+{{ end }}
 {{ end }}
