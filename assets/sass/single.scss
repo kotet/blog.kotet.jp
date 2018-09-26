@@ -37,6 +37,10 @@ main {
         div.highlight pre {
             padding: 1em;
         }
+        p > code {
+            background: #eee;
+            padding: 0.2em;
+        }
     }
     footer {
         color: #999;
