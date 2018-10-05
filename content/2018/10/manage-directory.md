@@ -24,8 +24,7 @@ excerpt: "大学の演習ではいろいろなことをする。 そのたびに
 引数なしで実行すると `~/workspace/<年>/<月>-<日>/space.<ランダムなプレフィックス>`
 という規則でディレクトリを作成する。
 プレフィックスのおかげで名前がかぶることを心配しなくて良くなり便利。
-そして、そこでシェルを開く（つまり作ったディレクトリに移動する）。
-作業が終わった後に `exit` を実行すると `mkws` を実行したディレクトリに戻ることができる。
+そして、作ったディレクトリに移動する。
 
 ```bash
 $ mkws 
@@ -34,7 +33,7 @@ mkdir: created directory '/home/kotet/workspace/2018'
 mkdir: created directory '/home/kotet/workspace/2018/10-04'
 mkdir: created directory '/home/kotet/workspace/2018/10-04/space.bbjg'
 
-  New shell entered: Run "exit" to back to previous directory.
+  /home/kotet/workspace/2018/10-04/space.bbjg
 
 ```
 
@@ -46,12 +45,12 @@ mkdir: created directory '/home/kotet/workspace/2018/10-04/space.bbjg'
 $ mkws test
 mkdir: created directory '/home/kotet/workspace/2018/10-04/test.tbxr'
 
-  New shell entered: Run "exit" to back to previous directory.
+  /home/kotet/workspace/2018/10-04/test.tbxr
 
 $ mkws kotet
 mkdir: created directory '/home/kotet/workspace/2018/10-04/kotet.stwe'
 
-  New shell entered: Run "exit" to back to previous directory.
+  /home/kotet/workspace/2018/10-04/kotet.stwe
 
 ```
 
@@ -69,6 +68,7 @@ curl https://gist.githubusercontent.com/kotet/965657d6966a888ad3bf90de73142820/r
 #### 手動で追記
 
 Gistで公開されているものを`~/.bashrc` に追記すればインストールは完了である。
+この記事の初版を書いたあと、改変がしやすいように多少整理した。
 命名規則が気にいらなかったりする場合は自分で書き換えてほしい。
 
 [https://gist.github.com/kotet/965657d6966a888ad3bf90de73142820](https://gist.github.com/kotet/965657d6966a888ad3bf90de73142820)
