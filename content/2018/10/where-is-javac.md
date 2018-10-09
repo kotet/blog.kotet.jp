@@ -5,13 +5,13 @@ tags:
 - java
 - linux
 - tech
-excerpt: "少し詰まったのでメモ。 講義でJavaを書くので、自分のラップトップにも開発環境を構築しようと思った。 しかしArch Linuxにおいては、 ただパッケージをインストールするだけではコンパイラ等のツールが使用できない。"
+excerpt: "少し詰まったのでメモ。 講義でJavaを書くので、自分のラップトップにも開発環境を構築しようと思った。 しかしArch Linuxにおいては、 ただパッケージをインストールするだけではjavac、javap等のツールが使用できない。"
 ---
 
 少し詰まったのでメモ。
 講義でJavaを書くので、自分のラップトップにも開発環境を構築しようと思った。
 しかしArch Linuxにおいては、
-ただパッケージをインストールするだけではコンパイラ等のツールが使用できない。
+ただパッケージをインストールするだけでは`javac`、`javap`等のツールが使用できない。
 
 ### archlinux-java
 
@@ -30,7 +30,7 @@ Arch LinuxのJavaには`archlinux-java`という専用の管理用コマンド�
 
 ```bash
 $ yaourt -S jdk10-openjdk
-$  archlinux-java status
+$ archlinux-java status
 Available Java environments:
   java-10-openjdk
   java-8-openjdk/jre (default)
