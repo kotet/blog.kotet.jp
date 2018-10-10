@@ -138,3 +138,17 @@ footer.site p {
 div.highlight pre {
     overflow-x: auto;
 }
+
+.translated {
+    border: .1em solid darkorchid;
+    padding: .5em;
+    font-weight: bold;
+    ul {
+        list-style: none;
+        display: inline;
+        padding: 0;
+        li {
+            display: inline;
+        }
+    }
+}

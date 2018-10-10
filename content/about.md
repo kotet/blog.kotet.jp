@@ -3,24 +3,9 @@ title: About
 excerpt: このサイトと自分について、それと関連するサイトへの案内
 ---
 
-About this blog, me, and related links.  
 このサイトと自分について、それと関連するサイトへの案内。
 
-### このブログについて : About This Blog
-
-This blog is Kotet's study notes.
-It may contains false information because I'm a beginner.
-The source of this site is in GitHub.
-If you find:
-
-- Typo / grammatical errors
-- Wrong Tags
-- False information
-- And other mistakes
-
-in this blog, Please [create issue or pull request](https://github.com/kotet/blog.kotet.jp).
-
----
+### このブログについて
 
 ここはKotetが2、3ツイート以上の長文を書きたくなった時にそれを書いたり、
 プログラミングをしていて得たググっても日本語の記事が少なかった知識を残したりするところ。
@@ -37,20 +22,6 @@ in this blog, Please [create issue or pull request](https://github.com/kotet/blo
 
 ### Kotet
 
-![Kotet](/img/common/logo.png)
-
-No official pronunciation of "Kotet".
-You can pronounce as you like.
-
-I drawn the image above few years ago.
-I am not good at drawing, and this is my best painting.
-I can't draw an image with same quality, forever.
-
-I often write programs using **D programming language**.
-But because of I'm a beginner, I still can't system programming.
-
----
-
 名前の読み方は自分でも決めていないので、いまタイトルを頭の中で読み上げた時の発音で読んでくれればいい。
 
 アイコンは数年前に適当に描いたもの。
@@ -60,12 +31,7 @@ But because of I'm a beginner, I still can't system programming.
 
 主にD言語をやっているが、すごいレベルではまったくない。
 
-### 坂　一哲 : Ban Kazutoshi
-
-I'm studying Computer and Information Science at Aichi Prefectural University.
-I got a PoTS: Postural orthostatic tachycardia syndrome.
-
----
+### 坂 一哲 : Ban Kazutoshi
 
 名字の読みを定期的に間違えられる。
 
@@ -73,7 +39,7 @@ I got a PoTS: Postural orthostatic tachycardia syndrome.
 愛知県立大学の情報科学部に入学。
 ちなみにまだ[治ってはいない](/2018/03/tilt-of-the-dead)。
 
-### アカウント : Online Accounts
+### アカウント
 
 Twitter : [@kotetttt](https://twitter.com/kotetttt)
 

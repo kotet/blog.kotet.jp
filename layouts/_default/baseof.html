@@ -22,14 +22,16 @@
     <header class="site">
         <nav>
             <ul>{{ block "header" . }}
-                <li><a href="/about">ABOUT</a></li>
+                <li><a href="{{ .LanguagePrefix }}/about">ABOUT</a></li>
+                {{ if eq .Lang "ja" }}
                 <li><a href="/products">PRODUCTS</a></li>
-                <li><a href="/tags">TAGS</a></li>
-                <li><a href="/index.xml">FEED</a></li>
+                {{ end }}
+                <li><a href="{{ .LanguagePrefix }}/tags">TAGS</a></li>
+                <li><a href="{{ .LanguagePrefix }}/index.xml">FEED</a></li>
                 {{ end }}
             </ul>
         </nav>
-        <h1><a href="/">KOTET'S PERSONAL BLOG</a></h1>
+        <h1><a href="{{ .LanguagePrefix }}/">KOTET'S PERSONAL BLOG</a></h1>
     </header>
     <main>
         {{ block "main" . }}{{ end }}
