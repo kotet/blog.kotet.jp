@@ -2,6 +2,7 @@
 date: 2017-04-22
 aliases:
 - /2017/04/22/mandelbrot-dlib.html
+- /2017/04/21/mandelbrot-dlib.html
 title: "dlibでマンデルブロ集合を描く"
 tags:
 - dlang
