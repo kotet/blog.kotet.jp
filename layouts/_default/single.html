@@ -6,6 +6,18 @@
 
 {{ partial "head/mathjax" . }}
 {{ end }}{{ define "main" }}
+{{ if .IsTranslated }}
+<div class="translated">
+    <span>Translation available:</span>
+    <ul>
+        {{ range .Translations }}
+        <li>
+            <a href="{{ .Permalink }}" hreflang="{{ .Lang }}">{{ .Lang }}</a>
+        </li>
+        {{ end}}
+    </ul>
+</div>
+{{ end }}
 <header>
     <h2>
         {{ if isset .Params "tags" }}

@@ -13,3 +13,11 @@ taxonomies:
 pygmentsCodeFences: true
 PygmentsOptions: "nobackground=true"
 hasCJKLanguage: true
+
+DefaultContentLanguage: ja
+
+Languages:
+  en:
+    params:
+  ja:
+    params:
