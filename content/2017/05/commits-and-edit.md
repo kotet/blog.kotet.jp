@@ -2,6 +2,7 @@
 date: 2017-05-10
 aliases:
 - /2017/05/10/commits-and-edit.html
+- /2017/05/09/commits-and-edit.html
 title: "記事の編集履歴、PR作成、その他Qiitaにあるような3つの機能の代替"
 tags:
 - jekyll
