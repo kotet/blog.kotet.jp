@@ -1,6 +1,8 @@
 ---
 title: "N分木と配列について"
 date: 2018-11-05
+aliases:
+- /2018/11/05/tree-array.html
 tags:
 - tech
 mathjax: on
