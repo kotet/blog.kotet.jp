@@ -8,14 +8,23 @@ tags:
 
 これは [D言語 Advent Calendar 2018](https://qiita.com/advent-calendar/2018/dlang) 17日目の記事です。
 
-D言語には`AliasSeq`というものがあります。
-これを使うと引数をまるで変数のように取り扱うことができます。
+D言語には`AliasSeq`という~~超絶キモい~~おもしろいものがあります。
+これを使うと引数列をまるで1つのタプルのように取り扱うことができます。
 あまり何度も使うものではないですが、知っているとちょっと便利だったので、
 ここではそんな`AliasSeq`について書きます。
 
 ### AliasSeq
 
+`AliasSeq`について、ドキュメントにはこう書かれています。
+
+> Creates a sequence of zero or more aliases. This is most commonly used as template parameters or arguments.
+> In previous versions of Phobos, this was known as **TypeTuple**.
+
+> ゼロ以上のエイリアスのシーケンスを作ります。これは主にテンプレートパラメータや引数に使われます。
+> 以前のバージョンのPhobosでは、これは**TypeTuple**として知られていました。
+
 `AliasSeq`はこんな感じのシンプルなテンプレートです。
+可変長テンプレート引数として現れるタプルを外の世界に引きずり出しています。
 
 ```d
 template AliasSeq(TList...)
@@ -26,16 +35,7 @@ template AliasSeq(TList...)
 
 [phobos/meta.d at fc96b0a99d5869ef10f503490c1f41be36d276e5 · dlang/phobos](https://github.com/dlang/phobos/blob/fc96b0a99d5869ef10f503490c1f41be36d276e5/std/meta.d#L86)
 
-ドキュメントにはこう書かれています。
-
-> Creates a sequence of zero or more aliases. This is most commonly used as template parameters or arguments.
-> In previous versions of Phobos, this was known as **TypeTuple**.
-
-> ゼロ以上のエイリアスのシーケンスを作ります。これは主にテンプレートパラメータや引数に使われます。
-> 以前のバージョンのPhobosでは、これは**TypeTuple**として知られていました。
-
-まあ、つまり、型タプルです（なんの説明にもなっていない）。
-タプルの形でエイリアスをたくさん作って、
+これを使うことでタプルの形でエイリアスをたくさん作って、
 スライスを取ったりインデックスでアクセスしたりできます。
 
 ```d
@@ -45,7 +45,7 @@ alias SubNumbers = Numbers[1 .. $];
 static assert (SubNumbers[0] == 2);
 ```
 
-ただのエイリアスなので、変数を入れると`AliasSeq`経由で値を変更したりできます。
+ただのエイリアスであって、変数を入れても普通の代入にはならないので注意。
 
 ```d
 import std.stdio;
@@ -84,26 +84,27 @@ void main()
 
 [run.dlang.io/is/ygydUV](https://run.dlang.io/is/ygydUV)
 
-上のコードは以下と同義です。
+`-vcg-ast`オプションを付けてコンパイルして出力を見てみると、
+上のコードは以下のように展開されています。
 
 ```d
+import object;
 import std.stdio;
 import std.meta;
-
 long mul(long a, long b)
 {
-	return a*b;
+        return a * b;
 }
-
 void main()
 {
-    alias A0 = 4;
-    alias A1 = 5:
-	writeln(mul(A0,A1)); // 20
+        alias A = TList;
+        writeln(mul(4L, 5L));
+        return 0;
 }
+// 後略
 ```
 
-数値のかわりに型を入れると、タプル型みたいなものが作れます。
+数値のかわりに型を入れると、型タプルが作れます。
 この場合`4`と`5`は実行時に与えられる値でも大丈夫。
 
 ```d
@@ -127,6 +128,28 @@ void main()
 
 [run.dlang.io/is/PkPWfw](https://run.dlang.io/is/PkPWfw)
 
+実行時には普通の変数のようになります。
+
+```d
+import object;
+import std.stdio;
+import std.meta;
+long mul(long a, long b)
+{
+        return a * b;
+}
+void main()
+{
+        alias A = (long, long);
+        (long, long) param;
+        __param_field_0 = 4L;
+        __param_field_1 = 5L;
+        writeln(mul(__param_field_0, __param_field_1));
+        return 0;
+}
+// 後略
+```
+
 もちろん可変長引数の関数でもOK。
 
 ```d
@@ -142,8 +165,44 @@ void main()
 
 [run.dlang.io/is/YIbt31](https://run.dlang.io/is/YIbt31)
 
-とくにタプル対応などを考慮していない普通の関数の引数列を、
-1つのタプルとして汎用的に扱うことができるようになるわけです。
+普通の関数の引数列を完全にカプセル化して、
+タプルとして汎用的に扱うことができるようになるわけです。
+
+### 引数として宣言する
+
+おもしろいことに、`AliasSeq`は引数の型として使うこともできます。
+
+```d
+import std.stdio;
+import std.meta;
+
+long mul(AliasSeq!(long, long) args)
+{
+    return args[0] * args[1];
+}
+
+void main()
+{
+    writeln(mul(4,5)); // 20
+}
+```
+
+これもコンパイル時に普通の引数列に展開されます。
+
+```d
+import object;
+import std.stdio;
+import std.meta;
+long mul(long _param_0, long _param_1)
+{
+        return _param_0 * _param_1;
+}
+void main()
+{
+        writeln(mul(4L, 5L));
+        return 0;
+}
+```
 
 ### aliasSeqOf
 
@@ -200,7 +259,6 @@ void main()
 上に挙げたコード中の2つの`foreach`は同じものを出力します。
 つまり、1、2、3と順番に`writeln`が実行されます。
 しかし内部的な動作は異なってきます。
-`-vcg-ast`オプションを付けてコンパイルし、出力を見てみましょう。
 
 ```d
 import object;
@@ -296,6 +354,7 @@ if (s[i] == '+' || s[i] == '-' || s[i] == '*' || /* 中略 */ || s[i] == '&')
 
 比較を何度も書かなくてはいけないので非常に煩わしいですね。
 そこで`among`という関数を使うと以下のようになります。
+内部的には`switch`文を使った効率的な関数がコンパイル時に生成されます。
 ここの詳細は[過去の記事](/2017/12/std-algorithm-comparison-among/)に書いてあるので、
 気になる人は読んでください。
 
@@ -308,8 +367,8 @@ if (s[i].among!('+', '-', '*', /* 中略 */, '&'))
 
 冗長な比較や論理演算がなくなってかなり短く書けるようになりました。
 しかし今度は大量の文字をひとつづつクオートで囲むのがめんどくさくなってきます。
-それにまだちょっと読みにくいです。
-こんな感じに書きたい。
+それにまだちょっと読みにくい。
+こんな感じに書きたくなります。
 
 ```d
 if (s[i].among!("+-*/;=(),{}<>[]&"))
@@ -318,7 +377,6 @@ if (s[i].among!("+-*/;=(),{}<>[]&"))
 }
 ```
 
-しかしこの1行のために配列を受け付ける`among`を自作するのもなんだか癪です。
 そんな時`AliasSeq`が役に立ちます。
 `aliasSeqOf`で文字列、つまり`char`の配列を`AliasSeq`にすると、やりたかったことがだいたい実現できます。
 そうしてできたのが最初のコードです。
@@ -330,9 +388,10 @@ if (s[i].among!(aliasSeqOf!"+-*/;=(),{}<>[]&"))
 }
 ```
 
-### わりとなんでもできる
+### この間すべてコンパイル時の出来事である
 
 `AliasSeq`テンプレートを頭の片隅に入れておくと、ちょっとコードの冗長性を下げたりできます。
+しかもここまでの出来事はすべてコンパイル時に処理されており、実行時に余計なコストはかかりません。
 
 D言語の標準ライブラリにはわりとなんでもあるので、
 なにかやりたくなったときにはまずドキュメントを探してみるといいでしょう。
