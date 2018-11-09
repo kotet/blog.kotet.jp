@@ -15,7 +15,8 @@ D言語には`AliasSeq`という~~超絶キモい~~おもしろいものがあ�
 
 ### AliasSeq
 
-`AliasSeq`について、ドキュメントにはこう書かれています。
+`AliasSeq`について、
+[ドキュメント](https://dlang.org/library/std/meta/alias_seq.html)にはこう書かれています。
 
 > Creates a sequence of zero or more aliases. This is most commonly used as template parameters or arguments.
 > In previous versions of Phobos, this was known as **TypeTuple**.
@@ -41,6 +42,7 @@ template AliasSeq(TList...)
 ```d
 alias Numbers = AliasSeq!(1, 2, 3, 4);
 static assert (Numbers[1] == 2);
+
 alias SubNumbers = Numbers[1 .. $];
 static assert (SubNumbers[0] == 2);
 ```
@@ -54,13 +56,13 @@ import std.meta;
 void main()
 {
     long x;
-    alias A = AliasSeq!("hello","world",x);
+    alias A = AliasSeq!("hello", "world", x);
     A[2] = 42;
 	writeln(x); // 42
 }
 ```
 
-[run.dlang.io/is/DTiExK](https://run.dlang.io/is/DTiExK)
+[run.dlang.io/is/KtUUcG](https://run.dlang.io/is/KtUUcG)
 
 ### 引数として渡す
 
@@ -72,19 +74,20 @@ import std.meta;
 
 long mul(long a, long b)
 {
-	return a*b;
+	return a * b;
 }
 
 void main()
 {
-    alias A = AliasSeq!(4,5);
+    alias A = AliasSeq!(4, 5);
 	writeln(mul(A)); // 20
 }
 ```
 
-[run.dlang.io/is/ygydUV](https://run.dlang.io/is/ygydUV)
+[run.dlang.io/is/j8HXPC](https://run.dlang.io/is/j8HXPC)
 
-`-vcg-ast`オプションを付けてコンパイルして出力を見てみると、
+[`-vcg-ast`オプション](/2017/05/vcg-ast/)
+を付けてコンパイルして出力を見てみると、
 上のコードは以下のように展開されています。
 
 ```d
@@ -113,12 +116,12 @@ import std.meta;
 
 long mul(long a, long b)
 {
-	return a*b;
+	return a * b;
 }
 
 void main()
 {
-    alias A = AliasSeq!(long,long);
+    alias A = AliasSeq!(long, long);
     A param;
     param[0] = 4;
     param[1] = 5;
@@ -126,7 +129,7 @@ void main()
 }
 ```
 
-[run.dlang.io/is/PkPWfw](https://run.dlang.io/is/PkPWfw)
+[run.dlang.io/is/pwhmeQ](https://run.dlang.io/is/pwhmeQ)
 
 実行時には普通の変数のようになります。
 
@@ -158,12 +161,12 @@ import std.meta;
 
 void main()
 {
-    alias A = AliasSeq!("hello",' ',"world");
+    alias A = AliasSeq!("hello", ' ', "world");
 	writeln(A); // hello world
 }
 ```
 
-[run.dlang.io/is/YIbt31](https://run.dlang.io/is/YIbt31)
+[run.dlang.io/is/f43IWj](https://run.dlang.io/is/f43IWj)
 
 普通の関数の引数列を完全にカプセル化して、
 タプルとして汎用的に扱うことができるようになるわけです。
@@ -183,9 +186,11 @@ long mul(AliasSeq!(long, long) args)
 
 void main()
 {
-    writeln(mul(4,5)); // 20
+    writeln(mul(4, 5)); // 20
 }
 ```
+
+[run.dlang.io/is/WyL3Wf](https://run.dlang.io/is/WyL3Wf)
 
 これもコンパイル時に普通の引数列に展開されます。
 
@@ -206,7 +211,9 @@ void main()
 
 ### aliasSeqOf
 
-`aliasSeqOf`はinput rangeから`AliasSeq`を生成するテンプレートです。
+`aliasSeqOf`は
+[InputRange](https://qiita.com/umarider/items/e0936c6afdcdf4522cc7#range%E3%81%AE%E4%BB%B2%E9%96%93%E3%81%9F%E3%81%A1)
+から`AliasSeq`を生成するテンプレートです。
 たとえばこんなことができます。
 
 ```d
@@ -215,18 +222,18 @@ import std.meta;
 
 long mul(long a, long b)
 {
-	return a*b;
+	return a * b;
 }
 
 void main()
 {
-    enum ary = [4,5];
+    enum ary = [4, 5];
     alias A = aliasSeqOf!ary;
 	writeln(mul(A)); // 20
 }
 ```
 
-[run.dlang.io/is/KzuB1P](https://run.dlang.io/is/KzuB1P)
+[run.dlang.io/is/OC9DGT](https://run.dlang.io/is/OC9DGT)
 
 まあこの例だと全く嬉しくないですが……。
 
@@ -240,13 +247,13 @@ import std.meta;
 
 void main()
 {
-    alias A = AliasSeq!(1,2,3);
+    alias A = AliasSeq!(1, 2, 3);
     foreach (x; A)
     {
         writeln(x);
     }
 
-    long[] ary = [1,2,3];
+    long[] ary = [1, 2, 3];
     foreach(x; ary)
     {
         writeln(x);
@@ -254,7 +261,7 @@ void main()
 }
 ```
 
-[run.dlang.io/is/rb0wp1](https://run.dlang.io/is/rb0wp1)
+[run.dlang.io/is/1cLv29](https://run.dlang.io/is/1cLv29)
 
 上に挙げたコード中の2つの`foreach`は同じものを出力します。
 つまり、1、2、3と順番に`writeln`が実行されます。
