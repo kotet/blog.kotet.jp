@@ -501,92 +501,233 @@ DコンパイラはPhobos標準ライブラリのかなりの部分をコンパ�
 
 #### CTFE評価の強制
 
-Of course, the compiler usually does not always go this far in attempting to constant\-fold an expression. Past a certain level of complexity, it makes more sense for the compiler to simply leave it up to the generated runtime code to compute the value of the expression. After all, it may be that the entire purpose of the program is to compute the constant answer to a complex mathematical problem. It wouldn't make sense to perform such a computation in the slower CTFE engine instead of letting the generated executable run the computation at native execution speed.
+<!-- Of course, the compiler usually does not always go this far in attempting to constant\-fold an expression. Past a certain level of complexity, it makes more sense for the compiler to simply leave it up to the generated runtime code to compute the value of the expression. After all, it may be that the entire purpose of the program is to compute the constant answer to a complex mathematical problem. It wouldn't make sense to perform such a computation in the slower CTFE engine instead of letting the generated executable run the computation at native execution speed. -->
 
-Being _able_ to perform such a computation at compile\-time when needed, however, can be very useful. For example, you could precompute values for a lookup table that gets stored into the executable, so that there is no runtime cost associated with initializing the table when the program starts up. As such, it is sometimes desirable to _force_ the compiler to evaluate an expression at compile\-time rather than relegating it to runtime. The usual idiom is to assign the result of the computation to a construct that requires the value to be known at compile\-time, such as an `enum` or a template parameter. For example:
+もちろんコンパイラは定数畳み込みを常に前もって行ってくれるとは限りません。
+複雑さがある一定のレベルを超えたら、
+コンパイラはその式の値を計算するコードを実行時用に生成するために残しておいたほうが合理的です。
+プログラム全体の目的が複雑な数学の問題を解いて決まった解を計算することかもしれません。
+そのような計算は遅いCTFE上で行うよりも、
+実行ファイルを生成してネイティブな実行速度で行ったほうがいいでしょう。
 
+<!-- Being _able_ to perform such a computation at compile\-time when needed, however, can be very useful. For example, you could precompute values for a lookup table that gets stored into the executable, so that there is no runtime cost associated with initializing the table when the program starts up. As such, it is sometimes desirable to _force_ the compiler to evaluate an expression at compile\-time rather than relegating it to runtime. The usual idiom is to assign the result of the computation to a construct that requires the value to be known at compile\-time, such as an `enum` or a template parameter. For example: -->
+
+しかし、そのような計算を必要に応じてコンパイル時に**できるようにしておく**と、とても便利です。
+たとえばルックアップテーブルの値を事前計算して実行ファイルに埋め込みたいとします。
+そうすればプログラムの開始時のルックアップテーブルの初期化に関する実行時コストがなくなります。
+このように、式の評価を実行時でなくコンパイル時に行ったほうが望ましい場面が時々あります。
+そういうった場合に便利なイディオムとして、
+コンパイル時に判明している値で計算を行った結果を代入する`enum`やテンプレート引数があります。
+以下に例を挙げましょう。
+
+<!-- ```d
 int complicatedComputation(int x, int y)
 {
-    return ...; /\* insert complicated computation here \*/
+    return ...; /* insert complicated computation here */
 }
 
 void main()
 {
-    // The compiler may choose to evaluate this at compile\-time or not,
+    // The compiler may choose to evaluate this at compile-time or not,
     // depending on how complex the computation is.
-    int i \= complicatedComputation(123, 456);
+    int i = complicatedComputation(123, 456);
 
-    // Since the value of an enum must be known at compile\-time, the
+    // Since the value of an enum must be known at compile-time, the
     // compiler has no choice but to evaluate it in CTFE. This is the
     // standard idiom for forcing CTFE evaluation of an expression.
-    enum j \= complicatedComputation(123, 456);
+    enum j = complicatedComputation(123, 456);
+}
+``` -->
+
+```d
+int complicatedComputation(int x, int y)
+{
+    return ...; /* ここに複雑な計算が入る */
 }
 
-In discussions among D users, when CTFE is mentioned it is usually in this context, where CTFE evaluation is forced because the value of an expression must be known at compile\-time.
+void main()
+{
+    // コンパイラは計算の複雑度に応じて、
+    // これをコンパイル時に評価するか決定します。
+    int i = complicatedComputation(123, 456);
 
-A different "compile\-time"
----------------------------
+    // enum の値はコンパイル時に判明していなければならないため、
+    // コンパイラにはこれをCTFEで評価する以外の選択肢がありません。
+    // これが式のCTFE評価を強制する標準的イディオムです。
+    enum j = complicatedComputation(123, 456);
+}
+```
 
-Coming back to the topic at hand, though, notice that when we speak of CTFE, we speak of "virtual machines" and "bytecode interpreters". This implies that by this point, the code has gone far enough through the compilation process that it is essentially ready to be turned into runtime executable code.
+<!-- In discussions among D users, when CTFE is mentioned it is usually in this context, where CTFE evaluation is forced because the value of an expression must be known at compile\-time. -->
 
-In particular, this means that it has long passed the AST manipulation stage. Which in turn implies that code that can be evaluated by CTFE _can no longer make use of AST manipulation constructs_ like `static if`. In order for CTFE to work, semantic notions such as variables and memory must have been assigned to various constructs in the code, otherwise there is nothing to execute or interpret. But in the AST manipulation phase, such semantics have not yet been assigned \-\- we're still manipulating the structure of the program.
+式の値がコンパイル時に判明している必要があるためにCTFE評価が強制されるので、
+Dユーザー間の議論ではCTFEはこのような文脈で語られることが多いです。
 
-Thus, even though CTFE happens at "compile\-time" just as AST manipulation happens at "compile\-time", this is actually a different "compile\-time". It is much closer to "runtime" than AST manipulation, which represents a much earlier stage in the compilation process. This is why the terminology "compile\-time" is confusing: it gives the false impression that all of these features, AST manipulation and CTFE alike, are lumped together into a single, amorphous blob of time labelled "compile\-time", and that the compiler can somehow make it all magically just work, by fiat.
+<!-- A different "compile\-time"
+--------------------------- -->
 
-The point to take away from all this, is that AST manipulation constructs are applied first, and then the code may be used in CTFE later:
+### 異なる「コンパイル時」
 
-AST manipulation → CTFE
+<!-- Coming back to the topic at hand, though, notice that when we speak of CTFE, we speak of "virtual machines" and "bytecode interpreters". This implies that by this point, the code has gone far enough through the compilation process that it is essentially ready to be turned into runtime executable code. -->
 
-The unidirectional arrow indicates that a piece of code can only move from AST manipulation to CTFE, but never the other way round.
+元の話題に戻りますが、CTFE、
+「バーチャルマシン」や「バイトコードインタプリター」と呼ばれるCTFEについては気をつけてください。
+つまり、この時CTFEとは、
+それがコンパイル過程が実行ファイルを生成する手前まで進んだときに行われるということを意味します。
 
-Of course, in practice, this simple picture is only part of the story. To understand how it all works, it's best to look at actual code examples. So let's now take a look at a few common pitfalls that D learners often run into, and see how this principle applies in practice.
+<!-- In particular, this means that it has long passed the AST manipulation stage. Which in turn implies that code that can be evaluated by CTFE _can no longer make use of AST manipulation constructs_ like `static if`. In order for CTFE to work, semantic notions such as variables and memory must have been assigned to various constructs in the code, otherwise there is nothing to execute or interpret. But in the AST manipulation phase, such semantics have not yet been assigned \-\- we're still manipulating the structure of the program. -->
 
-Case Study: Reading CTFE variables at AST manipulation time
------------------------------------------------------------
+特に、AST操作段階はとうの昔に終わっていることを意味しています。
+つまり、CTFEで評価できるコードはもはや`static if`のような**AST操作ができない**ということを意味します。
+CTFEが動作するためには、
+変数やメモリのような意味論的概念がコードの構成物に対して割り当てられている必要があり、
+そうでなければ実行も評価もできません。
+しかしAST操作フェーズでは、そのようなセマンティクスは与えられていません。
+まだプログラムの構造を操作しているところです。
 
-A rather common complaint that's brought up in the D forums from time to time pertains to code along these lines:
+<!-- Thus, even though CTFE happens at "compile\-time" just as AST manipulation happens at "compile\-time", this is actually a different "compile\-time". It is much closer to "runtime" than AST manipulation, which represents a much earlier stage in the compilation process. This is why the terminology "compile\-time" is confusing: it gives the false impression that all of these features, AST manipulation and CTFE alike, are lumped together into a single, amorphous blob of time labelled "compile\-time", and that the compiler can somehow make it all magically just work, by fiat. -->
 
+したがって、AST操作が「コンパイル時」に行われているようにCTFEも「コンパイル時」に行われていたとしても、
+それは異なる「コンパイル時」です。
+CTFEのそれは、コンパイル過程の速いところで行われるAST操作よりも「実行時」に近いところにあります。
+これが「コンパイル時」という用語が混乱を招く理由です。
+この言葉はAST操作やCTFEのような機能すべてをひとつに固めて、
+はっきりしない時間のまとまりである「コンパイル時」にしてしまうことで、
+コンパイラがなにか魔法のように命令に従ってくれるという誤った印象を与えます。
+
+<!-- The point to take away from all this, is that AST manipulation constructs are applied first, and then the code may be used in CTFE later: -->
+
+重要なのは、AST操作が最初に適用され、その後必要に応じてCTFEが使われるということです。
+
+<!-- AST manipulation → CTFE -->
+
+AST操作 → CTFE
+
+<!-- The unidirectional arrow indicates that a piece of code can only move from AST manipulation to CTFE, but never the other way round. -->
+
+この単方向の矢印はコード片がAST操作からCTFEに移動して、逆には動かないことを示しています。
+
+<!-- Of course, in practice, this simple picture is only part of the story. To understand how it all works, it's best to look at actual code examples. So let's now take a look at a few common pitfalls that D learners often run into, and see how this principle applies in practice. -->
+
+もちろんこれは単純化された図式です。
+これらがどのように動くかを理解するためには、実際のコードを見てみるのが一番です。
+というわけでD学習者が陥りがちな落とし穴と、そこに上の法則をいかに適用するかを見ていきましょう。
+
+<!-- Case Study: Reading CTFE variables at AST manipulation time
+----------------------------------------------------------- -->
+
+### ケーススタディ：CTFE変数をAST操作時に読む
+
+<!-- A rather common complaint that's brought up in the D forums from time to time pertains to code along these lines: -->
+
+Dフォーラムでとくに何度も現れる苦情はこのようなコードに関するものでしょう。
+
+<!-- ```d
 int ctfeFunc(bool b)
 {
-    static if (b)    // <\-\-\- compile error at this line
+    static if (b)    // <--- compile error at this line
         return 1;
     else
         return 0;
 }
 
 // N.B.: the enum forces the compiler to evaluate the function in CTFE
-enum myInt \= ctfeFunc(true);
+enum myInt = ctfeFunc(true);
+``` -->
 
-If you try to compile the above code, the compiler will complain that the `static if` cannot read the value of `b` at "compile\-time". Which almost certainly elicits the reaction, "What??! What do you mean you can't read `b` at compile\-time?! Aren't you running this code in CTFE, which is by definition compile\-time, with a value of `b` that's obviously known at compile\-time?"
+```d
+int ctfeFunc(bool b)
+{
+    static if (b)    // <--- この行でコンパイルエラー
+        return 1;
+    else
+        return 0;
+}
 
-On the surface, this would appear to be a glaring bug in the compiler, or a glaring shortcoming in D's "compile\-time" capabilities, and/or an astonishing lack of competence on the part of the D compiler authors in failing to notice a problem in such an obvious and simple use case for CTFE.
+// 注：enumはコンパイラに関数のCTFEによる評価を強制します
+enum myInt = ctfeFunc(true);
+```
 
-If we understand what's really going on, however, we would see why the compiler rejected this code. Remember that during the process of compilation, the D compiler first creates an AST of the code, evaluating any `static if`s that may change the shape of the resulting AST.
+<!-- If you try to compile the above code, the compiler will complain that the `static if` cannot read the value of `b` at "compile\-time". Which almost certainly elicits the reaction, "What??! What do you mean you can't read `b` at compile\-time?! Aren't you running this code in CTFE, which is by definition compile\-time, with a value of `b` that's obviously known at compile\-time?" -->
 
-So when the compiler first encounters the declaration of `ctfeFunc`, it scans its body and sees the `static if (b)` while building the AST for this function. If the value of `b` is `true`, then it would emit the AST tree that essentially corresponds with:
+上のコードをコンパイルしようとすると、
+コンパイラは`static if`は`b`の値を「コンパイル時」に読めないと主張します。
+これは明らかにこんな反応を引き出すでしょう。
+「は？？！`b`がコンパイル時に読めないってどういう意味だよ？！
+このコードはコンパイル時であるCTFEで実行されてるんだから`b`の値はコンパイル時にわかるはずだろ？」
 
+<!-- On the surface, this would appear to be a glaring bug in the compiler, or a glaring shortcoming in D's "compile\-time" capabilities, and/or an astonishing lack of competence on the part of the D compiler authors in failing to notice a problem in such an obvious and simple use case for CTFE. -->
+
+表面上、これはあきらかにコンパイラのバグか、Dの「コンパイル時」機能の欠陥か、
+Dコンパイラ作者の驚くべき力量不足によって明らかかつシンプルなCTFEのユースケースにおける問題を通知することに失敗しているように見えます。
+
+<!-- If we understand what's really going on, however, we would see why the compiler rejected this code. Remember that during the process of compilation, the D compiler first creates an AST of the code, evaluating any `static if`s that may change the shape of the resulting AST. -->
+
+しかし、何が起きているかを正しく理解すれば、なぜコンパイラがこのコードを受け付けないかわかります。
+コンパイルの過程で、DコンパイラはまずコードのASTを生成し、
+`static if`の評価はその結果出力されるASTの形を変えることを思い出してください。
+
+<!-- So when the compiler first encounters the declaration of `ctfeFunc`, it scans its body and sees the `static if (b)` while building the AST for this function. If the value of `b` is `true`, then it would emit the AST tree that essentially corresponds with: -->
+
+コンパイラが`ctfeFunc`に遭遇した時、コンパイラはその中身をスキャンし、
+そしてこの関数のASTを構築している間に`static if (b)`に遭遇します。
+`b`の値が`true`なら、コンパイラはだいたいこんな感じのASTを出力します。
+
+```d
 int ctfeFunc(bool b)
 {
     return 1;
 }
+```
 
-(Recall that in the AST manipulation stage, the false branch of a `static if` is discarded from the resulting AST, and it is as if it wasn't even there. So the `return 0` doesn't even make it past this stage.)
+<!-- (Recall that in the AST manipulation stage, the false branch of a `static if` is discarded from the resulting AST, and it is as if it wasn't even there. So the `return 0` doesn't even make it past this stage.) -->
 
-If the value of `b` is `false`, then it would emit the AST tree that corresponds with:
+（AST操作段階で、`static if`のfalseブランチは結果のASTから除外され、
+はじめから何もなかったのと同じようになることを思い出してください。
+したがって`return 0`はこの後の段階に現れません。）
 
+<!-- If the value of `b` is `false`, then it would emit the AST tree that corresponds with: -->
+
+`b`の値が`false`ならば、以下のコードに相当するASTツリーが出力されます。
+
+```d
 int ctfeFunc(bool b)
 {
     return 0;
 }
+```
 
-There is a problem here, however. The value of `b` is unknown at this point. All the compiler knows about `b` at this point is that it's an identifier representing a parameter of the function. Semantics such as what values it might hold haven't been attached to it yet. In fact, the compiler hasn't even gotten to the `enum` line that calls `ctfeFunc` with an argument of `true` yet!
+<!-- There is a problem here, however. The value of `b` is unknown at this point. All the compiler knows about `b` at this point is that it's an identifier representing a parameter of the function. Semantics such as what values it might hold haven't been attached to it yet. In fact, the compiler hasn't even gotten to the `enum` line that calls `ctfeFunc` with an argument of `true` yet! -->
 
-And even if the compiler _did_ get to the `enum` line, it wouldn't have been able to assign a value to `b`, because the function's AST is still not fully processed yet. You can't assign values to identifiers in an AST that hasn't been fully constructed yet, because the meaning of the identifiers may change once the AST is altered. It is simply too early at this point to meaningfully assign any value to `b`. The notion of assigning a value to a parameter is a semantic concept that can only be applied _after_ the AST manipulation phase. But in order to fully process the AST, the compiler needs to know the value of `b`. Yet the value of `b` cannot be known until after the AST has been processed. This is an insoluble impasse, so the compiler gives up and emits a compile error.
+しかし、ここで問題が発生します。
+`b`の値はこの時点ではわかっていないのです。
+この時点で`b`についてコンパイラが知っていることはこれが関数の引数を表す識別子だということだけです。
+これがどんな値を持ちうるか等のセマンティクスはまだ与えられていません。
+実際、コンパイラは引数`true`が渡されている`ctfeFunc`を呼び出す`enum`のことをまだ知りません！
 
-### Solution 1: Make it available during AST manipulation
+<!-- And even if the compiler _did_ get to the `enum` line, it wouldn't have been able to assign a value to `b`, because the function's AST is still not fully processed yet. You can't assign values to identifiers in an AST that hasn't been fully constructed yet, because the meaning of the identifiers may change once the AST is altered. It is simply too early at this point to meaningfully assign any value to `b`. The notion of assigning a value to a parameter is a semantic concept that can only be applied _after_ the AST manipulation phase. But in order to fully process the AST, the compiler needs to know the value of `b`. Yet the value of `b` cannot be known until after the AST has been processed. This is an insoluble impasse, so the compiler gives up and emits a compile error. -->
 
-One possible solution to this impasse is to make the value of `b` available during the AST manipulation phase. The simplest way to do this is to turn `ctfeFunc` into a template function with `b` as a template parameter, with the corresponding change in the `enum` line to pass `true` as a template argument rather than a runtime argument:
+コンパイラが`enum`の行を**読んでいた**としても、今度は関数のASTがまだ完全に処理されていないため、
+その値を`b`に代入することはできません。
+ASTが変化すると識別子の意味も変化してしまう可能性があるので、
+ASTが完全に構築されるまで値を識別子に代入することはできません。
+この時点では`b`になにか意味があるかのように値を代入するのはまだ早いのです。
+引数への値の代入という概念ははAST操作フェーズが適用された**後に**のみ適用できる意味論的概念です。
+しかしASTを最後まで処理するには、コンパイラは`b`の値を知らなければなりません。
+`b`の値はASTを最後まで処理しないとわかりません。
+これは解決できない袋小路なので、コンパイラは諦めてコンパイルエラーを出力するのです。
 
+<!-- ### Solution 1: Make it available during AST manipulation -->
+
+#### 解決策1：AST操作中に値を使えるようにする
+
+<!-- One possible solution to this impasse is to make the value of `b` available during the AST manipulation phase. The simplest way to do this is to turn `ctfeFunc` into a template function with `b` as a template parameter, with the corresponding change in the `enum` line to pass `true` as a template argument rather than a runtime argument: -->
+
+解決策のひとつは`b`の値をAST操作フェーズに使えるようにすることです。
+それを実現する最も単純な方法は`ctfeFunc`を`b`をテンプレート引数にとるテンプレート関数にして、
+それに応じて`enum`の行が`true`を実行時引数でなくテンプレート引数として渡すように変更することです。
+
+<!-- ```d
 int ctfeFunc(bool b)()    // N.B.: the first set of parentheses enclose template parameters
 {
     static if (b)    // Now this compiles without error
@@ -595,39 +736,91 @@ int ctfeFunc(bool b)()    // N.B.: the first set of parentheses enclose template
         return 0;
 }
 
-enum myInt \= ctfeFunc!true;
+enum myInt = ctfeFunc!true;
+``` -->
 
-Since `b` is now a template argument, its value is known during AST manipulation, and so the `static if` can be compiled without any problems.
+```d
+int ctfeFunc(bool b)()    // 注：最初のカッコの組にはテンプレート引数が入ります
+{
+    static if (b)    // エラーを出さずにコンパイルできるようになりました
+        return 1;
+    else
+        return 0;
+}
 
-### Solution 2: Do everything during AST manipulation instead
+enum myInt = ctfeFunc!true;
+```
 
-The foregoing solution works, but if we consider it more carefully, we will see that we can take it further. Look at it again from the standpoint of the AST manipulation. After the AST manipulation phase, the function has essentially become:
+<!-- Since `b` is now a template argument, its value is known during AST manipulation, and so the `static if` can be compiled without any problems. -->
 
+`b`はテンプレート引数なので、その値はAST操作の時点で判明しており、
+したがって`static if`も問題なくコンパイルできます。
+
+<!-- ### Solution 2: Do everything during AST manipulation instead -->
+
+#### 解決策2：すべてをAST操作で行う
+
+<!-- The foregoing solution works, but if we consider it more carefully, we will see that we can take it further. Look at it again from the standpoint of the AST manipulation. After the AST manipulation phase, the function has essentially become: -->
+
+先の方法もいいですが、より注意深く見てみると、もっとうまくできることに気が付きます。
+AST操作の観点からもう一度考えてみましょう。
+AST操作フェーズのあと、関数はこうなっているはずです。
+
+<!-- ```d
 int ctfeFunc()    // N.B.: template parameters no longer exist after AST manipulation phase
 {
     return 1;     // N.B.: else branch of static if has been discarded
 }
+``` -->
 
-This means that CTFE wasn't actually necessary to evaluate this function in the first place! We could have just as easily declared **ctfeFunc** as a template, completely evaluated in the AST manipulation phase. (And we might as well also rename it to something other than `ctfeFunc`, since it would be no longer evaluated in CTFE, and no longer even a function):
+```d
+int ctfeFunc()    // 注：テンプレート引数はAST操作フェーズの後には存在しません
+{
+    return 1;     // 注：static ifのelseブランチは取り除かれています
+}
+```
 
+<!-- This means that CTFE wasn't actually necessary to evaluate this function in the first place! We could have just as easily declared **ctfeFunc** as a template, completely evaluated in the AST manipulation phase. (And we might as well also rename it to something other than `ctfeFunc`, since it would be no longer evaluated in CTFE, and no longer even a function): -->
+
+つまりCTFEはそもそも最初からこの関数について何も評価する必要はないのです！
+**ctfeFunc**を限界までテンプレートとして宣言すると、完全にAST操作フェーズに評価されるようになります。
+（これはもはやCTFEで評価されておらず、関数でもないので、
+名前も`ctfeFunc`から変えたほうがいいかもしれません。）
+
+```d
 template Value(bool b)
 {
     static if (b)
-        enum Value \= 1;
+        enum Value = 1;
     else
-        enum Value \= 0;
+        enum Value = 0;
 }
 
-enum myVal \= Value!true;
+enum myVal = Value!true;
+```
 
-Now `myVal` can be completely evaluated at the AST manipulation phase, and CTFE doesn't even need to be involved.
+<!-- Now `myVal` can be completely evaluated at the AST manipulation phase, and CTFE doesn't even need to be involved. -->
 
-### Solution 3: Move everything to CTFE
+`myVal`は完全にAST操作フェーズに評価されるようになり、CTFEは全く関与しなくなりました。
 
-There is another approach, however. Although the example we have given is rather trivial, in practice CTFE functions tend to be a lot more involved than a mere if\-condition over a boolean parameter. Some functions may not be amenable to be rewritten in template form. So what do we do in that case?
+<!-- ### Solution 3: Move everything to CTFE -->
 
-The answer may surprise you: get rid of the `static if`, and replace it with a plain old "runtime" `if`, like this:
+#### 解決策3：すべてをCTFEに移す
 
+<!-- There is another approach, however. Although the example we have given is rather trivial, in practice CTFE functions tend to be a lot more involved than a mere if\-condition over a boolean parameter. Some functions may not be amenable to be rewritten in template form. So what do we do in that case? -->
+
+さらにもうひとつ方法があります。
+この例はいささか単純ですが、実際のCTFE関数は単なるブーリアン引数のif条件より、もっと複雑のはずです。
+そういったものは素直にテンプレートに書く直すのは難しそうです。
+そういった場合どうすればいいのでしょうか？
+
+<!-- The answer may surprise you: get rid of the `static if`, and replace it with a plain old "runtime" `if`, like this: -->
+
+答えを聞いて驚かれるかもしれません。
+`static if`を取り除き、普通で「実行時」の`if`に置き換えるのです。
+このようにです。
+
+<!-- ```d
 int ctfeFunc(bool b)
 {
     if (b)    // <\-\-\- N.B.: regular if, not static if
@@ -638,10 +831,34 @@ int ctfeFunc(bool b)
 
 // N.B.: the enum forces the compiler to evaluate the function in CTFE
 enum myInt \= ctfeFunc(true);
+``` -->
 
-And, miracle of miracles, this code compiles without any error, and with the correct value for `myInt`! But wait a minute. What's going on here? How can changing `static if` to `if`, ostensibly a "runtime" construct, possibly work for a value that is needed at "compile\-time"? Is the compiler cheating and secretly turning `myInt` into a runtime computation behind our backs?
+```d
+int ctfeFunc(bool b)
+{
+    if (b)    // <--- 注：static ifではなく普通のifです
+        return 1;
+    else
+        return 0;
+}
 
-Actually, inspecting the executable code with a disassembler shows that no such cheating is happening. So how does this work?
+// 注：enumはコンパイラにCTFEでの関数評価を強制します
+enum myInt = ctfeFunc(true);
+```
+
+<!-- And, miracle of miracles, this code compiles without any error, and with the correct value for `myInt`! But wait a minute. What's going on here? How can changing `static if` to `if`, ostensibly a "runtime" construct, possibly work for a value that is needed at "compile\-time"? Is the compiler cheating and secretly turning `myInt` into a runtime computation behind our backs? -->
+
+そして不思議なことにこれはエラーを出さずにコンパイルされ、`myInt`には正しい値が入ります！
+しかしちょっと待ってください。
+何が起こったのでしょう？
+一見「実行時」のものに見える`if`は、「コンパイル時」に必要な値を計算するのに、
+どうして`static if`から変えることができたのでしょうか？
+コンパイラがずるをして、裏でこっそり`myInt`を実行時に計算するようにしてしまったのでしょうか？
+
+<!-- Actually, inspecting the executable code with a disassembler shows that no such cheating is happening. So how does this work? -->
+
+実際、実行ファイルのコードをディスアセンブラーで調べてみてもそのような不正は起きていません。
+ならなんで動いているんでしょう？
 
 Interleaved AST manipulation and CTFE
 -------------------------------------
