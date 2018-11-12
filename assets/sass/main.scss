@@ -135,8 +135,9 @@ footer.site p {
     margin: .5em;
 }
 
-div.highlight pre {
+code.hljs {
     overflow-x: auto;
+    border: 1px solid #444;
 }
 
 .translated {

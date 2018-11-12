@@ -10,8 +10,6 @@ params:
 taxonomies:
   tag: "tags"
 
-pygmentsCodeFences: true
-PygmentsOptions: "nobackground=true"
 hasCJKLanguage: true
 
 DefaultContentLanguage: ja
