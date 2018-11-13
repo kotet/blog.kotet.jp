@@ -851,8 +851,8 @@ enum myInt = ctfeFunc(true);
 そして不思議なことにこれはエラーを出さずにコンパイルされ、`myInt`には正しい値が入ります！
 しかしちょっと待ってください。
 何が起こったのでしょう？
-一見「実行時」のものに見える`if`は、「コンパイル時」に必要な値を計算するのに、
-どうして`static if`から変えることができたのでしょうか？
+どうして`static if`は、「コンパイル時」に必要な値を計算するのに、
+一見「実行時」のものに見える`if`へと変えることができたのでしょうか？
 コンパイラがずるをして、裏でこっそり`myInt`を実行時に計算するようにしてしまったのでしょうか？
 
 <!-- Actually, inspecting the executable code with a disassembler shows that no such cheating is happening. So how does this work? -->
@@ -860,40 +860,119 @@ enum myInt = ctfeFunc(true);
 実際、実行ファイルのコードをディスアセンブラーで調べてみてもそのような不正は起きていません。
 ならなんで動いているんでしょう？
 
-Interleaved AST manipulation and CTFE
--------------------------------------
+<!-- Interleaved AST manipulation and CTFE
+------------------------------------- -->
 
-Let's take a close look. This time, during the AST manipulation phase, nothing much happens besides the usual construction of the AST corresponding with `ctfeFunc`. There are no `static if`s or other template\-related constructs anymore, so the resulting AST is as straightforward as it can get. Then the compiler sees the `enum` declaration and realizes that it needs to evaluate `ctfeFunc` at "compile\-time".
+### インターリーブされるAST操作とCTFE
 
-Here is where something interesting happens. Based on the above discussion, you may think, the compiler is still in the "AST manipulation" stage (because it hasn't fully constructed the AST for `myInt` yet), so wouldn't this fail, since `ctfeFunc` hasn't gotten to the semantic analysis phase yet? Note, however, that while it is certainly true that the AST for `myInt` hasn't been fully resolved yet (and therefore we can't read the value of `myInt` from CTFE at this point in time), the AST for `ctfeFunc`, by this point, _is_ already ready to proceed to the next stage of compilation. Or, more precisely, _the subtree of the program's AST corresponding with `ctfeFunc` is complete,_ and can be handed over to semantic analysis now.
+<!-- Let's take a close look. This time, during the AST manipulation phase, nothing much happens besides the usual construction of the AST corresponding with `ctfeFunc`. There are no `static if`s or other template\-related constructs anymore, so the resulting AST is as straightforward as it can get. Then the compiler sees the `enum` declaration and realizes that it needs to evaluate `ctfeFunc` at "compile\-time". -->
 
-So the D compiler, being pretty smart about these things, realizes that it can go ahead with the semantic analysis of `ctfeFunc` _independently of the fact that other parts of the program's AST, namely the declaration of `myInt`, aren't completed yet._ This works because `ctfeFunc`'s subtree of the AST can be semantically analyzed as a unit on its own, without depending on `myInt`'s subtree of the AST at all! (It would fail if `ctfeFunc` somehow depended on the value of `myInt`, though.)
+詳しく見てみましょう。この時、AST操作フェーズにおいて、
+`ctfeFunc`に相当するASTの構築の他に行われることはありません。
+`static if`やその他テンプレートに関するものはないので、結果のASTは書いたとおりの素直なものになります。
+そしてコンパイラは`enum`の宣言を見て、
+`ctfeFunc`の「コンパイル時」評価が必要だと知ります。
 
-Thus, the compiler applies semantic analysis to the AST of `ctfeFunc` and brings it to the point where it can be interpreted by the CTFE engine. The CTFE engine is then invoked to run `ctfeFunc` with the value `true` as its argument \-\- essentially simulating what it would have done at runtime. The return value of 1 is then handed back to the AST manipulation code that's still waiting to finish processing the AST for `myInt`, upon which the latter AST also becomes fully constructed.
+<!-- Here is where something interesting happens. Based on the above discussion, you may think, the compiler is still in the "AST manipulation" stage (because it hasn't fully constructed the AST for `myInt` yet), so wouldn't this fail, since `ctfeFunc` hasn't gotten to the semantic analysis phase yet? Note, however, that while it is certainly true that the AST for `myInt` hasn't been fully resolved yet (and therefore we can't read the value of `myInt` from CTFE at this point in time), the AST for `ctfeFunc`, by this point, _is_ already ready to proceed to the next stage of compilation. Or, more precisely, _the subtree of the program's AST corresponding with `ctfeFunc` is complete,_ and can be handed over to semantic analysis now. -->
 
-Perhaps this "smart" invocation of CTFE interleaved with AST manipulation is part of what imparts some validity to the term "compile\-time" as referring to the entire process as a whole. Hopefully, though, by now you have also acquired a better understanding of why there are really (at least) two different "compile\-times": an early phase where AST manipulation happens, and a later phase with CTFE which is very much like runtime except that it just so happens to be done inside the compiler. These phases may be applied to different parts of the program's AST at different times, though with respect to each part of the AST they are _always_ in the order of AST manipulation first, and then CTFE. AST manipulation always happens on any given subtree of the AST _before_ CTFE can be applied to that subtree, and CTFE can run on a given subtree of the AST only if the entire subtree has already passed the AST manipulation phase.
+ここで興味深いことが起こります。
+ここまでしてきた話を元にすると、
+（`myInt`のASTが完全に構築されていないので）コンパイラはまだ「AST操作」段階にあり、
+`ctfeFunc`の意味解析フェーズが終わっていないので、これは失敗するはずですね？
+確かに`myInt`のASTはまだ完全には解決されていませんが
+（したがってCTFEで得られる`myint`の値をこの時点で読むことはできません）、
+しかしこの時点で、`ctfeFunc`**は**コンパイルの次の段階に進む準備ができています。
+より正確には`ctfeFunc`**に関するプログラムのASTの部分木の処理は完了しており**、
+意味解析に渡すことが可能になっています。
 
-This interleaving of AST manipulation and CTFE is what makes D's "compile\-time" features so powerful: you can perform arbitrarily complex computations inside CTFE (subject to certain limitations of the CTFE engine, of course), and then use the result to manipulate the AST of another part of the program. You can even have that other part of the program also pass through CTFE, and use the result of _that_ to affect the AST of a third part of the program, and so on, all as part of the compilation process. This is one of the keystones of metaprogramming in D.
+<!-- So the D compiler, being pretty smart about these things, realizes that it can go ahead with the semantic analysis of `ctfeFunc` _independently of the fact that other parts of the program's AST, namely the declaration of `myInt`, aren't completed yet._ This works because `ctfeFunc`'s subtree of the AST can be semantically analyzed as a unit on its own, without depending on `myInt`'s subtree of the AST at all! (It would fail if `ctfeFunc` somehow depended on the value of `myInt`, though.) -->
 
-Case Study: pragma(msg) and CTFE
---------------------------------
+そしてDコンパイラはこの分野に関してとても賢いので、`ctfeFunc`の意味解析が**プログラムの他の部分、**
+**つまりまだ完了していない**`myInt`**の宣言のASTと独立して**進められるとわかります。
+これは`ctfeFunc`のASTの部分木が、
+`myInt`のASTの部分技とまったく依存を持たず単体で意味解析できるからできることです！
+（`ctfeFunc`が`myInt`の値に何らかの形で依存している場合は失敗します。）
 
-Another common complaint by D learners arises from trying to debug CTFE functions, and pertains to the "strange" way in which `pragma(msg)` behaves in CTFE.
+<!-- Thus, the compiler applies semantic analysis to the AST of `ctfeFunc` and brings it to the point where it can be interpreted by the CTFE engine. The CTFE engine is then invoked to run `ctfeFunc` with the value `true` as its argument \-\- essentially simulating what it would have done at runtime. The return value of 1 is then handed back to the AST manipulation code that's still waiting to finish processing the AST for `myInt`, upon which the latter AST also becomes fully constructed. -->
 
-First of all, if you're not familiar with it, `pragma(msg)` is a handy compiler feature that lets you debug certain compile\-time processes. When the `pragma(msg)` directive is processed by the compiler, the compiler outputs whatever message is specified as arguments to the `pragma`. For example:
+したがって、コンパイラは`ctfeFunc`のASTに対して意味解析を行い、
+CTFEエンジンが理解できる形まで持っていきます。
+そしてCTFEエンジンは値`true`を引数として`ctfeFunc`を呼び出し、実行します。
+これは、本質的に実行時に起きることをシミュレートします。
+そして返り値1が`myInt`のASTの処理を待つAST操作コードに戻され、残りのASTがすべて構築されます。
 
+<!-- Perhaps this "smart" invocation of CTFE interleaved with AST manipulation is part of what imparts some validity to the term "compile\-time" as referring to the entire process as a whole. Hopefully, though, by now you have also acquired a better understanding of why there are really (at least) two different "compile\-times": an early phase where AST manipulation happens, and a later phase with CTFE which is very much like runtime except that it just so happens to be done inside the compiler. These phases may be applied to different parts of the program's AST at different times, though with respect to each part of the AST they are _always_ in the order of AST manipulation first, and then CTFE. AST manipulation always happens on any given subtree of the AST _before_ CTFE can be applied to that subtree, and CTFE can run on a given subtree of the AST only if the entire subtree has already passed the AST manipulation phase. -->
+
+このAST操作にインターリーブする「かしこい」CTFEの呼び出しは、
+プロセス全体に関わることにより「コンパイル時」という言葉にいくらか妥当性を与えるかもしれません。
+しかし、あなたたちは今や2つの異なる「コンパイル時」が存在する理由についてよく理解できているはずです。
+先のAST操作が行われる段階と、
+後の、それがコンパイラの中で行われることを除けば実行時と似ているCTFEの段階、この2つです。
+これらのフェーズはプログラムのASTの異なるパーツに対して異なるタイミングで適用されますが、
+ASTの各パーツに対しては**常に**AST操作が先、CTFEが後という順番が守られます。
+どのASTの部分木に対してもAST操作はCTFEがその部分技に適用できるようになる**前に**行われ、
+ASTの部分木に対するCTFEは部分木全体がAST操作フェーズを通過している場合のみ実行できるようになります。
+
+<!-- This interleaving of AST manipulation and CTFE is what makes D's "compile\-time" features so powerful: you can perform arbitrarily complex computations inside CTFE (subject to certain limitations of the CTFE engine, of course), and then use the result to manipulate the AST of another part of the program. You can even have that other part of the program also pass through CTFE, and use the result of _that_ to affect the AST of a third part of the program, and so on, all as part of the compilation process. This is one of the keystones of metaprogramming in D. -->
+
+このAST操作とCTFEのインターリービングによってDの「コンパイル時」機能は非常に強力になっています。
+任意の複雑な計算をCTFEで行い（もちろんCTFEエンジンの制約には従います）、
+その結果をプログラムの別の部分のASTの操作に使うことができます。
+CTFEを元にしてできたプログラムの一部を元に、
+さらに**そのプログラムの結果**をまた別のプログラムのASTに影響させ、
+さらに連鎖させていくこと、そのすべてがコンパイル過程の一部として行えます。
+これはDのメタプログラミングの柱となる機能のひとつです。
+
+<!-- Case Study: pragma(msg) and CTFE
+-------------------------------- -->
+
+### ケーススタディ：pragma(msg)とCTFE
+
+<!-- Another common complaint by D learners arises from trying to debug CTFE functions, and pertains to the "strange" way in which `pragma(msg)` behaves in CTFE. -->
+
+次に紹介するD学習者の一般的な苦情はCTFE関数のデバッグをしようとするときに起きるもので、
+CTFEにおける`pragma(msg)`の「奇妙な」振る舞いと関連しています。
+
+<!-- First of all, if you're not familiar with it, `pragma(msg)` is a handy compiler feature that lets you debug certain compile\-time processes. When the `pragma(msg)` directive is processed by the compiler, the compiler outputs whatever message is specified as arguments to the `pragma`. For example: -->
+
+ます最初に`pragma(msg)`のことをよく知らない人のために説明すると、
+`pragma(msg)`というのはコンパイル時に起きることをデバッグする便利な機能のことです。
+`pragma(msg)`ディレクティブがコンパイラに処理される時、
+コンパイラは`pragma`の引数として渡されたものをなんでも出力します。
+たとえばこんなコードがあります。
+
+<!-- ```d
 template MyTemplate(T)
 {
     pragma(msg, "instantiating MyTemplate with T=" ~ T.stringof);
     // ... insert actual code here
 }
+``` -->
 
-This causes the compiler to print "instantiating MyTemplate with T=int" when `MyTemplate!int` is instantiated, and to print "instantiating MyTemplate with T=float" when `MyTemplate!float` is instantiated. This can be a useful debugging tool to trace exactly what instantiations are being used in the code.
+```d
+template MyTemplate(T)
+{
+    pragma(msg, "instantiating MyTemplate with T=" ~ T.stringof);
+    // ... ここに実際のコードが入る
+}
+```
 
-So far so good.
+<!-- This causes the compiler to print "instantiating MyTemplate with T=int" when `MyTemplate!int` is instantiated, and to print "instantiating MyTemplate with T=float" when `MyTemplate!float` is instantiated. This can be a useful debugging tool to trace exactly what instantiations are being used in the code. -->
 
-Complaints, however, tend to arise when people attempt to do things like this:
+`MyTemplate!int`がインスタンス化された時、
+この行でコンパイラは"instantiating MyTemplate with T=int"と出力します。
+この便利なデバッギングツールによって、
+コード中でどんなインスタンス化が行われたか追跡することができます。
 
+<!-- So far so good. -->
+
+すてきですね、ここまでは。
+
+<!-- Complaints, however, tend to arise when people attempt to do things like this: -->
+
+しかしこのようなことをしようとすると苦情のもとになります。
+
+<!-- ```d
 int ctfeFunc(int x)
 {
     if (x < 100)
@@ -905,22 +984,78 @@ int ctfeFunc(int x)
     }
 }
 enum y \= ctfeFunc(50); // N.B.: enum forces CTFE on ctfeFunc
+``` -->
 
-Even though the argument 50 is well within the bounds of what `ctfeFunc` can handle, the compiler persistently prints "bad value passed in". And it does the same if the argument is changed to something the function ostensibly rejects, like 101. What gives?
+```d
+int ctfeFunc(int x)
+{
+    if (x < 100)
+        return x;
+    else
+    {
+        pragma(msg, "bad value passed in");
+        return -1;
+    }
+}
+enum y = ctfeFunc(50); // 注：enumはctfeFuncに対してCTFEを強制します
+```
 
-"Compiler bug!" some would scream.
+<!-- Even though the argument 50 is well within the bounds of what `ctfeFunc` can handle, the compiler persistently prints "bad value passed in". And it does the same if the argument is changed to something the function ostensibly rejects, like 101. What gives? -->
 
-By now, however, you should be able to guess at the answer: `pragma(msg)` is a construct that pertains to the AST manipulation phase. The compiler prints the message while it is building the AST of `ctfeFunc`, well before it even knows that it needs to invoke CTFE on it. The `pragma(msg)` is then discarded from the AST. As we have mentioned, during the AST manipulation phase the compiler has not yet attached any meaning to `if` or any value to the identifier `x`; these are seen merely as syntax nodes to be attached to the AST being built. So the `pragma(msg)` is processed without any regard to the semantics of the surrounding code \-\- said semantics haven't been attached to the AST yet! Since there are no AST manipulation constructs that would prune away the subtree containing the `pragma(msg)`, the specified message is _always_ printed regardless of what the value of `x` will be in CTFE. By the time this function gets to CTFE, the `pragma(msg)` has already been discarded from the AST, and the CTFE engine doesn't even see it.
+引数50は`ctfeFunc`の処理できる範囲内にあるにもかかわらず、
+コンパイラは"bad value passed in"を出力し続けます。
+そしてこれは101のような関数が拒否する値を与えてもかわりません。
+何が起きているんでしょうか？
 
-Case Study: static if and \_\_ctfe
-----------------------------------
+<!-- "Compiler bug!" some would scream. -->
 
-Another common source of misunderstandings is the built\-in magic variable `__ctfe`. This variable evaluates to `true` when inside the CTFE engine, but always evaluates to `false` at runtime. It is useful for working around CTFE engine limitations when your code contains constructs that work fine at runtime, but aren't currently supported in CTFE. It can also be used for optimizing your code for the CTFE engine by taking advantage of its known performance characteristics.
+「コンパイラのバグだ！」と叫ぶ人がいるかもしれません。
 
-As a simple example, as of this writing `std.array.appender` is generally recommended for use at runtime when you're appending a large number of items to an array. However, due to the way the current CTFE engine works, it is better to simply use the built\-in array append operator `~` when inside the CTFE engine. Doing so would reduce the memory footprint of CTFE, and probably improve compilation speed as well. So you would test the `__ctfe` variable in your code and choose the respective implementation depending on whether it is running in CTFE or at runtime.
+<!-- By now, however, you should be able to guess at the answer: `pragma(msg)` is a construct that pertains to the AST manipulation phase. The compiler prints the message while it is building the AST of `ctfeFunc`, well before it even knows that it needs to invoke CTFE on it. The `pragma(msg)` is then discarded from the AST. As we have mentioned, during the AST manipulation phase the compiler has not yet attached any meaning to `if` or any value to the identifier `x`; these are seen merely as syntax nodes to be attached to the AST being built. So the `pragma(msg)` is processed without any regard to the semantics of the surrounding code \-\- said semantics haven't been attached to the AST yet! Since there are no AST manipulation constructs that would prune away the subtree containing the `pragma(msg)`, the specified message is _always_ printed regardless of what the value of `x` will be in CTFE. By the time this function gets to CTFE, the `pragma(msg)` has already been discarded from the AST, and the CTFE engine doesn't even see it. -->
 
-Since `__ctfe` is, ostensibly, a "compile\-time" variable, useful only for targeting the CTFE engine, a newcomer to D may be tempted to write the code like this:
+しかし今のあなたなら答えが想像できるはずです。
+`pragma(msg)`はAST操作フェーズに関連した概念なのです。
+コンパイラは`ctfeFunc`のASTを構築している時、
+つまりCTFEの必要があるかわかっていない時点でメッセージを出力します。
+その後、`pragma(msg)`はASTから取り除かれます。
+前に述べたとおり、AST操作フェーズの間、コンパイラは`if`に意味を与えておらず、
+また識別子`x`にもなんの値も与えていません。
+それらはASTを構成するただのシンタックスノードとして扱われます。
+なので`pragma(msg)`は対象となるコードのセマンティクスを尊重しません。
+まだセマンティクスはASTに結び付けられていないのです！
+ASTを操作して`pragma(msg)`の含まれる部分木を取り除くものが何もないので、
+このメッセージは`x`の値がCTFEの結果どうなろうと**常に**出力されます。
+関数がCTFEを行う時点では、`pragma(msg)`はすでにASTから取り除かれているため、
+CTFEエンジンはそれについて何もしません。
 
+<!-- Case Study: static if and \_\_ctfe
+---------------------------------- -->
+
+### ケーススタディ：static ifと__ctfe
+
+<!-- Another common source of misunderstandings is the built\-in magic variable `__ctfe`. This variable evaluates to `true` when inside the CTFE engine, but always evaluates to `false` at runtime. It is useful for working around CTFE engine limitations when your code contains constructs that work fine at runtime, but aren't currently supported in CTFE. It can also be used for optimizing your code for the CTFE engine by taking advantage of its known performance characteristics. -->
+
+もうひとつ度々誤解のもとになるのが、言語組み込みの魔法の変数`__ctfe`です。
+この変数はCTFEエンジンの中では`true`と評価され、実行時は常に`false`と評価されます。
+コードが実行時には動くものの、CTFEでサポートされていないものを含むときに、
+CTFEエンジンの制限を回避するのにこれが役立ちます。
+パフォーマンス上の特徴を活かしてCTFEエンジンのコードを最適化するのにも使えます。
+
+<!-- As a simple example, as of this writing `std.array.appender` is generally recommended for use at runtime when you're appending a large number of items to an array. However, due to the way the current CTFE engine works, it is better to simply use the built\-in array append operator `~` when inside the CTFE engine. Doing so would reduce the memory footprint of CTFE, and probably improve compilation speed as well. So you would test the `__ctfe` variable in your code and choose the respective implementation depending on whether it is running in CTFE or at runtime. -->
+
+シンプルな例を挙げると、`std.array.appender`は一般に実行時に大量の値を配列に追加する際推奨されます。
+しかし現在のCTFEエンジンの仕組み上、
+CTFEエンジンの中では単に配列組み込みの追加演算子`~`を使ったほうがいいです。
+そうすることでCTFEのメモリーフットプリントの削減ができるので、
+コンパイル速度の改善につながるかもしれません。
+そこで`__ctfe`変数を参照してCTFEと実行時、どちらの実行に依存した実装を使うか選ぶのです。
+
+<!-- Since `__ctfe` is, ostensibly, a "compile\-time" variable, useful only for targeting the CTFE engine, a newcomer to D may be tempted to write the code like this: -->
+
+`__ctfe`が一見して「コンパイル時」変数で、CTFEエンジンに使うためのものに見えるので、
+Dの初心者はこんなコードを書きがちです。
+
+<!-- ```d
 int\[\] buildArray()
 {
     static if (\_\_ctfe)  // <\-\- this is line 3
@@ -941,19 +1076,68 @@ int\[\] buildArray()
         return app.data;
     }
 }
+``` -->
 
-This code, unfortunately, gets rejected by the compiler:
+```d
+int[] buildArray()
+{
+    static if (__ctfe)  // <-- ここが3行目です
+    {
+        // CTFE中なので追加には単に~=を使います
+        int[] result;
+        foreach (i; 0 .. 1_000_000)
+            result ~= i;
+        return result;
+    }
+    else
+    {
+        // 実行時にはappender()をより高速なパフォーマンスのために使います
+        import std.array : appender;
+        auto app = appender!(int[]);
+        foreach (i; 0 .. 1_000_000)
+            app.put(i);
+        return app.data;
+    }
+}
+```
 
-test.d(3): Error: variable \_\_ctfe cannot be read at compile time
+<!-- This code, unfortunately, gets rejected by the compiler: -->
 
-which, almost certainly, elicits the response, "What?! What do you mean `__ctfe` cannot be read at compile time?! Isn't it specifically designed to work in CTFE, which is a compile\-time feature??"
+残念ながら、このコードはコンパイラに拒否されます。
 
-Knowing what we now know, however, we can understand why this doesn't work: `static if` is a construct that pertains to the AST manipulation phase of the code, whereas `__ctfe` is clearly something specific to the later CTFE phase. At the AST manipulation phase of compilation, the compiler doesn't even know whether `buildArray` is going to be evaluated by CTFE or not. In fact, it hasn't even assigned a semantic meaning to the identifier `__ctfe` yet, because semantic analysis is not performed until the construction of the AST has been completed. Identifiers are not assigned concrete meanings until semantic analysis is done. So even though both `static if` and `__ctfe` are "compile\-time" features, the former relates to an earlier phase of compilation, and the latter to a later phase. Again, we see that conflating the two under the blanket term "compile\-time" leads to confusion.
+```d
+test.d(3): Error: variable __ctfe cannot be read at compile time
+```
 
-### Solution: Just use if
+<!-- which, almost certainly, elicits the response, "What?! What do you mean `__ctfe` cannot be read at compile time?! Isn't it specifically designed to work in CTFE, which is a compile\-time feature??" -->
 
-The solution is simple: just replace `static if` with `if`:
+これはほぼ確実にこんな反応を引き出します。
+「なんだって？！`__ctfe`がコンパイル時に読めないってどういうことだよ？！
+これはCTFEのために作られたものなんだからコンパイル時の機能じゃないのか？？」
 
+<!-- Knowing what we now know, however, we can understand why this doesn't work: `static if` is a construct that pertains to the AST manipulation phase of the code, whereas `__ctfe` is clearly something specific to the later CTFE phase. At the AST manipulation phase of compilation, the compiler doesn't even know whether `buildArray` is going to be evaluated by CTFE or not. In fact, it hasn't even assigned a semantic meaning to the identifier `__ctfe` yet, because semantic analysis is not performed until the construction of the AST has been completed. Identifiers are not assigned concrete meanings until semantic analysis is done. So even though both `static if` and `__ctfe` are "compile\-time" features, the former relates to an earlier phase of compilation, and the latter to a later phase. Again, we see that conflating the two under the blanket term "compile\-time" leads to confusion. -->
+
+しかし、知識を前もって身につけておけば、なぜこれが動かないかわかります。
+`static if`はコードのAST操作フェーズに関わるもので、
+一方`__ctfe`は明らかにその後のCTFEフェーズのものです。
+コンパイルのAST操作フェーズで、コンパイラは`buildArray`がCTFEで評価されるか否かを知りません。
+実際ASTの構築が終わるまで意味解析は行われないため、
+識別子`__ctfe`にはまだ意味論的意味は与えられていません。
+意味解析が完了するまで識別子は決まった意味を持ちません。
+そのため`static if`と`__ctfe`はともに「コンパイル時」機能でありながら、
+前者はコンパイルの早い段階、後者は後の段階に関わるものです。
+ふたたび、その2つを混ぜ合わせて隠してしまう言葉「コンパイル時」が混乱を呼んでしまったようです。
+
+<!-- ### Solution: Just use if -->
+
+#### 解決策：単にifを使う
+
+<!-- The solution is simple: just replace `static if` with `if`: -->
+
+解決策はシンプルです。
+単に`static if`を`if`に置き換えてください。
+
+<!-- ```d
 int\[\] buildArray()
 {
     if (\_\_ctfe)   // <\-\-\- N.B. no longer static if
@@ -974,14 +1158,60 @@ int\[\] buildArray()
         return app.data;
     }
 }
+``` -->
 
-Now `buildArray` works correctly, because the AST of this function can be fully built, analysed, and then, if necessary, passed to the CTFE engine for execution. When the CTFE engine interprets the code, it can then assign semantic meaning to `__ctfe` and take the true branch of the if\-statement. At runtime, `__ctfe` is always `false` and the false branch is always taken.
+```d
+int[] buildArray()
+{
+    if (__ctfe)   // <--- 注：static ifではありません
+    {
+        // CTFE中なので追加には単に~=を使います
+        int[] result;
+        foreach (i; 0 .. 1_000_000)
+            result ~= i;
+        return result;
+    }
+    else
+    {
+        // 実行時にはappender()をより高速なパフォーマンスのために使います
+        import std.array : appender;
+        auto app = appender!(int[]);
+        foreach (i; 0 .. 1_000_000)
+            app.put(i);
+        return app.data;
+    }
+}
+```
 
-### But what of runtime performance?
+<!-- Now `buildArray` works correctly, because the AST of this function can be fully built, analysed, and then, if necessary, passed to the CTFE engine for execution. When the CTFE engine interprets the code, it can then assign semantic meaning to `__ctfe` and take the true branch of the if\-statement. At runtime, `__ctfe` is always `false` and the false branch is always taken. -->
 
-One question that may still be lingering, though, is whether this "non\-static" `if`, ostensibly a runtime construct, would generate redundant code in the executable. Since `__ctfe` will always be false at runtime, it would be a waste of CPU resources to always perform an unconditional branch over the CTFE\-specific version of the code. On modern CPUs, branches can cause the instruction pipeline to stall, leading to poor performance. The CTFE\-specific part of the code would also be dead weight, taking up space in the executable and using up memory at runtime, but serving no purpose since it will never be run.
+この関数のASTは完全に構築、解析、必要に応じてCTFEエンジンに渡して実行ができるようになったので、
+`buildArray`が正しく動作するようになりました。
+CTFEエンジンがコードを実行する際には、
+`__ctfe`には意味論的意味が割り当てられif文のtrueブランチが選ばれます。
+実行時には、`__ctfe`は常に`false`となりfalseブランチが常に選ばれます。
 
-Compiling the code and examining it with a disassembler, however, shows that such fears are unfounded: the branch is elided by the compiler's code generator because the value of `__ctfe` is statically `false` outside of the CTFE engine. So the optimizer sees that the true branch of the if\-statement is dead code, and simply omits it from the generated object code. There is no performance penalty and no additional dead code in the executable.
+<!-- ### But what of runtime performance? -->
+
+#### でも実行時パフォーマンスはどうなる？
+
+<!-- One question that may still be lingering, though, is whether this "non\-static" `if`, ostensibly a runtime construct, would generate redundant code in the executable. Since `__ctfe` will always be false at runtime, it would be a waste of CPU resources to always perform an unconditional branch over the CTFE\-specific version of the code. On modern CPUs, branches can cause the instruction pipeline to stall, leading to poor performance. The CTFE\-specific part of the code would also be dead weight, taking up space in the executable and using up memory at runtime, but serving no purpose since it will never be run. -->
+
+残った疑問は、
+一見実行時のものに見える「非静的」の`if`が実行ファイルに冗長なコードを生成してしまわないかです。
+`__ctfe`は実行時には常にfalseのため、
+CTFE専用のコードを実行しないという分岐を毎回行うのはCPUリソースの無駄です。
+現代的CPUでは、分岐は命令パイプラインをストールさせ、パフォーマンスの低下に繋がります。
+CTFE特有の部分はデッドウェイトでもあり、実行ファイルのサイズを増やし実行時に余分なメモリを消費し、
+しかもそれは絶対に実行されないので無駄でしかありません。
+
+<!-- Compiling the code and examining it with a disassembler, however, shows that such fears are unfounded: the branch is elided by the compiler's code generator because the value of `__ctfe` is statically `false` outside of the CTFE engine. So the optimizer sees that the true branch of the if\-statement is dead code, and simply omits it from the generated object code. There is no performance penalty and no additional dead code in the executable. -->
+
+しかしコードをコンパイルしディスアセンブラーで検証すると、そのようなことは起こっていません。
+`__ctfe`の値はCTFEエンジンの外では静的に`false`であるため、分岐はコンパイラによって取り除かれます。
+オプティマイザはif文のtrueブランチがデッドコードだとわかるので、
+生成されるオブジェクトコードから単純に取り除きます。
+パフォーマンスに影響はなく、実行ファイルにデッドコードも生まれません。
 
 Case Study: foreach over a type list
 ------------------------------------
