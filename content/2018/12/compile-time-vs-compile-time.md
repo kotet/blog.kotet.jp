@@ -1213,11 +1213,17 @@ CTFE特有の部分はデッドウェイトでもあり、実行ファイルの�
 生成されるオブジェクトコードから単純に取り除きます。
 パフォーマンスに影響はなく、実行ファイルにデッドコードも生まれません。
 
-Case Study: foreach over a type list
-------------------------------------
+<!-- Case Study: foreach over a type list
+------------------------------------ -->
 
-Let's now turn to something that might trip up even experienced D coders. Consider the following function:
+### ケーススタディ：型リストに対するforeach
 
+<!-- Let's now turn to something that might trip up even experienced D coders. Consider the following function: -->
+
+経験あるDコーダーでも間違えそうな例を見てみましょう。
+以下の関数を考えてみます。
+
+<!-- ```d
 void func(Args...)(Args args)
 {
     foreach (a; args)
@@ -1234,60 +1240,150 @@ void main()
 {
     func(1);
 }
+``` -->
 
-Trick question: what is the compiler's output when this program is compiled?
+```d
+void func(Args...)(Args args)
+{
+    foreach (a; args)
+    {
+        static if (is(typeof(a) == int))
+        {
+            pragma(msg, "is an int");
+            continue;
+        }
+        pragma(msg, "not an int");
+    }
+}
+void main()
+{
+    func(1);
+}
+```
 
-If your answer is "is an int", you're wrong.
+<!-- Trick question: what is the compiler's output when this program is compiled? -->
 
-Here's the output:
+ひっかけ問題を出します。
+このプログラムがコンパイルされる時、コンパイラは何を出力するでしょうか。
 
+<!-- If your answer is "is an int", you're wrong. -->
+
+"is an int"と答えたあなた、間違いです。
+
+<!-- Here's the output: -->
+
+こちらが出力です。
+
+```txt
 is an int
 not an int
+```
 
-Now wait a minute! Surely this is a bug? There is only one argument passed to `func`; how could it possibly have _two_ lines of output?
+<!-- Now wait a minute! Surely this is a bug? There is only one argument passed to `func`; how could it possibly have _two_ lines of output? -->
 
-Let's go through the paces of what we've learned so far, and see if we can figure this out.
+ちょっと待ってください！
+これは本当にバグでしょうか？
+`func`には引数がひとつしか渡されていません。
+どうして**2行**の出力が起きるのでしょうか？
 
-First, `func` is a template function, so it is not semantically analyzed until it is instantiated by a function call that specifies its argument types. This happens when the compiler is processing the `main` function, and sees the call `func(1)`. So, by IFTI (Implicit Function Template Instantiation \-\- the process of inferring the template arguments to a template function by looking at the types of the runtime arguments that are passed to it), the compiler assigns `Args` to be the single\-member sequence `(int)`.
+<!-- Let's go through the paces of what we've learned so far, and see if we can figure this out. -->
 
-That is, the function call is translated as:
+これまでやってきたようにして、何が起きたか見ていきましょう。
 
+<!-- First, `func` is a template function, so it is not semantically analyzed until it is instantiated by a function call that specifies its argument types. This happens when the compiler is processing the `main` function, and sees the call `func(1)`. So, by IFTI (Implicit Function Template Instantiation \-\- the process of inferring the template arguments to a template function by looking at the types of the runtime arguments that are passed to it), the compiler assigns `Args` to be the single\-member sequence `(int)`. -->
+
+まず、`func`はテンプレート関数なので、
+それが引数の型を指定した関数呼び出しによりインスタンス化されるまで意味論的に解析されません。
+解析はコンパイラが`main`関数を処理する途中、`func(1)`の呼び出しに遭遇したときに行われます。
+そこでIFTI（Implicit Function Template Instantiation、関数テンプレートの黙示的インスタンス化。
+テンプレート関数のテンプレート引数を関数に渡された実行時引数の型から推測する処理）によって、
+コンパイラは`Args`に1要素のシーケンス`(int)`を代入します。
+
+<!-- That is, the function call is translated as: -->
+
+以上より関数呼び出しはこのように翻訳されます。
+
+```d
 func!(int)(1);
+```
 
-This causes the instantiation of `func`, which causes the compiler to build an AST for this particular instantiation based on the template body \-\- i.e., it enters the AST manipulation phase for the (copy of the) function body.
+<!-- This causes the instantiation of `func`, which causes the compiler to build an AST for this particular instantiation based on the template body \-\- i.e., it enters the AST manipulation phase for the (copy of the) function body. -->
 
-### Automatic unrolling
+これは`func`のインスタンス化を引き起こし、コンパイラはテンプレート本文をもとに専用のASTを構築します。
+つまり、関数本文（のコピー）はAST操作フェーズに入ります。
 
-There is a `foreach` over `args`. There's a tricky bit involved here, in that this `foreach` isn't just any `foreach` loop; it is a loop over variadic arguments. Such loops are treated specially in D: they are automatically unrolled. In AST terms, this means that the compiler will generate n copies of the AST for the loop body, once per iteration. Note also that this is done at the AST manipulation phase; _there is no CTFE involved here_. This kind of `foreach` loop is different from the usual "runtime" `foreach`.
+<!-- ### Automatic unrolling -->
 
-Then the compiler processes the loop body, and sees `static if`. Since the condition is true (the current element being looped over, which is also the only argument to the function, is an `int` with a value of 1), the compiler expands the `true` branch of the `static if`.
+#### 自動アンローリング
 
-Then it sees the `pragma(msg)`, and emits the message "is an int".
+<!-- There is a `foreach` over `args`. There's a tricky bit involved here, in that this `foreach` isn't just any `foreach` loop; it is a loop over variadic arguments. Such loops are treated specially in D: they are automatically unrolled. In AST terms, this means that the compiler will generate n copies of the AST for the loop body, once per iteration. Note also that this is done at the AST manipulation phase; _there is no CTFE involved here_. This kind of `foreach` loop is different from the usual "runtime" `foreach`. -->
 
-Following that, it sees `continue`. And here's the important point: since we are in AST manipulation phase, `continue` is just another syntax node to be attached to the AST being built. The `continue` is not interpreted by the AST manipulation phase!
+ここでは`args`に対する`foreach`が行われています。
+ここでトリッキーなことが起きていて、この`foreach`はただの`foreach`ループではありません。
+可変長引数に対するループです。
+Dにおいてこのようなループは特殊な扱いをされます。
+これは自動的にアンローリング、つまり展開されるのです。
+ASTの観点から言うと、これはコンパイラがイテレーションごとにASTのコピーを生成するという意味です。
+これがAST操作フェーズに行われるというこtにも注意してください。
+**これはCTFEとは関係ありません**。
+この種の**foreach**ループは「実行時」の`foreach`とは異なるものです。
 
-And so, moving on to the next item in the loop body, the AST manipulation code sees another `pragma(msg)` and outputs "not an int".
+<!-- Then the compiler processes the loop body, and sees `static if`. Since the condition is true (the current element being looped over, which is also the only argument to the function, is an `int` with a value of 1), the compiler expands the `true` branch of the `static if`. -->
 
-It is important to note here, and we repeat for emphasis, that:
+コンパイラがループ本文を処理すると、次は`static if`に遭遇します。
+条件がtrueなので（現在ループの対象になっており、関数の引数でもある要素は、値1の`int`です）、
+コンパイラは`static if`の`true`ブランチを展開します。
 
-1.  CTFE is _not involved_ here; the loop unrolling happens in the AST manipulation phase, not in CTFE;
-2.  the `continue` is not interpreted by the AST manipulation phase, but is left in the AST to be translated into code later on.
+<!-- Then it sees the `pragma(msg)`, and emits the message "is an int". -->
 
-### foreach over a type list does NOT interpret break and continue
+その次に`pragma(msg)`が来るので、メッセージ"is an int"を出力します。
+
+<!-- Following that, it sees `continue`. And here's the important point: since we are in AST manipulation phase, `continue` is just another syntax node to be attached to the AST being built. The `continue` is not interpreted by the AST manipulation phase! -->
+
+その下には`continue`があります。
+そしてここが重要なポイントです。
+今我々はAST操作フェーズにいるので、
+`continue`は単に構築されるASTに付属するシンタックスノードでしかありません。
+`continue`はAST操作フェーズでは解釈されません！
+
+<!-- And so, moving on to the next item in the loop body, the AST manipulation code sees another `pragma(msg)` and outputs "not an int". -->
+
+なので、ループ本文の次の要素に移動し、
+AST操作コードは次の`pragma(msg)`を見つけて"not an int"と出力するのです。
+
+<!-- It is important to note here, and we repeat for emphasis, that: -->
+
+これは注目すべき重要事項なので、強調のため繰り返します。
+
+<!-- 1.  CTFE is _not involved_ here; the loop unrolling happens in the AST manipulation phase, not in CTFE;
+2.  the `continue` is not interpreted by the AST manipulation phase, but is left in the AST to be translated into code later on. -->
+
+1. CTFEはここで**関係ありません**。CTFEではなくAST操作フェーズでループアンローリングが起きています。
+1. `continue`はAST操作フェーズで解釈されず、あとでコードに翻訳するためにASTに残されます。
+
+<!-- ### foreach over a type list does NOT interpret break and continue -->
+
+#### 型リストに対するforeachはbreakやcontinueを解釈しない
 
 This last point is worth elaborating on, because even advanced D users may be misled to think that foreach over a type list interprets `break` and `continue` specially, i.e., during the unrolling of the loop. The next code snippet illustrates this point:
 
+最後の点は、
+型リストに対するforeachが特別にループのアンローリング中に`break`や`continue`を解釈してくれる、
+と習熟したDユーザーでも誤解する可能性があるため念入りに説明するべきところでしょう。
+次のコード片はその要点を表しています。
+
+<!-- ```d
 import std.stdio;
 void func(Args...)(Args args)
 {
     foreach (arg; args)    // N.B.: this is foreach over a type list
     {
-        static if (is(typeof(arg) \== int))
+        static if (is(typeof(arg) == int))
             continue;
 
         writeln(arg);
 
-        static if (is(typeof(arg) \== string))
+        static if (is(typeof(arg) == string))
             break;
 
         writeln("Got to end of loop body with ", arg);
@@ -1297,17 +1393,55 @@ void main()
 {
     func(1, "abc", 3.14159);
 }
+``` -->
 
-What do you think is the output of this program? (Not a trick question.)
+```d
+import std.stdio;
+void func(Args...)(Args args)
+{
+    foreach (arg; args)    // 注：これは型リストに対するforeachです
+    {
+        static if (is(typeof(arg) == int))
+            continue;
 
-Here's the output:
+        writeln(arg);
 
+        static if (is(typeof(arg) == string))
+            break;
+
+        writeln("Got to end of loop body with ", arg);
+    }
+}
+void main()
+{
+    func(1, "abc", 3.14159);
+}
+```
+
+<!-- What do you think is the output of this program? (Not a trick question.) -->
+
+このプログラムの出力はどうなると思いますか？（ひっかけではありません）
+
+<!-- Here's the output: -->
+
+こちらが出力です。
+
+```txt
 abc
+```
 
-This seems to confirm our initial hypothesis that `continue` and `break` are interpreted by the foreach, such that the first argument, which is an `int`, causes the rest of the loop body to be skipped until the next iteration, and the second argument, which is a `string`, breaks out of the loop itself and thus causes the loop unrolling to be interrupted.
+<!-- This seems to confirm our initial hypothesis that `continue` and `break` are interpreted by the foreach, such that the first argument, which is an `int`, causes the rest of the loop body to be skipped until the next iteration, and the second argument, which is a `string`, breaks out of the loop itself and thus causes the loop unrolling to be interrupted. -->
 
-However, this is not true, as can be proven by replacing the last `writeln` with a `static assert`:
+これは`continue`と`break`がforeachによって解釈されるという最初の仮説にあわせて、
+`int`である最初の引数が次のイテレーションまでループ本文をスキップしているかのように、
+`string`である2番めの引数がループから脱出してループアンローリングを中断したかのように見えます。
 
+<!-- However, this is not true, as can be proven by replacing the last `writeln` with a `static assert`: -->
+
+しかしそれは正しくありません。
+最後の`writeln`を`static assert`に置き換えてみるとわかります。
+
+<!-- ```d
 import std.stdio;
 void func(Args...)(Args args)
 {
@@ -1330,20 +1464,65 @@ void main()
 {
     func(1, "abc", 3.14159);
 }
+``` -->
 
-Here is what the compiler has to say:
+```d
+import std.stdio;
+void func(Args...)(Args args)
+{
+    foreach (arg; args)    // 注：これは型リストに対するforeachです
+    {
+        static if (is(typeof(arg) == int))
+            continue;
 
+        writeln(arg);
+
+        static if (is(typeof(arg) == string))
+            break;
+
+        // stringによってループから脱出するので、
+        // これはtrueになるはずですね？
+        static assert(!is(typeof(arg) == string));  // 16行目
+    }
+}
+void main()
+{
+    func(1, "abc", 3.14159);
+}
+```
+
+<!-- Here is what the compiler has to say: -->
+
+これがコンパイラの出力です。
+
+```txt
 test.d(16): Error: static assert  (!true) is false
 test.d(21):        instantiated from here: func!(int, string, double)
+```
 
-What's going on here?
+<!-- What's going on here? -->
 
-It seems counterintuitive, but it's actually very simple, and should be readily understandable now that we have a clearer idea of the role of AST manipulation. Simply put, the foreach does _not_ interpret `continue` and `break` at all during the AST manipulation phase. They are treated merely as nodes in the AST being constructed, and thus the compiler continues process the rest of the loop body. Thus, the `static assert` is evaluated _in all three iterations of the loop_, including the second iteration where it fails because `typeof(arg) == string`.
+何が起きたのでしょう？
 
-### What foreach over a type list actually does
+<!-- It seems counterintuitive, but it's actually very simple, and should be readily understandable now that we have a clearer idea of the role of AST manipulation. Simply put, the foreach does _not_ interpret `continue` and `break` at all during the AST manipulation phase. They are treated merely as nodes in the AST being constructed, and thus the compiler continues process the rest of the loop body. Thus, the `static assert` is evaluated _in all three iterations of the loop_, including the second iteration where it fails because `typeof(arg) == string`. -->
 
-But if this is the case, then why does the original loop appear to obey `continue` and `break`? To answer that, let's take a look at the actual AST as printed by the D compiler `dmd` (with additional comments added by yours truly):
+直感に反した結果に見えますが、実はとても単純で、
+AST操作に対しての明瞭な考えで容易に理解できるはずです。
+単に、foreachはAST操作フェーズで`continue`や`break`を解釈**していません**。
+それらは単にAST内のノードとして扱われ、コンパイラはループ本文の残りを処理します。
+したがって、`static assert`は、
+`typeof(arg) == string`のため失敗するものも含め**ループの3回のイテレーションすべてで**評価されます。
 
+<!-- ### What foreach over a type list actually does -->
+
+#### 型リストに対するforeachは実際何をしているのか
+
+<!-- But if this is the case, then why does the original loop appear to obey `continue` and `break`? To answer that, let's take a look at the actual AST as printed by the D compiler `dmd` (with additional comments added by yours truly): -->
+
+しかし元のループはなぜ`continue`や`break`に従うのでしょうか？
+それに答えるために、Dコンパイラ`dmd`が出力するAST（コメントが追記されています）を見てみましょう。
+
+<!-- ```d
 @safe void func(int \_param\_0, string \_param\_1, double \_param\_2)
 {
         import std.stdio;
@@ -1365,24 +1544,73 @@ But if this is the case, then why does the original loop appear to obey `continu
                 }
         }
 }
+``` -->
 
-During code generation (which is another phase that comes after AST manipulation), however, the compiler's code generator notices that the first loop iteration begins with an unconditional branch to the next iteration. As such, the rest of the first iteration is dead code, and can be elided altogether. Similarly, in the second loop iteration, the code generator notices that there is an unconditional branch to the end of the loop, so the rest of that iteration is also dead code and can be elided. Lastly, the third loop iteration is never reached \-\- it is dead code, and gets elided as well.
-
-After these elisions, what's left is:
-
-void func!(int, string, double)(int \_\_arg0, string \_\_arg1, double \_\_arg2)
+```d
+@safe void func(int _param_0, string _param_1, double _param_2)
 {
-    writeln(\_\_arg1);
+        import std.stdio;
+        /*unrolled*/ {
+                {
+                        int arg = _param_0;
+                        continue;
+                        writeln(arg);  // 注：スキップされません！
+                }
+                {
+                        string arg = _param_1;
+                        writeln(arg);
+                        break;
+                }
+                {
+                        // 注：このイテレーションはスキップされません！
+                        double arg = _param_2;
+                        writeln(arg);  // 注：スキップされません！
+                }
+        }
 }
+```
 
-which is what produced the observed output.
+<!-- During code generation (which is another phase that comes after AST manipulation), however, the compiler's code generator notices that the first loop iteration begins with an unconditional branch to the next iteration. As such, the rest of the first iteration is dead code, and can be elided altogether. Similarly, in the second loop iteration, the code generator notices that there is an unconditional branch to the end of the loop, so the rest of that iteration is also dead code and can be elided. Lastly, the third loop iteration is never reached \-\- it is dead code, and gets elided as well. -->
 
-In other words, it wasn't the foreach over the type list that pruned the code following the `break` and the `continue`; it's actually the compiler's optimizer, which is part of the code generator, getting rid of dead code so that the final executable doesn't waste space on what will never be executed.
+コード生成（AST操作のあとにくるフェーズです）の時に、
+コンパイラのコードジェネレータは最初のイテレーションが次のイテレーションへの無条件分岐をしていることに気づきます。
+本質的に最初のイテレーションの残りの部分はデッドコードなので、全部取り除くことができます。
+同様に、2番めのイテレーションのなかで、コードジェネレータはループの最後への無条件分岐を発見し、
+イテレーションの残りがデッドコードであり除去できると気づきます。
+最後に、3番目のイテレーションには絶対に到達しません。
+これはデッドコードであり、すべて除去されるからです。
 
-### Possible solutions
+<!-- After these elisions, what's left is: -->
 
-The simplest solution to the conundrum posed by the original code in this case study is to use an `else` clause with the `static if`:
+除去の結果、残りはこのようになります。
 
+```d
+void func!(int, string, double)(int __arg0, string __arg1, double __arg2)
+{
+    writeln(__arg1);
+}
+```
+
+<!-- which is what produced the observed output. -->
+
+これが出力されるものになります。
+
+<!-- In other words, it wasn't the foreach over the type list that pruned the code following the `break` and the `continue`; it's actually the compiler's optimizer, which is part of the code generator, getting rid of dead code so that the final executable doesn't waste space on what will never be executed. -->
+
+言い換えると、型リストに対するforeachは`break`や`continue`の下のコードを取り除きません。
+実際にはコードジェネレータの一部であるコンパイラのオプティマイザが、
+最終的な実行ファイルに絶対に実行されない無駄なスペースができないようデッドコードを取り除いているのです。
+
+<!-- ### Possible solutions -->
+
+#### 解決策
+
+<!-- The simplest solution to the conundrum posed by the original code in this case study is to use an `else` clause with the `static if`: -->
+
+元コードで提示されている難問を解決するこの場合で最もシンプルな解決策は、
+`static if`に`else`節をつけることです。
+
+<!-- ```d
 void func(Args...)(Args args)
 {
     foreach (a; args)
@@ -1400,19 +1628,70 @@ void main()
 {
     func(1);
 }
+``` -->
 
-This ensures that the second `pragma(msg)` is correctly elided from the generated AST when the condition of the `static if` is false.
+```d
+void func(Args...)(Args args)
+{
+    foreach (a; args)
+    {
+        static if (is(typeof(a) == int))
+        {
+            pragma(msg, "is an int");
+            continue;
+        }
+        else    // <---- 注：else節
+            pragma(msg, "not an int");
+    }
+}
+void main()
+{
+    func(1);
+}
+```
 
-Summary
--------
+<!-- This ensures that the second `pragma(msg)` is correctly elided from the generated AST when the condition of the `static if` is false. -->
 
-In summary, we learned that there are (at least) two distinct stages of compilation that a piece of D code passes through:
+これによって2番めの`pragma(msg)`は、
+`static if`の条件がfalseの時に生成されるASTからちゃんと取り除かれるようになります。
 
-1.  The AST manipulation phase, where templates are expanded and `static if` is processed. In this phase, we are manipulating the structure of the code itself in the form of its AST (Abstract Syntax Tree). Semantic concepts such as variables, the meaning of control\-flow constructs like `break` or `continue` do not apply in this stage.
-2.  The semantic analysis phase, where meaning is attached to the AST. Notions such as variables, arguments, and control\-flow are applied here. AST manipulation constructs can no longer be applied at this point. CTFE (Compile\-Time Function Evaluation) can only be used for code that has already passed the AST manipulation phase and the semantic analysis phase. By the time the CTFE engine sees the code, anything involving templates, `static if`, or any of the other AST manipulation features has already been processed, and the CTFE engine does not see the original AST manipulation constructs anymore.
+<!-- Summary
+------- -->
 
-Each piece of code passes through the AST manipulation phase and the semantic analysis phase, _in that order_, and never the other way around. Consequently, CTFE can only run on a piece of code _after_ it has finished its AST manipulation phase.
+### まとめ
 
-Nevertheless, it is possible for _another_ part of the program to still be in the AST manipulation phase, depending on a value computed by a piece of code that has already passed the AST manipulation phase and is ready to be interpreted by the CTFE engine. This interleaving of AST manipulation and CTFE is what makes D's "compile\-time" features so powerful. But it is subject to the condition that the code running in CTFE must itself have already passed its AST manipulation phase; it cannot depend on anything that hasn't reached the semantic analysis phase yet.
+<!-- In summary, we learned that there are (at least) two distinct stages of compilation that a piece of D code passes through: -->
 
-Mixing up AST manipulation constructs with CTFE\-specific semantic notions is what causes most of the confusion and frustrations with D's "compile\-time" features.
+まとめると、Dのコード片が通るコンパイルの段階には明確に区別できる（少なくとも）2つがあるということをここまでで学んできました。
+
+<!-- 1.  The AST manipulation phase, where templates are expanded and `static if` is processed. In this phase, we are manipulating the structure of the code itself in the form of its AST (Abstract Syntax Tree). Semantic concepts such as variables, the meaning of control\-flow constructs like `break` or `continue` do not apply in this stage. -->
+<!-- 2.  The semantic analysis phase, where meaning is attached to the AST. Notions such as variables, arguments, and control\-flow are applied here. AST manipulation constructs can no longer be applied at this point. CTFE (Compile\-Time Function Evaluation) can only be used for code that has already passed the AST manipulation phase and the semantic analysis phase. By the time the CTFE engine sees the code, anything involving templates, `static if`, or any of the other AST manipulation features has already been processed, and the CTFE engine does not see the original AST manipulation constructs anymore. -->
+
+1. テンプレートが展開され`static if`が処理されるAST操作フェーズ。
+このフェーズではコードの構造をそのAST（Abstract Syntax Tree、抽象構文木）を操作します。
+変数の意味論的概念や、`break`や`continue`のような制御構造の意味はこの段階では適用されません。
+2. 意味がASTに割り当てられる意味解析フェーズ。
+変数、引数、制御構造などの概念がここで割り当てられます。
+AST操作に関するものはここでは適用されません。
+CTFE（Compile-Time Function Evaluation、コンパイル時関数実行）は、
+すでにAST操作フェーズと意味解析フェーズを通ったコードに対してのみ行うことができます。
+CTFEエンジンがコードに到達する時点では、テンプレートに関するものや`static if`、
+その他AST操作機能は処理が行われており、CTFEエンジンには元のAST操作関連の構造物が見えません。
+
+<!-- Each piece of code passes through the AST manipulation phase and the semantic analysis phase, _in that order_, and never the other way around. Consequently, CTFE can only run on a piece of code _after_ it has finished its AST manipulation phase. -->
+
+各コード片はAST操作フェーズと意味解析フェーズを**この順で**通過して、逆の方向には行きません。
+したがって、CTFEが実行できるのはAST操作フェーズが完了した**後の**コード片のみです。
+
+<!-- Nevertheless, it is possible for _another_ part of the program to still be in the AST manipulation phase, depending on a value computed by a piece of code that has already passed the AST manipulation phase and is ready to be interpreted by the CTFE engine. This interleaving of AST manipulation and CTFE is what makes D's "compile\-time" features so powerful. But it is subject to the condition that the code running in CTFE must itself have already passed its AST manipulation phase; it cannot depend on anything that hasn't reached the semantic analysis phase yet. -->
+
+そのうえで、まだAST操作フェーズにあるプログラムの**他の**部分は、
+AST操作フェーズを通過してCTFEエンジンで実行できるようになったコード片によって計算された値に依存できます。
+このAST操作とCTFEのインターリービングはDの「コンパイル時」機能を非常に強力にしています。
+しかしあくまでCTFEで実行されるコードはその前にAST操作フェーズを通過していなければならない、
+という条件の支配下にあります。
+意味解析フェーズに到達していないものに依存することはできません。
+
+<!-- Mixing up AST manipulation constructs with CTFE\-specific semantic notions is what causes most of the confusion and frustrations with D's "compile\-time" features. -->
+
+AST操作とCTFEの混同はDの「コンパイル時」機能にたいする混乱とフラストレーションの原因の多くを占めます。
