@@ -2,6 +2,7 @@
 date: 2017-04-28
 aliases:
 - /2017/04/28/use-c-stdio-in-d.html
+- /2017/04/27/use-c-stdio-in-d.html
 title: "dubで自力でCの標準ライブラリを呼び出す"
 tags:
 - dlang

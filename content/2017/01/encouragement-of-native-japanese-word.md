@@ -1,6 +1,7 @@
 ---
 date: 2017-01-06
 aliases:
+- /diary/2017/01/06/encouragement-of-native-japanese-word.html
 - /2017/01/06/encouragement-of-native-japanese-word.html
 title:  "和語のすゝめ"
 tags:
