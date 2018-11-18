@@ -55,7 +55,12 @@ main p, main li {
 header.site {
     display: flex;
     flex-direction: column;
-    align-items: center;
+}
+
+@media(min-width: 800px){
+    header.site {
+        align-items: center;
+    }
 }
 
 header.site h1 a {
@@ -66,15 +71,19 @@ header.site h1 {
     display: flex;
     flex-direction: column;
     background: darkorchid;
-    font-size: 6vw;
+    font-size: 2em;
+    padding: .5em;
     margin-top: 0;
-    width: 100%;
-    text-align: center;
 }
 
 @media(min-width: 800px){
     header.site h1 {
-        font-size: 3em;
+        width: 100%;
+        text-align: center;
+        font-size: 3.5em;
+    }
+    header.site h1 br {
+        display: none;
     }
 }
 
@@ -96,8 +105,8 @@ header.site ul {
 
 header.site li {
     list-style: none;
-    font-family: 'Oswald', sans-serif;
     margin: 1em;
+    margin-right: 0;
 }
 
 hr {
