@@ -1,6 +1,7 @@
 ---
 date: 2017-04-13
 aliases:
+- /2017/04/12/the-new-ctfe-engine.html
 - /2017/04/13/the-new-ctfe-engine.html
 title: "新・CTFEエンジンについて【翻訳】"
 tags:

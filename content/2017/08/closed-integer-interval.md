@@ -2,6 +2,7 @@
 date: 2017-08-08
 aliases:
 - /2017/08/08/closed-integer-interval.html
+- /2017/08/there-are-50-tech-posts/2017/08/closed-integer-interval
 title: "整数閉区間のRange"
 tags:
 - dlang
