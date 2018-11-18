@@ -65,26 +65,18 @@ header.site {
 
 header.site h1 a {
     color: white;
+    width: 800px;
+    padding-left: .5em;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 header.site h1 {
     display: flex;
-    flex-direction: column;
     background: darkorchid;
     font-size: 2em;
-    padding: .5em;
+    width: 100%;
     margin-top: 0;
-}
-
-@media(min-width: 800px){
-    header.site h1 {
-        width: 100%;
-        text-align: center;
-        font-size: 3.5em;
-    }
-    header.site h1 br {
-        display: none;
-    }
 }
 
 header.site nav {
