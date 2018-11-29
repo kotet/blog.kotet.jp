@@ -1,5 +1,5 @@
 ---
-title: "Compile-time vs. compile-time【翻訳】"
+title: "コンパイル時 vs. コンパイル時【翻訳】"
 date: 2018-12-05
 tags:
 - dlang
@@ -8,7 +8,18 @@ tags:
 - d_wiki
 ---
 
+これは
 [User:Quickfur/Compile-time vs. compile-time - D Wiki](https://wiki.dlang.org/User:Quickfur/Compile-time_vs._compile-time)
+を翻訳した
+[D言語 Advent Calendar 2018](https://qiita.com/advent-calendar/2018/dlang)
+5日目の記事です。
+
+この記事は原文と同じ[GNU Free Documentation License](http://www.gnu.org/copyleft/fdl.html)で公開されます。
+
+誤訳等あれば気軽に
+[Pull requestを投げてください](https://github.com/kotet/blog.kotet.jp)。
+
+---
 
 _By H. S. Teoh, March 2017_
 
@@ -42,7 +53,7 @@ _By H. S. Teoh, March 2017_
 
 <!-- The reality, of course, is a _bit_ more involved than this. There are, roughly speaking, at least _two_ distinct categories of D features that are commonly labelled "compile\-time": -->
 
-もちろん現実には、混乱の原因として多少関係があります。
+もちろん現実には、混乱の原因と多少の関係があります。
 大まかに言うと、よく「コンパイル時」と呼ばれるDの機能には少なくとも2つのカテゴリが存在します。
 
 <!-- *   Template expansion, or abstract syntax tree (AST) manipulation; and
@@ -142,8 +153,8 @@ ASTはコンパイラが見ているプログラムの構造を表しており�
 
 このASTで注目すべき点は、変数、メモリ、入力や出力といったものが含まれないところです。
 コンパイルのこの時点では、コンパイラはプログラムの構造のモデルを構築するだけです。
-この構造の中には`args`や`writeln`のような識別子がありますが、コンパイラはまだそれらに意味論的な意味を与えていません。
-それはコンパイルの後の段階で行われます。
+この構造の中には`args`や`writeln`のような識別子がありますが、コンパイラはまだそれらに意味を与えていません。
+それはコンパイルのもっと後の段階で行われます。
 
 <!-- Part of D's powerful "compile\-time" capabilities stem from the ability to manipulate this AST to some extent as the program is being compiled. Among the features that D offers are templates and `static if`. -->
 
@@ -272,7 +283,7 @@ Box!float floatBox;
 
 ここで重要なのは、テンプレート展開はコンパイルのAST操作フェーズに行われ、
 したがってテンプレート引数は**問題のコードがAST操作フェーズにある時**にわかっていなければなりません。
-これがDでは、テンプレート引数は「コンパイル時」にわかっていなければならない、と言われる傾向があります。
+Dにおいてはこのことが、テンプレート引数は「コンパイル時」にわかっていなければならない、と言われる傾向にあります。
 しかしこれは多くの場合正確な表現ではありません。
 テンプレート引数はコンパイルのAST操作フェーズの間にわかっていなければならないと言ったほうが正確です。
 後に見ていくように、正確な表現は理解を助け、
@@ -285,7 +296,7 @@ Dを学習する者がDの「コンパイル時」機能を使おうとしたと
 <!-- Another powerful feature in the AST manipulation phase of D compilation is `static if`. This construct allows you to choose a subtree of the AST to be compiled, or, conversely, which a subtree to be pruned. For example: -->
 
 DのコンパイルのAST操作フェーズにおけるもうひとつの強力な機能が`static if`です。
-これによってコンパイルされるASTの部分木や、逆に取り除かれる部分木を選択できます。
+これを使うとASTの部分木をコンパイルするか、逆にコンパイルせず取り除くかを選択できます。
 たとえばこのように。
 
 ```d
@@ -302,7 +313,7 @@ struct S(bool b)
 
 この`static if`は、コンパイラがテンプレート`S`を展開している時にブーリアン引数`b`が評価されることを意味しています。
 この値は**テンプレートが展開される時**にわかっていなければなりません。
-Dのサークルでは、値は「コンパイル時」にわかっていなければならない、
+D業界では、値は「コンパイル時」にわかっていなければならない、
 とよく言いますが、もっと正確であらねばなりません。
 これは後で説明します。
 
@@ -347,7 +358,7 @@ S!false t;
 
 <!-- it is as if you had declared: -->
 
-それは以下のように宣言したのと同じです。
+以下のように宣言したのと同じ意味になります。
 
 ```d
 struct S!false
@@ -370,10 +381,10 @@ struct S!false
 もっと深く取り扱いましょう。
 この段階、`static if`が評価される段階で、変数、メモリ、I/Oのような概念はまだ存在しません。
 私達はプログラムの**構造**を操作しています。
-実行ではありません。
+実行には関わりません。
 上のコードで、`x`と`y`は単なる識別子です。
 まだ変数や、
-`struct`の具体的なオフセットに配置されるデータフィールドのような意味論的意味は与えられていません。
+`struct`の具体的なオフセットに配置されるデータフィールドのような意味は与えられていません。
 それはコンパイルの後の段階で行われます。
 
 <!-- Why is this point so important? Because it relates to a common misunderstanding of D's "compile\-time" capabilities as it relates to CTFE, or Compile\-Time Function Evaluation. Let's talk about that next. -->
@@ -400,7 +411,7 @@ CTFEを理解するにあたって最も重要なのは、それが**AST操作�
 意味解析を行っている時に行われます。
 識別子にはモジュール、関数、引数、変数などの意味が割り当てられ、
 `if`や`foreach`のような制御構文にも意味が与えられ、
-その他VRP（Value Range Propagation）のような意味解析が行われます。
+その他にも値範囲伝播（VRP、Value Range Propagation）のような意味解析が行われます。
 
 <!-- ### Constant\-folding -->
 
@@ -418,7 +429,7 @@ int i = 3*(5 + 7);
 <!-- it would be a waste of computational resources to perform the indicated calculation (add 5 to 7, multiply the result by 3) at runtime, because all the arguments of the calculation are constants known to the compiler, and the result will never change at runtime. Of course, this particular example is trivial, but imagine if this line of code were inside a busy inner loop in a performance\-critical part of the program. If we _folded_ this constant expression into its resulting value, the program would run faster, since it wouldn't have to repeat this same calculation over and over, and indeed, it wouldn't even need to perform the calculation at all, since the answer is already known by the compiler. The answer could be directly assigned to `i`: -->
 
 計算に用いられるすべての引数がコンパイラの知っている定数であり、実行時に結果が変化しないため、
-実行時にこのような計算（5を7に足して、その結果を3にかける）のは計算資源の無駄です。
+実行時にこのような計算をする（5を7に足して、その結果を3にかける）のは計算資源の無駄です。
 もちろんこの例はささいなものですが、
 もしプログラムのパフォーマンスに大きく影響するビジーインナーループにこのコードがあったら、
 と想像してみてください。
@@ -582,7 +593,7 @@ Dユーザー間の議論ではCTFEはこのような文脈で語られること
 CTFEが動作するためには、
 変数やメモリのような意味論的概念がコードの構成物に対して割り当てられている必要があり、
 そうでなければ実行も評価もできません。
-しかしAST操作フェーズでは、そのようなセマンティクスは与えられていません。
+しかしAST操作フェーズでは、そのような意味は与えられていません。
 まだプログラムの構造を操作しているところです。
 
 <!-- Thus, even though CTFE happens at "compile\-time" just as AST manipulation happens at "compile\-time", this is actually a different "compile\-time". It is much closer to "runtime" than AST manipulation, which represents a much earlier stage in the compilation process. This is why the terminology "compile\-time" is confusing: it gives the false impression that all of these features, AST manipulation and CTFE alike, are lumped together into a single, amorphous blob of time labelled "compile\-time", and that the compiler can somehow make it all magically just work, by fiat. -->
@@ -611,7 +622,7 @@ AST操作 → CTFE
 
 もちろんこれは単純化された図式です。
 これらがどのように動くかを理解するためには、実際のコードを見てみるのが一番です。
-というわけでD学習者が陥りがちな落とし穴と、そこに上の法則をいかに適用するかを見ていきましょう。
+というわけでD学習者が陥りがちな落とし穴と、そこで上の法則がいかに適用されるかを見ていきましょう。
 
 <!-- Case Study: Reading CTFE variables at AST manipulation time
 ----------------------------------------------------------- -->
@@ -669,8 +680,8 @@ Dコンパイラ作者の驚くべき力量不足によって明らかかつシ�
 
 <!-- So when the compiler first encounters the declaration of `ctfeFunc`, it scans its body and sees the `static if (b)` while building the AST for this function. If the value of `b` is `true`, then it would emit the AST tree that essentially corresponds with: -->
 
-コンパイラが`ctfeFunc`に遭遇した時、コンパイラはその中身をスキャンし、
-そしてこの関数のASTを構築している間に`static if (b)`に遭遇します。
+コンパイラが`ctfeFunc`の宣言に遭遇すると、コンパイラはその中身をスキャンし、
+この関数のASTを構築するその時に`static if (b)`に遭遇します。
 `b`の値が`true`なら、コンパイラはだいたいこんな感じのASTを出力します。
 
 ```d
@@ -684,7 +695,7 @@ int ctfeFunc(bool b)
 
 （AST操作段階で、`static if`のfalseブランチは結果のASTから除外され、
 はじめから何もなかったのと同じようになることを思い出してください。
-したがって`return 0`はこの後の段階に現れません。）
+したがって`return 0`はこの段階以降現れません。）
 
 <!-- If the value of `b` is `false`, then it would emit the AST tree that corresponds with: -->
 
@@ -724,7 +735,7 @@ ASTが完全に構築されるまで値を識別子に代入することはで�
 <!-- One possible solution to this impasse is to make the value of `b` available during the AST manipulation phase. The simplest way to do this is to turn `ctfeFunc` into a template function with `b` as a template parameter, with the corresponding change in the `enum` line to pass `true` as a template argument rather than a runtime argument: -->
 
 解決策のひとつは`b`の値をAST操作フェーズに使えるようにすることです。
-それを実現する最も単純な方法は`ctfeFunc`を`b`をテンプレート引数にとるテンプレート関数にして、
+それを実現する最も単純な方法は`ctfeFunc`をテンプレート引数に`b`をとるテンプレート関数にして、
 それに応じて`enum`の行が`true`を実行時引数でなくテンプレート引数として渡すように変更することです。
 
 <!-- ```d
@@ -811,14 +822,14 @@ enum myVal = Value!true;
 
 さらにもうひとつ方法があります。
 この例はいささか単純ですが、実際のCTFE関数は単なるブーリアン引数のif条件より、もっと複雑のはずです。
-そういったものは素直にテンプレートに書く直すのは難しそうです。
+そういったものは素直にテンプレートに書き直すのが難しそうです。
 そういった場合どうすればいいのでしょうか？
 
 <!-- The answer may surprise you: get rid of the `static if`, and replace it with a plain old "runtime" `if`, like this: -->
 
 答えを聞いて驚かれるかもしれません。
 `static if`を取り除き、普通で「実行時」の`if`に置き換えるのです。
-このようにです。
+このように。
 
 <!-- ```d
 int ctfeFunc(bool b)
@@ -852,7 +863,7 @@ enum myInt = ctfeFunc(true);
 しかしちょっと待ってください。
 何が起こったのでしょう？
 どうして`static if`は、「コンパイル時」に必要な値を計算するのに、
-一見「実行時」のものに見える`if`へと変えることができたのでしょうか？
+「実行時」の物っぽい`if`へと変えることができたのでしょうか？
 コンパイラがずるをして、裏でこっそり`myInt`を実行時に計算するようにしてしまったのでしょうか？
 
 <!-- Actually, inspecting the executable code with a disassembler shows that no such cheating is happening. So how does this work? -->
@@ -881,16 +892,16 @@ enum myInt = ctfeFunc(true);
 `ctfeFunc`の意味解析フェーズが終わっていないので、これは失敗するはずですね？
 確かに`myInt`のASTはまだ完全には解決されていませんが
 （したがってCTFEで得られる`myint`の値をこの時点で読むことはできません）、
-しかしこの時点で、`ctfeFunc`**は**コンパイルの次の段階に進む準備ができています。
-より正確には`ctfeFunc`**に関するプログラムのASTの部分木の処理は完了しており**、
+しかしこの時点で、`ctfeFunc`**のほうは**コンパイルの次の段階に進む準備ができています。
+より正確に言うと`ctfeFunc`**に関するプログラムのASTの部分木の処理は完了しており**、
 意味解析に渡すことが可能になっています。
 
 <!-- So the D compiler, being pretty smart about these things, realizes that it can go ahead with the semantic analysis of `ctfeFunc` _independently of the fact that other parts of the program's AST, namely the declaration of `myInt`, aren't completed yet._ This works because `ctfeFunc`'s subtree of the AST can be semantically analyzed as a unit on its own, without depending on `myInt`'s subtree of the AST at all! (It would fail if `ctfeFunc` somehow depended on the value of `myInt`, though.) -->
 
 そしてDコンパイラはこの分野に関してとても賢いので、`ctfeFunc`の意味解析が**プログラムの他の部分、**
 **つまりまだ完了していない**`myInt`**の宣言のASTと独立して**進められるとわかります。
-これは`ctfeFunc`のASTの部分木が、
-`myInt`のASTの部分技とまったく依存を持たず単体で意味解析できるからできることです！
+これは`ctfeFunc`のASTの部分木の意味解析が、
+`myInt`のASTの部分技とまったく依存を持たず単体で可能なためにできることです！
 （`ctfeFunc`が`myInt`の値に何らかの形で依存している場合は失敗します。）
 
 <!-- Thus, the compiler applies semantic analysis to the AST of `ctfeFunc` and brings it to the point where it can be interpreted by the CTFE engine. The CTFE engine is then invoked to run `ctfeFunc` with the value `true` as its argument \-\- essentially simulating what it would have done at runtime. The return value of 1 is then handed back to the AST manipulation code that's still waiting to finish processing the AST for `myInt`, upon which the latter AST also becomes fully constructed. -->
@@ -898,17 +909,17 @@ enum myInt = ctfeFunc(true);
 したがって、コンパイラは`ctfeFunc`のASTに対して意味解析を行い、
 CTFEエンジンが理解できる形まで持っていきます。
 そしてCTFEエンジンは値`true`を引数として`ctfeFunc`を呼び出し、実行します。
-これは、本質的に実行時に起きることをシミュレートします。
-そして返り値1が`myInt`のASTの処理を待つAST操作コードに戻され、残りのASTがすべて構築されます。
+CTFEエンジンは、本質的に実行時に起きることをシミュレートします。
+そして返り値`1`が`myInt`のASTの処理を待つAST操作コードに戻され、残りのASTがすべて構築されます。
 
 <!-- Perhaps this "smart" invocation of CTFE interleaved with AST manipulation is part of what imparts some validity to the term "compile\-time" as referring to the entire process as a whole. Hopefully, though, by now you have also acquired a better understanding of why there are really (at least) two different "compile\-times": an early phase where AST manipulation happens, and a later phase with CTFE which is very much like runtime except that it just so happens to be done inside the compiler. These phases may be applied to different parts of the program's AST at different times, though with respect to each part of the AST they are _always_ in the order of AST manipulation first, and then CTFE. AST manipulation always happens on any given subtree of the AST _before_ CTFE can be applied to that subtree, and CTFE can run on a given subtree of the AST only if the entire subtree has already passed the AST manipulation phase. -->
 
-このAST操作にインターリーブする「かしこい」CTFEの呼び出しは、
+このAST操作にインターリーブする「スマートな」CTFEの呼び出しは、
 プロセス全体に関わることにより「コンパイル時」という言葉にいくらか妥当性を与えるかもしれません。
 しかし、あなたたちは今や2つの異なる「コンパイル時」が存在する理由についてよく理解できているはずです。
-先のAST操作が行われる段階と、
-後の、それがコンパイラの中で行われることを除けば実行時と似ているCTFEの段階、この2つです。
-これらのフェーズはプログラムのASTの異なるパーツに対して異なるタイミングで適用されますが、
+先にくるAST操作が行われる段階と、
+後にくる、それがコンパイラの中で行われることを除けば実行時と似ているCTFEの段階、この2つです。
+これらのフェーズはプログラムのASTの異なるパーツに対してはそれぞれバラバラなタイミングで適用されますが、
 ASTの各パーツに対しては**常に**AST操作が先、CTFEが後という順番が守られます。
 どのASTの部分木に対してもAST操作はCTFEがその部分技に適用できるようになる**前に**行われ、
 ASTの部分木に対するCTFEは部分木全体がAST操作フェーズを通過している場合のみ実行できるようになります。
@@ -1037,7 +1048,7 @@ CTFEエンジンはそれについて何もしません。
 
 もうひとつ度々誤解のもとになるのが、言語組み込みの魔法の変数`__ctfe`です。
 この変数はCTFEエンジンの中では`true`と評価され、実行時は常に`false`と評価されます。
-コードが実行時には動くものの、CTFEでサポートされていないものを含むときに、
+実行時には動くものの、CTFEでサポートされていない機能をコードが含む際、
 CTFEエンジンの制限を回避するのにこれが役立ちます。
 パフォーマンス上の特徴を活かしてCTFEエンジンのコードを最適化するのにも使えます。
 
@@ -1122,7 +1133,7 @@ test.d(3): Error: variable __ctfe cannot be read at compile time
 一方`__ctfe`は明らかにその後のCTFEフェーズのものです。
 コンパイルのAST操作フェーズで、コンパイラは`buildArray`がCTFEで評価されるか否かを知りません。
 実際ASTの構築が終わるまで意味解析は行われないため、
-識別子`__ctfe`にはまだ意味論的意味は与えられていません。
+識別子`__ctfe`にはまだ意味は与えられていません。
 意味解析が完了するまで識別子は決まった意味を持ちません。
 そのため`static if`と`__ctfe`はともに「コンパイル時」機能でありながら、
 前者はコンパイルの早い段階、後者は後の段階に関わるものです。
@@ -1188,7 +1199,7 @@ int[] buildArray()
 この関数のASTは完全に構築、解析、必要に応じてCTFEエンジンに渡して実行ができるようになったので、
 `buildArray`が正しく動作するようになりました。
 CTFEエンジンがコードを実行する際には、
-`__ctfe`には意味論的意味が割り当てられif文のtrueブランチが選ばれます。
+`__ctfe`には意味が割り当てられif文のtrueブランチが選ばれます。
 実行時には、`__ctfe`は常に`false`となりfalseブランチが常に選ばれます。
 
 <!-- ### But what of runtime performance? -->
@@ -1202,7 +1213,7 @@ CTFEエンジンがコードを実行する際には、
 `__ctfe`は実行時には常にfalseのため、
 CTFE専用のコードを実行しないという分岐を毎回行うのはCPUリソースの無駄です。
 現代的CPUでは、分岐は命令パイプラインをストールさせ、パフォーマンスの低下に繋がります。
-CTFE特有の部分はデッドウェイトでもあり、実行ファイルのサイズを増やし実行時に余分なメモリを消費し、
+CTFEスペシフィックの部分はデッドウェイトでもあり、実行ファイルのサイズを増やし実行時に余分なメモリを消費し、
 しかもそれは絶対に実行されないので無駄でしかありません。
 
 <!-- Compiling the code and examining it with a disassembler, however, shows that such fears are unfounded: the branch is elided by the compiler's code generator because the value of `__ctfe` is statically `false` outside of the CTFE engine. So the optimizer sees that the true branch of the if\-statement is dead code, and simply omits it from the generated object code. There is no performance penalty and no additional dead code in the executable. -->
@@ -1324,7 +1335,7 @@ func!(int)(1);
 Dにおいてこのようなループは特殊な扱いをされます。
 これは自動的にアンローリング、つまり展開されるのです。
 ASTの観点から言うと、これはコンパイラがイテレーションごとにASTのコピーを生成するという意味です。
-これがAST操作フェーズに行われるというこtにも注意してください。
+これがAST操作フェーズに行われるということにも注意してください。
 **これはCTFEとは関係ありません**。
 この種の**foreach**ループは「実行時」の`foreach`とは異なるものです。
 
@@ -1365,7 +1376,7 @@ AST操作コードは次の`pragma(msg)`を見つけて"not an int"と出力す�
 
 #### 型リストに対するforeachはbreakやcontinueを解釈しない
 
-This last point is worth elaborating on, because even advanced D users may be misled to think that foreach over a type list interprets `break` and `continue` specially, i.e., during the unrolling of the loop. The next code snippet illustrates this point:
+<!-- This last point is worth elaborating on, because even advanced D users may be misled to think that foreach over a type list interprets `break` and `continue` specially, i.e., during the unrolling of the loop. The next code snippet illustrates this point: -->
 
 最後の点は、
 型リストに対するforeachが特別にループのアンローリング中に`break`や`continue`を解釈してくれる、
@@ -1554,7 +1565,7 @@ AST操作に対しての明瞭な考えで容易に理解できるはずです�
                 {
                         int arg = _param_0;
                         continue;
-                        writeln(arg);  // 注：スキップされません！
+                        writeln(arg);  // 注：スキップされていません！
                 }
                 {
                         string arg = _param_1;
@@ -1562,9 +1573,9 @@ AST操作に対しての明瞭な考えで容易に理解できるはずです�
                         break;
                 }
                 {
-                        // 注：このイテレーションはスキップされません！
+                        // 注：このイテレーションはスキップされていません！
                         double arg = _param_2;
-                        writeln(arg);  // 注：スキップされません！
+                        writeln(arg);  // 注：スキップされていません！
                 }
         }
 }
@@ -1668,8 +1679,8 @@ void main()
 <!-- 2.  The semantic analysis phase, where meaning is attached to the AST. Notions such as variables, arguments, and control\-flow are applied here. AST manipulation constructs can no longer be applied at this point. CTFE (Compile\-Time Function Evaluation) can only be used for code that has already passed the AST manipulation phase and the semantic analysis phase. By the time the CTFE engine sees the code, anything involving templates, `static if`, or any of the other AST manipulation features has already been processed, and the CTFE engine does not see the original AST manipulation constructs anymore. -->
 
 1. テンプレートが展開され`static if`が処理されるAST操作フェーズ。
-このフェーズではコードの構造をそのAST（Abstract Syntax Tree、抽象構文木）を操作します。
-変数の意味論的概念や、`break`や`continue`のような制御構造の意味はこの段階では適用されません。
+このフェーズではコードの構造をそのAST（Abstract Syntax Tree、抽象構文木）の形で操作します。
+変数などの意味論的概念、`break`や`continue`のような制御構造の意味はこの段階では適用されません。
 2. 意味がASTに割り当てられる意味解析フェーズ。
 変数、引数、制御構造などの概念がここで割り当てられます。
 AST操作に関するものはここでは適用されません。
