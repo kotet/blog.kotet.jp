@@ -7,6 +7,7 @@ tags:
 - dlang
 - log
 - tech
+- advent_calendar
 excerpt: "最近D言語を書いていない。というかプログラミングらしいことをしていない。さらに今使っているコンピュータにはDMDがインストールされてすらいない。"
 ---
 

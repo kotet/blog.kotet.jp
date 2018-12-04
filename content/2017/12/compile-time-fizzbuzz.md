@@ -6,6 +6,7 @@ title: "マイナス時間で完了するfizzbuzz"
 tags:
 - dlang
 - tech
+- advent_calendar
 excerpt: '"D言語なら、この程度の処理はマイナス時間で完了する。コンパイル時にメッセージまで出力し、プログラムが開始する前に全てを終わらせられるのだ。"'
 ---
 
