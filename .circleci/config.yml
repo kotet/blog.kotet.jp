@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: cibuilds/hugo
+        environment:
+          TZ: Asia/Tokyo
     working_directory: ~/project
     steps:
       - checkout
@@ -13,6 +15,8 @@ jobs:
   deploy:
     docker:
       - image: cibuilds/hugo
+        environment:
+          TZ: Asia/Tokyo
     working_directory: ~/project
     steps:
       - checkout
