@@ -8,6 +8,7 @@ tags:
 - python
 - deeplearning
 - tech
+- advent_calendar
 excerpt: "D言語くん Advent Calendar 2017 11日めの記事。空いていたので登録した。ところでDeepAAというものがある。これはD言語くんと組み合わせねばなるまい。"
 ---
 
