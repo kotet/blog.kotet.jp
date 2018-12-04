@@ -1,11 +1,12 @@
 ---
-title: "コンパイル時 vs. コンパイル時【翻訳】"
+title: "2つの「コンパイル時」【翻訳】"
 date: 2018-12-05
 tags:
 - dlang
 - tech
 - translation
 - d_wiki
+- advent_calendar
 ---
 
 これは
