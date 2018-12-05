@@ -25,7 +25,7 @@ jobs:
             mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
             rm -rf public/
             git clone git@github.com:kotet/kotet.github.io.git public
-            HUGO_ENV=production hugo --minify
+            HUGO_ENV=production hugo --minify --buildFuture
             cd public
             echo "blog.kotet.jp" > CNAME
             git config --global user.name "CircleCI"
