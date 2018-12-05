@@ -44,7 +44,7 @@ _By H. S. Teoh, March 2017_
 
 <!-- Part of the confusion is no thanks to the overloaded term "compile\-time". It sounds straightforward enough \-\- "compile\-time" is just the time when the compiler performs its black magic of transforming human\-written D code into machine\-readable executables. So, the reasoning goes, if feature X is a "compile\-time" feature, and feature Y is another "compile\-time" feature, then surely X and Y ought to be usable in any combination, right? Since, after all, it all happens at "compile\-time", and the compiler ought to be able to sort it all out magically. -->
 
-混乱の原因は複数の意味を持つ「コンパイル時」という言葉には無さそうです。
+混乱の原因は複数の意味を持つ「コンパイル時」という言葉には無さそうですね。
 「コンパイル時」という言葉は素直な言い方に思えます。
 コンパイル時とは、単に人間の書いたDのコードをコンパイラが黒魔術でマシンリーダブルな実行ファイルに変換する時間のことです。
 だとすれば、機能Xが「コンパイル時」の機能で、機能Yも「コンパイル時」の機能なら、
@@ -80,7 +80,7 @@ _By H. S. Teoh, March 2017_
 
 1. 構文解析とパーシング。コンパイラは人間の書いたプログラムをスキャンしコードの構造を表現する構文木に変換します
 1. AST操作。テンプレートは展開され、その他AST機能が適用されます
-1. 意味解析。識別子をデータ、関数、変数と関連付けるなどして、様々なASTの機能に意味が与えられます
+1. 意味解析。識別子をデータ、関数、変数と関連付けるなどして、様々なASTの各部位に意味が与えられます
 1. コード生成。意味解析がされたコードは実行ファイルになる機械語を出力するのに使われます
 
 <!-- CTFE sits somewhere between semantic analysis and code generation, and basically involves running D code inside an interpreter (called the CTFE engine) embedded inside the compiler. -->
@@ -159,7 +159,7 @@ ASTはコンパイラが見ているプログラムの構造を表しており�
 
 <!-- Part of D's powerful "compile\-time" capabilities stem from the ability to manipulate this AST to some extent as the program is being compiled. Among the features that D offers are templates and `static if`. -->
 
-Dの強力な「コンパイル時」機能のうち、このASTを操作する能力に由来するものの一部がコンパイルされます。
+Dの強力な「コンパイル時」機能のうち、このASTを操作する能力に由来するものがコンパイルされます。
 ここでDが提供するものはテンプレートと`static if`です。
 
 <!-- ### Templates -->
@@ -283,10 +283,10 @@ Box!float floatBox;
 <!-- The important point here is that template expansion happens in the AST manipulation phase of compilation, and therefore template arguments must be known _at the time the code in question is in its AST manipulation phase_. In common D parlance, we tend to say that template arguments must be known "at compile\-time", but this is often not precise enough. It is more precise to say that template arguments must be known during the AST manipulation phase of compilation. As we shall see later, being more precise will help us understand and avoid many of the common problems that D learners encounter when they try to use D's "compile\-time" features. -->
 
 ここで重要なのは、テンプレート展開はコンパイルのAST操作フェーズに行われ、
-したがってテンプレート引数は**問題のコードがAST操作フェーズにある時**にわかっていなければなりません。
+したがってテンプレート引数は**問題のコードがAST操作フェーズにある時**にわかっていなければならない、ということです。
 Dにおいてはこのことが、テンプレート引数は「コンパイル時」にわかっていなければならない、と言われる傾向にあります。
 しかしこれは多くの場合正確な表現ではありません。
-テンプレート引数はコンパイルのAST操作フェーズの間にわかっていなければならないと言ったほうが正確です。
+テンプレート引数はコンパイルのAST操作フェーズの間にわかっていなければならない、と言ったほうが正確です。
 後に見ていくように、正確な表現は理解を助け、
 Dを学習する者がDの「コンパイル時」機能を使おうとしたときに遭遇する問題を回避する助けになります。
 
@@ -403,7 +403,7 @@ struct S!false
 
 CTFEとはコンパイル時関数実行（Compile\-Time Function Evaluation）という意味です。
 これはDの提供する極めて強力な機能であり、
-（筆者はDのほうがはるかに強力だと思いますが）C++の`constexpr`と似ています。
+（筆者はDのそれのほうがはるかに強力だと思いますが）C++の`constexpr`と似ています。
 
 <!-- The first and most important thing to understand about CTFE is that it happens _after the AST manipulation phase has been completed_. More precisely, it happens when the compiler has "finalized" the AST of that part of the program, and is performing semantic analysis on it. Identifiers are assigned meanings as modules, functions, function arguments, variables, and so on, control\-flow constructs like `if` and `foreach` are given their meanings, and other semantic analyses such as VRP (Value Range Propagation) are performed. -->
 
@@ -584,8 +584,8 @@ Dユーザー間の議論ではCTFEはこのような文脈で語られること
 
 元の話題に戻りますが、CTFE、
 「バーチャルマシン」や「バイトコードインタプリター」と呼ばれるCTFEについては気をつけてください。
-つまり、この時CTFEとは、
-それがコンパイル過程が実行ファイルを生成する手前まで進んだときに行われるということを意味します。
+つまりどういうことかというと、ここでCTFEは、
+コンパイル過程が実行ファイルを生成する手前まで進んだときに行われるということを意味しています。
 
 <!-- In particular, this means that it has long passed the AST manipulation stage. Which in turn implies that code that can be evaluated by CTFE _can no longer make use of AST manipulation constructs_ like `static if`. In order for CTFE to work, semantic notions such as variables and memory must have been assigned to various constructs in the code, otherwise there is nothing to execute or interpret. But in the AST manipulation phase, such semantics have not yet been assigned \-\- we're still manipulating the structure of the program. -->
 
@@ -714,7 +714,7 @@ int ctfeFunc(bool b)
 しかし、ここで問題が発生します。
 `b`の値はこの時点ではわかっていないのです。
 この時点で`b`についてコンパイラが知っていることはこれが関数の引数を表す識別子だということだけです。
-これがどんな値を持ちうるか等のセマンティクスはまだ与えられていません。
+これがどんな値を持ちうるか等の意味はまだ与えられていません。
 実際、コンパイラは引数`true`が渡されている`ctfeFunc`を呼び出す`enum`のことをまだ知りません！
 
 <!-- And even if the compiler _did_ get to the `enum` line, it wouldn't have been able to assign a value to `b`, because the function's AST is still not fully processed yet. You can't assign values to identifiers in an AST that hasn't been fully constructed yet, because the meaning of the identifiers may change once the AST is altered. It is simply too early at this point to meaningfully assign any value to `b`. The notion of assigning a value to a parameter is a semantic concept that can only be applied _after_ the AST manipulation phase. But in order to fully process the AST, the compiler needs to know the value of `b`. Yet the value of `b` cannot be known until after the AST has been processed. This is an insoluble impasse, so the compiler gives up and emits a compile error. -->
@@ -1014,7 +1014,7 @@ enum y = ctfeFunc(50); // 注：enumはctfeFuncに対してCTFEを強制しま�
 
 <!-- Even though the argument 50 is well within the bounds of what `ctfeFunc` can handle, the compiler persistently prints "bad value passed in". And it does the same if the argument is changed to something the function ostensibly rejects, like 101. What gives? -->
 
-引数50は`ctfeFunc`の処理できる範囲内にあるにもかかわらず、
+引数50は`ctfeFunc`の処理できる定義域内にあるにもかかわらず、
 コンパイラは"bad value passed in"を出力し続けます。
 そしてこれは101のような関数が拒否する値を与えてもかわりません。
 何が起きているんでしょうか？
@@ -1033,8 +1033,8 @@ enum y = ctfeFunc(50); // 注：enumはctfeFuncに対してCTFEを強制しま�
 前に述べたとおり、AST操作フェーズの間、コンパイラは`if`に意味を与えておらず、
 また識別子`x`にもなんの値も与えていません。
 それらはASTを構成するただのシンタックスノードとして扱われます。
-なので`pragma(msg)`は対象となるコードのセマンティクスを尊重しません。
-まだセマンティクスはASTに結び付けられていないのです！
+なので`pragma(msg)`は対象となるコードの意味論を尊重しません。
+まだ意味はASTに結び付けられていないのです！
 ASTを操作して`pragma(msg)`の含まれる部分木を取り除くものが何もないので、
 このメッセージは`x`の値がCTFEの結果どうなろうと**常に**出力されます。
 関数がCTFEを行う時点では、`pragma(msg)`はすでにASTから取り除かれているため、
@@ -1049,13 +1049,13 @@ CTFEエンジンはそれについて何もしません。
 
 もうひとつ度々誤解のもとになるのが、言語組み込みの魔法の変数`__ctfe`です。
 この変数はCTFEエンジンの中では`true`と評価され、実行時は常に`false`と評価されます。
-実行時には動くものの、CTFEでサポートされていない機能をコードが含む際、
+実行時には動くものの、CTFEではサポートされていないような機能をコードが含む際に、
 CTFEエンジンの制限を回避するのにこれが役立ちます。
 パフォーマンス上の特徴を活かしてCTFEエンジンのコードを最適化するのにも使えます。
 
 <!-- As a simple example, as of this writing `std.array.appender` is generally recommended for use at runtime when you're appending a large number of items to an array. However, due to the way the current CTFE engine works, it is better to simply use the built\-in array append operator `~` when inside the CTFE engine. Doing so would reduce the memory footprint of CTFE, and probably improve compilation speed as well. So you would test the `__ctfe` variable in your code and choose the respective implementation depending on whether it is running in CTFE or at runtime. -->
 
-シンプルな例を挙げると、`std.array.appender`は一般に実行時に大量の値を配列に追加する際推奨されます。
+シンプルな例を挙げると、一般に`std.array.appender`は実行時に大量の値を配列に追加する際推奨されます。
 しかし現在のCTFEエンジンの仕組み上、
 CTFEエンジンの中では単に配列組み込みの追加演算子`~`を使ったほうがいいです。
 そうすることでCTFEのメモリーフットプリントの削減ができるので、
@@ -1197,7 +1197,7 @@ int[] buildArray()
 
 <!-- Now `buildArray` works correctly, because the AST of this function can be fully built, analysed, and then, if necessary, passed to the CTFE engine for execution. When the CTFE engine interprets the code, it can then assign semantic meaning to `__ctfe` and take the true branch of the if\-statement. At runtime, `__ctfe` is always `false` and the false branch is always taken. -->
 
-この関数のASTは完全に構築、解析、必要に応じてCTFEエンジンに渡して実行ができるようになったので、
+この関数のASTは完全に構築、解析、さらに必要に応じてCTFEエンジンに渡して実行することもできるようになったので、
 `buildArray`が正しく動作するようになりました。
 CTFEエンジンがコードを実行する際には、
 `__ctfe`には意味が割り当てられif文のtrueブランチが選ばれます。
