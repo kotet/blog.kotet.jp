@@ -1,10 +1,10 @@
-{{ if isset .Params "Date" }}
+{{ if .Date }}
 {{ if gt (now.AddDate -1 0 0) .Date }}
-<div style="border: 1em solid darkgoldenrod;padding-left:1em;margin-bottom:1em;">
-<p style="font-weight: bold;">
+<div style="border: .5em solid gold;padding:1em;margin-bottom:1em;">
+<p style="font-weight: bold;margin: 0;">
     これは1年以上前の記事です
 </p>
-<p>
+<p style="margin: 0;">
     ここに書かれている情報、見解は現在のものとは異なっている場合があります。
 </p>
 </div>
