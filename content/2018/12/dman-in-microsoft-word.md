@@ -2,8 +2,6 @@
 title: "Wordで暴れまわるD言語くん"
 date: 2018-12-09
 tags:
-- dlang
-- tech
 - dlangman
 - advent_calendar
 ---
