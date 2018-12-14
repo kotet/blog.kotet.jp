@@ -8,7 +8,6 @@ tags:
 ---
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="ja" dir="ltr">シクシク素数列 Advent Calendar 2018 <a href="https://twitter.com/hashtag/Qiita?src=hash&amp;ref_src=twsrc%5Etfw">#Qiita</a> <a href="https://t.co/sgiUB4S5dE">https://t.co/sgiUB4S5dE</a><br><br>言語がかぶらないように同一ルールで実装するだけのAdC。まだ空き枠があるのでぜひ。今ならPHP、Perl、D言語、Haskellなどで参加できますよ！</p>&mdash; 堀田ヒロアキ (@h6akh) <a href="https://twitter.com/h6akh/status/1071085808407339009?ref_src=twsrc%5Etfw">December 7, 2018</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 D言語と聞いて駆けつけてきました。この記事は
 [シクシク素数列 Advent Calendar 2018](https://qiita.com/advent-calendar/2018/4949prime-series)
@@ -39,7 +38,7 @@ D言語ではレンジ（Range）というアイデアがよく使われてお�
 その上で素数判定をすることでシクシク素数の無限レンジが作れます。
 その結果を`N`個取り出して文字列化し、コンマでつなげて出力すれば完了です。
 
-この一連の処理は関数のチェインをすることで1行で書けますが、
+この一連の処理は関数のチェインをすることにより1行で書けますが、
 普通に書くとカッコが増えて非常に読みづらくなってしまいます。
 そこで登場するのがUFCS、Unified Function Call Syntaxです。
 D言語では関数の第一引数を外に出し、
@@ -60,10 +59,9 @@ a.h(b).g().f(c)
 a.h(b).g.f(c)
 ```
 
-カッコの対応関係を頭のなかで解析しなくてもいいというだけでなく、
+カッコの対応関係を頭のなかで解析しなくてもいいという利点がありますが、それだけではありません。
 `a`に`h`を適用した結果にさらに`g`を適用して、
-さらにその結果に`f`を適用する……というふうに、
-日本語で言ったときと同じ順番で関数が出現するので、
+さらにその結果に`f`を適用する……と日本語で言ったときと同じ順番で関数が出現するので、
 処理の流れを理解しやすくなります。
 また、間に処理を挟んだり、逆に間の処理を除いたりするのも簡単になります。
 
@@ -86,7 +84,7 @@ f(G(h(a, b), d, e), c) // 通常の形。ちょっと読む時身構えたくな
 // 自然数を返す無限レンジ。
 // map等の関数を使うためにはinputrangeである必要があり、
 // inputrangeの条件を満たすためには
-// front,popFront,emptyという3つの関数を実装する必要がある
+// front,popFront,emptyという3つの関数を実装する必要がある(ダックタイピング)
 struct NaturalNumber
 {
     long n = 1;
@@ -177,15 +175,20 @@ $ echo 9 | ./skskprime1.d
 
 ### すべてをコンパイル時に済ませる
 
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">何でもコンパイル時に計算してくれる D 言語クン <a href="https://t.co/vhNcym1AvM">pic.twitter.com/vhNcym1AvM</a></p>&mdash; No Coke, No Code. (@Iselix) <a href="https://twitter.com/Iselix/status/976355849953206272?ref_src=twsrc%5Etfw">2018年3月21日</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 ルールでNは1以上100以下の整数になると決まっています。
 長さ100程度のシクシク素数列なら、
 実行時に計算しなくても定数として実行ファイルに埋め込んでしまって良さそうです。
-というか出力結果は必ずN=100の結果の部分文字列になるので、
-N=100の結果のどの部分を出力すればいいかをルックアップテーブルに持っておけば、
+
+さらに、出力結果は必ずN=100の結果の文字列("19,29,...,1319")の部分文字列になります。
+ということは、N=100の結果のどの部分を出力すればいいかをルックアップテーブルに持っておけば、
 コンマでつなぐ等の処理も実行時に行わなくて済むわけです。
 
-たとえばDでは以下のように書くことができます。
-これはスライスと呼ばれる、始点のポインタと要素数がセットになったデータ構造のようなものです。
+部分文字列を生成する`[0 .. n]`のようなコードはスライス演算です。
+D言語における動的配列はスライスとも呼ばれ、
+これは始点のポインタと要素数がセットになったデータ構造のようなものです。
 ここで配列`str`のコピーは発生しておらず、
 `str1`、`str2`は単に`str`の一部分に対する参照です。
 
@@ -201,12 +204,16 @@ assert(str1 == "abc");
 assert(str2 == "defg");
 ```
 
+コンパイル時に文字列を1つ生成すれば、実行時の処理を入力読み込みとスライスの計算だけにできます。
+この文字列定数をどのように生成しましょう。
+先程の実行結果をコード中に手動で埋め込みますか？
+
 D言語には強力なCTFE（コンパイル時関数実行）機能があります。
-コードをほとんど変更せずに結果をコンパイル時定数にしてみせましょう。
+コードをほとんど変更せずに結果をコンパイル時定数にしてみましょう。
 
 ```d
 // NaturalNumber, isPrime, is4949Primeはさっきと同じため省略。
-// 今回この3つとcreateLookupTableは実行時に使われない
+// 今回この3つとcreateLookupTableは実行時に使われず、コンパイル時に実行される
 
 size_t[] createLookupTable(string str)
 {
@@ -216,7 +223,7 @@ size_t[] createLookupTable(string str)
         if (c == ',')
         {
             // ~は配列に対する追加演算子。
-            // str[0..x]はstrの最初からx-1文字目までを表すので、
+            // str[0..x]はstrの最初からstr[x-1]までを表すので、
             // コンマのインデックスを使うとそのコンマの手前までが表示できる
             result ~= i;
         }
@@ -261,7 +268,10 @@ void main()
 }
 ```
 
-`dmd -vcg-ast`コマンドで処理後のASTをコードに変換したものを見ることができます。
+上のコードをコンパイルして実行すると最初のそれと同じ結果になります。
+念の為本当にコンパイル時計算が行われているのか確認しておきましょう。
+
+`dmd -vcg-ast`コマンドでコンパイラに処理されたあとのASTをコード風に変換したものを見ることができます。
 上のコードは処理の結果、以下のように変換されます。
 
 ```d
@@ -286,6 +296,7 @@ void main()
 // 後略
 ```
 
+少し修正を加えればこのmain関数単体でコンパイルが可能です。
 `str`と`lookuptable`がただの定数になっていることがわかります。
 
 すばらしいですね。
@@ -293,7 +304,3 @@ void main()
 - [Online D Editor](https://run.dlang.io/)
 - [Downloads - D Programming Language](https://dlang.org/download.html)
 - [D言語環境構築 2018年版 - Qiita](https://qiita.com/outlandkarasu@github/items/84cc41c37d6c82f75f62)
-
-今回登場したコードの全体はこちらで見ることができます。
-
-[シクシク素数列 Advent Calendar 2018](https://gist.github.com/kotet/20f8231a3dfa328cb81ccf491f502ac7)
