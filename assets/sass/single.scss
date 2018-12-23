@@ -13,9 +13,10 @@ main {
         pre {
             overflow-x: auto;
         }
-        svg {
+        svg,iframe,twitter-widget {
             display: block;
-            margin: 0 auto;
+            margin-right: auto;
+            margin-left: auto;
         }
         blockquote {
             margin: 0;
@@ -82,9 +83,4 @@ main {
 aside {
     padding: .5em 1em;
     background: #EEE;
-}
-
-twitter-widget {
-    margin-right: auto;
-    margin-left: auto;
 }
