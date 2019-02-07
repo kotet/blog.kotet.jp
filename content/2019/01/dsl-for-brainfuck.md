@@ -1,6 +1,8 @@
 ---
 title: "Brainfuckを出力する自作言語を作ってAtCoderに参加する"
 date: 2019-01-16
+aliases:
+- /2019/dsl-for-brainfuck/
 tags:
 - dlang
 - brainfuck
