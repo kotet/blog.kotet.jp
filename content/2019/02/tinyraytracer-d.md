@@ -36,7 +36,7 @@ tags:
 なのでセーフです。
 セーフです。
 
-この記事ではtinyraytracerのコードと
+この記事はtinyraytracerのコードと
 [Wiki](https://github.com/ssloy/tinyraytracer/wiki)
 をパッと読んだだけではわからなかったところを補足する計算ノートです。
 
