@@ -1,10 +1,20 @@
+{{ if .Params.largeimage }}
+<meta name="twitter:card" content="summary_large_image" />
+{{ else }}
 <meta name="twitter:card" content="summary" />
-<meta name="og:title" content="{{ if .Params.tags }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }}" />
-<meta name="og:description" content="{{ if .IsPage }}{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }} {{ else }}{{ .Site.Params.description }}{{ end }}" />
+{{ end }}
+<meta name="og:title"
+    content="{{ if .Params.tags }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }}" />
+<meta name="og:description"
+    content="{{ if .IsPage }}{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }} {{ else }}{{ .Site.Params.description }}{{ end }}" />
+{{ if .Params.largeimage }}
+<meta name="og:image" content="{{ .Site.BaseURL }}{{ .Params.largeimage }}" />
+{{ else }}
 {{ if .Params.image }}
 <meta name="og:image" content="{{ .Site.BaseURL }}{{ .Params.image }}" />
 {{ else }}
 <meta name="twitter:image" content="{{ .Site.BaseURL }}/img/common/logo.png" />
+{{ end }}
 {{ end }}
 <meta name="twitter:url" content="{{ .Permalink }}" />
 <meta name="twitter:site" content="@kotetttt" />
