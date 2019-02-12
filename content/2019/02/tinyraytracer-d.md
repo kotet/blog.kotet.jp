@@ -4,6 +4,7 @@ date: 2019-02-08
 tags:
 - dlang
 - tech
+largeimage: /img/blog/2019/02/raytracer.jpg
 ---
 
 レイトレーシングという3Dレンダリング手法があります。
