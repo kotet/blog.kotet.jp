@@ -1,4 +1,4 @@
-{{ if .Date }}
+{{ if isset .Params "date" }}
 {{ if gt (now.AddDate -1 0 0) .Date }}
 <div style="border: .5em solid gold;padding:1em;margin-bottom:1em;">
 <p style="font-weight: bold;margin: 0;">
