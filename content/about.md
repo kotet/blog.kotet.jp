@@ -26,10 +26,9 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 アイコンは数年前に適当に描いたもの。
 もとは鳥か何かのアイコンを使っていたのだが、権利的にクリーンなアイコンが欲しくなって現アイコンを作った。
-たまに描いてみるがどうしても同じ雰囲気が出せない（Twitterのアイコンはオリジナルを上からなぞったもの）。
-画力の皆無な自分が描いた「奇跡の1枚」である。
 
-主にD言語をやっているが、すごいレベルではまったくない。
+主にD言語を書いている。
+書いているが詳しいかというとそんなこともない気がする。
 
 ### 坂 一哲 : Ban Kazutoshi
 
@@ -37,13 +36,14 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 [POTS:体位性頻脈](http://potsanddysautonomiajapan.org/pots/)により1年間療養の後、
 愛知県立大学の情報科学部に入学。
-ちなみにまだ[治ってはいない](/2018/03/tilt-of-the-dead)。
 
 ### アカウント
 
 Twitter : [@kotetttt](https://twitter.com/kotetttt)
 
 GitHub : [@kotet](https://github.com/kotet)
+
+AtCoder : [@kotet](https://atcoder.jp/users/kotet)
 
 Qiita : [@kotet](https://qiita.com/kotet)
 
