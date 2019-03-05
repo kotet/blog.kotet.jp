@@ -1,5 +1,5 @@
 ---
-title: Products
+title: Download
 excerpt: "非プログラマ向けリンク集。"
 aliases:
 - /blog/2015/12/25/aviutl-bezier2/
