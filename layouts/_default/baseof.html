@@ -22,12 +22,13 @@
     <header class="site">
         <nav>
             <ul>{{ block "header" . }}
-                <li><a href="{{ .LanguagePrefix }}/about">ABOUT</a></li>
+                <li><a href="{{ .LanguagePrefix }}/about" title="about">{{ partial "svg/about" }}</a></li>
                 {{ if eq .Lang "ja" }}
-                <li><a href="/products">PRODUCTS</a></li>
+                <li><a href="/products" title="download">{{ partial "svg/download" }}</a></li>
                 {{ end }}
-                <li><a href="{{ .LanguagePrefix }}/tags">TAGS</a></li>
-                <li><a href="{{ .LanguagePrefix }}/index.xml">FEED</a></li>
+                <li><a href="{{ .LanguagePrefix }}/tags" title="tag">{{ partial "svg/tags" }}</a></li>
+                <li><a href="https://podcast.kotet.jp" title="podcast">{{ partial "svg/podcast" }}</a></li>
+                <li><a href="{{ .LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" }}</a></li>
                 {{ end }}
             </ul>
         </nav>

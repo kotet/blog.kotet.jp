@@ -86,6 +86,7 @@ header.site nav {
 
 header.site nav a {
     color: #444;
+    vertical-align: sub;
 }
 
 header.site ul {
@@ -98,7 +99,13 @@ header.site ul {
 header.site li {
     list-style: none;
     margin: 1em;
-    margin-right: 0;
+}
+
+@media(min-width: 800px) {
+    header.site li {
+        margin: 1em;
+        margin-left: 0em;
+    }
 }
 
 hr {
