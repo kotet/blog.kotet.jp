@@ -36,13 +36,14 @@ But because of I'm a beginner, I still can't system programming.
 ### 坂 一哲 : Ban Kazutoshi
 
 I'm studying Computer and Information Science at Aichi Prefectural University.
-I got a PoTS: Postural orthostatic tachycardia syndrome.
 
 ### Online Accounts
 
 Twitter : [@kotetttt](https://twitter.com/kotetttt)
 
 GitHub : [@kotet](https://github.com/kotet)
+
+AtCoder : [@kotet](https://atcoder.jp/users/kotet)
 
 Qiita : [@kotet](https://qiita.com/kotet)
 
