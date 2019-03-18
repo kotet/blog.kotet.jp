@@ -22,13 +22,15 @@
     <header class="site">
         <nav>
             <ul>{{ block "header" . }}
-                <li><a href="{{ .LanguagePrefix }}/about" title="about">{{ partial "svg/about" }}</a></li>
+                <li><span class="text-up">ABOUT</span><a href="{{ .LanguagePrefix }}/about"
+                        title="about">{{ partial "svg/about" }}</a></li>
                 {{ if eq .Lang "ja" }}
-                <li><a href="/products" title="download">{{ partial "svg/download" }}</a></li>
+                <li><span class="text-bottom">DOWNLOAD</span><a href="/products"
+                        title="download">{{ partial "svg/download" }}</a></li>
                 {{ end }}
-                <li><a href="{{ .LanguagePrefix }}/tags" title="tag">{{ partial "svg/tags" }}</a></li>
-                <li><a href="https://podcast.kotet.jp" title="podcast">{{ partial "svg/podcast" }}</a></li>
-                <li><a href="{{ .LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" }}</a></li>
+                <li><span class="text-up">TAG</span><a href="{{ .LanguagePrefix }}/tags" title="tag">{{ partial "svg/tags" }}</a></li>
+                <li><span class="text-bottom">PODCAST</span><a href="https://podcast.kotet.jp" title="podcast">{{ partial "svg/podcast" }}</a></li>
+                <li><span class="text-up">FEED</span><a href="{{ .LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" }}</a></li>
                 {{ end }}
             </ul>
         </nav>
