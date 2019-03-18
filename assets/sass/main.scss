@@ -94,18 +94,37 @@ header.site ul {
     margin: 0;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 header.site li {
     list-style: none;
     margin: 1em;
+    position: relative;
+}
+
+header.site li .text-bottom {
+    position: absolute;
+    font-size: 10px;
+    bottom: -1em;
+    left: 0;
 }
 
 @media(min-width: 800px) {
-    header.site li {
-        margin: 1em;
-        margin-left: 0em;
+    header.site li .text-bottom {
+        position: absolute;
+        font-size: 10px;
+        bottom: unset;
+        top: -1.2em;
+        left: 0;
     }
+}
+
+header.site li .text-up {
+    position: absolute;
+    font-size: 10px;
+    top: -1.2em;
+    left: 0;
 }
 
 hr {
