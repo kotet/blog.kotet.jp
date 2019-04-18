@@ -3,6 +3,7 @@ title: "君もDでx86_64向けCコンパイラを書こう"
 date: 2018-12-11
 tags:
 - dlang
+- assembly
 - tech
 - advent-calendar
 ---
