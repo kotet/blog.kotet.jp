@@ -1,5 +1,5 @@
 ---
-title: "入門MOVプログラミング 本当にMOVはチューリング完全なのか"
+title: "入門MOVプログラミング 本当にx86のMOVはチューリング完全なのか"
 date: 2019-04-18
 tags:
 - assembly
