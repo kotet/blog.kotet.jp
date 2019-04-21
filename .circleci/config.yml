@@ -24,7 +24,7 @@ jobs:
           command: |
             mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
             rm -rf public/
-            git clone git@github.com:kotet/kotet.github.io.git public
+            git clone -b deploy git@github.com:kotet/blog.kotet.jp.git public
             HUGO_ENV=production hugo --minify --buildFuture
             cd public
             echo "blog.kotet.jp" > CNAME
@@ -32,7 +32,7 @@ jobs:
             git config --global user.email "circleci@example.com"
             git add --all
             git commit -m "${CIRCLE_BRANCH} (Circle CI)"
-            git push git@github.com:kotet/kotet.github.io.git master
+            git push git@github.com:kotet/blog.kotet.jp.git deploy
 
 workflows:
   version: 2
