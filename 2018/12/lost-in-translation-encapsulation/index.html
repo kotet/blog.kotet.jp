@@ -1,0 +1,329 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="これは Lost in Translation: Encapsulation – The D Blog を 許可を得て 翻訳した D言語 Advent Calendar 2018 - Qiita 24日目の記事です。 誤訳等あれば気軽に Pull requestを投げてください。 I first learned programming in"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.02c91f0bdf54d569f6c715f0a345bf32b55cd4d3ac11e0b98fec7ad1e614c151.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type=text/javascript></script><script type=text/x-mathjax-config>
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script><title>#dlang ロスト・イン・トランスレーション：カプセル化【翻訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/12/lost-in-translation-encapsulation/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content="#dlang ロスト・イン・トランスレーション：カプセル化【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="これは Lost in Translation: Encapsulation – The D Blog を 許可を得て 翻訳した D言語 Advent Calendar 2018 - Qiita 24日目の記事です。 誤訳等あれば気軽に Pull requestを投げてください。 I first learned programming in"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2018/12/lost-in-translation-encapsulation/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639 11 7.44606164 11.4478622 6.99834639 12.0003283 6.99834639 12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639c0 .5522847500000001-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12 6 11.4477153 6.44771525 11 7 11 7.55228475 11 8 11.4477153 8 12 8 12.5522847 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7 13.6568542 7 15 8.34314575 15 10 15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13 11.9072594 13 11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9 11.4477153 9 11 9.44771525 11 10 11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
+ロスト・イン・トランスレーション：カプセル化【翻訳】</h2><p><time>2018-12-24</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#カプセル化>カプセル化</a></li><li><a href=#モジュール>モジュール</a></li><li><a href=#クラスと構造体>クラスと構造体</a></li><li><a href=#要約>要約</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>これは
+<a href=https://dlang.org/blog/2018/11/06/lost-in-translation-encapsulation/>Lost in Translation: Encapsulation – The D Blog</a>
+を
+<a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
+翻訳した
+<a href=https://qiita.com/advent-calendar/2018/dlang>D言語 Advent Calendar 2018 - Qiita</a>
+24日目の記事です。</p><p>誤訳等あれば気軽に
+<a href=https://github.com/kotet/blog.kotet.jp>Pull requestを投げてください</a>。</p><hr><blockquote><p>私はプログラミングをBASICで学びました。
+そこで成長し、そしてFortranに移りました。
+興味深いことに、私の初期のFortranコードはBASICのような見た目でした。
+私がCを書き始めたときのコードはFortranのような見た目でした。
+私がC++を書き始めたときのコードはCのような見た目でした。
+– <a href=http://walterbright.com/>Walter Bright、Dの創始者</a></p></blockquote><p>ある言語でプログラミングをすることはその言語で<strong>考えること</strong>とは異なります。
+あるプログラミング言語での経験による自然な副作用として、
+我々は他の言語の機能やイディオムを色眼鏡を通して見ることになります。
+同じファミリーに属する言語からは同じような印象を受けますが、
+そこにはコンパイルエラーやバグ、機会損失につながることのないほど僅かながら確実に違いがあります。
+優れたドキュメント、書籍、その他さまざまなものが利用できるにもかかわらず、
+多くの誤解は試行錯誤によって解決されてしまいます。</p><p>DプログラマはC系の言語をはじめさまざまな言語からやってきています。
+それらとの違いと、それをどう使いこなすかを理解することで、
+D言語においてコードベースの管理や、APIの設計と実装について多くの可能性が開かれます。
+この記事は、似たような言語の経験がもとで見過ごされ誤解されるDの機能について詳説する最初の記事です。</p><p>最初に見ていくのはオブジェクト指向プログラミング（OOP）をサポートする言語においては一般的な機能です。
+ここには経験豊富なプログラマーが既に完全に理解しているところと、知らなくて驚くところがあります。</p><h3 id=カプセル化>カプセル化</h3><p>読者の多くはカプセル化の概念についてよく知っているでしょうが、ちゃんと読んでほしいところです。
+この記事では、カプセル化についてインターフェースの実装からの分離の形で考えます。
+これはオブジェクト指向プログラミングと強く結びついたものだ、
+というふうに考えがちな人もいるでしょうが、実際はそれよりも幅の広いものです。
+こちらのCのコードについて考えてみます。</p><pre><code class=language-c>#include &lt;stdio.h&gt;
+
+static size_t s_count;
+
+void print_message(const char* msg) {
+
+    puts(msg);
+
+    s_count++;
+
+}
+
+size_t num_prints() { return s_count; }
+</code></pre><p>Cにおいて、関数と<code>static</code>のついたグローバル変数はそれが宣言された<strong>翻訳単位</strong>
+（例：<code>#include</code>で多数のヘッダーと関連しているソースファイル）からプライベートになります。
+クライアントの使うパブリックなAPIが置かれるヘッダーファイルに書かれることの多い非静的の宣言は、
+パブリックにアクセス可能です。
+静的な関数と変数はパブリックAPIから実装の詳細を隠すために使われます。</p><p>Cにおけるカプセル化はミニマルなアプローチです。
+C++も同じ機能をサポートしていますが、
+それは宣言に加えて型定義もカプセル化できる匿名名前空間でもあります。
+JavaやC#、その他OOPをサポートする言語のように、
+C++にも<code>class</code>や<code>struct</code>のメンバの宣言に適用できる<strong>アクセス修飾子</strong>
+（access specifier、protection attribute、visibility attributeとも呼ばれます）があります。</p><p>C++ には、OOP言語では一般的な以下の3つのアクセス修飾子があります。</p><ul><li><code>public</code> – 世界全体からアクセス可能</li><li><code>private</code> – クラスの中でのみアクセス可能</li><li><code>protected</code> – クラスとそれを継承したクラスの中からのみアクセス可能</li></ul><p>Javaを経験したプログラマーは手を挙げてこう言うかもしれません。
+「あー、ちょっといいですか。これは<code>protected</code>の完璧な定義ではありません。」
+Javaではこのようになっているからです。</p><ul><li><code>protected</code> – クラス、継承したクラス、同じパッケージ内のクラスの中からのみアクセス可能</li></ul><p>Javaにおいて各クラスはパッケージに属しているため、
+ここにはパッケージが関わっているとしたほうが自然です。
+したがってこのようになります。</p><ul><li>*package-private*（キーワードではありません） – クラス、継承したクラス、同じパッケージ内のクラスの中からのみアクセス可能</li></ul><p>これはJavaにおいてアクセス修飾子を指定しなかった場合のデフォルトのアクセスレベルです。
+Javaにおいてパッケージをクラスを超えたカプセル化の道具にする<code>protected</code>と組合わさります。</p><p>同じように、C#にはアセンブリ、<a href=https://msdn.microsoft.com/en-us/library/ms973231.aspx>MSDNによると</a>「型の集合であり、論理機能単位をつくるリソース」があります。
+C#では、<code>protected</code>の意味はC++のそれと同じですが、
+この言語ではそれに加えてアセンブリに関する、
+Javaの<code>protected</code>やpackage-privateと似ている2つの形態があります。</p><ul><li><code>internal</code> – クラスと同じアセンブリ内のクラス内でのみアクセス可能</li><li><code>protected internal</code> – クラス、継承したクラス、同じアセンブリ内のクラス内からのみアクセス可能</li></ul><p>他のプログラミング言語のカプセル化について調べることでその類似点と相違点を見つけることができます。
+一般的なカプセル化のイディオムは言語特有の機能として存在します。
+基本となる概念は同じですが、そのスコープと実装はさまざまです。
+なのでDに独自のカプセル化アプローチ、言語特有のやり方があったとしても驚くことではありません。</p><h3 id=モジュール>モジュール</h3><p>Dのカプセル化のアプローチの基礎となるのは<a href=https://dlang.org/spec/module.html>モジュールです</a>。
+上記のCコードのDバージョンを考えてみましょう。</p><pre><code class=language-d>module mymod;
+
+private size_t _count;
+
+void printMessage(string msg) {
+
+    import std.stdio : writeln;
+
+    writeln(msg);
+
+    _count++;
+
+}
+
+size_t numPrints() { return _count; }
+</code></pre><p>Dにおいて、アクセス修飾子は<code>class</code>や<code>struct</code>のメンバのみならず、
+モジュールスコープの宣言にも適用できます。
+<code>_count</code>は<code>private</code>、つまりこのモジュールの外からは見えません。
+<code>printMessage</code>と<code>numPrints</code>にはアクセス修飾子がついていません。
+これらはデフォルトで<code>public</code>であり、モジュールの外から見えて、アクセス可能です。
+両関数はキーワード<code>public</code>で修飾することもできます。</p><p>モジュールスコープでのimportはデフォルトで<code>private</code>であり、
+インポートされたモジュールのシンボルはインポートしたモジュールの外からは見えません。
+またこの例で使われているようなローカルインポートは絶対に親スコープから見ることができません。</p><p>これ以外の構文もサポートされており、モジュールのレイアウトにフレキシビリティを提供しています。
+たとえば、C++スタイル構文もあります。</p><pre><code class=language-d>module mymod;
+
+// これより下にあるすべては他の保護属性が現れるか
+
+// ファイルの終わりまでprivateになります
+
+private:
+
+    size_t _count;
+
+// publicに戻します
+
+public:
+
+    void printMessage(string msg) {
+
+     import std.stdio : writeln;
+
+     writeln(msg);
+
+     _count++;
+
+    }
+
+    size_t numPrints() { return _count; }
+</code></pre><p>このようにもできます。</p><pre><code class=language-d>module mymod;
+
+private {
+
+    // このブレースのなかで宣言されるものはすべてprivateになります
+
+    size_t _count;
+
+}
+
+// この関数はデフォルトのpublicのままです
+
+void printMessage(string msg) {
+
+    import std.stdio : writeln;
+
+    writeln(msg);
+
+    _count++;
+
+}
+
+size_t numPrints() { return _count; }
+</code></pre><p>モジュールはパッケージに属することができます。
+パッケージは関連するモジュールをまとめる手段です。
+各モジュールに対応するソースファイルは実際にディスク上の同じディパッケージとモジュールについては将来の記事で詳しく取り扱います。レクトリにある必要があります。
+ソースファイルのなかで、ディレクトリはモジュール宣言の一部になります。</p><pre><code class=language-d>// mypack/amodule.d
+
+mypack.amodule;
+
+// mypack/subpack/anothermodule.d
+
+mypack.subpack.anothermodule;
+</code></pre><p>ディレクトリと対応しないパッケージ名をつけたり、
+ファイルと対応しないモジュール名をつけることも可能ですが、それはバッドプラクティスです。
+パッケージとモジュールについては将来の記事で詳しく取り扱います。</p><p>モジュール宣言にパッケージが含まれていないため、<code>mymod</code>はパッケージに属しません。
+<code>printMessage</code>のなかで、関数<code>writeln</code>は<code>stdio</code>モジュールからインポートされていますが、
+<code>stdio</code>モジュールは<code>std</code>パッケージに属しています。
+Dにおいてパッケージは特殊な機能を持っているわけではなく主に名前空間として機能しますが、
+but they are a common part of the codescape.
+（訳注：ここよく意味がわからなかった。codescapeはなにかのスペルミス？）</p><p>モジュールスコープ宣言には<code>public</code>と<code>private</code>に加えて、<code>package</code>アクセス修飾子も適用できます。
+同じパッケージの中でのみ見えるようになります。</p><p>以下の例について考えてみます。
+3つのファイルの中に3つのモジュールがあり（ファイルあたり1モジュールだけが存在できます）、
+それぞれ同じrootパッケージに属しています。</p><pre><code class=language-d>// src/rootpack/subpack1/mod2.d
+
+module rootpack.subpack1.mod2;
+
+import std.stdio;
+
+package void sayHello() {
+
+    writeln(&quot;Hello!&quot;);
+
+}
+
+// src/rootpack/subpack1/mod1.d
+
+module rootpack.subpack1.mod1;
+
+import rootpack.subpack1.mod2;
+
+class Speaker {
+
+    this() { sayHello(); }
+
+}
+
+// src/rootpack/app.d
+
+module rootpack.app;
+
+import rootpack.subpack1.mod1;
+
+void main() {
+
+    auto speaker = new Speaker;
+
+}
+</code></pre><p>これを以下のコマンドでコンパイルします。</p><pre><code class=language-console>cd src
+
+dmd -i rootpack/app.d
+</code></pre><p><code>-i</code>スイッチはインポートしたモジュールを自動的にコンパイルしてリンクするようコンパイラに指示します
+（標準ライブラリの名前空間<code>core</code>と<code>std</code>を除く）。
+これがない場合、各モジュールはコマンドラインで渡されなければならず、
+渡されなかった場合それはコンパイルされないしリンクもされません。</p><p>クラス<code>Speaker</code>は同じパッケージのモジュールに属しているため<code>sayHello</code>へのアクセス権を持ちます。
+リファクタリングの結果<code>sayHello</code>が<code>rootpack</code>パッケージ全体からアクセスできると便利だ、
+と考えた場合を想像してみましょう。
+Dはそのための手段としてパッケージの完全修飾名（Fully-qualified name、FQN）
+を使いパラメタライズされた<code>package</code>属性を提供します。
+これを使うと<code>sayHello</code>の宣言をこのように変更できます。</p><pre><code class=language-d>package(rootpack) void sayHello() {
+
+    writeln(&quot;Hello!&quot;);
+
+}
+</code></pre><p>これで<code>rootpack</code>に属するモジュールと
+<strong><code>rootpack</code>以下のパッケージに属するすべてのモジュール</strong>は<code>sayHello</code>へのアクセス権を持ちます。
+後者を見落とさないでください。
+<code>package</code>属性のパラメータはパッケージとそのすべての子孫がこのシンボルにアクセスできると言っています。
+あまりに幅広すぎると思うかもしれませんが、そうではありません。</p><p>ひとつには、親パッケージの先祖だけがパラメータに使えるということです。
+<code>rootpack.subpack.subsub.mymod</code>というモジュールをもとに考えてみます。
+この名前は<code>mymod.d</code>内の<code>package</code>属性において合法なすべてのパラメータを含んでいます。
+つまり、<code>rootpack</code>、<code>subpack</code>、<code>subsub</code>です。
+<code>mymod</code>内で宣言されたシンボルについて以下の属性が付けられます。</p><ul><li><code>package</code> – <code>subsub</code>パッケージのような、<code>mymod</code>の親パッケージ内のモジュールからのみ可視。</li><li><code>package(subsub)</code> – <code>subsub</code>パッケージと<code>subsub</code>のすべての子孫パッケージ内のモジュールから可視。</li><li><code>package(subpack)</code> – <code>subpack</code>パッケージと<code>subpack</code>のすべての子孫パッケージ内のモジュールから可視。</li><li><code>package(rootpack)</code> – <code>rootpack</code>パッケージと<code>rootpack</code>のすべての子孫パッケージ内のモジュールから可視。</li></ul><p>この機能によりパッケージはカプセル化のツールになり、外の世界からシンボルを隠し、
+しかしパッケージヒエラルキーの特定のサブツリーからのみ可視かつアクセス可能にできるようになります。
+実際には、アクセス権をサブツリー全体にひろげるのが望ましいというケースは多くありません。</p><p>たとえば<code>graphics</code>パッケージと、
+DirextX、Metal、OpenGL、Vulkanなどのための実装を含むサブパッケージのように、
+パブリックなインターフェースを公開し、
+なおかつ1つ以上のサブパッケージ内にある実装を隠したいというシチュエーションでは、
+パラメタライズされたパッケージ保護は一般的に見られます。
+Dのアクセス修飾子は3段階のカプセル化を可能にします。</p><ul><li>全体は<code>graphics</code>パッケージ</li><li>各サブパッケージは実装を含む</li><li>各パッケージは独立したモジュールになっている</li></ul><p>私は4段階目として<code>class</code>や<code>struct</code>を入れていません。
+次のセクションで理由を説明します。</p><h3 id=クラスと構造体>クラスと構造体</h3><p>この記事で書きたかったところにやってきました。
+どれほどの人が
+<a href=https://forum.dlang.org/>Dフォーラムに来て</a>
+パッケージ保護について驚きを表明したかもはや覚えていませんが、
+クラスと構造体の中のアクセス修飾子の振る舞いは、主に他の言語での経験から生じる期待のために、
+唐突に飛び出してきたように感じるものです。</p><p>クラスと構造体はモジュールのそれと同じアクセス修飾子を使います。
+<code>public</code>、<code>package</code>、<code>package(some.pack)</code>、<code>private</code>です。
+構造体が継承をサポートしていないため（モジュールもオブジェクトではないため）、
+<code>protected</code>属性はクラスでのみ使えます。
+<code>public</code>、<code>package</code>、<code>package(some.pack)</code>はモジュールレベルのそれと同様に振る舞います。
+驚く人がいるのは<code>private</code>を同じように使ったときです。</p><pre><code class=language-d>import std.stdio;
+
+class C {
+
+    private int x;
+
+}
+
+void main() {
+
+    C c = new C();
+
+    c.x = 10;
+
+    writeln(c.x);
+
+}
+</code></pre><p><em><a href=https://run.dlang.io/is/L7geN6>この例をオンラインで実行</a></em></p><p>Dについて調べる人によってこのようなコード片が、
+「なぜこれがコンパイルされるのですか？」
+（ときに「バグを見つけたかもしれません！」）という質問とともに度々投稿されます。
+これは経験が予想を誤らせる例です。
+<code>private</code>の意味はみんな知っているので、
+多くの人が言語仕様のドキュメントを読んで悩むようなものではないはずです。
+しかし、<a href=https://dlang.org/spec/attribute.html#visibility_attributes>ドキュメントを読んだ人はこのような記述を見つけます</a>。</p><blockquote><p>privateのついたシンボルは同じモジュール内からのみアクセスできます。</p></blockquote><p>Dにおける<code>private</code>は常に<strong>モジュールのprivate</strong>を意味しています。
+モジュールはカプセル化の最低段階です。
+これがカプセル化を破っていると言われる理由を理解することもできますが、
+これはカプセル化を<strong>強化する</strong>ためのものです。
+これはC++の<code>friend</code>機能からインスパイアされたものです。</p><p>C++コンパイラを長年実装、メンテナンスしてきたことにより、
+Walterは<code>friend</code>のような機能の必要性を理解しましたが、
+これが目的を達成する最善の方法ではないとも思いました。</p><blockquote><p>どこか別のファイルで走る&rdquo;friend&rdquo;を宣言できるようにすることはカプセル化と逆行しています。</p></blockquote><p>他の方法としてモジュールあたり1つのクラスというJava風のアプローチがありますが、
+彼はこれを厳しすぎると思いました。</p><blockquote><p>概念をカプセル化する相互に強く接続されたクラスが必要とされていて、それはモジュールに入るべきです。</p></blockquote><p>Dにとってモジュールは単なる1つのソースファイルではなく、カプセル化の1ユニットです。
+関数、クラス、構造体がその中に含まれ、
+そのすべてがモジュールスコープとクラススコープで宣言された同じデータを操作できます。
+しかしやはり、パブリックなインターフェースはモジュール内のプライベートな実装から保護されています。
+同様に、<code>protected</code>なクラスメンバは継承先クラスからアクセス可能なだけでなく、
+モジュール内からもアクセス可能です。</p><p>そうはいっても、モジュール内からのプライベートなメンバのアクセスを禁止する利点も存在します。
+大きなモジュールは、特にそれをチームでメンテしている場合、メンテする負担が大きくなってきます。
+どのクラスの<code>private</code>メンバもモジュール内からアクセスされるということは、
+変化を起こしうる場所が増えるということであり、そのためメンテナンスの負担を増やします。
+この言語は<a href=https://dlang.org/spec/module.html#package-module>特殊な<strong>パッケージモジュール</strong></a>
+の形で負担を軽減する手段を提供しています。</p><p>時に、ユーザーに複数のモジュールを別々にインポートする手間をかけさせたくない、
+という状況があります。
+大きなモジュールを小さく分割した時などはその一例です。
+以下のようなファイルツリーについて考えてみます。</p><pre><code>-- mypack
+
+---- mod1.d
+
+---- mod2.d
+</code></pre><p><code>mypack</code>と呼ばれるパッケージに2つのモジュールがあります。
+<code>mod1.d</code>が非常に大きく成長してしまいメンテナンスできるか心配になってきたとします。
+プライベートなメンバが、クラスの宣言の外、何百行、
+何千行とあるなかから操作されていないことを確実にしておきたいです。
+モジュールをもっと小さくしたいですが、
+それと同時にユーザーコードを破壊するようなこともしたくありません。
+現在、ユーザーはモジュールのシンボルを<code>import mypack.mod1</code>とインポートできるようになっています。
+これが動作し続けるようにしたいのです。
+以下が現在の状況です。</p><pre><code>-- mypack
+
+---- mod1
+
+------ package.d
+
+------ split1.d
+
+------ split2.d
+
+---- mod2.d
+</code></pre><p><code>mod1.d</code>を新しい2つのモジュールに分割し、<code>mod1</code>という名前のパッケージに配置しました。
+ここで以下のような<code>package.d</code>という特殊なファイルも作っています。</p><pre><code class=language-d>module mypack.mod1;
+
+public import mypack.mod1.split1,
+
+   mypack.mod1.split2;
+</code></pre><p>コンパイラが<code>package.d</code>を見つけると、それは特別に扱われます。
+ユーザーはモジュールが新しいパッケージ内の2つのモジュールに分割されたことを気にすること無く
+<code>import mypack.mod1</code>を使い続けられます。
+カギとなるのは<code>package.d</code>の上の部分のモジュール宣言です。
+この宣言は、このパッケージをモジュール<code>mod1</code>として扱うようコンパイラに指示します。
+そしてモジュール内のすべてのパッケージは自動的にインポートされず、
+かわりに<code>package.d</code>内のパブリックなインポートとしてリストする必要があります。
+これによりパッケージの実装がより自由になります。
+<code>package.d</code>がありながら、ユーザーにはモジュールの明示的なインポートを要求したいときもあるでしょう。</p><p>ユーザーは<code>mod1</code>を単一のモジュールとして扱い続けることもできるし、
+そのようにインポートし続けることもできます。
+同時に、内部のカプセル化はより強力に行われるようになりました。
+<code>split1</code>と<code>split2</code>は分離したモジュールのため、他方のプライベートな部分に触ることはできません。
+両モジュールで共有されてほしいAPIの各部分は<code>package</code>で修飾できます。
+内部的な変化にかかわらず、パブリックなインターフェースは変化せず、カプセル化は保たれています。</p><h3 id=要約>要約</h3><p>以下がDで宣言できるアクセス修飾子の完全なリストです。</p><ul><li><code>public</code> – どこからでもアクセス可能。</li><li><code>package</code> – 同じパッケージのモジュールからアクセス可能。</li><li><code>package(some.pack)</code> – パッケージ<code>some.pack</code>とその子孫パッケージ内のモジュールからアクセス可能。</li><li><code>private</code> – モジュール内でのみアクセス可能。</li><li><code>protected</code> （クラスでのみ有効） – モジュールと継承先クラスからアクセス可能。</li></ul><p>この記事があなたに「母国語」ではなくDで考える視点を、Dのカプセル化について与えられたなら幸いです。</p><p><em>この記事のレビューとフィードバックの提供をしてくれた Ali Çehreli、 Joakim Noah、 Nicholas Wilson に感謝します。</em></p></article><footer><h2><a href=/tags/dlang>#dlang</a>
+ロスト・イン・トランスレーション：カプセル化【翻訳】</h2><p><time>2018-12-24</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/advent_calendar>#advent_calendar</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>

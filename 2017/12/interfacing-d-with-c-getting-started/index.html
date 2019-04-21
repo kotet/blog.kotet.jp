@@ -1,0 +1,117 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="D言語の短期的な設計目標の一つにCとのインターフェース能力があります。 その目標のために、Cの標準ライブラリへのアクセスを可能にし、CやC&#43;&#43;コンパイラが使うのと同じオブジェクトファイルフォーマットとシステムリンカを使うABI互換を提供しています。"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.02c91f0bdf54d569f6c715f0a345bf32b55cd4d3ac11e0b98fec7ad1e614c151.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type=text/javascript></script><script type=text/x-mathjax-config>
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script><title>#dlang DとCのインターフェース:入門編【翻訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/12/interfacing-d-with-c-getting-started/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content="#dlang DとCのインターフェース:入門編【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="D言語の短期的な設計目標の一つにCとのインターフェース能力があります。 その目標のために、Cの標準ライブラリへのアクセスを可能にし、CやC&#43;&#43;コンパイラが使うのと同じオブジェクトファイルフォーマットとシステムリンカを使うABI互換を提供しています。"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2017/12/interfacing-d-with-c-getting-started/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639 11 7.44606164 11.4478622 6.99834639 12.0003283 6.99834639 12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639c0 .5522847500000001-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12 6 11.4477153 6.44771525 11 7 11 7.55228475 11 8 11.4477153 8 12 8 12.5522847 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7 13.6568542 7 15 8.34314575 15 10 15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13 11.9072594 13 11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9 11.4477153 9 11 9.44771525 11 10 11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
+DとCのインターフェース:入門編【翻訳】</h2><p><time>2017-12-10</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_and_c>#d_and_c</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#コンパイルとリンク>コンパイルとリンク</a><ul><li><a href=#windows>Windows</a></li><li><a href=#その他のプラットフォーム>その他のプラットフォーム</a></li></ul></li><li><a href=#long-な道のり><code>long</code>な道のり</a></li><li><a href=#この先について>この先について</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>この記事は<a href=https://qiita.com/advent-calendar/2017/dlang>D言語 Advent Calendar 2017</a> 10日目の記事であり、
+<a href=https://dlang.org/blog/2017/12/05/interfacing-d-with-c-getting-started/>Interfacing D with C: Getting Started – The D Blog</a>
+を自分用に翻訳したものを
+<a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
+公開するものである。</p><p>ソース中にコメントの形で原文を残している。
+内容が理解できる程度のざっくりした翻訳であり誤字や誤訳などが多いので、気になったら
+<a href=https://github.com/kotet/blog.kotet.jp>Pull request</a>だ!</p><hr><p>D言語の短期的な設計目標の一つに<a href=https://dlang.org/spec/interfaceToC.html>Cとのインターフェース</a>能力があります。
+その目標のために、Cの標準ライブラリへのアクセスを可能にし、CやC++コンパイラが使うのと同じオブジェクトファイルフォーマットとシステムリンカを使うABI互換を提供しています。
+ほとんどのDの組み込み型、構造体までもがCとの直接の互換をもち、適切な<a href=https://dlang.org/spec/attribute.html#linkage>リンケージアトリビュート</a>とともにD内で宣言されたCの関数に自由に渡すことができます。
+大抵の場合、Cのコードをコピーし、それをDのモジュールにペーストして、最低限の修正をすればコンパイルできます。
+反対に、適切に宣言されたDの関数はCから呼び出すことができます。</p><p>これはDがCの欠点までそのまま持っているというわけではありません。
+DにはCでよく発生するエラーをなくす、あるいは簡単に回避するための機能があります。
+たとえば、配列の境界チェックはデフォルトで有効であり、言語のsafeサブセットはメモリ安全をコンパイル時に強制します。
+また、DはWalter Brightが<a href=http://www.drdobbs.com/architecture-and-design/cs-biggest-mistake/228701625>Cの最大の失敗</a>と考えるCの悪いところを変更または回避しています。
+ポインタと配列の混同です。
+ここには知識のない人が驚かされる実装の違いが潜んでいます。</p><p>これは知識のない人に伝えるためにCとDのインタラクションを探求するシリーズ最初の投稿です。
+以前私はこのトピックの基本的な部分に関して<a href=https://www.gamedev.net/articles/programming/general-and-gameplay-programming/binding-d-to-c-r3122/>GameDev.netで記事を</a>書いており、また詳細については私の本‘<a href=http://amzn.to/1IlQkZX>Learning D</a>’のチャプター9全体で触れています。</p><p>このブログシリーズでは前述のコーナーケースに焦点を当てていくので、それを学ぶために本を買ったり試行錯誤したりする必要はありません。
+したがって、DとC（またはC++）とのインターフェーシングをする人は私がGameDev.netの記事に残した基礎と<a href=https://dlang.org/spec/interfaceToC.html>公式ドキュメント</a>を一緒に読むことをお勧めします。</p><p>ある振る舞いをハイライトするために私が提供するCやDのコードは読者によってコンパイルし、リンクされることを意図しています。
+コードは失敗や成功を実演します。
+コンパイラのエラーを知り、理解することはそれを直す事と同じくらい重要であり、実際にそれらを見ることは直すという目標のために役立ちます。
+それはCとDのソースファイルのコンパイルとリンクの必須知識を伴います。
+幸いなことに、それはこの投稿の次のセクションで見ていくものです。</p><p>Cのコードには、WindowsではDigital Mars C/C++コンパイラとMicrosoft C/C++コンパイラを、それ以外ではGCCとClangを使います。
+Dの方は、もっぱらDのリファレンスコンパイラ、DMDを使います。
+Microsoftのツールを使ったDMDのセットアップに慣れていないWindowsユーザーは、こちらの‘<a href=https://dlang.org/blog/2017/10/25/dmd-windows-and-c/>DMD, Windows, and C</a>’という記事が役に立ちます。</p><p>この投稿ではコーナーケースのひとつ、DとCのインターフェースを始めてすぐ、特に既存のCのライブラリのバインディングを作るときに現れるようなものを取り扱います。</p><h3 id=コンパイルとリンク>コンパイルとリンク</h3><p>この記事では、Dのプログラムとリンクされるために保存されオブジェクトファイルへとコンパイルされることを意図したCのソースコードの例を示します。
+オブジェクトファイルを生成するコマンドラインは、どのプラットフォームでも同じような複数の手順からなります。
+まずはWindowsのやり方を見て、その後他のシステムは１つのセクションにまとめようと思います。</p><p>次の2セクションでは、以下のCとDのソースファイルを使います。
+これらを同じディレクトリに（便宜上です）そのままの名前で保存してください。
+2つのファイルが同じディレクトリ内で同じ名前である場合、CコンパイラやDMDで作られるオブジェクトファイルも同じ名前になり、古いオブジェクトファイルが新しいオブジェクトファイルで上書きされてしまいます。
+これを避けるためのコンパイラスイッチもありますが、チュートリアルのためコマンドラインはシンプルにしておきましょう。</p><p><strong>chello.c</strong></p><pre><code class=language-c>#include &lt;stdio.h&gt;
+void say_hello(void) 
+{
+    puts(&quot;Hello from C!&quot;);
+}
+</code></pre><p><strong>hello.d</strong></p><pre><code class=language-d>extern(C) void say_hello();
+void main() 
+{
+    say_hello();
+}
+</code></pre><p>Dのコード内にあるCの関数の宣言の<code>extern(C)</code>という部分は<a href=https://dlang.org/spec/attribute.html#linkage>リンケージ属性</a>です。
+これは上記以外のものにも関わってきますが、その潜在的なハマりどころはこのシリーズの別の機会に見ていきます。</p><h4 id=windows>Windows</h4><p>Zipアーカイブとインストーラとして<a href=https://dlang.org/download.html>dlang.orgで入手できる</a>公式DMDパッケージは、Dのファイルをコンパイルする前提として他のツールをインストールする必要のないDMDのリリースバージョンです。
+これらのパッケージはOMFフォーマットで32ビット実行ファイルをコンパイルするために必要な全てが含まれた状態で公開されています（詳細は‘<a href=https://dlang.org/blog/2017/10/25/dmd-windows-and-c/>DMD, Windows, and C</a>’ で触れています）。</p><p>外部のオブジェクトファイルとDのプログラムをリンクする時、そのオブジェクトファイルフォーマットとアーキテクチャがDコンパイラの出力と一致していることが重要です。
+前者は主にWindowsの問題ですが、後者についてはすべてのプラットフォームで注意する必要があります。</p><p>CのソースをWindowsのヴァニラDMD互換のフォーマットでコンパイルするには<a href=http://digitalmars.com/download/freecompiler.html>the Digital Mars C/C++ compiler</a>が必要です。
+DMDと同じようなツール群とともに公開されており、自由にダウンロードすることができます。
+これはOMFフォーマットのオブジェクトファイルを出力します。
+これとDMDの両方をインストール、システムパスに配置すれば、上記のソースファイルはこのようにコンパイル、リンク、実行ができます:</p><pre><code>dmc -c chello.c
+dmd hello.d chello.obj
+hello
+</code></pre><p><code>-c</code>オプションはDMCにリンクをさせないようにするもので、その結果Cのソースはコンパイルのみが行われオブジェクトファイル<code>chello.obj</code>が出力されます。</p><p>Windowsで64ビットの出力を得るときには、DMCは使いません。
+この場合、DMDはWindowsのMicrosoft build toolsを要求します。
+MS build toolsをインストールしたら、設定済みx64ネイティブツールコマンドプロンプトを開き、以下のコマンドを実行します（Microsoft build toolsの入手と設定済コマンドプロンプトの開き方についてはこのブログの‘<a href=https://dlang.org/blog/2017/10/25/dmd-windows-and-c>D, Windows, and C</a>’を見てください。依存するVisual StudioやMS build toolsのバージョンがちょっと違うかもしれません）:</p><pre><code>cl /c chello.c
+dmd -m64 hello.d chello.obj
+hello
+</code></pre><p><code>/c</code>オプションはやはりコンパイラにリンクをさせないためのものです。
+MSコンパイラで32ビットの出力を生成するためには、設定済x86ネイティブツールコマンドプロンプトを開きこれらのコマンドを実行してください:</p><pre><code>cl /c hello.c
+dmd -m32mscoff hello.c chello.obj
+hello
+</code></pre><p>WindowsにおいてDMDは<code>-m32</code>スイッチを認識しますが、それは（デフォルトでは）Microsoftのリンカと互換性のない32ビットOMFの出力を生成するので、かわりに<code>-m32mscoff</code>を使う必要があります。</p><h4 id=その他のプラットフォーム>その他のプラットフォーム</h4><p>Dをサポートしている他のプラットフォームでは、GCCやClangのようなシステムCコンパイラは<code>dmd</code>が動作するなら既にインストールされています。
+Mac OSでは、App Storeの<code>XCode</code>で<code>clang</code>がインストールできます。
+ほとんどのLinuxやBSDでは、例えばDebianやDebianベースのシステムにおいて推奨されるコマンドライン<code>apt-get install build-essential</code>のようにGCCパッケージが利用できます。
+詳しくはあなたのシステムのドキュメントを見てください。</p><p>これらのシステムでは、たいてい環境変数<code>CC</code>にシステムコンパイラのコマンドがセットされています。
+あなたのシステムに合わせて以下の<code>CC</code>は<code>gcc</code>か<code>clang</code>のどちらかに置き換えてください。</p><pre><code>CC -c chello.c
+dmd hello.d chello.o
+./hello
+</code></pre><p>これはあなたのシステムの設定に合わせて32ビットまたは64ビットの出力を生成します。
+あなたが64ビットのシステムに32ビットのデベロッパーツールをインストールしている場合、<code>-m32</code>を<code>CC</code>と<code>dmd</code>の両方に渡すことで32ビットバイナリを生成できます。</p><h3 id=long-な道のり><code>long</code>な道のり</h3><p>CとDのソースを同じバイナリにコンパイルしリンクできるようになったので、さらに一般的な落とし穴を見ていきましょう。
+これを正しく理解することは、Windowsとその他のプラットフォーム両方で役に立ちます。</p><p>Dの特徴の1つとして、すべての整数型のサイズは固定されています。
+<code>short</code>は常に2バイトであり、<code>int</code>は4バイトです。
+これはシステムのアーキテクチャにかかわらず決して変わりません。
+これは仕様が各整数型のサイズを相対的にしか指定せず、実装に任せているCとは異なります。
+それでもモダンなコンパイラの間では幅広い合意があり、現在Dがサポートするすべてのプラットフォームにおけるほとんどの整数型のサイズはDのそれと一致します。
+例外は<code>long</code>と<code>ulong</code>です。</p><p>Dにおいて、<code>long</code>と<code>ulong</code>は常に8バイトです。
+<code>version(Posix)</code>傘下にあるほとんどの64ビットシステムでは足並みが揃っており、<code>long</code>と<code>unsigned long</code>も8バイトです。
+しかし32ビットアーキテクチャにおいては4バイトです。
+さらに、Windowsにおいては64ビットアーキテクチャであっても<strong>常に</strong>4バイトです。</p><p>今日のほとんどのCコードはこれらの違いを考慮しプリプロセッサを使うことによってカスタム整数型を定義するか、誤解の余地なく定義される<code>int32_t</code>や<code>int64_t</code>のような型のあるC99 <code>stdint.h</code>を使うようにしています。
+しかしいまだに<code>long</code>をそのまま使っているCライブラリに遭遇することがあります。</p><p>以下のようなCの関数を考えてみましょう:</p><p><strong>maxval.c</strong></p><pre><code class=language-c>#include &lt;limits.h&gt;
+unsigned long max_val(void)
+{
+    return ULONG_MAX;
+}
+</code></pre><p>素朴なDの実装はこのようになります:</p><p><strong>showmax1.d</strong></p><pre><code class=language-d>extern(C) ulong max_val();
+void main()
+{
+    import std.stdio : writeln;
+    writeln(max_val());
+}
+</code></pre><p>結果はCコンパイラとアーキテクチャに依存します。
+例えば、Windowsの<code>dmc</code>では<code>7316910580432895</code>、x86 <code>cl</code>では<code>59663353508790271</code>、x64 <code>cl</code>では<code>4294967295</code>になります。
+C側の<code>unsigned long</code>のサイズは最後のものも他の2つと変わらず4バイトですが、この最後の値が本当の正しい値です。
+おそらくx64 ABIが返り値を8バイトの<code>RAX</code>レジスタに保存し、それがD側の8バイトである<code>ulong</code>として問題なく読めてしまうからだと思います。
+ここで重要なポイントは、D側が32ビットのレジスタに64ビットの返り値を期待しており、実際の値より大きな値を呼んでいるため、x86のコードの2つの値は役に立たないと言うことです。</p><p>幸いにも、DRuntimeは<code>core.c.config</code>でこの問題の回避策を提供しており、<code>c_long</code>と<code>c_ulong</code>があります。
+これら2つはCのランタイム実装とアーキテクチャの構成に合うよう、コンパイル時に調整されます。
+これにより、Dのモジュール内の<code>max_val</code>の宣言をこのように変更する必要があります:</p><p><strong>showmax2.d</strong></p><pre><code class=language-d>import core.stdc.config : c_ulong;
+extern(C) c_ulong max_val();
+
+void main()
+{
+    import std.stdio : writeln;
+    writeln(max_val());
+}
+</code></pre><p>コンパイルし実行するとどこであっても正しい結果が得られます。
+Windowsにおいては、一律で<code>4294967295</code>になります。</p><p>遭遇することは少ないですが、<code>core.stdc.config</code>は<code>long double</code>に対応したポータブルな<code>c_long_double</code>型も宣言しており、DのモジュールがバインドしなければならないCライブラリに登場するかもしれません。</p><h3 id=この先について>この先について</h3><p>この投稿で、CとDをコンパイルし同じ実行ファイルにリンクするためのセットアップをし、最初のつまづきポイントをいくつか見ていきました。
+このシリーズの次の投稿ではDの配列とCの配列を協調させることについてフォーカスしていきます。
+ではまた!</p></article><footer><h2><a href=/tags/dlang>#dlang</a>
+DとCのインターフェース:入門編【翻訳】</h2><p><time>2017-12-10</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_and_c>#d_and_c</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/advent_calendar>#advent_calendar</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>

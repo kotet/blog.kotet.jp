@@ -1,0 +1,638 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="これは User:Quickfur/Compile-time vs. compile-time - D Wiki を翻訳した D言語 Advent Calendar 2018 5日目の記事です。 この記事は原文と同じGNU Free Documentation Licenseで公開されます。 誤訳等あれば気軽に Pull r"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.02c91f0bdf54d569f6c715f0a345bf32b55cd4d3ac11e0b98fec7ad1e614c151.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type=text/javascript></script><script type=text/x-mathjax-config>
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script><title>#dlang 2つの「コンパイル時」【翻訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/12/compile-time-vs-compile-time/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content="#dlang 2つの「コンパイル時」【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="これは User:Quickfur/Compile-time vs. compile-time - D Wiki を翻訳した D言語 Advent Calendar 2018 5日目の記事です。 この記事は原文と同じGNU Free Documentation Licenseで公開されます。 誤訳等あれば気軽に Pull r"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2018/12/compile-time-vs-compile-time/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639 11 7.44606164 11.4478622 6.99834639 12.0003283 6.99834639 12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639c0 .5522847500000001-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12 6 11.4477153 6.44771525 11 7 11 7.55228475 11 8 11.4477153 8 12 8 12.5522847 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7 13.6568542 7 15 8.34314575 15 10 15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13 11.9072594 13 11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9 11.4477153 9 11 9.44771525 11 10 11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
+2つの「コンパイル時」【翻訳】</h2><p><time>2018-12-05</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_wiki>#d_wiki</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#これはコンパイル時-あれもコンパイル時>これはコンパイル時、あれもコンパイル時</a></li><li><a href=#テンプレート展開-ast操作>テンプレート展開・AST操作</a><ul><li><a href=#テンプレート>テンプレート</a></li><li><a href=#static-if>static if</a></li></ul></li><li><a href=#ctfe>CTFE</a><ul><li><a href=#定数畳み込み>定数畳み込み</a></li><li><a href=#定数畳み込み-進化版>定数畳み込み（進化版）</a></li><li><a href=#ctfe評価の強制>CTFE評価の強制</a></li></ul></li><li><a href=#異なる-コンパイル時>異なる「コンパイル時」</a></li><li><a href=#ケーススタディ-ctfe変数をast操作時に読む>ケーススタディ：CTFE変数をAST操作時に読む</a><ul><li><a href=#解決策1-ast操作中に値を使えるようにする>解決策1：AST操作中に値を使えるようにする</a></li><li><a href=#解決策2-すべてをast操作で行う>解決策2：すべてをAST操作で行う</a></li><li><a href=#解決策3-すべてをctfeに移す>解決策3：すべてをCTFEに移す</a></li></ul></li><li><a href=#インターリーブされるast操作とctfe>インターリーブされるAST操作とCTFE</a></li><li><a href=#ケーススタディ-pragma-msg-とctfe>ケーススタディ：pragma(msg)とCTFE</a></li><li><a href=#ケーススタディ-static-ifと-ctfe>ケーススタディ：static ifと__ctfe</a><ul><li><a href=#解決策-単にifを使う>解決策：単にifを使う</a></li><li><a href=#でも実行時パフォーマンスはどうなる>でも実行時パフォーマンスはどうなる？</a></li></ul></li><li><a href=#ケーススタディ-型リストに対するforeach>ケーススタディ：型リストに対するforeach</a><ul><li><a href=#自動アンローリング>自動アンローリング</a></li><li><a href=#型リストに対するforeachはbreakやcontinueを解釈しない>型リストに対するforeachはbreakやcontinueを解釈しない</a></li><li><a href=#型リストに対するforeachは実際何をしているのか>型リストに対するforeachは実際何をしているのか</a></li><li><a href=#解決策>解決策</a></li></ul></li><li><a href=#まとめ>まとめ</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>これは
+<a href=https://wiki.dlang.org/User:Quickfur/Compile-time_vs._compile-time>User:Quickfur/Compile-time vs. compile-time - D Wiki</a>
+を翻訳した
+<a href=https://qiita.com/advent-calendar/2018/dlang>D言語 Advent Calendar 2018</a>
+5日目の記事です。</p><p>この記事は原文と同じ<a href=http://www.gnu.org/copyleft/fdl.html>GNU Free Documentation License</a>で公開されます。</p><p>誤訳等あれば気軽に
+<a href=https://github.com/kotet/blog.kotet.jp>Pull requestを投げてください</a>。</p><hr><p><em>By H. S. Teoh, March 2017</em></p><p>よく宣伝文句にされるD言語の機能のひとつに、素晴らしい「コンパイル時」能力があります。
+しかしこの能力はしばしばD言語初心者の混乱と誤解を引き起こし、
+苛ついたユーザーはディスカッションフォーラムにこのような質問を投げかけることになります。
+「どう考えてもコンパイル時にわかる値なのに、
+なんでコンパイラはコンパイル時にこの値を読んでくれないんですか？！」</p><p>この記事ではそんな誤解を解き明かすべく、Dの「コンパイル時」機能とはなにか、
+どのように動作するのか、頻出の問題をどのように解決するかを説明します。</p><h3 id=これはコンパイル時-あれもコンパイル時>これはコンパイル時、あれもコンパイル時</h3><p>混乱の原因は複数の意味を持つ「コンパイル時」という言葉には無さそうですね。
+「コンパイル時」という言葉は素直な言い方に思えます。
+コンパイル時とは、単に人間の書いたDのコードをコンパイラが黒魔術でマシンリーダブルな実行ファイルに変換する時間のことです。
+だとすれば、機能Xが「コンパイル時」の機能で、機能Yも「コンパイル時」の機能なら、
+当然XとYは好きなように組み合わせられなければいけないはずですね？
+ということで、すべてが「コンパイル時」に起こり、
+コンパイラは魔法のようにすべてをシュッとしてくれなければいけないはずです。</p><p>もちろん現実には、混乱の原因と多少の関係があります。
+大まかに言うと、よく「コンパイル時」と呼ばれるDの機能には少なくとも2つのカテゴリが存在します。</p><ul><li>テンプレート展開、もしくは抽象構文木（AST）操作</li><li>コンパイル時関数実行（CTFE）</li></ul><p>「コンパイル時」にはコンパイルの過程に明確なフェーズとして存在するこの2箇所があり、
+この区別を理解することはDの「コンパイル時」機能がいかに動作するかを理解するカギとなります。</p><p>特にAST操作機能はコンパイル過程の早い段階で適用され、CTFEはもっと後の段階に適用されます。
+これを理解すると、コード片が通過していくコンパイル過程を大まかに知る役に立ちます。</p><ol><li>構文解析とパーシング。コンパイラは人間の書いたプログラムをスキャンしコードの構造を表現する構文木に変換します</li><li>AST操作。テンプレートは展開され、その他AST機能が適用されます</li><li>意味解析。識別子をデータ、関数、変数と関連付けるなどして、様々なASTの各部位に意味が与えられます</li><li>コード生成。意味解析がされたコードは実行ファイルになる機械語を出力するのに使われます</li></ol><p>CTFEは意味解析とコード生成の間のどこかに位置しており、
+コンパイラに埋め込まれたインタプリタ（CTFEエンジンと呼ばれる）によるDのコードの実行が基本的に関わっています。</p><p>CTFEは意味解析が行われた後にあるので、AST操作機能にはアクセスできません。
+同様に、AST操作の段階ではコード中の構造に意味が与えられていないため、
+ASTを操作する「コンパイル時」機能はCTFEエンジンの成果にはアクセスできません。</p><p>したがって、Dの「コンパイル時」機能に関して言えば、2つの異なる「コンパイル時」が存在します。
+先のAST操作に関わる段階と、後のCTFEが関わる段階です。
+この2つの混同がDの「コンパイル時」機能において特に遭遇する問題の原因です。</p><p>実際には、この2つのフェーズはもっと複雑に作用します。
+これがどのように動くか理解するために、
+「コンパイル時」機能の2つのカテゴリについてもっと詳しく見ていきましょう。</p><h3 id=テンプレート展開-ast操作>テンプレート展開・AST操作</h3><p>コンパイラがコードをコンパイルするときに最初にすることは、
+コードのテキストを抽象構文木（Abstract Syntax Tree、AST）として知られるものに変換することです。</p><p>たとえば、このプログラムは</p><pre><code class=language-d>import std.stdio;
+void main(string[] args)
+{
+    writeln(&quot;Hello, world!&quot;);
+}
+</code></pre><p>以下のように再構築されます。</p><p><img src=/img/blog/2018/12/AST.svg alt=AST.svg></p><p>（注意：これはコンパイラが生成する実際のASTではありません。ただ主要な点を例示しているだけです。
+コンパイラによって生成されるASTはこれと構造や細かい点が異なるかもしれません。）</p><p>ASTはコンパイラが見ているプログラムの構造を表しており、
+コンパイラがプログラムを機械語に変換する過程で必要になるすべてが含まれています。</p><p>このASTで注目すべき点は、変数、メモリ、入力や出力といったものが含まれないところです。
+コンパイルのこの時点では、コンパイラはプログラムの構造のモデルを構築するだけです。
+この構造の中には<code>args</code>や<code>writeln</code>のような識別子がありますが、コンパイラはまだそれらに意味を与えていません。
+それはコンパイルのもっと後の段階で行われます。</p><p>Dの強力な「コンパイル時」機能のうち、このASTを操作する能力に由来するものがコンパイルされます。
+ここでDが提供するものはテンプレートと<code>static if</code>です。</p><h4 id=テンプレート>テンプレート</h4><p><strong>もしあなたがテンプレートの基礎を理解しているなら、以下のセクションは飛ばしてもいいかもしれません。</strong></p><p>Dの強力な機能のひとつに、C++のそれと同じようなテンプレートがあります。
+テンプレートはコードのステンシル（訳注：同じ形をたくさん描くための文房具。型紙。）、
+もしくはASTの部分木を生成できるASTパターンとして考えることができます。
+例えば、以下のようなテンプレート構造体を考えてみましょう。</p><pre><code class=language-d>struct Box(T)
+{
+    T data;
+}
+</code></pre><p>Dでは、これは冠名テンプレート（eponymous template）と呼ばれる略記であり、完全に書き下すとこうなります。</p><pre><code class=language-d>template Box(T)
+{
+    struct Box
+    {
+        T data;
+    }
+}
+</code></pre><p>このテンプレートに相当するASTはこのようになります。</p><p><img src=/img/blog/2018/12/Template1.svg alt=Template1.svg></p><p>テンプレートのインスタンス化はこのように行います。</p><pre><code class=language-d>Box!int intBox;
+</code></pre><p>たとえば型<code>Box!int</code>はまだ定義されていないかもしれません。
+しかし、コンパイラは自動的にAST部分木のコピーを<code>TemplateBody</code>ノード下に作り、
+その中の<code>T</code>をすべて<code>int</code>に置き換えます。
+こうして生成された以下のようなAST部分木が、プログラムの宣言に加えられます。</p><p><img src=/img/blog/2018/12/Template-example1.svg alt=Template-example1.svg></p><p>これは以下のようなコード片に相当します。</p><pre><code class=language-d>struct Box!int
+{
+    int data;
+}
+</code></pre><p>（実際はこのようなコードを書くことはできません。
+<code>Box!int</code>という名前はテンプレート展開プロセスのためのものであり、
+ユーザーコードで直接定義することはできません。）</p><p>同様に、同じテンプレートを以下のように違う宣言でインスタンス化すると、</p><pre><code class=language-d>Box!float floatBox;
+</code></pre><p>以下のようなものを宣言したのと同じになります。</p><pre><code class=language-d>struct Box!float
+{
+    float data;
+}
+
+Box!float floatBox;
+</code></pre><p>実際テンプレートをインスタンス化するたびに新しいAST部分木が生成され、プログラムのASTに組み込まれます。</p><p>この機能を使う主目的はコードの繰り返しの回避です。
+よく繰り返されるコードを取り除いてテンプレートにすることができて、
+そうするとコンパイラは自動的にテンプレートをインスタンス化して挿入します。
+これによって多くの無駄なタイピングを防ぐことができて、
+結果DRY（Don&rsquo;t Repeat Yourself）の原則を守ることができます。</p><p>もちろんDのテンプレートはこれよりも奥がとてもとても深いものですが、
+テンプレートのすべてを解説するのはこの記事のスコープを超えています。</p><p>ここで重要なのは、テンプレート展開はコンパイルのAST操作フェーズに行われ、
+したがってテンプレート引数は<strong>問題のコードがAST操作フェーズにある時</strong>にわかっていなければならない、ということです。
+Dにおいてはこのことが、テンプレート引数は「コンパイル時」にわかっていなければならない、と言われる傾向にあります。
+しかしこれは多くの場合正確な表現ではありません。
+テンプレート引数はコンパイルのAST操作フェーズの間にわかっていなければならない、と言ったほうが正確です。
+後に見ていくように、正確な表現は理解を助け、
+Dを学習する者がDの「コンパイル時」機能を使おうとしたときに遭遇する問題を回避する助けになります。</p><h4 id=static-if>static if</h4><p>DのコンパイルのAST操作フェーズにおけるもうひとつの強力な機能が<code>static if</code>です。
+これを使うとASTの部分木をコンパイルするか、逆にコンパイルせず取り除くかを選択できます。
+たとえばこのように。</p><pre><code class=language-d>struct S(bool b)
+{
+    static if (b)
+        int x;
+    else
+        float y;
+}
+</code></pre><p>この<code>static if</code>は、コンパイラがテンプレート<code>S</code>を展開している時にブーリアン引数<code>b</code>が評価されることを意味しています。
+この値は<strong>テンプレートが展開される時</strong>にわかっていなければなりません。
+D業界では、値は「コンパイル時」にわかっていなければならない、
+とよく言いますが、もっと正確であらねばなりません。
+これは後で説明します。</p><p><code>b</code>の値が<code>true</code>なら、<code>static if</code>の<code>else</code>ブランチは展開後のテンプレートから取り除かれます。
+このように書いたなら、</p><pre><code class=language-d>S!true s;
+</code></pre><p>このように宣言したのと同じことです。</p><pre><code class=language-d>struct S!true
+{
+    int x;
+}
+</code></pre><p>（もちろん実際はこのようなコードを書くことはできません。
+<code>S!true</code>という名前はテンプレート展開プロセスのためのものでありユーザーコードで直接定義できないからです。
+これは説明のためのものです。）</p><p><code>else</code>ブランチは展開後のテンプレートから<strong>完全になくなっています</strong>。
+これは非常に重要なことです。</p><p>同様に、以下のように書いたなら、</p><pre><code class=language-d>S!false t;
+</code></pre><p>以下のように宣言したのと同じ意味になります。</p><pre><code class=language-d>struct S!false
+{
+    float y;
+}
+</code></pre><p><code>if</code>ブランチは展開後のテンプレートから<strong>完全になくなっています</strong>。
+これもまた非常に重要です。</p><p>言い換えると、<code>static if</code>は後のコンパイル段階が関わるASTに影響します。</p><p>もっと深く取り扱いましょう。
+この段階、<code>static if</code>が評価される段階で、変数、メモリ、I/Oのような概念はまだ存在しません。
+私達はプログラムの<strong>構造</strong>を操作しています。
+実行には関わりません。
+上のコードで、<code>x</code>と<code>y</code>は単なる識別子です。
+まだ変数や、
+<code>struct</code>の具体的なオフセットに配置されるデータフィールドのような意味は与えられていません。
+それはコンパイルの後の段階で行われます。</p><p>なぜこれが重要なのでしょうか？これがDの「コンパイル時」機能に対するよくある誤解に関係しているからです。
+それにはCTFE、コンパイル時関数実行が関わってきます。
+次はそれについて話しましょう。</p><h3 id=ctfe>CTFE</h3><p>CTFEとはコンパイル時関数実行（Compile-Time Function Evaluation）という意味です。
+これはDの提供する極めて強力な機能であり、
+（筆者はDのそれのほうがはるかに強力だと思いますが）C++の<code>constexpr</code>と似ています。</p><p>CTFEを理解するにあたって最も重要なのは、それが<strong>AST操作フェーズが完了した後</strong>に行われるということです。
+もっと正確に言うと、プログラムの問題になっている部分のASTが「ファイナライズ」され、
+意味解析を行っている時に行われます。
+識別子にはモジュール、関数、引数、変数などの意味が割り当てられ、
+<code>if</code>や<code>foreach</code>のような制御構文にも意味が与えられ、
+その他にも値範囲伝播（VRP、Value Range Propagation）のような意味解析が行われます。</p><h4 id=定数畳み込み>定数畳み込み</h4><p>意味解析の一部に<strong>定数畳み込み</strong>があります。
+たとえば、以下のようなコードを書いたとします。</p><pre><code class=language-d>int i = 3*(5 + 7);
+</code></pre><p>計算に用いられるすべての引数がコンパイラの知っている定数であり、実行時に結果が変化しないため、
+実行時にこのような計算をする（5を7に足して、その結果を3にかける）のは計算資源の無駄です。
+もちろんこの例はささいなものですが、
+もしプログラムのパフォーマンスに大きく影響するビジーインナーループにこのコードがあったら、
+と想像してみてください。
+もしこの定数式を結果の値に<strong>畳み込む</strong>ことができたなら、
+繰り返し同じ計算をしなくて良くなるためプログラムは速くなるはずで、
+実際コンパイラは答えがわかっているので、ここでは何も行う必要はなくなります。
+答えは直接<code>i</code>に代入できますね。</p><pre><code class=language-d>int i = 36;
+</code></pre><p>この過程は<strong>定数畳み込み</strong>と呼ばれ、基本的に現代的なコンパイラならどの言語でも実装されています。
+何も新しいことではありません。
+しかしDコンパイラは、これを全く新しいレベルに昇華させました。</p><h4 id=定数畳み込み-進化版>定数畳み込み（進化版）</h4><p>例えばこんなコードを考えてみます。</p><pre><code class=language-d>int f(int x)
+{
+    return x + 1;
+}
+
+int i = 3*(5 + f(6));
+</code></pre><p>再び手計算してみると、この式の値は36であるとわかります。
+しかし今回は、式に関わる定数が<code>f</code>への関数呼び出しで隠されています。
+でもコンパイラは<code>f</code>の定義を見ることができて、そこでは引数に定数1を足しているだけなので、
+コンパイラはこの式も定数であると推測可能であり、実行時には計算を行いません。</p><p>しかし<code>f</code>が単純な定数の足し算よりも複雑だったならばどうでしょうか。</p><pre><code class=language-d>int f(int x)
+{
+    int a = 0;
+    for (int i=1; i &lt;= x/2; i++)
+    {
+        a += i;
+    }
+    return a + 1;
+}
+
+int i = 3*(5 + f(6));
+</code></pre><p>またも<code>f(6)</code>の値は定数ですが、
+コンパイラがその値を知るためには<strong>この関数をコンパイル中に効率的に実行</strong>しなければなりません。
+そしてそのためには、コンパイラはコンパイラの中に埋め込まれているDインタプリタで実行できる状態へと、
+<code>f</code>の中身をコンパイルする必要があります。</p><p>簡単に言うと、これがCTFEがDの歴史に現れた経緯です。
+D仮想マシンでできることには限界がありますが、その限界を可能な限りひろげようとする試みが目下進行中です。
+これを書いている時点で、
+DコンパイラはPhobos標準ライブラリのかなりの部分をコンパイル中に実行できるようになっており、
+したがって多くのライブラリ機能はコンパイラ組み込みの実装を必要とせずにコンパイル時にアクセスできます。
+さらに、現在のCTFEエンジンをバイトコードインタプリタを元にした、
+より優れたCTFEパフォーマンスとメモリ管理、そしていつかは機能もより多くを実現する、
+さらに強力なものに置き換える試みがStefan Kochの指揮のもと進められています。</p><h4 id=ctfe評価の強制>CTFE評価の強制</h4><p>もちろんコンパイラは定数畳み込みを常に前もって行ってくれるとは限りません。
+複雑さがある一定のレベルを超えたら、
+コンパイラはその式の値を計算するコードを実行時用に生成するために残しておいたほうが合理的です。
+プログラム全体の目的が複雑な数学の問題を解いて決まった解を計算することかもしれません。
+そのような計算は遅いCTFE上で行うよりも、
+実行ファイルを生成してネイティブな実行速度で行ったほうがいいでしょう。</p><p>しかし、そのような計算を必要に応じてコンパイル時に<strong>できるようにしておく</strong>と、とても便利です。
+たとえばルックアップテーブルの値を事前計算して実行ファイルに埋め込みたいとします。
+そうすればプログラムの開始時のルックアップテーブルの初期化に関する実行時コストがなくなります。
+このように、式の評価を実行時でなくコンパイル時に行ったほうが望ましい場面が時々あります。
+そういうった場合に便利なイディオムとして、
+コンパイル時に判明している値で計算を行った結果を代入する<code>enum</code>やテンプレート引数があります。
+以下に例を挙げましょう。</p><pre><code class=language-d>int complicatedComputation(int x, int y)
+{
+    return ...; /* ここに複雑な計算が入る */
+}
+
+void main()
+{
+    // コンパイラは計算の複雑度に応じて、
+    // これをコンパイル時に評価するか決定します。
+    int i = complicatedComputation(123, 456);
+
+    // enum の値はコンパイル時に判明していなければならないため、
+    // コンパイラにはこれをCTFEで評価する以外の選択肢がありません。
+    // これが式のCTFE評価を強制する標準的イディオムです。
+    enum j = complicatedComputation(123, 456);
+}
+</code></pre><p>式の値がコンパイル時に判明している必要があるためにCTFE評価が強制されるので、
+Dユーザー間の議論ではCTFEはこのような文脈で語られることが多いです。</p><h3 id=異なる-コンパイル時>異なる「コンパイル時」</h3><p>元の話題に戻りますが、CTFE、
+「バーチャルマシン」や「バイトコードインタプリター」と呼ばれるCTFEについては気をつけてください。
+つまりどういうことかというと、ここでCTFEは、
+コンパイル過程が実行ファイルを生成する手前まで進んだときに行われるということを意味しています。</p><p>特に、AST操作段階はとうの昔に終わっていることを意味しています。
+つまり、CTFEで評価できるコードはもはや<code>static if</code>のような<strong>AST操作ができない</strong>ということを意味します。
+CTFEが動作するためには、
+変数やメモリのような意味論的概念がコードの構成物に対して割り当てられている必要があり、
+そうでなければ実行も評価もできません。
+しかしAST操作フェーズでは、そのような意味は与えられていません。
+まだプログラムの構造を操作しているところです。</p><p>したがって、AST操作が「コンパイル時」に行われているようにCTFEも「コンパイル時」に行われていたとしても、
+それは異なる「コンパイル時」です。
+CTFEのそれは、コンパイル過程の速いところで行われるAST操作よりも「実行時」に近いところにあります。
+これが「コンパイル時」という用語が混乱を招く理由です。
+この言葉はAST操作やCTFEのような機能すべてをひとつに固めて、
+はっきりしない時間のまとまりである「コンパイル時」にしてしまうことで、
+コンパイラがなにか魔法のように命令に従ってくれるという誤った印象を与えます。</p><p>重要なのは、AST操作が最初に適用され、その後必要に応じてCTFEが使われるということです。</p><p>AST操作 → CTFE</p><p>この単方向の矢印はコード片がAST操作からCTFEに移動して、逆には動かないことを示しています。</p><p>もちろんこれは単純化された図式です。
+これらがどのように動くかを理解するためには、実際のコードを見てみるのが一番です。
+というわけでD学習者が陥りがちな落とし穴と、そこで上の法則がいかに適用されるかを見ていきましょう。</p><h3 id=ケーススタディ-ctfe変数をast操作時に読む>ケーススタディ：CTFE変数をAST操作時に読む</h3><p>Dフォーラムでとくに何度も現れる苦情はこのようなコードに関するものでしょう。</p><pre><code class=language-d>int ctfeFunc(bool b)
+{
+    static if (b)    // &lt;--- この行でコンパイルエラー
+        return 1;
+    else
+        return 0;
+}
+
+// 注：enumはコンパイラに関数のCTFEによる評価を強制します
+enum myInt = ctfeFunc(true);
+</code></pre><p>上のコードをコンパイルしようとすると、
+コンパイラは<code>static if</code>は<code>b</code>の値を「コンパイル時」に読めないと主張します。
+これは明らかにこんな反応を引き出すでしょう。
+「は？？！<code>b</code>がコンパイル時に読めないってどういう意味だよ？！
+このコードはコンパイル時であるCTFEで実行されてるんだから<code>b</code>の値はコンパイル時にわかるはずだろ？」</p><p>表面上、これはあきらかにコンパイラのバグか、Dの「コンパイル時」機能の欠陥か、
+Dコンパイラ作者の驚くべき力量不足によって明らかかつシンプルなCTFEのユースケースにおける問題を通知することに失敗しているように見えます。</p><p>しかし、何が起きているかを正しく理解すれば、なぜコンパイラがこのコードを受け付けないかわかります。
+コンパイルの過程で、DコンパイラはまずコードのASTを生成し、
+<code>static if</code>の評価はその結果出力されるASTの形を変えることを思い出してください。</p><p>コンパイラが<code>ctfeFunc</code>の宣言に遭遇すると、コンパイラはその中身をスキャンし、
+この関数のASTを構築するその時に<code>static if (b)</code>に遭遇します。
+<code>b</code>の値が<code>true</code>なら、コンパイラはだいたいこんな感じのASTを出力します。</p><pre><code class=language-d>int ctfeFunc(bool b)
+{
+    return 1;
+}
+</code></pre><p>（AST操作段階で、<code>static if</code>のfalseブランチは結果のASTから除外され、
+はじめから何もなかったのと同じようになることを思い出してください。
+したがって<code>return 0</code>はこの段階以降現れません。）</p><p><code>b</code>の値が<code>false</code>ならば、以下のコードに相当するASTツリーが出力されます。</p><pre><code class=language-d>int ctfeFunc(bool b)
+{
+    return 0;
+}
+</code></pre><p>しかし、ここで問題が発生します。
+<code>b</code>の値はこの時点ではわかっていないのです。
+この時点で<code>b</code>についてコンパイラが知っていることはこれが関数の引数を表す識別子だということだけです。
+これがどんな値を持ちうるか等の意味はまだ与えられていません。
+実際、コンパイラは引数<code>true</code>が渡されている<code>ctfeFunc</code>を呼び出す<code>enum</code>のことをまだ知りません！</p><p>コンパイラが<code>enum</code>の行を<strong>読んでいた</strong>としても、今度は関数のASTがまだ完全に処理されていないため、
+その値を<code>b</code>に代入することはできません。
+ASTが変化すると識別子の意味も変化してしまう可能性があるので、
+ASTが完全に構築されるまで値を識別子に代入することはできません。
+この時点では<code>b</code>になにか意味があるかのように値を代入するのはまだ早いのです。
+引数への値の代入という概念ははAST操作フェーズが適用された<strong>後に</strong>のみ適用できる意味論的概念です。
+しかしASTを最後まで処理するには、コンパイラは<code>b</code>の値を知らなければなりません。
+<code>b</code>の値はASTを最後まで処理しないとわかりません。
+これは解決できない袋小路なので、コンパイラは諦めてコンパイルエラーを出力するのです。</p><h4 id=解決策1-ast操作中に値を使えるようにする>解決策1：AST操作中に値を使えるようにする</h4><p>解決策のひとつは<code>b</code>の値をAST操作フェーズに使えるようにすることです。
+それを実現する最も単純な方法は<code>ctfeFunc</code>をテンプレート引数に<code>b</code>をとるテンプレート関数にして、
+それに応じて<code>enum</code>の行が<code>true</code>を実行時引数でなくテンプレート引数として渡すように変更することです。</p><pre><code class=language-d>int ctfeFunc(bool b)()    // 注：最初のカッコの組にはテンプレート引数が入ります
+{
+    static if (b)    // エラーを出さずにコンパイルできるようになりました
+        return 1;
+    else
+        return 0;
+}
+
+enum myInt = ctfeFunc!true;
+</code></pre><p><code>b</code>はテンプレート引数なので、その値はAST操作の時点で判明しており、
+したがって<code>static if</code>も問題なくコンパイルできます。</p><h4 id=解決策2-すべてをast操作で行う>解決策2：すべてをAST操作で行う</h4><p>先の方法もいいですが、より注意深く見てみると、もっとうまくできることに気が付きます。
+AST操作の観点からもう一度考えてみましょう。
+AST操作フェーズのあと、関数はこうなっているはずです。</p><pre><code class=language-d>int ctfeFunc()    // 注：テンプレート引数はAST操作フェーズの後には存在しません
+{
+    return 1;     // 注：static ifのelseブランチは取り除かれています
+}
+</code></pre><p>つまりCTFEはそもそも最初からこの関数について何も評価する必要はないのです！
+<strong>ctfeFunc</strong>を限界までテンプレートとして宣言すると、完全にAST操作フェーズに評価されるようになります。
+（これはもはやCTFEで評価されておらず、関数でもないので、
+名前も<code>ctfeFunc</code>から変えたほうがいいかもしれません。）</p><pre><code class=language-d>template Value(bool b)
+{
+    static if (b)
+        enum Value = 1;
+    else
+        enum Value = 0;
+}
+
+enum myVal = Value!true;
+</code></pre><p><code>myVal</code>は完全にAST操作フェーズに評価されるようになり、CTFEは全く関与しなくなりました。</p><h4 id=解決策3-すべてをctfeに移す>解決策3：すべてをCTFEに移す</h4><p>さらにもうひとつ方法があります。
+この例はいささか単純ですが、実際のCTFE関数は単なるブーリアン引数のif条件より、もっと複雑のはずです。
+そういったものは素直にテンプレートに書き直すのが難しそうです。
+そういった場合どうすればいいのでしょうか？</p><p>答えを聞いて驚かれるかもしれません。
+<code>static if</code>を取り除き、普通で「実行時」の<code>if</code>に置き換えるのです。
+このように。</p><pre><code class=language-d>int ctfeFunc(bool b)
+{
+    if (b)    // &lt;--- 注：static ifではなく普通のifです
+        return 1;
+    else
+        return 0;
+}
+
+// 注：enumはコンパイラにCTFEでの関数評価を強制します
+enum myInt = ctfeFunc(true);
+</code></pre><p>そして不思議なことにこれはエラーを出さずにコンパイルされ、<code>myInt</code>には正しい値が入ります！
+しかしちょっと待ってください。
+何が起こったのでしょう？
+どうして<code>static if</code>は、「コンパイル時」に必要な値を計算するのに、
+「実行時」の物っぽい<code>if</code>へと変えることができたのでしょうか？
+コンパイラがずるをして、裏でこっそり<code>myInt</code>を実行時に計算するようにしてしまったのでしょうか？</p><p>実際、実行ファイルのコードをディスアセンブラーで調べてみてもそのような不正は起きていません。
+ならなんで動いているんでしょう？</p><h3 id=インターリーブされるast操作とctfe>インターリーブされるAST操作とCTFE</h3><p>詳しく見てみましょう。この時、AST操作フェーズにおいて、
+<code>ctfeFunc</code>に相当するASTの構築の他に行われることはありません。
+<code>static if</code>やその他テンプレートに関するものはないので、結果のASTは書いたとおりの素直なものになります。
+そしてコンパイラは<code>enum</code>の宣言を見て、
+<code>ctfeFunc</code>の「コンパイル時」評価が必要だと知ります。</p><p>ここで興味深いことが起こります。
+ここまでしてきた話を元にすると、
+（<code>myInt</code>のASTが完全に構築されていないので）コンパイラはまだ「AST操作」段階にあり、
+<code>ctfeFunc</code>の意味解析フェーズが終わっていないので、これは失敗するはずですね？
+確かに<code>myInt</code>のASTはまだ完全には解決されていませんが
+（したがってCTFEで得られる<code>myint</code>の値をこの時点で読むことはできません）、
+しかしこの時点で、<code>ctfeFunc</code><strong>のほうは</strong>コンパイルの次の段階に進む準備ができています。
+より正確に言うと<code>ctfeFunc</code><strong>に関するプログラムのASTの部分木の処理は完了しており</strong>、
+意味解析に渡すことが可能になっています。</p><p>そしてDコンパイラはこの分野に関してとても賢いので、<code>ctfeFunc</code>の意味解析が<strong>プログラムの他の部分、</strong>
+<strong>つまりまだ完了していない</strong><code>myInt</code><strong>の宣言のASTと独立して</strong>進められるとわかります。
+これは<code>ctfeFunc</code>のASTの部分木の意味解析が、
+<code>myInt</code>のASTの部分技とまったく依存を持たず単体で可能なためにできることです！
+（<code>ctfeFunc</code>が<code>myInt</code>の値に何らかの形で依存している場合は失敗します。）</p><p>したがって、コンパイラは<code>ctfeFunc</code>のASTに対して意味解析を行い、
+CTFEエンジンが理解できる形まで持っていきます。
+そしてCTFEエンジンは値<code>true</code>を引数として<code>ctfeFunc</code>を呼び出し、実行します。
+CTFEエンジンは、本質的に実行時に起きることをシミュレートします。
+そして返り値<code>1</code>が<code>myInt</code>のASTの処理を待つAST操作コードに戻され、残りのASTがすべて構築されます。</p><p>このAST操作にインターリーブする「スマートな」CTFEの呼び出しは、
+プロセス全体に関わることにより「コンパイル時」という言葉にいくらか妥当性を与えるかもしれません。
+しかし、あなたたちは今や2つの異なる「コンパイル時」が存在する理由についてよく理解できているはずです。
+先にくるAST操作が行われる段階と、
+後にくる、それがコンパイラの中で行われることを除けば実行時と似ているCTFEの段階、この2つです。
+これらのフェーズはプログラムのASTの異なるパーツに対してはそれぞれバラバラなタイミングで適用されますが、
+ASTの各パーツに対しては<strong>常に</strong>AST操作が先、CTFEが後という順番が守られます。
+どのASTの部分木に対してもAST操作はCTFEがその部分技に適用できるようになる<strong>前に</strong>行われ、
+ASTの部分木に対するCTFEは部分木全体がAST操作フェーズを通過している場合のみ実行できるようになります。</p><p>このAST操作とCTFEのインターリービングによってDの「コンパイル時」機能は非常に強力になっています。
+任意の複雑な計算をCTFEで行い（もちろんCTFEエンジンの制約には従います）、
+その結果をプログラムの別の部分のASTの操作に使うことができます。
+CTFEを元にしてできたプログラムの一部を元に、
+さらに<strong>そのプログラムの結果</strong>をまた別のプログラムのASTに影響させ、
+さらに連鎖させていくこと、そのすべてがコンパイル過程の一部として行えます。
+これはDのメタプログラミングの柱となる機能のひとつです。</p><h3 id=ケーススタディ-pragma-msg-とctfe>ケーススタディ：pragma(msg)とCTFE</h3><p>次に紹介するD学習者の一般的な苦情はCTFE関数のデバッグをしようとするときに起きるもので、
+CTFEにおける<code>pragma(msg)</code>の「奇妙な」振る舞いと関連しています。</p><p>ます最初に<code>pragma(msg)</code>のことをよく知らない人のために説明すると、
+<code>pragma(msg)</code>というのはコンパイル時に起きることをデバッグする便利な機能のことです。
+<code>pragma(msg)</code>ディレクティブがコンパイラに処理される時、
+コンパイラは<code>pragma</code>の引数として渡されたものをなんでも出力します。
+たとえばこんなコードがあります。</p><pre><code class=language-d>template MyTemplate(T)
+{
+    pragma(msg, &quot;instantiating MyTemplate with T=&quot; ~ T.stringof);
+    // ... ここに実際のコードが入る
+}
+</code></pre><p><code>MyTemplate!int</code>がインスタンス化された時、
+この行でコンパイラは&rdquo;instantiating MyTemplate with T=int&rdquo;と出力します。
+この便利なデバッギングツールによって、
+コード中でどんなインスタンス化が行われたか追跡することができます。</p><p>すてきですね、ここまでは。</p><p>しかしこのようなことをしようとすると苦情のもとになります。</p><pre><code class=language-d>int ctfeFunc(int x)
+{
+    if (x &lt; 100)
+        return x;
+    else
+    {
+        pragma(msg, &quot;bad value passed in&quot;);
+        return -1;
+    }
+}
+enum y = ctfeFunc(50); // 注：enumはctfeFuncに対してCTFEを強制します
+</code></pre><p>引数50は<code>ctfeFunc</code>の処理できる定義域内にあるにもかかわらず、
+コンパイラは&rdquo;bad value passed in&rdquo;を出力し続けます。
+そしてこれは101のような関数が拒否する値を与えてもかわりません。
+何が起きているんでしょうか？</p><p>「コンパイラのバグだ！」と叫ぶ人がいるかもしれません。</p><p>しかし今のあなたなら答えが想像できるはずです。
+<code>pragma(msg)</code>はAST操作フェーズに関連した概念なのです。
+コンパイラは<code>ctfeFunc</code>のASTを構築している時、
+つまりCTFEの必要があるかわかっていない時点でメッセージを出力します。
+その後、<code>pragma(msg)</code>はASTから取り除かれます。
+前に述べたとおり、AST操作フェーズの間、コンパイラは<code>if</code>に意味を与えておらず、
+また識別子<code>x</code>にもなんの値も与えていません。
+それらはASTを構成するただのシンタックスノードとして扱われます。
+なので<code>pragma(msg)</code>は対象となるコードの意味論を尊重しません。
+まだ意味はASTに結び付けられていないのです！
+ASTを操作して<code>pragma(msg)</code>の含まれる部分木を取り除くものが何もないので、
+このメッセージは<code>x</code>の値がCTFEの結果どうなろうと<strong>常に</strong>出力されます。
+関数がCTFEを行う時点では、<code>pragma(msg)</code>はすでにASTから取り除かれているため、
+CTFEエンジンはそれについて何もしません。</p><h3 id=ケーススタディ-static-ifと-ctfe>ケーススタディ：static ifと__ctfe</h3><p>もうひとつ度々誤解のもとになるのが、言語組み込みの魔法の変数<code>__ctfe</code>です。
+この変数はCTFEエンジンの中では<code>true</code>と評価され、実行時は常に<code>false</code>と評価されます。
+実行時には動くものの、CTFEではサポートされていないような機能をコードが含む際に、
+CTFEエンジンの制限を回避するのにこれが役立ちます。
+パフォーマンス上の特徴を活かしてCTFEエンジンのコードを最適化するのにも使えます。</p><p>シンプルな例を挙げると、一般に<code>std.array.appender</code>は実行時に大量の値を配列に追加する際推奨されます。
+しかし現在のCTFEエンジンの仕組み上、
+CTFEエンジンの中では単に配列組み込みの追加演算子<code>~</code>を使ったほうがいいです。
+そうすることでCTFEのメモリーフットプリントの削減ができるので、
+コンパイル速度の改善につながるかもしれません。
+そこで<code>__ctfe</code>変数を参照してCTFEと実行時、どちらの実行に依存した実装を使うか選ぶのです。</p><p><code>__ctfe</code>が一見して「コンパイル時」変数で、CTFEエンジンに使うためのものに見えるので、
+Dの初心者はこんなコードを書きがちです。</p><pre><code class=language-d>int[] buildArray()
+{
+    static if (__ctfe)  // &lt;-- ここが3行目です
+    {
+        // CTFE中なので追加には単に~=を使います
+        int[] result;
+        foreach (i; 0 .. 1_000_000)
+            result ~= i;
+        return result;
+    }
+    else
+    {
+        // 実行時にはappender()をより高速なパフォーマンスのために使います
+        import std.array : appender;
+        auto app = appender!(int[]);
+        foreach (i; 0 .. 1_000_000)
+            app.put(i);
+        return app.data;
+    }
+}
+</code></pre><p>残念ながら、このコードはコンパイラに拒否されます。</p><pre><code class=language-d>test.d(3): Error: variable __ctfe cannot be read at compile time
+</code></pre><p>これはほぼ確実にこんな反応を引き出します。
+「なんだって？！<code>__ctfe</code>がコンパイル時に読めないってどういうことだよ？！
+これはCTFEのために作られたものなんだからコンパイル時の機能じゃないのか？？」</p><p>しかし、知識を前もって身につけておけば、なぜこれが動かないかわかります。
+<code>static if</code>はコードのAST操作フェーズに関わるもので、
+一方<code>__ctfe</code>は明らかにその後のCTFEフェーズのものです。
+コンパイルのAST操作フェーズで、コンパイラは<code>buildArray</code>がCTFEで評価されるか否かを知りません。
+実際ASTの構築が終わるまで意味解析は行われないため、
+識別子<code>__ctfe</code>にはまだ意味は与えられていません。
+意味解析が完了するまで識別子は決まった意味を持ちません。
+そのため<code>static if</code>と<code>__ctfe</code>はともに「コンパイル時」機能でありながら、
+前者はコンパイルの早い段階、後者は後の段階に関わるものです。
+ふたたび、その2つを混ぜ合わせて隠してしまう言葉「コンパイル時」が混乱を呼んでしまったようです。</p><h4 id=解決策-単にifを使う>解決策：単にifを使う</h4><p>解決策はシンプルです。
+単に<code>static if</code>を<code>if</code>に置き換えてください。</p><pre><code class=language-d>int[] buildArray()
+{
+    if (__ctfe)   // &lt;--- 注：static ifではありません
+    {
+        // CTFE中なので追加には単に~=を使います
+        int[] result;
+        foreach (i; 0 .. 1_000_000)
+            result ~= i;
+        return result;
+    }
+    else
+    {
+        // 実行時にはappender()をより高速なパフォーマンスのために使います
+        import std.array : appender;
+        auto app = appender!(int[]);
+        foreach (i; 0 .. 1_000_000)
+            app.put(i);
+        return app.data;
+    }
+}
+</code></pre><p>この関数のASTは完全に構築、解析、さらに必要に応じてCTFEエンジンに渡して実行することもできるようになったので、
+<code>buildArray</code>が正しく動作するようになりました。
+CTFEエンジンがコードを実行する際には、
+<code>__ctfe</code>には意味が割り当てられif文のtrueブランチが選ばれます。
+実行時には、<code>__ctfe</code>は常に<code>false</code>となりfalseブランチが常に選ばれます。</p><h4 id=でも実行時パフォーマンスはどうなる>でも実行時パフォーマンスはどうなる？</h4><p>残った疑問は、
+一見実行時のものに見える「非静的」の<code>if</code>が実行ファイルに冗長なコードを生成してしまわないかです。
+<code>__ctfe</code>は実行時には常にfalseのため、
+CTFE専用のコードを実行しないという分岐を毎回行うのはCPUリソースの無駄です。
+現代的CPUでは、分岐は命令パイプラインをストールさせ、パフォーマンスの低下に繋がります。
+CTFEスペシフィックの部分はデッドウェイトでもあり、実行ファイルのサイズを増やし実行時に余分なメモリを消費し、
+しかもそれは絶対に実行されないので無駄でしかありません。</p><p>しかしコードをコンパイルしディスアセンブラーで検証すると、そのようなことは起こっていません。
+<code>__ctfe</code>の値はCTFEエンジンの外では静的に<code>false</code>であるため、分岐はコンパイラによって取り除かれます。
+オプティマイザはif文のtrueブランチがデッドコードだとわかるので、
+生成されるオブジェクトコードから単純に取り除きます。
+パフォーマンスに影響はなく、実行ファイルにデッドコードも生まれません。</p><h3 id=ケーススタディ-型リストに対するforeach>ケーススタディ：型リストに対するforeach</h3><p>経験あるDコーダーでも間違えそうな例を見てみましょう。
+以下の関数を考えてみます。</p><pre><code class=language-d>void func(Args...)(Args args)
+{
+    foreach (a; args)
+    {
+        static if (is(typeof(a) == int))
+        {
+            pragma(msg, &quot;is an int&quot;);
+            continue;
+        }
+        pragma(msg, &quot;not an int&quot;);
+    }
+}
+void main()
+{
+    func(1);
+}
+</code></pre><p>ひっかけ問題を出します。
+このプログラムがコンパイルされる時、コンパイラは何を出力するでしょうか。</p><p>&ldquo;is an int&rdquo;と答えたあなた、間違いです。</p><p>こちらが出力です。</p><pre><code class=language-txt>is an int
+not an int
+</code></pre><p>ちょっと待ってください！
+これは本当にバグでしょうか？
+<code>func</code>には引数がひとつしか渡されていません。
+どうして<strong>2行</strong>の出力が起きるのでしょうか？</p><p>これまでやってきたようにして、何が起きたか見ていきましょう。</p><p>まず、<code>func</code>はテンプレート関数なので、
+それが引数の型を指定した関数呼び出しによりインスタンス化されるまで意味論的に解析されません。
+解析はコンパイラが<code>main</code>関数を処理する途中、<code>func(1)</code>の呼び出しに遭遇したときに行われます。
+そこでIFTI（Implicit Function Template Instantiation、関数テンプレートの暗黙的インスタンス化。
+テンプレート関数のテンプレート引数を関数に渡された実行時引数の型から推測する処理）によって、
+コンパイラは<code>Args</code>に1要素のシーケンス<code>(int)</code>を代入します。</p><p>以上より関数呼び出しはこのように翻訳されます。</p><pre><code class=language-d>func!(int)(1);
+</code></pre><p>これは<code>func</code>のインスタンス化を引き起こし、コンパイラはテンプレート本文をもとに専用のASTを構築します。
+つまり、関数本文（のコピー）はAST操作フェーズに入ります。</p><h4 id=自動アンローリング>自動アンローリング</h4><p>ここでは<code>args</code>に対する<code>foreach</code>が行われています。
+ここでトリッキーなことが起きていて、この<code>foreach</code>はただの<code>foreach</code>ループではありません。
+可変長引数に対するループです。
+Dにおいてこのようなループは特殊な扱いをされます。
+これは自動的にアンローリング、つまり展開されるのです。
+ASTの観点から言うと、これはコンパイラがイテレーションごとにASTのコピーを生成するという意味です。
+これがAST操作フェーズに行われるということにも注意してください。
+<strong>これはCTFEとは関係ありません</strong>。
+この種の<strong>foreach</strong>ループは「実行時」の<code>foreach</code>とは異なるものです。</p><p>コンパイラがループ本文を処理すると、次は<code>static if</code>に遭遇します。
+条件がtrueなので（現在ループの対象になっており、関数の引数でもある要素は、値1の<code>int</code>です）、
+コンパイラは<code>static if</code>の<code>true</code>ブランチを展開します。</p><p>その次に<code>pragma(msg)</code>が来るので、メッセージ&rdquo;is an int&rdquo;を出力します。</p><p>その下には<code>continue</code>があります。
+そしてここが重要なポイントです。
+今我々はAST操作フェーズにいるので、
+<code>continue</code>は単に構築されるASTに付属するシンタックスノードでしかありません。
+<code>continue</code>はAST操作フェーズでは解釈されません！</p><p>なので、ループ本文の次の要素に移動し、
+AST操作コードは次の<code>pragma(msg)</code>を見つけて&rdquo;not an int&rdquo;と出力するのです。</p><p>これは注目すべき重要事項なので、強調のため繰り返します。</p><ol><li>CTFEはここで<strong>関係ありません</strong>。CTFEではなくAST操作フェーズでループアンローリングが起きています。</li><li><code>continue</code>はAST操作フェーズで解釈されず、あとでコードに翻訳するためにASTに残されます。</li></ol><h4 id=型リストに対するforeachはbreakやcontinueを解釈しない>型リストに対するforeachはbreakやcontinueを解釈しない</h4><p>最後の点は、
+型リストに対するforeachが特別にループのアンローリング中に<code>break</code>や<code>continue</code>を解釈してくれる、
+と習熟したDユーザーでも誤解する可能性があるため念入りに説明するべきところでしょう。
+次のコード片はその要点を表しています。</p><pre><code class=language-d>import std.stdio;
+void func(Args...)(Args args)
+{
+    foreach (arg; args)    // 注：これは型リストに対するforeachです
+    {
+        static if (is(typeof(arg) == int))
+            continue;
+
+        writeln(arg);
+
+        static if (is(typeof(arg) == string))
+            break;
+
+        writeln(&quot;Got to end of loop body with &quot;, arg);
+    }
+}
+void main()
+{
+    func(1, &quot;abc&quot;, 3.14159);
+}
+</code></pre><p>このプログラムの出力はどうなると思いますか？（ひっかけではありません）</p><p>こちらが出力です。</p><pre><code class=language-txt>abc
+</code></pre><p>これは<code>continue</code>と<code>break</code>がforeachによって解釈されるという最初の仮説にあわせて、
+<code>int</code>である最初の引数が次のイテレーションまでループ本文をスキップしているかのように、
+<code>string</code>である2番めの引数がループから脱出してループアンローリングを中断したかのように見えます。</p><p>しかしそれは正しくありません。
+最後の<code>writeln</code>を<code>static assert</code>に置き換えてみるとわかります。</p><pre><code class=language-d>import std.stdio;
+void func(Args...)(Args args)
+{
+    foreach (arg; args)    // 注：これは型リストに対するforeachです
+    {
+        static if (is(typeof(arg) == int))
+            continue;
+
+        writeln(arg);
+
+        static if (is(typeof(arg) == string))
+            break;
+
+        // stringによってループから脱出するので、
+        // これはtrueになるはずですね？
+        static assert(!is(typeof(arg) == string));  // 16行目
+    }
+}
+void main()
+{
+    func(1, &quot;abc&quot;, 3.14159);
+}
+</code></pre><p>これがコンパイラの出力です。</p><pre><code class=language-txt>test.d(16): Error: static assert  (!true) is false
+test.d(21):        instantiated from here: func!(int, string, double)
+</code></pre><p>何が起きたのでしょう？</p><p>直感に反した結果に見えますが、実はとても単純で、
+AST操作に対しての明瞭な考えで容易に理解できるはずです。
+単に、foreachはAST操作フェーズで<code>continue</code>や<code>break</code>を解釈<strong>していません</strong>。
+それらは単にAST内のノードとして扱われ、コンパイラはループ本文の残りを処理します。
+したがって、<code>static assert</code>は、
+<code>typeof(arg) == string</code>のため失敗するものも含め<strong>ループの3回のイテレーションすべてで</strong>評価されます。</p><h4 id=型リストに対するforeachは実際何をしているのか>型リストに対するforeachは実際何をしているのか</h4><p>しかし元のループはなぜ<code>continue</code>や<code>break</code>に従うのでしょうか？
+それに答えるために、Dコンパイラ<code>dmd</code>が出力するAST（コメントが追記されています）を見てみましょう。</p><pre><code class=language-d>@safe void func(int _param_0, string _param_1, double _param_2)
+{
+        import std.stdio;
+        /*unrolled*/ {
+                {
+                        int arg = _param_0;
+                        continue;
+                        writeln(arg);  // 注：スキップされていません！
+                }
+                {
+                        string arg = _param_1;
+                        writeln(arg);
+                        break;
+                }
+                {
+                        // 注：このイテレーションはスキップされていません！
+                        double arg = _param_2;
+                        writeln(arg);  // 注：スキップされていません！
+                }
+        }
+}
+</code></pre><p>コード生成（AST操作のあとにくるフェーズです）の時に、
+コンパイラのコードジェネレータは最初のイテレーションが次のイテレーションへの無条件分岐をしていることに気づきます。
+本質的に最初のイテレーションの残りの部分はデッドコードなので、全部取り除くことができます。
+同様に、2番めのイテレーションのなかで、コードジェネレータはループの最後への無条件分岐を発見し、
+イテレーションの残りがデッドコードであり除去できると気づきます。
+最後に、3番目のイテレーションには絶対に到達しません。
+これはデッドコードであり、すべて除去されるからです。</p><p>除去の結果、残りはこのようになります。</p><pre><code class=language-d>void func!(int, string, double)(int __arg0, string __arg1, double __arg2)
+{
+    writeln(__arg1);
+}
+</code></pre><p>これが出力されるものになります。</p><p>言い換えると、型リストに対するforeachは<code>break</code>や<code>continue</code>の下のコードを取り除きません。
+実際にはコードジェネレータの一部であるコンパイラのオプティマイザが、
+最終的な実行ファイルに絶対に実行されない無駄なスペースができないようデッドコードを取り除いているのです。</p><h4 id=解決策>解決策</h4><p>元コードで提示されている難問を解決するこの場合で最もシンプルな解決策は、
+<code>static if</code>に<code>else</code>節をつけることです。</p><pre><code class=language-d>void func(Args...)(Args args)
+{
+    foreach (a; args)
+    {
+        static if (is(typeof(a) == int))
+        {
+            pragma(msg, &quot;is an int&quot;);
+            continue;
+        }
+        else    // &lt;---- 注：else節
+            pragma(msg, &quot;not an int&quot;);
+    }
+}
+void main()
+{
+    func(1);
+}
+</code></pre><p>これによって2番めの<code>pragma(msg)</code>は、
+<code>static if</code>の条件がfalseの時に生成されるASTからちゃんと取り除かれるようになります。</p><h3 id=まとめ>まとめ</h3><p>まとめると、Dのコード片が通るコンパイルの段階には明確に区別できる（少なくとも）2つがあるということをここまでで学んできました。</p><ol><li>テンプレートが展開され<code>static if</code>が処理されるAST操作フェーズ。
+このフェーズではコードの構造をそのAST（Abstract Syntax Tree、抽象構文木）の形で操作します。
+変数などの意味論的概念、<code>break</code>や<code>continue</code>のような制御構造の意味はこの段階では適用されません。</li><li>意味がASTに割り当てられる意味解析フェーズ。
+変数、引数、制御構造などの概念がここで割り当てられます。
+AST操作に関するものはここでは適用されません。
+CTFE（Compile-Time Function Evaluation、コンパイル時関数実行）は、
+すでにAST操作フェーズと意味解析フェーズを通ったコードに対してのみ行うことができます。
+CTFEエンジンがコードに到達する時点では、テンプレートに関するものや<code>static if</code>、
+その他AST操作機能は処理が行われており、CTFEエンジンには元のAST操作関連の構造物が見えません。</li></ol><p>各コード片はAST操作フェーズと意味解析フェーズを<strong>この順で</strong>通過して、逆の方向には行きません。
+したがって、CTFEが実行できるのはAST操作フェーズが完了した<strong>後の</strong>コード片のみです。</p><p>そのうえで、まだAST操作フェーズにあるプログラムの<strong>他の</strong>部分は、
+AST操作フェーズを通過してCTFEエンジンで実行できるようになったコード片によって計算された値に依存できます。
+このAST操作とCTFEのインターリービングはDの「コンパイル時」機能を非常に強力にしています。
+しかしあくまでCTFEで実行されるコードはその前にAST操作フェーズを通過していなければならない、
+という条件の支配下にあります。
+意味解析フェーズに到達していないものに依存することはできません。</p><p>AST操作とCTFEの混同はDの「コンパイル時」機能にたいする混乱とフラストレーションの原因の多くを占めます。</p></article><footer><h2><a href=/tags/dlang>#dlang</a>
+2つの「コンパイル時」【翻訳】</h2><p><time>2018-12-05</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_wiki>#d_wiki</a> <a href=/tags/advent_calendar>#advent_calendar</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>

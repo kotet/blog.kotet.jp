@@ -1,0 +1,405 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="講演者の静かな声と、ほとんどC&#43;&#43;のコードのみを映し出すスライド(通常キーノートで期待していたものではありません)にもかかわらず、 Louis DionneのMeeting C&#43;&#43; 2016でのメタプログラミングについてのトーク は本当に面白いものでした。"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.02c91f0bdf54d569f6c715f0a345bf32b55cd4d3ac11e0b98fec7ad1e614c151.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type=text/javascript></script><script type=text/x-mathjax-config>
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script><title>#dlang Dのメタプログラミングは面白くない - C&#43;&#43;との比較【翻訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/04/less-fun/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content="#dlang Dのメタプログラミングは面白くない - C&#43;&#43;との比較【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="講演者の静かな声と、ほとんどC&#43;&#43;のコードのみを映し出すスライド(通常キーノートで期待していたものではありません)にもかかわらず、 Louis DionneのMeeting C&#43;&#43; 2016でのメタプログラミングについてのトーク は本当に面白いものでした。"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2017/04/less-fun/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639 11 7.44606164 11.4478622 6.99834639 12.0003283 6.99834639 12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639c0 .5522847500000001-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12 6 11.4477153 6.44771525 11 7 11 7.55228475 11 8 11.4477153 8 12 8 12.5522847 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7 13.6568542 7 15 8.34314575 15 10 15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13 11.9072594 13 11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9 11.4477153 9 11 9.44771525 11 10 11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
+Dのメタプログラミングは面白くない - C&#43;&#43;との比較【翻訳】</h2><p><time>2017-04-26</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#ケーススタディ-イベントシステム>ケーススタディ:イベントシステム</a></li><li><a href=#コンパイル時ルックアップ>コンパイル時ルックアップ</a><ul><li><a href=#hana-mapでの実装>hana::mapでの実装</a></li></ul></li><li><a href=#両方を同時に得る>両方を同時に得る</a></li><li><a href=#もっとうまくできないか><strong>もっとうまくできないか?</strong></a><ul><li><a href=#インターフェース>インターフェース</a></li><li><a href=#コンパイル時ルックアップ-1>コンパイル時ルックアップ</a></li><li><a href=#trigger-のオーバーロード>trigger()のオーバーロード</a></li><li><a href=#1対1>1対1</a></li></ul></li><li><a href=#dでのhana-map相当のもの>Dでのhana::map相当のもの</a><ul><li><a href=#前提条件>前提条件</a></li><li><a href=#値の格納>値の格納</a></li><li><a href=#オペレータ>オペレータ</a></li><li><a href=#パフォーマンス>パフォーマンス</a></li></ul></li><li><a href=#要約>要約</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>この記事は、</p><p><a href=https://epi.github.io/2017/03/18/less_fun.html>Metaprogramming is less fun in D</a></p><p>を自分用に翻訳したものを
+<a href=https://epi.github.io/2017/03/18/less_fun.html#comment-3271891957>許可を得て</a>
+公開するものである。
+コードのコメントも翻訳してある。
+ソースに原文を併記してあるので、誤字や誤訳などを見つけたら今すぐ
+<a href=https://github.com/kotet/blog.kotet.jp>Pull request</a>だ!</p><hr><p>講演者の静かな声と、ほとんどC++のコードのみを映し出すスライド(通常キーノートに期待するものではありません)にもかかわらず、
+Louis Dionneの<a href="https://www.youtube.com/watch?v=X_p9X5RzBJE">Meeting C++ 2016でのメタプログラミングについてのトーク</a>
+は本当に面白いものでした。</p><p>私が最後にC++でメタプログラミングをしてから何年も立ち、
+私がテンプレートの信じられないほど巧妙な黒魔術の数々をまとめて、ついにそれを動かした時の古い記憶、感情をこのトークは思い起こさせました。
+<strong>なんて狡猾なんだろう、私は最高のハッカーだ。</strong>
+あなたもその気持ちを知っているでしょう。</p><p>私は状況が大きく変わったことを知って嬉しかったです。
+ダブルコロンによってあちこち装飾された、何重にもネストした山括弧でコードを散らかすことはもはや一般的ではありません。
+<a href=http://www.boost.org/doc/libs/release/libs/hana/>Hana</a>によって
+あなたは普通のランタイム関数またはオペレーターコールのように見えるコードを書きますが、その関数は裏ではそれらの引数の型からの情報に作用するジェネリクスになります。
+実行時の状態はこれらの操作に関係せず、生成されるマシンコードはすべて最適化されます。
+素晴らしい。</p><h3 id=ケーススタディ-イベントシステム>ケーススタディ:イベントシステム</h3><p>このトークで議論されている例(だいたい38:30に始まります)を見てみましょう。
+あなたがそれをすでに見ているならば、<a href=#better>このパートをスキップする</a>こともできます。
+これ以降の議論で参考になるよう、私はここにサンプルの全体をコピーします。</p><p>名前でイベントを識別するイベントシステムを考えてみましょう。
+イベントが発生した時に呼ばれるコールバック(ハンドラ)を複数登録することができます。
+その後イベントを発生させると、そのイベントに登録されたすべてのコールバックが実行されます。</p><pre><code class=language-cpp>int main() {
+  event_system events({&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;});
+
+  events.on(&quot;foo&quot;, []() { std::cout &lt;&lt; &quot;foo triggered!&quot; &lt;&lt; '\n'; });
+  events.on(&quot;foo&quot;, []() { std::cout &lt;&lt; &quot;foo again!&quot; &lt;&lt; '\n'; });
+  events.on(&quot;bar&quot;, []() { std::cout &lt;&lt; &quot;bar triggered!&quot; &lt;&lt; '\n'; });
+  events.on(&quot;baz&quot;, []() { std::cout &lt;&lt; &quot;baz triggered!&quot; &lt;&lt; '\n'; });
+
+  events.trigger(&quot;foo&quot;);
+  events.trigger(&quot;baz&quot;);
+  // events.trigger(&quot;unknown&quot;); // おっと!ランタイムエラーです!
+}
+</code></pre><p>Javaスタイルの実行時のみの実装から始めましょう。
+イベント名に応じた関数のvectorを探すためにハッシュマップを使います。
+はじめ、空のvectorが各イベントのマップに挿入されています。</p><pre><code class=language-cpp>struct event_system {
+  using Callback = std::function&lt;void()&gt;;
+  std::unordered_map&lt;std::string, std::vector&lt;Callback&gt;&gt; map_;
+
+  explicit event_system(std::initializer_list&lt;std::string&gt; events) {
+    for (auto const&amp; event : events)
+      map_.insert({event, {}});
+  }
+</code></pre><p>コールバックを登録するために、マップから正しいvectorを探し、その末尾にコールバックをプッシュします。</p><pre><code class=language-cpp>  template &lt;typename F&gt;
+  void on(std::string const&amp; event, F callback) {
+    auto callbacks = map_.find(event);
+    assert(callbacks != map_.end() &amp;&amp;
+      &quot;trying to add a callback to an unknown event&quot;);
+
+    callbacks-&gt;second.push_back(callback);
+  }
+</code></pre><p>そしてイベントを発生させるとそのイベントのvectorの中にあるすべてのコールバックが呼ばれます。</p><pre><code class=language-cpp>  void trigger(std::string const&amp; event) {
+    auto callbacks = map_.find(event);
+    assert(callbacks != map_.end() &amp;&amp;
+      &quot;trying to trigger an unknown event&quot;);
+
+    for (auto&amp; callback : callbacks-&gt;second)
+      callback();
+  }
+</code></pre><p>これでもいいのですが、発生しうるイベントには何があるか、それがいつ発生するべきかはたいてい設計時点でわかっています。
+ならば、イベントが発生するたびに毎回マップを検索するコストを払う必要はないでしょう？
+更に悪いことに、イベントの名前を打ち間違えた場合、運が悪いと手遅れになってから気づくことになります。</p><h3 id=コンパイル時ルックアップ>コンパイル時ルックアップ</h3><p>Hanaは上のコードをちょっと修正するだけでコンパイル時のルックアップを可能にし、そのような苛立ちから我々を救ってくれます。
+まず、実行時のそれと同じ場所のコンパイル時文字列リテラルによってコールサイトを書き換えます。</p><pre><code class=language-cpp>int main() {
+  auto events = make_event_system(&quot;foo&quot;_s, &quot;bar&quot;_s, &quot;baz&quot;_s);
+
+  events.on(&quot;foo&quot;_s, []() { std::cout &lt;&lt; &quot;foo triggered!&quot; &lt;&lt; '\n'; });
+  events.on(&quot;foo&quot;_s, []() { std::cout &lt;&lt; &quot;foo again!&quot; &lt;&lt; '\n'; });
+  events.on(&quot;bar&quot;_s, []() { std::cout &lt;&lt; &quot;bar triggered!&quot; &lt;&lt; '\n'; });
+  events.on(&quot;baz&quot;_s, []() { std::cout &lt;&lt; &quot;baz triggered!&quot; &lt;&lt; '\n'; });
+  // events.on(&quot;unknown&quot;_s, []() {}); // コンパイルエラー!
+
+  events.trigger(&quot;foo&quot;_s); // オーバーヘッドはありません
+  events.trigger(&quot;baz&quot;_s);
+  // events.trigger(&quot;unknown&quot;_s); // コンパイルエラー!
+}
+</code></pre><p>各イベント名の<code>_s</code>サフィックスに注目してください。
+それはおそらく2020年にC++標準になるであろう
+<a href=http://www.boost.org/doc/libs/1_63_0/libs/hana/doc/html/structboost_1_1hana_1_1string.html#ad77f7afff008c2ce15739ad16a8bf0a8>特殊文字列リテラルオペレータ</a>
+を必要としますが、ClangとGCCではすでに実装されています。
+使わない理由はありませんね?
+このオペレータは文字列をオブジェクトの型に持つステートレスなオブジェクトを構築します。
+たとえば<code>&quot;foo&quot;_s</code>は<code>hana::string&lt;'f', 'o', 'o'&gt;</code>のインスタンスになります。</p><h4 id=hana-mapでの実装>hana::mapでの実装</h4><p>実行時マップを、各イベントのコールバックのvectorをちょっとした
+<a href=http://en.cppreference.com/w/cpp/language/parameter_pack>テンプレートパラメータパック拡張マジック</a>
+で宣言する<code>hana::map</code>で置き換えましょう。</p><pre><code class=language-cpp>template &lt;typename ...Events&gt;
+struct event_system {
+  using Callback = std::function&lt;void()&gt;;
+  hana::map&lt;hana::pair&lt;Events, std::vector&lt;Callback&gt;&gt;...&gt; map_;
+</code></pre><p>これでデフォルトで<code>event_system</code>が構築し、デフォルトで<code>map_</code>を構築することができ、
+その結果として含まれるすべてのコールバックのvectorが空のvectorに初期化されます。</p><pre><code class=language-cpp>template &lt;typename ...Events&gt;
+event_system&lt;Events...&gt; make_event_system(Events ...events) {
+  return {};
+}
+</code></pre><p>最終的に、実行時ルックアップをコンパイル時のそれと置き換えます。</p><pre><code class=language-cpp>  template &lt;typename Event, typename F&gt;
+  void on(Event e, F callback) {
+    auto is_known_event = hana::contains(map_, e);
+    static_assert(is_known_event,
+      &quot;trying to add a callback to an unknown event&quot;);
+
+    map_[e].push_back(callback);
+  }
+
+  template &lt;typename Event&gt;
+  void trigger(Event e) const {
+    auto is_known_event = hana::contains(map_, e);
+    static_assert(is_known_event,
+      &quot;trying to trigger an unknown event&quot;);
+
+    for (auto&amp; callback : map_[e])
+      callback();
+  }
+</code></pre><p>アクセスすべきvectorはコンパイル時に決定され、上記の各関数テンプレートのインスタンス化はそのvectorにアクセスするだけです。
+たとえば下のように各イベントの関数を手書きするのと比べて追加の実行時コストはないでしょう。</p><pre><code class=language-cpp>  template &lt;typename F&gt;
+  void trigger_foo(F callback) {
+    for (auto&amp; callback : callbacks_foo)
+      callback();
+  }
+</code></pre><p>アプリケーションがイベントを頻繁に発生させるとき、動的なディスパッチを性的なものに置き換えると顕著な高速化になります。
+下のチャートは1つのコールバックが登録されているイベントの<code>trigger</code>を呼ぶ時間を表しています。
+<code>hana::map</code>を基にしたコンパイル時ルックアップは大体<code>unordered_map</code>の実行時ルックアップの14倍速く、
+ただ<code>std::function</code>を呼び出すことと比べて15%遅いだけです。</p><p><img src=/assets/2017/04/26/hana.svg alt="Event system performance: D vs. C++"></p><h3 id=両方を同時に得る>両方を同時に得る</h3><p>発生するイベントが実行時にのみ決まる場合があります。たとえば:</p><pre><code class=language-cpp>  std::string e = read_from_stdin();
+  events.trigger(e);
+</code></pre><p>このイベントシステムはそのようなケースをハンドリングするために容易に拡張できます。
+最初の実行時オンリールックアップを使ったバージョンのように、unordered mapを使います。
+コールバックvectorを2重に持ちたくないため、マップの値はすでに静的マップに保存されているvectorへのポインタです。</p><pre><code class=language-cpp>  std::unordered_map&lt;std::string, std::vector&lt;Callback&gt;* const&gt; dynamic_;
+
+  event_system() {
+    hana::for_each(hana::keys(map_), [&amp;](auto event) {
+      dynamic_.insert({event.c_str(), &amp;map_[event]});
+    });
+  }
+</code></pre><p>実行時に決定するイベントを発生させられるようにするには、純実行時実装と同じようにトリガメソッドをオーバーロードするだけです。</p><pre><code class=language-cpp>  void trigger(std::string const&amp; event) {
+    auto callbacks = dynamic_.find(event);
+    assert(callbacks != dynamic_.end() &amp;&amp;
+      &quot;trying to trigger an unknown event&quot;);
+
+    for (auto&amp; callback : *callbacks-&gt;second)
+      callback();
+  }
+</code></pre><p><a name=better></a></p><h3 id=もっとうまくできないか><strong>もっとうまくできないか?</strong></h3><p>トークのこの時点(59:30)で、Louisがこう言っています:</p><blockquote><p>コンパイル時と実行時のルックアップのサポートに必要なのはシングルオーバーロードです。
+それは非常に強力で、私は他にそれが可能な言語を知りません。</p></blockquote><p><a href=http://dlang.org/>D言語</a>がそれをもっとうまくできるのは明らかでした、10分で同等の実装を作ることができました。
+しかし私は理解できます: もし私が何年もの努力の積み重ねの結果を宣伝するならば、私は人々が他のものを探すことを望みません。 ;)</p><p>Dをご存じでない?
+「ちゃんとしたC++」として聞いたことがあるかもしれませんが、それは完全には真実ではありません。
+Dは悪い決定の荷物や癖を抱えてもいます。
+時間の経過とともに、全く異なるスタイルの追加がアドホックな標準ライブラリに集まってきます。
+ドキュメントは時に時代遅れになっているか、探しているものが抜けています。
+そのコミュニティも、それが業界から受けたサポートもC++で受けたそれとは比較にならないほど小さなものです。
+しかしそのすべてをさておいて、何年もDを様々なタスクに使用した上で、
+<a href=https://dlang.org/overview.html>&ldquo;信頼性・保守性の高い・読みやすいコードを書いて仕事をサクサク進める必要のある 現実的なプログラマのための、 現実的な言語&rdquo;</a> <sup class=footnote-ref id=fnref:1><a href=#fn:1>1</a></sup>
+であるという約束に恥じないものであるということに私は同意せざるを得ません。</p><p>そこで、Dがこのオーバーロードトリックをすることができ、表現力でC++/Hanaの組み合わせと少なくともこのユースケースで肩を並べるものかどうか見てみましょう。</p><h4 id=インターフェース>インターフェース</h4><p>コールサイトで期待されるものから始めましょう。</p><pre><code class=language-d>void main() {
+  EventSystem!(&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;) events;
+
+  events.on!&quot;foo&quot;(() { writeln(&quot;foo triggered!&quot;); });
+  events.on!&quot;foo&quot;(() { writeln(&quot;foo again!&quot;); });
+  events.on!&quot;bar&quot;(() { writeln(&quot;bar triggered!&quot;); });
+  events.on!&quot;baz&quot;(() { writeln(&quot;baz triggered!&quot;); });
+  // events.on!&quot;unknown&quot;(() {}); // コンパイルエラー!
+
+  events.trigger!&quot;foo&quot;;
+  events.trigger!&quot;baz&quot;;
+  events.trigger(&quot;bar&quot;); // 動的ディスパッチのオーバーロード
+  // events.trigger!&quot;unknown&quot;; // コンパイルエラー!
+}
+</code></pre><p>C++でやったのとなかなか良く似ています。
+Dでの最も重要な違いは、コンパイル時文字列のための特殊なシンタックスがなく、普通の文字列がテンプレートパラメータとして渡せることです。
+そのため、型でエンコードされた文字列によるステートレスなオブジェクトのアイデアは意味がありません
+(しかし実装することは技術的に可能です。下を見てください)。</p><p><code>EventSystem</code>構造体テンプレートはただイベント名を引数として渡すだけでインスタンス化でき、
+すべてのメンバがデフォルト静的初期化子で事足り、ファクトリ関数を必要としません。</p><p>関数テンプレート<code>on</code>と<code>trigger</code>はコンパイル時<code>string</code>も受け入れます。
+各文字列はシングルトークンのため、空の実行時引数リストと同じように、テンプレート引数リストの括弧は省略することができます。
+この小さな構文の特徴は<code>trigger!(&quot;foo&quot;)()</code>をより乱雑さのない<code>trigger!&quot;foo&quot;</code>にします。</p><p>実行時とコンパイル時引数の区別は、標準の言語規則で決まっています。
+<code>_s</code>サフィックスがコンパイル時エンティティを暗示する特殊なケースを覚えておく必要はありません。
+<code>foo</code>や<code>baz</code>を静的ディスパッチで発生させることに注目してください。
+しかし<code>bar</code>を発生させるとき、実行時に評価されるイベント名を受け入れるオーバーロードも利用できるでしょう。</p><h4 id=コンパイル時ルックアップ-1>コンパイル時ルックアップ</h4><p>ここから実装です:</p><pre><code class=language-d>struct EventSystem(events...) {
+  alias Callback = void delegate();
+  Callback[][events.length] callbacks_;   // C++の std::array&lt;std::vector&lt;Callback&gt;, sizeof...(events)&gt; のようなもの
+</code></pre><p><a href=http://dlang.org/phobos/>Phobos</a>には<code>hana::map</code>と同等のものはありません。
+しかしマップ内のすべての値は同じ型のため、その固定長配列を宣言し、イベント名を配列のインデックスに対応させるために
+<a href=https://dlang.org/phobos/std_meta.html#staticIndexOf><code>staticIndexOf</code></a>を使うことができます。
+<code>events...</code>としてこの構造体テンプレートが受け取る<a href=http://dlang.org/ctarguments.html>引数リスト</a>は型や、
+テンプレート名、異なるプリミティブまたはコンポジット型の定数を含む様々なコンパイル時エンティティを含みます。
+特に、文字列はうまく行くでしょう。</p><p><code>on</code>と<code>trigger</code>の実装もC++バージョンとよく似ていますが、
+これは要求されたコールバックのvectorのインデックスを探し、そのインデックスを介して配列からvectorを取得します。</p><pre><code class=language-d>  void on(string event)(Callback c) {
+    enum index = staticIndexOf!(event, events);
+    static assert(index &gt;= 0,
+      &quot;trying to add a callback to an unknown event: &quot; ~ event);
+
+    callbacks_[index] ~= c;
+  }
+
+  void trigger(string event)() {
+    enum index = staticIndexOf!(event, events);
+    static assert(index &gt;= 0,
+      &quot;trying to trigger an unknown event: &quot; ~ event);
+
+    foreach (callback; callbacks_[index])
+      callback();
+  }
+</code></pre><p>C++バージョンで<code>auto</code>を使用していた場所の<code>enum</code>に注目してください。
+この型も自動的に推論されますが、<code>enum</code>を使うと<code>index</code>をコンパイル時に計算することが強制され、
+<code>static assert</code>でのみ使用することができます。</p><p>このルックアップ(<code>staticIndexOf</code>によるコンパイル時線形探索)はインスタンス化あたり(つまりキーあたり)一度のみ行われ、
+結びつける実行時コストはありません。
+また、静的に判明するインデックスによる配列のインデクシングには実行時のオーバヘッドはありません。</p><h4 id=trigger-のオーバーロード>trigger()のオーバーロード</h4><p>そして、動的なキーを受け付けるよう<code>trigger</code>をオーバーロードします。
+テンプレートと非テンプレートオーバーロードの両方が隣り合って有るのは珍しいことではないため、
+実行時ルックアップの実装のみに専念しましょう。
+マップオブジェクトの構築中にある(自分で試すことができます)
+<a href=https://dlang.org/spec/hash-map.html>組み込み連想配列</a>を使うこともできますが、
+少数のキーに対しては、すべてのキーと要求されたキーとを比較する線形探索でもそんなに悪くないはずです。</p><pre><code class=language-d>  void trigger(string event) {
+    foreach (i, e; events) {
+      if (event == e) {
+        foreach (c; callbacks_[i])
+          c();
+        return;
+      }
+    }
+    assert(false, &quot;trying to trigger an unknown event: &quot; ~ event);
+  }
+</code></pre><p>何が起きているのでしょう?
+外側の<code>foreach</code>は、<code>string</code>のコンパイル時タプルである<code>events</code>をイテレートしています。
+これは本当はループではありません – コンパイラはこの<strong>静的</strong><code>foreach</code>の本文を一度タプルの各要素に対してペーストし、
+その要素を<code>e</code>に、インデックスを<code>index</code>に置き換えます。
+結果としてまるで3つの<code>if</code>が連続してあるようになります:</p><pre><code class=language-d>      if (event == &quot;foo&quot;) {
+        foreach (callback; callbacks_[0])
+          callback();
+        return;
+      }
+      if (event == &quot;bar&quot;) {
+        foreach (callback; callbacks_[1])
+          callback();
+        return;
+      }
+      if (event == &quot;baz&quot;) {
+        foreach (callback; callbacks_[2])
+          callback();
+        return;
+      }
+</code></pre><h4 id=1対1>1対1</h4><p>これで全てです。
+<a href=https://epi.github.io/files/cppdmeta.tar.gz>両方のバージョンをダウンロードし</a>、しばらくコードを眺めコンパイルすることができます。
+DバージョンはDMD、GDCまたはLDCでコンパイルできます。
+私のマシン上では、C++のそれと比べて著しく速くコンパイルされました(最低10回の連続試行、すべてx86_64で-O3でコンパイル):</p><table><thead><tr><th></th><th align=center>C++ (g++, clang++)</th><th align=center>D (gdc, ldc2)</th></tr></thead><tbody><tr><td>GCC/GDC 6.2.0</td><td align=center>0.98s</td><td align=center>0.45s</td></tr><tr><td>Clang 3.9.1/LDC 1.1.0</td><td align=center>1.09s</td><td align=center>0.67s</td></tr></tbody></table><p>小さなトイプログラムのコンパイルにかかる時間から重要な結論を引き出すことはできませんが、一般的に、
+<a href=http://www.drdobbs.com/cpp/increasing-compiler-speed-by-over-75/240158941>Dは高速なコンパイルができるよう設計されており</a>、
+取り込まれるライブラリコードの量がはるかに少ないというのは言うまでもありません。</p><p>そしてイベントの名前を打ち間違えた時どうなるか?
+Dフロントエンド(3つの主要なコンパイラ全てで共通)はエラーメッセージの量と有用性のバランスを取ろうとし、ここでは非常にうまく機能します。
+我々が見ることになるのはこれだけです:</p><pre><code>es.d(23): Error: static assert  &quot;trying to trigger an unknown event: unknown&quot;
+es.d(102):        instantiated from here: trigger!&quot;unknown&quot;
+</code></pre><p>C++ではどうでしょう?
+私のシェルでは、<code>static_assert</code>からの重要なメッセージを見るために大体100行の大きく強調されたメッセージをスクロールしなければなりませんでした
+(ClangのハイライトはGCCのものよりは悪くなかったですが)。
+昔はC++のエラーメッセージを人が消化できるものに変換するツールがありました。
+あれはまだあるんでしょうか?</p><p>最後にチェックするのはパフォーマンスを失っていないかどうかです。
+下のグラフで静的、動的ディスパッチのDバージョン vs. C++バージョンの比較を見ることができます。
+Dバージョンは両方のケースで速いように見えますが、これは限られたマイクロベンチマークです。
+Dの動的ルックアップは小さなセットを好む違うアルゴリズムを使っているためより良い結果を出しているのかもしれません。
+静的ルックアップの~10%のスピードアップは、<code>std::function</code>が各コールで<code>delegate</code>がするよりも少し多くの仕事をしている可能性が高いです
+(アセンブリをチェックしてください: <a href=https://godbolt.org/g/kXgIIX>D</a>、<a href=https://godbolt.org/g/zFXTHG>C++</a>)。
+より大きなアプリケーションではコールバックでなにか意味のあることをしていることには気づきません。
+ので、2つのバージョンは同等に良い結果を出していると仮定しましょう。</p><p><img src=/assets/2017/04/26/d.svg alt="Event system performance: D vs. C++"></p><p>結論として、Dでは複雑なライブラリに頼ることなくC++と同様の結果が得られました。
+Dの実装は明快で、少ない言語の基本機能と標準ライブラリのみを使っています。
+超絶クレバーになった感じはせず、新しいことを学ぶ必要もありませんでした。
+しかしそれはまさに<strong>保守性の高く、理解しやすい</strong>コードに期待することではないですか?</p><p>本当により良いのでしょうか?それについて絶対的なものさしはありません、しかし他の要素が比較的重要でない場合は、
+おそらく私は外部ライブラリに依存せず、コンパイルが速く、
+なにかうまく行かなかった時に恐ろしいエラーメッセージを大量に生成しないソリューションに賛成するでしょう。</p><h3 id=dでのhana-map相当のもの>Dでのhana::map相当のもの</h3><p>しかしDで<code>hana::map</code>のように振る舞うデータストラクチャが必要になったらどうでしょうか?
+結局、常に同じ型の値を持つとは限りませんし、整数インデックスを介して使うのはちょっとプロフェッショナルな感じがしません。
+これは可能なのでしょうか?</p><h4 id=前提条件>前提条件</h4><p>唯一の障害はコンパイル時エンティティ(型または値)はオーバーロードされたインデクシングオペレータへの実行時引数として使えないことであることがわかりました。
+これを克服するため、Hanaが使うのと同じ技術をDに適用することができます。
+単一の値または型でパラメータ化された構造体テンプレートを考えてみましょう。
+私はそれをなんと呼ぶか知らないため、<code>Entity</code>としましょう。</p><pre><code class=language-d>struct Entity(arg...)
+  if (arg.length == 1)
+{
+  static if (is(arg[0])) {
+    alias Type = arg[0];
+  } else static if (is(typeof(arg[0]) T)) {
+    alias Type = T;
+    enum value = arg[0];
+  }
+}
+</code></pre><p>たとえば<code>Entity!&quot;foo&quot;()</code>または<code>Entity!double()</code>と書くことで具体的な構造体型をインスタンス化し、オブジェクトを生成できます。
+そのようなオブジェクトは状態を持ちませんが、異なるテンプレート関数のインスタンス化をされます。</p><p>普通の関数呼び出しと異なり、構造体オブジェクトの構築には括弧が必要で、Hanaの<code>_c</code>や<code>_s</code>サフィックスと比べて少し冗長になります。
+より簡潔にするにはいくつか方法があり、パラメータ化された<code>enum</code>はそのひとつです:</p><pre><code class=language-d>enum c(arg...) = Entity!arg();
+
+static assert(is(c!int.Type == int));
+static assert(is(c!&quot;foo&quot;.Type == string));
+static assert(c!&quot;foo&quot;.value == &quot;foo&quot;);
+static assert(c!42.value == 42);
+</code></pre><p>ユーザ定義リテラルのよく似たシンタックスが<a href=https://dlang.org/phobos/std_conv.html#.octal><code>std.conv.octal</code></a>
+で最初に使われたと伝えられています。</p><h4 id=値の格納>値の格納</h4><p>マップそのものに取り掛かりましょう。
+異なる型の値を保持でき(<a href=https://dlang.org/phobos/std_typecons.html#.Tuple>std.typecons.Tuple</a>のように)、
+キーは型かコンパイル時の値で、このようにインスタンス化される何かがほしいです:</p><pre><code class=language-d>struct Bar {}
+Map!(
+  &quot;foo&quot;,  int,           // 文字列 &quot;foo&quot; をint型の値にマップします
+  Bar,    string,        // 型 Bar をstring型の値にマップします
+  &quot;한&quot;,   string[]) map; // 文字列 &quot;한&quot; をstring[]型の値にマップします
+</code></pre><p>不連続なキーと値を分割し、値の記憶域を宣言する必要があります:</p><pre><code class=language-d>struct Map(spec...) {
+  alias Keys = Even!spec;
+  alias Values = Odd!spec;
+  Values values;
+</code></pre><p><code>Even</code>と<code>Odd</code>は標準のものではありませんが、素早く実装することができます:</p><pre><code class=language-d>template Stride(size_t first, size_t stride, A...) {
+  static if (A.length &gt; first)
+    alias Stride = AliasSeq!(A[first], Stride!(stride, stride, A[first .. $]));
+  else
+    alias Stride = AliasSeq!();
+}
+
+alias Odd(A...) = Stride!(1, 2, A);
+alias Even(A...) = Stride!(0, 2, A);
+</code></pre><p><code>values</code>は型リスト<code>Values</code>のすべての型の要素からなる組み込みタプルです。
+これは<code>map.values[2]</code>のように整数定数を使ってインデックスできます。
+先ほど見た「静的<code>foreach</code>」を使いイテレートすることもできます。
+これはキーまたは値を自由にイテレートすることができるということを意味します。
+やってみましょう:</p><pre><code class=language-d>  // 構造体リテラル構文で初期化
+  auto map =
+    Map!(&quot;foo&quot;, int, Bar, string, &quot;한&quot;, string[])(
+      42, &quot;baz&quot;, [&quot;lorem&quot;, &quot;ipsum&quot;, &quot;dolor&quot;]);
+
+  // キーでイテレート
+  foreach (K; map.Keys)
+    writeln(K.stringof);
+
+  // 値の型でイテレート
+  foreach (V; map.Values)
+    writeln(V.stringof);
+
+  // 値でイテレート
+  foreach (value; map.values)
+    writeln(value);
+</code></pre><h4 id=オペレータ>オペレータ</h4><p>Hanaは与えられたキーがマップに存在するかをチェックするための自由な関数テンプレート<code>contains</code>を提供します。
+Dでは、ふつう<code>in</code>オペレータが使われます。
+これは<a href=https://dlang.org/spec/operatoroverloading.html#binary><code>opBinaryRight</code></a>
+を実装することでオーバーロードすることができます。
+それはコンパイル時の情報(引数の型)のみに依存するため、<code>static</code>として宣言できます:</p><pre><code class=language-d>  static bool opBinaryRight(string op, Key...)(Entity!Key key)
+    if (op == &quot;in&quot;)
+  {
+    enum index = staticIndexOf!(Key, Keys);
+    return index &gt;= 0;
+  }
+</code></pre><p>動作するのを見てみましょう:</p><pre><code class=language-d>  static assert(c!&quot;foo&quot; in map);
+  static assert(c!Bar in map);
+  static assert(c!&quot;한&quot; in map);
+  static assert(c!42 !in map);
+</code></pre><p>コンパイル時キーを使って値をルックアップするには<code>staticIndexOf</code>を使い、もしキーが見つからなかった時は意味のあるメッセージを添えます:</p><pre><code class=language-d>  private template IndexOf(alias Key) {
+    enum IndexOf = staticIndexOf!(Key, Keys);
+    static assert(IndexOf &gt;= 0,
+      &quot;trying to access a nonexistent key: &quot; ~ Key);
+  }
+</code></pre><p>これはインデクシングオペレーターたちを実装するのに使えます。
+なぜ1つではなく「たち」と言ったのか?
+<code>operator[]</code>が代入演算子のように更に操作できる左辺参照を返すC++とは違い、
+Dで<a href=https://dlang.org/spec/operatoroverloading.html#array>リードオンリーインデクシング</a>、
+<a href=https://dlang.org/spec/operatoroverloading.html#assignment>単純な代入のインデクシング</a>、
+<a href=https://dlang.org/spec/operatoroverloading.html#op-assign>複合代入のインデクシング</a>、
+のオペレータは別々にオーバーロードされます。</p><pre><code class=language-d>  auto opIndex(Key...)(Entity!Key key) const {
+    return values[IndexOf!Key];
+  }
+
+  auto opIndexAssign(T, Key...)(auto ref T value, Entity!Key key) {
+    return values[IndexOf!Key] = value;
+  }
+
+  auto opIndexOpAssign(string op, T, Key...)(auto ref T value, Entity!Key key) {
+    return mixin(`values[IndexOf!Key] ` ~ op ~ `= value`);
+  }
+</code></pre><p>すべてのケースで、<code>T</code>と<code>Key</code>は引数の型から推測されます。
+<code>IndexOf!Key</code>の評価と<code>values</code>のインデクシングはともにコンパイル時に完了します。
+テストしてみましょう:</p><pre><code class=language-d>  // コンパイル時ルックアップ、実行時代入
+  map[c!&quot;foo&quot;] = 42;        // opIndexAssign
+  map[c!Bar] = &quot;baz&quot;;
+  map[c!&quot;한&quot;] ~= &quot;lorem&quot;;    // opIndexOpAssign!&quot;~&quot;
+  map[c!&quot;한&quot;] ~= &quot;ipsum&quot;;
+  map[c!&quot;한&quot;] ~= &quot;dolor&quot;;
+
+  // コンパイル時ルックアップ、実行時比較
+  assert(map[c!&quot;foo&quot;] == 42);  // opIndex
+  assert(map[c!Bar] == &quot;baz&quot;);
+  assert(map[c!&quot;한&quot;] == [&quot;lorem&quot;, &quot;ipsum&quot;, &quot;dolor&quot;]);
+</code></pre><h4 id=パフォーマンス>パフォーマンス</h4><p>これで全部です!
+我々は<code>hana::map</code>のように、実行時風シンタックスでコンパイル時にルックアップとイテレーションができるマップを手にしました。
+それは何ら特別なものではありません。
+ただの日常の何でもないワンライナーの集まりです。</p><p>実装した<code>Map</code>を使って<code>EventSystem</code>を修正してみたいかもしれません。
+我慢できないなら、<a href=https://epi.github.io/files/cppdmeta.tar.gz>同じアーカイブ</a>に実装があります。
+このバージョンと前のバージョンの間でコンパイル時間の計測可能な違いは私には検出できません。
+そして下のグラフでわかるように、実行時のパフォーマンスも同じです。</p><p><img src=/assets/2017/04/26/dmap.svg alt="Event system based on static Map in D vs. previous solutions"></p><p>問題はこれがDでの正しいデザインチョイスかどうかです。
+オペレータ<code>[]</code>と<code>in</code>は<code>get</code>や<code>contains</code>のような「普通の」テンプレート関数で簡単に置き換えられる糖衣構文で、
+厄介な<code>c!arg</code>を作る必要はありません。
+コンパイル時エンティティのリストや、値のタプルの要素のイテレーションは組み込み言語機能で、どちらも必要ありません。</p><h3 id=要約>要約</h3><p>これはDでHanaのエミュレートを試みる最初のものではありません。
+たとえば<a href=https://maikklein.github.io/2016/03/01/metaprogramming-typeobject/>型オブジェクトに関するこの投稿</a>
+を見てください、型のクイックソートの興味深い例があります。
+普通の実行時のコードのように見えるメタ関数を作るHanaのトリックはDにも適用できますが、Dの組み込みメタプログラミング機能のおかげで、
+それでコードの可読性やプログラマの生産性が大幅に向上したりはしません。
+<a href=http://forum.dlang.org/thread/btqjnieachntljobzrho@forum.dlang.org>新しいCTFEエンジン</a>
+が完成しマージされるまでは、おそらく無用に
+<a href=https://forum.dlang.org/post/ntkhtqdoxpvwcatyvbhf@forum.dlang.org>ビルド時間を長くする</a>
+だけです。</p><p>トークはC++20の提案された機能で可能になることのいくつかの例で締めくくられます。
+名前付き引数、型リストのforeach、リフレクションによるJSONへのシリアライズ。
+その全てが何年も前にDで、より洗練された構文に、より少ない知的努力によって、メタプログラミングからC++でそれをする時の面白さをすべて取り除いた上で可能だったことなのであなたは驚かないかもしれません。</p><div class=footnotes><hr><ol><li id=fn:1>訳注: 訳を<a href=http://www.kmonos.net/alang/d/overview.html>こちら</a>から引用しました
+<a class=footnote-return href=#fnref:1><sup>[return]</sup></a></li></ol></div></article><footer><h2><a href=/tags/dlang>#dlang</a>
+Dのメタプログラミングは面白くない - C&#43;&#43;との比較【翻訳】</h2><p><time>2017-04-26</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>

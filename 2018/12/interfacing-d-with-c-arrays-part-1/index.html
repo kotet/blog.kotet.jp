@@ -1,0 +1,233 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="これは Interfacing D with C: Arrays Part 1 – The D Blog を 許可を得て 翻訳した D言語 Advent Calendar 2018 - Qiita 15日目の記事です。 誤訳等あれば気軽に Pull requestを投げてください。 この"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.02c91f0bdf54d569f6c715f0a345bf32b55cd4d3ac11e0b98fec7ad1e614c151.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type=text/javascript></script><script type=text/x-mathjax-config>
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script><title>#dlang DとCのインターフェース：配列 Part 1【翻訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/12/interfacing-d-with-c-arrays-part-1/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content="#dlang DとCのインターフェース：配列 Part 1【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="これは Interfacing D with C: Arrays Part 1 – The D Blog を 許可を得て 翻訳した D言語 Advent Calendar 2018 - Qiita 15日目の記事です。 誤訳等あれば気軽に Pull requestを投げてください。 この"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2018/12/interfacing-d-with-c-arrays-part-1/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639 11 7.44606164 11.4478622 6.99834639 12.0003283 6.99834639 12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639c0 .5522847500000001-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12 6 11.4477153 6.44771525 11 7 11 7.55228475 11 8 11.4477153 8 12 8 12.5522847 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7 13.6568542 7 15 8.34314575 15 10 15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13 11.9072594 13 11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9 11.4477153 9 11 9.44771525 11 10 11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
+DとCのインターフェース：配列 Part 1【翻訳】</h2><p><time>2018-12-15</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/d_and_c>#d_and_c</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#配列の宣言>配列の宣言</a></li><li><a href=#配列の明示的初期化>配列の明示的初期化</a></li><li><a href=#次回に続く>次回に続く</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>これは
+<a href=https://dlang.org/blog/2018/10/17/interfacing-d-with-c-arrays-part-1/>Interfacing D with C: Arrays Part 1 – The D Blog</a>
+を
+<a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
+翻訳した
+<a href=https://qiita.com/advent-calendar/2018/dlang>D言語 Advent Calendar 2018 - Qiita</a>
+15日目の記事です。</p><p>誤訳等あれば気軽に
+<a href=https://github.com/kotet/blog.kotet.jp>Pull requestを投げてください</a>。</p><hr><p>この投稿はDとCとのインターフェーシングにおいて潜む問題と、
+その回避法についての<a href=https://dlang.org/blog/the-d-and-c-series/>シリーズ</a>の記事です
+（訳注：<a href=/tags/d_and_c>翻訳版はこちら</a>）。</p><p>CのAPIとのインターフェーシングにおいて特に問題として立ちはだかるのは配列でしょう
+（文字列も同列に並ぶものかもしれません。これは”D and C”シリーズの将来の記事の話題となります）。
+Dの配列はCと直接の互換を持つような方式で実装されているわけではありませんが、基本的には同じです。
+このため、両者の違いを把握している限り互換性に問題は生じません。
+この記事ではまずその違いを見ていきましょう。</p><p>CのAPIをDから使う際は、コードをCからDに翻訳しなければならないことがあります。
+新しいDのプログラムはCのAPIの既存の使用例を利用できて、
+CのAPIを使うCのプログラムからのDへの移植は既存のCのコードから多くを書き換えることなく可能です。
+両者の宣言と初期化構文、その翻訳方法がその根拠です。
+このシリーズの後の記事では多次元配列、Dの配列の内部構造、
+Cの関数との配列のやり取り、GCがどのように働くかを取り扱います。</p><p>このトピックを取り扱う際触れる予定だった範囲は最初非常に狭いものでした。
+それは私が読者はCの基礎を十分に理解しており、何がなぜどのようになるかを推測できると仮定しており、
+退屈な詳細の説明を取り去ったためでした。
+Cの経験者が1人しかいないグループに対してDのチュートリアルプレゼンテーションを行う前の話です。
+<a href=https://forum.dlang.org/>Dフォーラムの一般ユーザー</a>
+のなかにCのコードに触れたことのない人がいることにも気づきました。
+そのため、私は当初よりも基本的なところからカバーしていくことにしました
+（そのため2パートだった記事は3本以上に膨れ上がっています）。
+知識が古い人も流し読みして満足しないようにすることをおすすめします！
+Cで快適に過ごしてきた経験は、私が説明していく落とし穴を紛らす役には立ちません。</p><h3 id=配列の宣言>配列の宣言</h3><p>1次元配列の単純な宣言から見ていきましょう。</p><pre><code class=language-c>int c0[3];
+</code></pre><p>この宣言は<code>int</code>の値3つを保持するのに十分なメモリをスタックに確保します。
+値はメモリの連続した領域に保存され、それぞれ隣り合っています。
+<code>c0</code>が初期化されるかはそれが宣言された場所に依存します。
+グローバル変数と<code>static</code>ローカル変数は、以下のCプログラムで示されるようにデフォルトで<code>0</code>に初期化されます。</p><p><strong>definit.c</strong></p><pre><code class=language-c>#include &lt;stdio.h&gt;
+
+// グローバル変数（staticとして宣言することもできます）
+
+int c1[3];
+
+void main(int argc, char** argv)
+
+{
+
+    static int c2[3];       // staticローカル変数
+
+    int c3[3];              // 非staticローカル変数
+
+    printf(&quot;one: %i  %i  %i\n&quot;, c1[0], c1[1], c1[2]);
+
+    printf(&quot;two: %i  %i  %i\n&quot;, c2[0], c2[1], c2[2]);
+
+    printf(&quot;three: %i  %i  %i\n&quot;, c3[0], c3[1], c3[2]);
+
+}
+</code></pre><p>私には、これは以下の出力をしました。</p><pre><code>one: 0 0 0
+
+two: 0 0 0
+
+three: -1 8 0
+</code></pre><p><code>c3</code>の値はちょうどそのメモリ位置にあった値です。
+さて、これと等価なDの宣言は以下になります。</p><pre><code class=language-d>int[3] d0;
+</code></pre><p><em><a href=https://run.dlang.io/is/moXqNt>オンラインで試す</a></em></p><p>ここに最初の注意点があります。</p><p>Dの普遍的な指針として、CのコードをDのソースファイルにコピペしてきた際には、
+Cと同じように動作するかコンパイルが失敗するかのどちらかが起きるようになっています。
+ながらくCの配列宣言構文は前者にあり、Dの構文中で合法な選択肢でした。
+現在は廃止され言語から削除されたために、<code>int d0[3]</code>はコンパイラに怒られるようになりました。</p><pre><code>Error: instead of C-style syntax, use D-style int[3] d0
+</code></pre><p>独断的な制約に思えるかもしれませんが、そうではありません。
+本質には、いくつかのレベルにおける一貫性があります。</p><p>ひとつは、<a href=https://dlang.org/spec/declaration.html>Dにおいて宣言は右から左に読む</a>ということです。
+<code>d0</code>の宣言のなかで、すべては右から左に読むと、我々が普段言うのと同じ順番に流れます。
+&ldquo;(d0) is an (array of three) (integers)&rdquo; というように。
+Cスタイルの宣言はそうなっていません。</p><p>もうひとつは<code>d0</code>の型が<code>int[3]</code>だということです。
+以下のようなポインタの宣言を考えてみましょう。</p><pre><code class=language-d>int* p0, p1;
+</code></pre><p><code>p0</code>も<code>p1</code>もその型は<code>int*</code>です（Cでは、<code>p0</code>だけがポインタになります。<code>p1</code>はただの<code>int</code>です）。
+これはDにおけるあらゆる型宣言で同じです。
+型は左、シンボルは右。
+このようなコードを考えてみます。</p><pre><code class=language-d>int d1[3], d2[3];
+
+int[3] d4, d5;
+</code></pre><p>型を不定詞のように分割し、配列宣言に2つの構文を用意することは、
+一貫性のなさと混乱を生みかねない状況を生み出します。
+Cスタイルの構文を違法にすることで、一貫性が強制されます。
+コードの可読性は保守性の重要な要因です。</p><p><code>d0</code>と<code>c0</code>のもうひとつの相違点は、
+<code>d0</code>の要素はそれがどこでどのように宣言されたかにかかわらずデフォルトで初期化されるということです。
+モジュールスコープ、ローカルスコープ、<code>static</code>ローカル……関係ありません。
+とくべつコンパイラに指示がなされない限り、Dの変数は常にデフォルトで
+<a href=https://dlang.org/spec/property.html#init>各型の<code>init</code>プロパティ</a>
+で指定された値に初期化されます。
+配列の要素は要素の型の<code>init</code>プロパティに初期化されます。
+偶然にも、<code>int.init == 0</code>です。
+<strong>definit.c</strong>をDに翻訳してみましょう（そして<a href=https://run.dlang.io/>run.dlang.io を開き、試してみましょう</a>）。</p><p>CからDへの翻訳をする際、このデフォルト初期化関連の物事で少し混乱することがあります。
+以下のようなちょっと作為的なコードを考えてみます。</p><pre><code class=language-c>// Cではstaticな変数はデフォルトで0に初期化されます
+
+static float vertex[3];
+
+some_func_that_expects_inited_vert(vertex);
+</code></pre><p><code>float.init == float.nan</code>であり<code>0.0f</code>ではないため、
+Dへ直訳してしまうと期待したような結果は得られません！</p><p>ふたつの言語間で翻訳をする際には、
+明示的に初期化されていないCの変数が初期化されることを期待されていないか、
+そしてDの
+<a href=https://dlang.org/spec/type.html#basic-data-types>各型のデフォルト初期値</a>
+に気をつけなければなりません。
+ここを忘れるとデバッグで禿げ上がることになります。</p><p>Dにおいてデフォルトの初期化は宣言に<code>= void</code>をつけることで簡単に無効化できます。
+これは変数が読まれる前にかならず値がロードされるとき、
+もしくは<code>init</code>の値が入っていると未初期化よりも都合が悪いときに活用できます。</p><pre><code class=language-d>float[16] matrix = void;
+
+setIdentity(matrix);
+</code></pre><p>ちなみに、デフォルト初期化の目的は便利なデフォルト値を提供することではなく、
+未初期化の値をわかりやすくすることです
+（将来あなたがデバッグをするとき感謝することになるでしょう）。
+よくある勘違いは、<code>float</code>や<code>char</code>の「非数」（<code>float.nan</code>）や無効なUTF-8（<code>0xFF</code>）
+などという初期値を奇妙な外れ値だと思うことです。
+そうではありません。
+これらの値はそれ以外で役に立たないために、未初期化メモリの素晴らしい目印になるのです。
+整数型（と<code>bool</code>）はこのパターンを乱しています。
+これらの型は、その値のすべての範囲が意味を持つため、普遍的に「おーい！ボクは初期化されてないよ！」
+と叫んでくれるような単一の値がありません。
+整数や<code>bool</code>変数は、<code>0</code>や<code>false</code>が明示的な初期化の際によく選ばれる値であるため、
+しばしばデフォルト初期値のままにされます。
+浮動小数点数や文字型は一般に、できるだけ速やかに明示的初期化や代入をしなければなりません。</p><h3 id=配列の明示的初期化>配列の明示的初期化</h3><p>Cでは配列の明示的初期化がさまざまな方法でできます。</p><pre><code class=language-c>int ci0[3] = {0, 1, 2};  // [0, 1, 2]
+
+int ci1[3] = {1};        // [1, 0, 0]
+
+int ci2[]  = {0, 1, 2};  // [0, 1, 2]
+
+int ci3[3] = {[2] = 2, [0] = 1}; // [1, 0, 2]
+
+int ci4[]  = {[2] = 2, [0] = 1}; // [1, 0, 2]
+</code></pre><p>ここからわかることは以下のとおりです。</p><ul><li>要素は初期化子リストの定数値で順に初期化されます</li><li>リストの要素が配列の要素よりも少ない時は、残りの要素はすべて<code>0</code>で初期化されます（<code>ci1</code>のとおりです）</li><li>配列の長さが宣言で省略されている場合、配列は初期化子リストの長さをとります（<code>ci2</code>）</li><li><code>ci3</code>のような指示初期化子では特定の要素の<code>[index] = value</code>というペアでの初期化が可能で、
+リストに現れなかったインデックスは<code>0</code>で初期化されます</li><li>長さが宣言で省略されており指示初期化子が使われている場合は<code>ci4</code>のように、
+配列の長さは初期化子の最大のインデックスを元に決まり、
+リストにないインデックスは<code>0</code>で初期化されます</li></ul><p>初期化子は配列より長くなることを想定されていません（<code>gcc</code>では警告を出した上で、
+たとえば3要素の配列なら初期化子リストの最初の3つを使って初期化して、残りを無視します）</p><p>ちなみに指示初期化子とそうでないものとを混ぜて使うこともできます。</p><pre><code class=language-c>// [0, 1, 0, 5, 0, 0, 0, 8, 44]
+
+int ci5[] = {0, 1, [3] = 5, [7] = 8, 44};
+</code></pre><p>指示のない普通の初期化子は通常通り出現順に適用されます。
+指示初期化子がその直前にある場合、それは指示初期化子の次のインデックスの値になり、
+それ以外の要素は<code>0</code>で初期化されます。
+この例で、<code>0</code>と<code>1</code>はリストの値の最初の2つのため通常通り<code>ci5[0]</code>と<code>ci5[1]</code>を指します。
+次に<code>ci5[3]</code>に対する指示初期化子が来るため、このリストに<code>ci5[2]</code>に対応する値はなく、<code>0</code>に初期化されます。
+次には<code>ci5[7]</code>に対する指示初期化子が来ます。
+<code>ci5[4]</code>、<code>ci5[5]</code>、<code>ci5[6]</code>はスキップされたので、ぜんぶ<code>0</code>に初期化されます。
+最後に<code>44</code>は指示がなく、<code>[7]</code>の直後にあるため、この値は<code>ci5[8]</code>の値になります。
+最終的に<code>ci5</code>は<code>9</code>要素で初期化されます。</p><p>指示配列初期化子はC99でCに追加されました。
+Cコンパイラのバージョンによってはサポートされていなかったり、
+有効化するためにコマンドラインフラグを必要としたりします。
+現実のコードで遭遇するようなものではないかもしれませんが、あなたのC言語歴を推し量る役には立ちます。</p><p>これらをDに翻訳しようとするとさらに混乱します。
+幸いにも最初のひとつはコンパイルエラーになり、ハイゼンバグは未然に防がれます。</p><pre><code class=language-d>int[3] wrong = {0, 1, 2};
+
+int[3] right = [0, 1, 2];
+</code></pre><p>Dにおける配列初期化子は配列リテラルです。
+関数に無名配列を渡すときも、<code>writeln([0, 1, 2])</code>のように同じ構文が使えます。
+興味深いことに、<code>wrong</code>の宣言は以下のコンパイルエラーを出します。</p><pre><code>Error: a struct is not a valid initializer for a int[3]
+</code></pre><p>Dにおいて<code>{}</code>構文は
+<a href=https://dlang.org/spec/struct.html#static_struct_init><code>struct</code>の初期化に使われます</a>
+（
+<a href=https://dlang.org/spec/struct.html#struct-literal><code>struct</code>のインスタンスの初期化にも使える</a>
+構造体リテラルと混同しないでください
+）。</p><p><code>ci1</code>の翻訳をしたときにも驚くことでしょう。</p><pre><code class=language-d>// int ci1[3] = {1};
+
+int[3] di1 = [1];
+</code></pre><p>これはコンパイラエラーを出します。</p><pre><code>Error: mismatched array lengths, 3 and 1
+</code></pre><p>一体どうなっているんでしょう？
+まず、<code>ci2</code>の翻訳を見てみましょう。</p><pre><code class=language-d>// int ci2[] = {0, 1, 2};
+
+int[] di2 = [0, 1, 2];
+</code></pre><p>Cのコードにおいて、<code>ci1</code>と<code>ci2</code>の間に違いはありません。
+両方とも固定長で、スタックに確保される3要素の配列です。
+これがDにおける、CのコードをDのモジュールにコピペしてくるという経験則が壊れるケースのひとつです。</p><p>Cと違い、Dでは<code>int[3]</code>と<code>int[]</code>の間に違いが存在します。
+前者はCのような固定長配列であり、一般にDでは静的配列と呼ばれます。
+後者はCと違い可変長配列であり、動的配列やスライスと呼ばれています。
+その長さは必要に応じて伸びたり縮んだりします。</p><p>静的配列の初期化子は配列と同じ長さでなければなりません。
+Dは宣言された長さより短い初期化子を単に禁止しています。
+動的配列は初期化子から長さをとります。
+<code>di2</code>は3要素で初期化されますが、さらに後から追加することもできます。
+さらに、動的配列に初期化子は必須ではありません。
+Cにおいては、配列の長さの宣言が省略できるのは初期化子がある場合のみなので、<code>int foo[]</code>は違法です。</p><pre><code class=language-d>// gccは&quot;error: array size missing in 'illegalC'&quot;と出力します
+
+// int illegalC[]
+
+int[] legalD;
+
+legalD ~= 10;
+</code></pre><p><code>legalD</code>は空の配列であり、その要素のためのメモリは確保されていません。
+要素は追加演算子<code>~=</code>で追加できます。</p><p><code>di2</code>のように明示的な初期化子がある場合、動的配列のメモリは宣言がされた時点で確保されます。
+初期化子がない場合、メモリは最初の要素が追加された時点で確保されます。
+デフォルトでは、動的配列のメモリはGCヒープに確保され
+（ただし最適化の結果安全にスタックに確保できるとコンパイラが判断することもあります）、
+その後の割り当てをへらすために要素数に対して必要なメモリよりも多くのメモリが初期化されます
+（要素の初期化をせずに大きいブロックを一度に確保するのに
+<a href=https://dlang.org/phobos/object.html#.reserve><code>reserve</code>関数が使えます</a>）。
+追加された要素は事前に確保されたスロットがなくなるまでそこに配置され、
+その次の追加が新しい領域の確保を引き起こします。
+<a href=https://dlang.org/articles/d-array-article.html>Steven Schveighofferの配列に関する素晴らしい記事</a>
+ではさらに詳細に触れられており、次のパートで扱う配列の機能についても説明しています
+（訳注：<a href=http://www.kmonos.net/alang/d/d-array-article.html>翻訳版はこちら</a>）。</p><p>多くの場合、固定長のスタックに確保されるCの配列と可変長のGCで確保されるDの配列の違いは、
+<code>ci2</code>のような宣言をDに翻訳する時は大きな問題になりません。
+問題になるのはDの配列が<code>@nogc</code>付きの関数のなかで宣言されたときです。</p><pre><code class=language-d>@nogc void main()
+
+{
+
+    int[] di2 = [0, 1, 2];
+
+}
+</code></pre><p><em><a href=https://run.dlang.io/is/4AO9vT>オンラインで試す</a></em></p><p>コンパイラはズルを許しません。</p><pre><code>Error: array literal in @nogc function D main may cause a GC allocation
+</code></pre><p>配列がstaticのときは、リテラルの要素はその場で解決されスタックに確保されるため、
+同じようなエラーは起きません。
+DにやってきたばかりのCプログラマーは最初、
+そうしないことがまるで自然に反しているかのようになんにでも<code>@nogc</code>を付けたがる傾向があり、
+そのため<a href=https://dlang.org/blog/the-gc-series/>GCが人類の敵ではない</a>
+とわかるまで壁にぶち当たり続けることになります（訳注：<a href=/tags/dlang_gc_series/>翻訳版はこちら</a>）。</p><p>これを解決するために先程のCの指示初期化子の大きなパラグラフが役立ちます。
+Dは指示初期化子を、Cと違う構文でサポートしています。</p><pre><code class=language-d>// [0, 1, 0, 5, 0, 0, 0, 8, 44]
+
+// int ci5[] = {0, 1, [3] = 5, [7] = 8, 44};
+
+int[] di5 = [0, 1, 3:5, 7:8, 44];
+
+int[9] di6 = [0, 1, 3:5, 7:8, 44];
+</code></pre><p><em><a href=https://run.dlang.io/is/4kAt6u>オンラインで試す</a></em></p><p>これは静的、動的の両方で動作し、Cと同じルールに準じて、Cと同じ初期値になります。</p><p>このセクションで主に覚えておいてほしいことは次のとおりです。</p><ul><li>Dにおいて静的配列と、Cにない動的配列には、違いがあります</li><li>静的配列はスタックに確保されます</li><li>動的配列はGCヒープに確保されます</li><li>未初期化の静的配列はデフォルトで配列の要素の<code>init</code>プロパティで初期化されます</li><li>動的配列は明示的に初期化が可能であり、初期化子から長さをとります</li><li>動的配列は<code>@nogc</code>スコープ内での明示的初期化ができません</li><li>未初期化の動的配列は空です</li></ul><h3 id=次回に続く>次回に続く</h3><p>当初の予定より配列の宣言と初期化についてたくさん書くことになりました。
+そしてまだまだ配列について書くことはたくさんあります。
+次の記事では、多次元配列、Dの配列の内部構造、
+そして人々が「Cの配列はただのポインタでしかない」という時意味していることについて見ていきます。
+最後の2つは、DとCの配列を言語間でやり取りする技術について触れるパート3への伏線になっています。</p></article><footer><h2><a href=/tags/dlang>#dlang</a>
+DとCのインターフェース：配列 Part 1【翻訳】</h2><p><time>2018-12-15</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/d_and_c>#d_and_c</a> <a href=/tags/advent_calendar>#advent_calendar</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>
