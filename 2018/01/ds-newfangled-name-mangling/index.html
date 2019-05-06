@@ -7,10 +7,10 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#dlang Dの新しい名前修飾【抄訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/01/ds-newfangled-name-mangling/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content="#dlang Dの新しい名前修飾【抄訳】 - Kotet's Personal Blog"><meta name=og:description content="D言語の短期的な設計目標の一つにCとのインターフェース能力があります。 その目標のために、Cの標準ライブラリへのアクセスを可能にし、CやC&#43;&#43;コンパイラが使うのと同じオブジェクトファイルフォーマットとシステムリンカを使うABI互換を提供しています。"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2018/01/ds-newfangled-name-mangling/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#dlang Dの新しい名前修飾【抄訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/01/ds-newfangled-name-mangling/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content="#dlang Dの新しい名前修飾【抄訳】 - Kotet's Personal Blog"><meta name=og:description content="D言語の短期的な設計目標の一つにCとのインターフェース能力があります。 その目標のために、Cの標準ライブラリへのアクセスを可能にし、CやC&#43;&#43;コンパイラが使うのと同じオブジェクトファイルフォーマットとシステムリンカを使うABI互換を提供しています。"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2018/01/ds-newfangled-name-mangling/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.5"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639 11 7.44606164 11.4478622 6.99834639 12.0003283 6.99834639 12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639c0 .5522847500000001-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12 6 11.4477153 6.44771525 11 7 11 7.55228475 11 8 11.4477153 8 12 8 12.5522847 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7 13.6568542 7 15 8.34314575 15 10 15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13 11.9072594 13 11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9 11.4477153 9 11 9.44771525 11 10 11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
 Dの新しい名前修飾【抄訳】</h2><p><time>2018-01-15</time>
-<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#シンボル名修飾とは何か>シンボル名修飾とは何か？</a></li><li><a href=#テンプレートシンボル>テンプレートシンボル</a></li><li><a href=#シンボル圧縮による解決>シンボル圧縮による解決</a></li><li><a href=#新しい修飾法は健全か>新しい修飾法は健全か？</a></li><li><a href=#影響>影響</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>この記事は
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#シンボル名修飾とは何か>シンボル名修飾とは何か？</a></li><li><a href=#テンプレートシンボル>テンプレートシンボル</a></li><li><a href=#シンボル圧縮による解決>シンボル圧縮による解決</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>この記事は
 <a href=https://dlang.org/blog/2017/12/20/ds-newfangled-name-mangling/>D’s Newfangled Name Mangling – The D Blog</a>
 を自分用に翻訳したものを
 <a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
@@ -161,21 +161,20 @@ Dの修飾はすべてのプラットフォームで同じであると仮定し�
 結果の長さは23, 39, 57, 76, 95, 114, 133と線形に増えます。
 <code>square</code>の呼び出しの12連鎖は207,114文字から247、つまり800分の1以下にまで小さくなります。</p><p>上で言及していた後方参照を使った修飾の<code>mangleFunc</code>の実装はどうなったのでしょうか。
 完全修飾名は型（たとえば構造体テンプレートの引数として）を含んでいないはずですが、修飾名の識別子は関数型に再び現れることがあります。
-これは逆修飾器を<a href=https://dconf.org/2017/talks/alexandrescu.pdf>“Design by Introspection” (DbI)</a>（Andrei Alexandrescuの作ったものです）を使って拡張することで解決されました。</p><ul><li><code>Demangle</code>構造体という、フックを提供する構造体をパラメータ化するテンプレートを作る。
-<code>d
-struct NoHooks {} // supports: static bool parseLName(ref Demangle); ...
+これは逆修飾器を<a href=https://dconf.org/2017/talks/alexandrescu.pdf>“Design by Introspection” (DbI)</a>（Andrei Alexandrescuの作ったものです）を使って拡張することで解決されました。</p><ul><li><p><code>Demangle</code>構造体という、フックを提供する構造体をパラメータ化するテンプレートを作る。</p><pre><code class=language-d>struct NoHooks {}  // supports: static bool parseLName(ref Demangle); ...
 private struct Demangle(Hooks = NoHooks)
 {
 Hooks hooks;
-// ...
-void parseLName()
-{
-static if(__traits(hasMember, Hooks, &quot;parseLName&quot;))
-if (hooks.parseLName(this))
-return;
-// 普通のデコード...
+    // ...
+    void parseLName()
+    {
+        static if(__traits(hasMember, Hooks, &quot;parseLName&quot;))
+            if (hooks.parseLName(this))
+                return;
+            // 普通のデコード...
+    }
 }
-}</code><br></li></ul><ul><li>頻出する識別子を適切な後方参照に置き換えるフックを作る。
+</code></pre><ul><li>頻出する識別子を適切な後方参照に置き換えるフックを作る。
 <code>d
 struct RemangleHooks
 {
@@ -199,7 +198,7 @@ idpos[currentIdentifier] = currentPos;
 }
 return true;
 }
-}</code><br></li></ul><ul><li>修飾名と先の型（<code>core.demangle</code>にはデコードする能力があります）を組み合わせて、フックされた逆修飾器を実行します
+}</code><br></li></ul></li></ul><ul><li>修飾名と先の型（<code>core.demangle</code>にはデコードする能力があります）を組み合わせて、フックされた逆修飾器を実行します
 <code>d
 char[] mangleFunc(FuncType)(const(char)[] qualifiedName)
 {
@@ -209,21 +208,31 @@ auto d = Demangle!RemangleHooks(mangled, null);
 d.mute = true; // 逆修飾は出力されません
 d.parseMangledName();
 return d.hooks.result;
-}</code></li></ul><h3 id=新しい修飾法は健全か>新しい修飾法は健全か？</h3><p>後方参照は既存の修飾法を拡張した修飾法でエンコードされます。
+}</code>
+### 新しい修飾法は健全か？
+後方参照は既存の修飾法を拡張した修飾法でエンコードされます。
 残念ながら、既存のものは曖昧さが<a href=https://issues.dlang.org/>Dのイシュートラッキングシステム</a>に報告されており、まだ見つかっていない問題もあるでしょう。
-<code>core.demangle</code>の逆修飾器はPhobosのユニットテストの未修正のシンボルのうち3%ほどを受け付けず、15%ほどが部分的にしか逆修飾されませんでした。</p><p>修飾法の変更はツール（逆修飾器、デバッガ）の更新を必要とするので、既に複雑で脆弱な定義への追加の健全性を検証するのは大変です。
-とにかく、それらを取り除くいい機会でした。</p><p>既存の定義の再調査が必要でした。
+<code>core.demangle</code>の逆修飾器はPhobosのユニットテストの未修正のシンボルのうち3%ほどを受け付けず、15%ほどが部分的にしか逆修飾されませんでした。
+修飾法の変更はツール（逆修飾器、デバッガ）の更新を必要とするので、既に複雑で脆弱な定義への追加の健全性を検証するのは大変です。
+とにかく、それらを取り除くいい機会でした。
+既存の定義の再調査が必要でした。
 機械的に調査を行うために、ウェブサイトから得られる修飾の仕様を<a href=https://www.gnu.org/software/bison/>bisonパーサジェネレーター</a>が解釈できる文法に変換しました。
 BisonはLALR(1)パーサテーブル、基本的には修飾されたシンボルをスキャンしつつ、文字とそのサクセサを見るだけで文字が前のエンティティのものか新しいエンティティの最初かを決定できるものを作ることができます。
 文法の処理中に競合が報告された時は、より大きなコンテキストで解決できることもありますが、本当の問題や望ましくない複雑さのヒントになります。
-手動パーサ制御フローを表す疑似トークンを追加することで競合を回避できます。</p><p><a href=https://gist.githubusercontent.com/rainers/6cdf73b48837defb9f88/raw/3db6a3c8e72222ccd6b22e8ae01c601bd585e9d8/dwebsite4.bison>このgist</a>は後方参照のないDの修飾スキームの文法です。
+手動パーサ制御フローを表す疑似トークンを追加することで競合を回避できます。
+<a href=https://gist.githubusercontent.com/rainers/6cdf73b48837defb9f88/raw/3db6a3c8e72222ccd6b22e8ae01c601bd585e9d8/dwebsite4.bison>このgist</a>は後方参照のないDの修飾スキームの文法です。
 これはまだBisonで走らせるといくつか競合がありますが、そのうちの1つが本当の<a href=https://github.com/dlang/dmd/pull/6702>定義の曖昧さ</a>です。
-後方参照を文法に追加しても<a href=https://gist.githubusercontent.com/rainers/6cdf73b48837defb9f88/raw/3db6a3c8e72222ccd6b22e8ae01c601bd585e9d8/backref6.bison>競合は発生しませんでした</a>。</p><p>加えて、<a href=https://github.com/dlang/druntime/blob/master/src/core/demangle.d><code>core.demangle</code></a>は曖昧さのあるものを除くすべてのシンボルで動作するよう修正されました。</p><h3 id=影響>影響</h3><p><code>std.traits</code>の実装のうちいくつかはリンケージの決定などのコンパイル時プロパティのintrospectのためにシンボルの修飾を利用していました。
+後方参照を文法に追加しても<a href=https://gist.githubusercontent.com/rainers/6cdf73b48837defb9f88/raw/3db6a3c8e72222ccd6b22e8ae01c601bd585e9d8/backref6.bison>競合は発生しませんでした</a>。
+加えて、<a href=https://github.com/dlang/druntime/blob/master/src/core/demangle.d><code>core.demangle</code></a>は曖昧さのあるものを除くすべてのシンボルで動作するよう修正されました。
+### 影響
+<code>std.traits</code>の実装のうちいくつかはリンケージの決定などのコンパイル時プロパティのintrospectのためにシンボルの修飾を利用していました。
 これはシンプルになった逆修飾器を使って行われました。
 後方参照の導入により、これらはシンプルなシンボル名を除き何もする必要がなくなりました。
 <code>core.mangleFunc</code>を使った方法はうまくいきそうに見えますが、CTFEで逆修飾を実行する必要があるためコンパイルを顕著に遅くします。
-幸運にも、修飾で得られるすべての情報をカバーする新しい<code>__traits</code>が追加されました。</p><p>ほとんどのユーザはオブジェクトファイルや実行ファイルのサイズが小さくなること以外の変化に気付くことはないでしょうが、新しい修飾法はリンカやデバッガなどの外部ツールにとっての破壊的変更になるかもしれません。
-これらは動作はしますが、アップデートされるまでは逆修飾されたものの代わりに新しい修飾名を見ることになると思うので心の準備をしておいてください。</p><p>レビューをしてくれたMike Parker、Walter Bright、Steven Schveighofferに感謝します。</p><div class=footnotes><hr><ol><li id=fn:1>ここ意味が取れなかった
+幸運にも、修飾で得られるすべての情報をカバーする新しい<code>__traits</code>が追加されました。
+ほとんどのユーザはオブジェクトファイルや実行ファイルのサイズが小さくなること以外の変化に気付くことはないでしょうが、新しい修飾法はリンカやデバッガなどの外部ツールにとっての破壊的変更になるかもしれません。
+これらは動作はしますが、アップデートされるまでは逆修飾されたものの代わりに新しい修飾名を見ることになると思うので心の準備をしておいてください。
+レビューをしてくれたMike Parker、Walter Bright、Steven Schveighofferに感謝します。</li></ul><div class=footnotes><hr><ol><li id=fn:1>ここ意味が取れなかった
 <a class=footnote-return href=#fnref:1><sup>[return]</sup></a></li></ol></div></article><footer><h2><a href=/tags/dlang>#dlang</a>
 Dの新しい名前修飾【抄訳】</h2><p><time>2018-01-15</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>
