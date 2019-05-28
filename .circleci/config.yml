@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           command: |
-            HUGO_ENV=production hugo --minify
+            HUGO_ENV=production hugo --minify --buildFuture --templateMetrics --templateMetricsHints 
 
   deploy:
     docker:
