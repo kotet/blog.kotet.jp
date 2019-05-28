@@ -13,7 +13,7 @@
     <link rel="canonical" href="{{ .Permalink }}" />
     <link rel="icon" href="/favicon.ico">
     {{ partial "head/twitter-card" . }}
-    {{ .Hugo.Generator }}
+    {{ hugo.Generator }}
     {{ partial "head/analytics" . }}
     {{ partial "head/ads.html" . }}
 </head>
@@ -22,19 +22,19 @@
     <header class="site">
         <nav>
             <ul>{{ block "header" . }}
-                <li><span class="text-up">ABOUT</span><a href="{{ .LanguagePrefix }}/about"
+                <li><span class="text-up">ABOUT</span><a href="{{ .Site.LanguagePrefix }}/about"
                         title="about">{{ partial "svg/about" }}</a></li>
                 {{ if eq .Lang "ja" }}
                 <li><span class="text-bottom">DOWNLOAD</span><a href="/products"
                         title="download">{{ partial "svg/download" }}</a></li>
                 {{ end }}
-                <li><span class="text-up">TAG</span><a href="{{ .LanguagePrefix }}/tags" title="tag">{{ partial "svg/tags" }}</a></li>
+                <li><span class="text-up">TAG</span><a href="{{ .Site.LanguagePrefix }}/tags" title="tag">{{ partial "svg/tags" }}</a></li>
                 <li><span class="text-bottom">PODCAST</span><a href="https://podcast.kotet.jp" title="podcast">{{ partial "svg/podcast" }}</a></li>
-                <li><span class="text-up">FEED</span><a href="{{ .LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" }}</a></li>
+                <li><span class="text-up">FEED</span><a href="{{ .Site.LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" }}</a></li>
                 {{ end }}
             </ul>
         </nav>
-        <h1><a href="{{ .LanguagePrefix }}/">KOTET'S<br>PERSONAL<br>BLOG</a></h1>
+        <h1><a href="{{ .Site.LanguagePrefix }}/">KOTET'S<br>PERSONAL<br>BLOG</a></h1>
     </header>
     <main>
         {{ block "main" . }}{{ end }}
