@@ -14,6 +14,8 @@ hasCJKLanguage: true
 
 DefaultContentLanguage: ja
 
+enableGitInfo: true
+
 Languages:
   en:
     params:

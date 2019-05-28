@@ -1,4 +1,5 @@
-{{ define "title" }}{{ if .Params.tags }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }} {{ end }} {{ define "head" }}
+{{ define "title" }}{{ if .Params.tags }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }} {{ end }}
+{{ define "head" }}
 <meta name="description" content="{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }}">
 
 {{ $style := resources.Get "/sass/single.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
@@ -8,8 +9,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js"></script>
 <script>
-hljs.configure({languages: []})
-hljs.initHighlightingOnLoad();
+    hljs.configure({ languages: [] })
+    hljs.initHighlightingOnLoad();
 </script>
 
 {{ partial "head/mathjax" . }}
@@ -34,7 +35,13 @@ hljs.initHighlightingOnLoad();
         {{ .Title }}
     </h2>
     <p>
-        {{ if isset .Params "date" }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+        {{ if isset .Params "date" }}
+        Created: <time>{{ .Date.Format "2006-01-02" }}</time><br />
+        Updated: <time>{{ .GitInfo.AuthorDate.Format "2006-01-02" }}</time>
+        (<a href="https://github.com/kotet/blog.kotet.jp/commit/{{ .GitInfo.Hash }}"
+            title="{{ .GitInfo.Subject }} ({{ .GitInfo.Hash }})" target="_blank"
+            rel="noopener">{{ .GitInfo.AbbreviatedHash }}</a>)<br />
+        {{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
     </p>
     {{ partial "old-post" . }}
