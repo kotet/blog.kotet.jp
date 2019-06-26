@@ -1,0 +1,180 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="6月20日、mimallocというメモリアロケータが公開されました。 mimallocは関数型言語の処理系のような、小さな確保と解放を繰り返す"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.02c91f0bdf54d569f6c715f0a345bf32b55cd4d3ac11e0b98fec7ad1e614c151.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type=text/javascript></script><script type=text/x-mathjax-config>
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script><title>#tech &#34;Mimalloc: Free List Sharding in Action&#34;を読んだ - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2019/06/mimalloc/><link rel=icon href=/favicon.ico><meta name=twitter:card content=summary><meta name=og:title content='#tech "Mimalloc: Free List Sharding in Action"を読んだ - Kotet&#39;s Personal Blog'><meta name=og:description content="6月20日、mimallocというメモリアロケータが公開されました。 mimallocは関数型言語の処理系のような、小さな確保と解放を繰り返す"><meta name=twitter:image content=https://blog.kotet.jp/img/common/logo.png><meta name=twitter:url content=https://blog.kotet.jp/2019/06/mimalloc/><meta name=twitter:site content=@kotetttt><meta name=twitter:creator content=@kotetttt><meta name=generator content="Hugo 0.55.6"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639 11 7.44606164 11.4478622 6.99834639 12.0003283 6.99834639 12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639c0 .5522847500000001-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12 6 11.4477153 6.44771525 11 7 11 7.55228475 11 8 11.4477153 8 12 8 12.5522847 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7 13.6568542 7 15 8.34314575 15 10 15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13 11.9072594 13 11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9 11.4477153 9 11 9.44771525 11 10 11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><path id="placeholder" fill-opacity="0" fill="#fff" d="M0 0h24v24H0z"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/tech>#tech</a>
+&#34;Mimalloc: Free List Sharding in Action&#34;を読んだ</h2><p>Created: <time>2019-06-26</time><br><a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#free-list-sharding>Free List Sharding</a><ul><li><a href=#allocation-free-list>Allocation Free List</a></li><li><a href=#local-free-list>Local Free List</a></li><li><a href=#thread-free-list>Thread Free List</a></li><li><a href=#full-list>Full List</a><ul><li><a href=#読書メモ>読書メモ</a></li><li><a href=#mimalloc-free-list-sharding-in-action>Mimalloc: Free List Sharding in Action</a></li></ul></li><li><a href=#1-introduction>1. INTRODUCTION</a></li><li><a href=#2-free-list-sharding>2. FREE LIST SHARDING</a><ul><li><a href=#2-1-the-allocation-free-list>2.1 The Allocation Free List</a></li><li><a href=#2-2-no-bump-pointer>2.2 No Bump Pointer</a></li><li><a href=#2-3-the-local-free-list>2.3 The Local Free List</a></li><li><a href=#2-4-the-thread-free-list>2.4 The Thread Free List</a></li></ul></li><li><a href=#3-implementation>3. IMPLEMENTATION</a><ul><li><a href=#3-1-malloc>3.1. Malloc</a></li><li><a href=#3-2-free>3.2. Free</a></li><li><a href=#3-3-generic-allocation>3.3. Generic Allocation</a></li><li><a href=#3-4-the-full-list>3.4. The Full List</a></li><li><a href=#3-5-security>3.5. Security</a></li></ul></li><li><a href=#4-evaluation>4. EVALUATION</a></li><li><a href=#5-related-work>5. RELATED WORK</a></li><li><a href=#6-conclusion>6. CONCLUSION</a></li></ul></li></ul></li></ul></li></ul></nav></aside></header><article><p>6月20日、mimallocというメモリアロケータが公開されました。
+mimallocは関数型言語の処理系のような、小さな確保と解放を繰り返す状況で性能を発揮するアロケータです。</p><p><a href=https://github.com/microsoft/mimalloc>microsoft/mimalloc: mimalloc is a compact general purpose allocator with excellent performance.</a></p><p>&ldquo;less than 3500 LOC&rdquo; （他のmallocは数万行あったりする）ということで、頑張れば自分でも読めるのではないかと思いました。
+そこでまずは論文を読んで大まかな仕組みを理解しようと思います。</p><p>なぜかはわかりませんが、とてもスラスラ読むことが出来る論文でした。
+この論文ではmimallocの実装と評価をすることで、
+参照局所性を考えて、Free List Shardingを用いて作ったメモリアロケータが高い性能を出せることを示しています。
+以下Free List Shardingについて簡単な要約をします。</p><h3 id=free-list-sharding>Free List Sharding</h3><p>mimallocで特に重要な機能が &ldquo;<strong>free list sharding</strong>&rdquo; です。
+フリーリストをいくつかにsharding（水平分割）することによって、参照局所性の向上、確保時の条件分岐の削減など、
+様々な問題を解決しています。</p><h4 id=allocation-free-list>Allocation Free List</h4><p>解放された領域を連結リストにして、あとで再利用するときに高速にアクセスできるようにするのがフリーリストです。
+この論文では確保するアドレスの参照局所性を問題にしています。</p><p>確保と解放を繰り返していると、フリーリストがあちこちに飛ぶことがあります。
+同時期に呼ばれたmallocで確保したメモリは同時期に使われることが多いので、
+このままだと参照局所性が低下してしまいます。
+参照局所性が低下すると、データがCPUのキャッシュに載らないなどの理由から性能が悪化します。</p><p>そこでメモリ領域を64KiB程度の大きさの<strong>page</strong>に分割し、各ページに別々のフリーリストを作りました。
+これによって同じフリーリスト内のアドレスは場所が近くなり、参照局所性が向上します。</p><h4 id=local-free-list>Local Free List</h4><p>mimallocでは処理を &ldquo;fast path&rdquo; と &ldquo;slow path&rdquo; の2つに分け、
+フリーリストが空になったときのみslow pathを呼び出すようにしています。
+しかし定期的に行いたい処理があるので、
+確保と解放を繰り返してフリーリストが空にならないような状況でも定期的にslow pathが呼ばれるようにしたいです。</p><p>そこでフリーリストを更に分割し、解放した領域を追加していくリストと、
+再利用するために領域を取り出すリストにして、取り出すリストが空になったら役割を交代させるようにします。
+増えていくだけのリストと、減っていくだけのリストにフリーリストを分割するのです。
+こうすることで、「フリーリストが空になったか」と「ある一定回数程度mallocが呼ばれたか」
+の判定がひとつの条件分岐で行えるようになり、fast pathを遅くすることなしに定期実行機能を実現できるようになります。</p><h4 id=thread-free-list>Thread Free List</h4><p>mimallocではセグメント（に属するページ）はスレッドに属し、他のスレッドがページの領域を確保しに来ることはありません。
+しかし解放は他のスレッドから出来るようにする必要があります。
+これをロックフリーに実現するため、さらに新しいフリーリストを作ります。</p><p>このフリーリストも追加専用です。
+thread free listへの要素の追加はアトミックに行うことができます。
+その後、上記のlocal free listで実現したタイマーでslow pathが呼ばれた際、thread free listを回収します。
+これも根本のポインタを操作するだけでいいのでアトミックに行えます。
+そうして回収したリストをlocal free listにマージするのです。</p><h4 id=full-list>Full List</h4><p>ここまでのものを実際に実装して試してみると一部のベンチマークで性能が悪くなったので、
+それを解決するためにさらに新しいフリーリストを作っています。
+マルチスレッド環境で競合を発生させることなくロックフリーにfull listを実現するため、
+thread free listのポインタ下位2ビットにフラグを埋め込んだりしています。</p><h5 id=読書メモ>読書メモ</h5><p>以下、読みながら書いた読書メモです。</p><hr><h5 id=mimalloc-free-list-sharding-in-action>Mimalloc: Free List Sharding in Action</h5><p>Modern memory allocators
+はパフォーマンス、セキュリティ、コンカレンシー等の様々な要求、そしてコンテキストに応じて変化するアプリケーション特有の要求のバランスを取らなければならない。
+アロケータのユースケースとしてSwiftやPythonのような自動メモリ管理を備えた言語処理系がある。
+言語処理系の参照カウント式メモリ管理で使われるアロケータとして既存のアロケータより高い性能を発揮するMimallocを紹介する。</p><p>Mimallocは様々なイノベーションを含む。</p><ul><li>page-local sharded free list<ul><li>空間局所性が良くなる、競合を回避できる。
+処理が高速なfast pathとそうでないパスに分かれる。</li><li>&ldquo;temporary cadence&rdquo;: fast pathから定期的に出て処理が出来る</li></ul></li></ul><p>プログラミング言語LeanとKokaの処理系とRedis
+においてmimallocは既存のアロケータより高速に動作した。</p><ul><li>tcmallocより7%高速</li><li>jemallocより14%高速</li></ul><h4 id=1-introduction>1. INTRODUCTION</h4><p>LeanとKokaのランタイムを開発するに当たって現在のアロケータには問題があった。
+2つは関数型言語であり、寿命の短いアロケーションを大量に行う。
+Leanでは、小さいアロケーションのために独自のアロケータを作っていた。</p><p>SwiftやPythonのランタイムシステムはメモリ管理に参照カウント方式を採用している。
+大きなデータ構造の解放にかかる時間を抑えるために参照カウントの&rdquo;deferred decrementing&rdquo;が必要だった。
+&ldquo;deferred decrementing&rdquo;をresumeするのにベストなタイミングはmemory pressureがある時である。
+そのため、&rdquo;deferred decrementing&rdquo;実現のためにはアロケータの協力が必要である。</p><p>これらの問題に対処するため、新しいアロケータを作った。</p><ul><li>free list sharding: 小さな領域(mimalloc <em>page</em>, usually 64KiB)ごとにフリーリストをもつ。
+これによりpageがいっぱいになるまではmallocの空間局所性が保たれる。</li><li>thread-free list: mallocのfast pathにおいてロックや競合を回避する。
+バッチ処理によってアトミックに解放を行う</li><li>local-free list: フリーリストが空になるとlocal-free listが新しいフリーリストになる。
+これにより重い処理が償却される。
+fast pathの処理を減らすことが出来る。</li><li>確保と解放のコードパスは最適化され、それ以外のルーチンは延期する。
+fast pathの条件分岐を簡単にするためデータ構造はregularになる。
+この設計はまた特殊ケースを減らしコードの再利用を増やすことで、コードを一般化させシンプルにする。
+これによりライブラリは3500 LOC以下になり、これは他のアロケータよりも遥かに小さい。<ul><li>tcmalloc: ~20k LOC</li><li>jemalloc: ~25k LOC</li></ul></li><li>ロックは存在せず、スレッドのインタラクションはアトミックな操作で完結する。
+これによりアロケーションの最悪計算時間が抑えられ、
+メタデータのオーバーヘッドは約0.2%、
+メモリの無駄はたかだか16.7%(<sup>1</sup>&frasl;<sub>8</sub>)になる。</li></ul><p>様々なアロケータとmimallocを様々なベンチマークで比較した結果、安定して他のアロケータよりも好成績を治めた。
+Leanの小さいオブジェクト用独自アロケータよりも高い性能を達成した。
+redisでもいい感じだった。</p><p>歴史的にアロケータはアロケータの実行時間の削減、メモリ使用量の削減、複数スレッドでのスケーリングを問題として設計されてきた。
+アプリケーションの参照局所性を重視した設計は少なかった。
+例えばVAMやPHKmallocの初期バージョンもシーケンシャルなアロケーションが同じページに来るようにフリーリストシャーディングを使っていた。
+mimallocもアプリケーションの参照局所性を改善しており、そこからさらにVAMになかった機能を追加している。
+参照局所性の改善にフォーカスしたアロケータがパフォーマンスと並行スケーラビリティを実現することを示した。</p><p>mimallocはCで書かれておりいろんなプラットフォームで動く。
+シンプルでレギュラーなコードベースにより、言語のランタイムに組み込みやすくなっている。</p><h4 id=2-free-list-sharding>2. FREE LIST SHARDING</h4><h5 id=2-1-the-allocation-free-list>2.1 The Allocation Free List</h5><p>関数型言語は小さなオブジェクトの確保と解放を大量に繰り返す傾向がある。
+多くのアロケータはサイズクラスあたりひとつのフリーリスト使い、これは局所性の悪化を招き、
+ひとつのデータ構造 (リンクリスト等) に属するオブジェクトがヒープ全体に散らばってしまうことになる。</p><p>関数型言語においてヒープはそのような状態になりがちである。
+局所性の改善のために、mimallocはfree list shardingを使う。
+これはヒープをpage (OSのそれとは別のもの) に分割し、pageごとにフリーリストを作る。
+(小さいオブジェクト用のページは通常64KiBである)</p><p>これにより局所性が改善され、mimallocの性能が大きく改善するという仮説を立てた。</p><p>これをテストするために、Leanコンパイラで実験をした。
+実装をシャーデッドフリーリストに置き換えただけで、1GiBのヒープ内のデータ構造のベンチマークで25%以上の性能改善が見られた！
+先行研究であるVAMアロケータでも局所性の改善によるL2キャッシュミスの減少が計測されている。</p><h5 id=2-2-no-bump-pointer>2.2 No Bump Pointer</h5><p>ページ内からアロケーションをする際は単にページのフリーリストからpopする。</p><p>fast pathには1つの条件分岐 (フリーリストは空か？) とpopだけがある。
+フリーリストが空のときはmalloc_generic (slow path) を呼ぶ。
+used変数をインクリメントしているのはページ内のすべてのオブジェクトが開放されているかを効率的に判定するためである。
+多くのアロケータはreap designを採用しており、これはbump pointer
+(bump pointer=ページの終わりのアドレスと比較演算をしてページが満杯か判定する手法。
+先頭アドレスを確保サイズ分加算することでメモリの確保をする)
+を使い初期状態でページは空である。
+mimallocでもbump pointerを試してみたがベンチマークが2%悪くなった。
+おそらくfast path内の条件分岐が増えてしまうためだろう。
+分岐予測もできないし、確保されたメモリのアドレスがが予測しやすいというセキュリティリスクもあるのでbump pointerはなくした。</p><h5 id=2-3-the-local-free-list>2.3 The Local Free List</h5><p>KokaやLeanのランタイムにおいては最悪確保時間、最悪解放時間に上限がほしい。
+特に大きなデータ構造を開放する際の再帰的解放呼び出し (free call) の数は限られていてほしい。
+KokaとLeanはランタイムで参照カウントを採用している (SwiftやPythonと同じように)。
+しかしどの言語でも参照カウントは大きなデータ構造で問題が起こる。
+参照カウントにおける解放呼び出し数の制限は単純なリミットカウンタと、
+残りのポインタをdeferred decrement listに突っ込む事で実現できる。</p><p>いつこのdeferred decrement listからの解放を再開すればいいだろうか？
+ベストなタイミングはアロケータがさらなるフリースペースを探しているときであり、
+そのためアロケータの協力が必要になる。
+mimallocアロケータはユーザが定義したコールバック<code>deferred_free</code>をそのようなときに呼び出す。
+これはページのフリーリストがからのときに呼ばれるmimallocの
+slow path<code>malloc_generic</code>ルーチン内で呼ばれる。</p><p>しかしこの汎用ルーチンが定期的に呼ばれるという保証がないためまだだめだ。
+ユーザはページ内で解放と確保を繰り返し、ページのフリーリストが空になることはないかもしれない。
+一定回のアロケーションごとに汎用ルーチンが呼び出されるようにする方法が必要である。</p><p>したがって、フリーリストをさらに水平分割する。
+local free listを各ページに追加して、
+regular free listからアロケートする間に開放したオブジェクトを
+(regular free listではなく) local free listに配置する。
+こうすることでフリーリストが一定回数のアロケーションの後空になることを保証できる。
+汎用ルーチンではローカルフリーリストをフリーリストにする。</p><p>MEMO: つまり2つのフリーリストを用意して、1つからは取り除き、もう1つには追加する。
+取り除いている方が空になったら役割を交代する。</p><p>fast pathには条件分岐は増えておらず、仕事はすべてslow pathが行っていることに注目。
+<code>deferred_free</code>は一定回数のアロケーションまでに必ず呼び出されることが保証され、
+これは決定論的heartbeatとしても使うことが出来る。
+Leanではスレッドの処理に時間がかかっているときのタイムアウト処理をするためのポータブルなタイマーとして使っている。
+このケースで、マシン内で決定論的でないために実時間をタイマーにすることはできない。</p><h5 id=2-4-the-thread-free-list>2.4 The Thread Free List</h5><p>mimallocにおいてページはスレッドローカルなヒープに属し、アロケーションは常にローカルヒープ内で行われる。
+ここでスレッドローカルなアロケーションにロックは不要である。
+しかし任意のスレッドがオブジェクトを開放できる。
+スレッドローカルな解放をロック無しに実現するために、
+フリーリストをさらに水平分割し、thread free listを各ページに追加する。
+他のスレッドはこのページのオブジェクトをこのリストに追加して開放できる。</p><p>非ローカルな解放では、スレッドフリーリストに開放したオブジェクトをアトミックに追加する操作を行う。</p><p>sharded thread free listの長所は、異なるページを解放しているスレッドどうしが競合しないため、
+スレッド間の競合が減ることである。
+現在のアーキテクチャでは競合しないアトミック操作は効率的であり、
+chche consistency protocolの一部として実装されている。</p><p>汎用ルーチンでスレッドフリーリストを回収して、ローカルフリーリストに追加する。</p><p>MEMO: スレッドフリーリストの回収:
+リストの先頭ポインタを取得、同時に先頭ポインタをNULLにする。
+この一連の操作はアトミックに行える。</p><p>スレッドフリーリスト全体の移動は一度に行われるため、
+非ローカル解放の呼び出しは効率的にバッチ処理される。
+これは確保するスレッドと解放するスレッドに分かれているような
+asymmetric concurrent work loadにおいて特に重要である。
+snmallocはこのような状況において動作するように作られ、
+こちらもバッチによって高価な同期処理を削減している。</p><h4 id=3-implementation>3. IMPLEMENTATION</h4><p>sharded listsを除き、全体の設計は他のsize-segregated thread-caching allocatorと似ている。</p><h5 id=3-1-malloc>3.1. Malloc</h5><p>オブジェクトを確保するとき、mimallocはまずthread local heap (tlb) へのポインタを得る。
+1Kb未満の小さなオブジェクトのために、
+ヒープは利用可能なページへ直接アクセスするためのポインタの配列を持っている。</p><p>小さいオブジェクトのための<code>malloc_small</code>は条件分岐を1つだけ含む効率的なアセンブリになる。</p><p>ページとそのメタデータはすべて大きなsegment (他のアロケータではslabやarenaとも呼ばれる) に置かれる。
+セグメントの大きさは4MiB (512KiBを超える巨大オブジェクト用には更に大きくなる) であり、
+最初のページはメタデータとガードページの大きさ分だけ小さくなっている。
+ページには3つのサイズがある。</p><ul><li>8KiB未満のオブジェクト用: ページサイズは64KiBでセグメント内に64個ある</li><li>512KiB未満の大きなオブジェクト用: ページはセグメント全体を占め、ページはセグメントに1つ</li><li>512KiB以上の大きなオブジェクト用: ページは必要なサイズまで大きくなる</li></ul><p>大きなオブジェクトにもページとセグメントを使うのはデータ構造を単純化しコードサイズと複雑性を削減、
+特殊ケースの少ない一貫性のあるインターフェースを作るためである。
+これによってmimallocのコードサイズは他のアロケータよりも小さくなっている。</p><h5 id=3-2-free>3.2. Free</h5><p>ページとそのメタデータはセグメント内に確保される。
+これはOSの高価なアロケーションコールを削減するというのが主な理由だが、それだけではない。
+ポインタを開放したとき、そのポインタに関するページのメタデータにアクセスしないといけないのだ。
+mimallocのセグメントは4MiB境界でアラインされている。
+ポインタ<code>p</code>を持っているセグメントは下位ビットをマスクすることでわかる。</p><p>free関数はまず開放するポインタ<code>p</code>の下位ビットをマスクすることでセグメントポインタを得る。
+ポインタがNULLの場合、セグメントもNULLになり、それをチェックする。
+アセンブリでは比較演算が削除されビット積になる。
+ページ番号は差を取り<code>page_shift</code>だけシフトすることで得られる。
+小さいページでは<code>page_shift</code>は16 (=64KiB) になる。
+大きいページでは22 (=4MiB) になり、インデックスは常にゼロとなる。
+これもfast pathで特殊ケースと分岐を避けるためのuniform representationである。</p><p>主な条件判定はこれがスレッドローカルな解放か、他のスレッドからの解放かを判定するものである。
+mimallocは<code>thread_id()</code>を呼び出し現在のスレッドのIDを取得し、
+セグメントの<code>thread_id</code>フィールドと比較する。
+多くのオペレーティングシステムでスレッドのIDは、
+スレッドローカルな固定のアドレスから非常に効率的に読み出される
+(64-bit Intel/AMD上のLinuxではfsレジスタのオフセット0にある)。</p><p>スレッドローカルか否かに応じて<code>thread_free</code>または<code>local_free</code>にオブジェクトがプッシュされる。
+スレッドローカルな解放の場合、ページ内のオブジェクトがすべて開放されているかを確認し、
+その場合ページを開放する。
+このページ解放処理はスキップしてslow pathで行うことも出来るが、
+特定のワークロードによっては可能な限り速くページを利用可能にしたほうが効率的なこともある。</p><p>ページ内のすべてのオブジェクトが開放されている場合、
+thread sharedな<code>thread_freed</code>カウンタはバリアなしに読むことが出来る。</p><h5 id=3-3-generic-allocation>3.3. Generic Allocation</h5><p>汎用アロケーションルーチン<code>malloc_generic</code>は定期的に呼ばれることが保証された&rdquo;slow path&rdquo;である。
+このルーチンはアロケーションで償却される高価な操作を行うことがあり、ガベージコレクタ的なアレである。</p><p>汎用ルーチンはサイズクラス内のページすべてを線形に操作し、オブジェクトを含まないページを解放する。
+これは開放されたオブジェクトを持つページが見つかるまで続く。
+実際の実装ではページをすぐには解放せず、少しの間将来のためにとっておく。
+最悪アロケーション時間を制限するために、開放されるページの最大数が決められている。
+ページにフリースペースが見つかった場合、そのページは次回の探索で最初に訪れる。</p><h5 id=3-4-the-full-list>3.4. The Full List</h5><p>SpecMark gcc benchmarkでは他のアロケータに比べ30%の低速化を計測している。
+これは「銀の弾丸」が存在しないこと、
+産業向けメモリアロケータは特定のワークロードでのみ現れるさまざまなコーナーケースを取り扱う必要があるということを示している。</p><p>gcc benchmarkでは独自アロケータを使っており、
+最初に大きなオブジェクトを大量に確保して長期間保持していた。
+これは汎用アロケーションルーチンで毎回線形にトラバースされる大量
+(18000を超える) の満杯のページを発生させた。</p><p>すべてのページが満杯のfull listを、
+そのページが解放されるまで通常のページリストから分離することでこの問題を解決した。
+gcc benchmarkは改善したが、
+この一見小さな変更によってマルチスレッド環境における重大な複雑性が生まれてしまった。</p><p>特に満杯のページに対する非ローカルな解放において、
+高価なロックを行わないようにするには、
+すでに満杯ではないページを所有しているという何らかのシグナルが必要となった。
+これはヒープ固有のthread delayed freeブロックのリストで実現する。
+汎用ルーチンでアトミックにこのリストを取得し、delayed free listのすべてのブロックを解放する。
+これによってfull listのページは通常のリストに戻ってくる。</p><p>しかし非ローカルな解放のときに、それをページローカルなthread free listにプッシュすべきか、
+thread delay free listにプッシュすべきか、どう判断すればいいだろうか？
+このためにスレッドフリーリストのポインタの最下位2ビットを使い、3つの状態をアトミックにエンコードする。</p><ul><li>NORMAL: スレッドフリーリストにプッシュ</li><li>DELAYED: ページがfull listに追加された状態。非ローカルな解放はdelayed free listにプッシュ</li><li>DELAYING: delayed free listにプッシュ中</li></ul><p>これは重要な最適化だった。
+asymmetric concurrentワークロードでは解放スレッドは多くのオブジェクトを開放し、
+高価なinital delayed freeが1回で終わるようにしなければならなかった。
+この最適化がないと、xmalloc-testベンチマークは30%遅くなる。</p><h5 id=3-5-security>3.5. Security</h5><p>mimallocはブラウザなどで必要とされる様々なsecurity mitigationsを実装しやすいように設計されている。
+様々なsecurity mitigationsを実装したmimallocのセキュアバージョン (smimalloc) を実装した。</p><ul><li>各ページの間にOSのガードページを置く。
+これによりヒープオーバーフロー攻撃はmimallocのページ1つの範囲に制限され、
+ヒープのメタデータはオーバーフローしなくなる。</li><li>ページのinital free listを、アロケーションパターンが読まれないようにランダムに初期化する。
+ローカルフリーリストを使うかわりに、時々満杯のリストを拡張してランダム性を上げる。</li><li>フリーリストを書き換えるヒープブロックオーバーフローに対抗するために、
+フリーリストを各ページにxorエンコードする。
+フリーリストを特定の値に書き換えるのを防ぎ、検知を容易にする。</li><li>mimallocはすでに複数ヒープをサポートしている。
+内部オブジェクトとそれ以外を分けることでセキュリティを強化する。</li></ul><p>mimallocのセキュアバージョンは普通のmimallocと比べて3%遅い。
+もっと遅くなると思ってたのでびっくりした。</p><h4 id=4-evaluation>4. EVALUATION</h4><h4 id=5-related-work>5. RELATED WORK</h4><h4 id=6-conclusion>6. CONCLUSION</h4><p>だいたい今まで言ってきたことと同じことが書いてあるので省略</p></article><footer><h2><a href=/tags/tech>#tech</a>
+&#34;Mimalloc: Free List Sharding in Action&#34;を読んだ</h2><p><time>2019-06-26</time>
+<a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>
