@@ -76,7 +76,7 @@ thread free listのポインタ下位2ビットにフラグを埋め込んだり
 
 ---
 
-##### Mimalloc: Free List Sharding in Action
+### Mimalloc: Free List Sharding in Action
 
 Modern memory allocators
 はパフォーマンス、セキュリティ、コンカレンシー等の様々な要求、そしてコンテキストに応じて変化するアプリケーション特有の要求のバランスを取らなければならない。
