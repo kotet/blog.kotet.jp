@@ -18,7 +18,7 @@
 
     <p>{{ .Content }}</p>
 
-    {{ range .Pages }} {{ if isset .Params "tags" }}
+    {{ range .Site.RegularPages }} {{ if isset .Params "tags" }}
     <h3>
         <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
         <a href="{{.Permalink}}">{{ .Title }}</a>
