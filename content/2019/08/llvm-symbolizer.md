@@ -2,6 +2,7 @@
 title: "clangのデバッグ情報に行番号をのせる"
 date: 2019-08-22
 tags:
+- cpplang
 - tech
 ---
 
