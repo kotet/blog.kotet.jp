@@ -6,6 +6,7 @@ title: "dubで自力でCの構造体を使う"
 tags:
 - dlang
 - tech
+- cpplang
 ---
 
 [前回](/2017/05/03/use-c-sha256-in-d.html)の続き。

@@ -8,6 +8,7 @@ tags:
 - d_blog
 - d_and_c
 - advent_calendar
+- cpplang
 ---
 
 これは

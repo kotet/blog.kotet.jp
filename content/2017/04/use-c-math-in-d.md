@@ -6,6 +6,7 @@ title: "dubで自力でCのsqrt()を呼び出す"
 tags:
 - dlang
 - tech
+- cpplang
 ---
 
 [前回](/2017/04/28/use-c-stdio-in-d.html)の続き。

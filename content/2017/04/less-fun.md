@@ -7,6 +7,7 @@ tags:
 - dlang
 - tech
 - translation
+- cpplang
 excerpt: "講演者の静かな声と、ほとんどC++のコードのみを映し出すスライド(通常キーノートで期待していたものではありません)にもかかわらず、 Louis DionneのMeeting C++ 2016でのメタプログラミングについてのトーク は本当に面白いものでした。"
 ---
 
