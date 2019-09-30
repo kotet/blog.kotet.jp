@@ -6,6 +6,7 @@ title: "dubで自力でOpenSSLを呼び出す"
 tags:
 - dlang
 - tech
+- cpplang
 ---
 
 [前回](/2017/04/29/use-c-math-in-d.html)の続き。

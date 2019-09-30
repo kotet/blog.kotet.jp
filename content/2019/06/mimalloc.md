@@ -4,6 +4,7 @@ date: 2019-06-26
 tags:
 - tech
 - log
+- cpplang
 ---
 
 6月20日、mimallocというメモリアロケータが公開されました。

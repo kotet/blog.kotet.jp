@@ -7,6 +7,7 @@ tags:
 - dlang
 - tech
 - log
+- cpplang
 ---
 
 dpp というパッケージが登場し、使った人の好意的な声をよく聞くようになった。
