@@ -13,7 +13,7 @@ Twitterには全ツイート履歴をダウンロードして閲覧する機能�
 
 というわけでごくごく簡易的に全ツイートを見られるようなサイトを作りました。
 
-[超簡易tweet.jsビューアー](http://kotet.jp/twitter-data-viewer/)
+[超簡易tweet.jsビューアー](https://kotet.jp/twitter-data-viewer/)
 
 新しい「Twitterデータ」はツイート履歴だけではなく本当に「全データ」が得られるらしく、
 なにを検索したか、どんな広告を閲覧したかや、これまでツイートやDMで送ってきた画像もすべてそのまま入っています。
@@ -21,7 +21,7 @@ Twitterには全ツイート履歴をダウンロードして閲覧する機能�
 
 ### 使い方
 
-[サイトにアクセスする](http://kotet.jp/twitter-data-viewer/)と以下のような素朴な選択画面が出てきます。
+[サイトにアクセスする](https://kotet.jp/twitter-data-viewer/)と以下のような素朴な選択画面が出てきます。
 
 ![](/img/blog/2019/10/file-choose.png)
 
