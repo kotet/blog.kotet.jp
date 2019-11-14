@@ -48,3 +48,29 @@ Twitterが公式に閲覧方法を用意してくれればそちらを使えば�
 
 このビューアがそれまでのつなぎになってくれると良いなと思いました。
 動かない等なにか問題があれば[Twitter(@kotetttt)](https://twitter.com/kotetttt)まで連絡ください。
+
+### 追記: 他の人が作ったビューア
+
+記事の公開からしばらく経ちますがアクセスが途切れることがありません。
+かなりの人が困っているんだろうなと感じます。
+
+そろそろ他の人もビューアを公開し始めているので紹介しようと思います。
+自分のビューアはこれ以上の機能追加等を行う予定はないので、
+機能不足を感じたら以下のビューアも試してみてください。
+
+#### オンライン
+
+Webサイトに`tweet.js`をアップして処理するタイプです。
+
+- [Twitterデータの tweet.js を読み込んで全ツイート履歴を表示するツール「tweet.js loader」を作った - to-me-mo-rrow - 未来の自分に残すメモ -](https://r17n.page/2019/10/22/tweet-js-loader-introduction/index.html)
+- [tweet.js Web](http://all-tweets-history.0so.tokyo/)
+- [Tweet見る](https://json2html-94a7c.firebaseapp.com/)
+- [Twitterデータのツイートをリツイート順に並べるやつ](https://shiosyakeyakini.info/TwitterDataTool/)
+
+#### オフライン
+
+`tweet.js`のあるフォルダと同じ位置に保存して開くタイプです。
+
+- [Twitter archive browser](https://gist.github.com/tiffany352/9ee7e0d4fd7e08ede9d0314df9eab672)
+
+<blockquote class="twitter-tweet" data-conversation="none"><p lang="ja" dir="ltr">捨てる神あれば拾う神あり<br><br>有志がつくってくれた index.html を使ってとりあえずブラウザで「全ツイート履歴」を閲覧・検索できた<br><br>引用したツイのリンク先を開いて Ctrl+s で index.html として保存。それを全ツイート履歴のトップフォルダに放り込めばいいみたい<a href="https://t.co/P51UmWTu2n">https://t.co/P51UmWTu2n</a></p>&mdash; ォヶラ (@okerror) <a href="https://twitter.com/okerror/status/1193690101622001664?ref_src=twsrc%5Etfw">November 11, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
