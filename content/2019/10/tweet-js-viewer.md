@@ -73,4 +73,22 @@ Webサイトに`tweet.js`をアップして処理するタイプです。
 
 - [Twitter archive browser](https://gist.github.com/tiffany352/9ee7e0d4fd7e08ede9d0314df9eab672)
 
-<blockquote class="twitter-tweet" data-conversation="none"><p lang="ja" dir="ltr">捨てる神あれば拾う神あり<br><br>有志がつくってくれた index.html を使ってとりあえずブラウザで「全ツイート履歴」を閲覧・検索できた<br><br>引用したツイのリンク先を開いて Ctrl+s で index.html として保存。それを全ツイート履歴のトップフォルダに放り込めばいいみたい<a href="https://t.co/P51UmWTu2n">https://t.co/P51UmWTu2n</a></p>&mdash; ォヶラ (@okerror) <a href="https://twitter.com/okerror/status/1193690101622001664?ref_src=twsrc%5Etfw">November 11, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none"><p lang="ja" dir="ltr">捨てる神あれば拾う神あり<br><br>有志がつくってくれた index.html を使ってとりあえずブラウザで「全ツイート履歴」を閲覧・検索できた<br><br>引用したツイのリンク先を開いて Ctrl+s で index.html として保存。それを全ツイート履歴のトップフォルダに放り込めばいいみたい<a href="https://t.co/P51UmWTu2n">https://t.co/P51UmWTu2n</a></p>&mdash; ォヶラ (@okerror) <a href="https://twitter.com/okerror/status/1193690101622001664?ref_src=twsrc%5Etfw">November 11, 2019</a></blockquote>
+
+---
+
+[@okerror](https://twitter.com/okerror)から情報提供をいただきました。
+上のオフラインビューアの作者が専ブラを作り始めたようです。
+
+- [tiffany352/twitter-archive-browser: Desktop app for browsing your Twitter Archive](https://github.com/tiffany352/twitter-archive-browser)
+
+リリースページはこちら: [Releases · tiffany352/twitter-archive-browser](https://github.com/tiffany352/twitter-archive-browser/releases)
+
+<blockquote class="twitter-tweet" data-conversation="none"><p lang="ja" dir="ltr">インストール方法メモ(Win10)<br><br>1) リンク先で最新バージョンのタイトルをクリック（現在だとAlpha 3）<br><br>2) Twitter-Archive-Browser-Setup-(version).exe をダウンロード<br><br>3) 保護云々と出たら詳細情報→実行<br><br>Releases · tiffany352/twitter-archive-browser · GitHub <a href="https://t.co/e7CxOc4fdH">https://t.co/e7CxOc4fdH</a></p>&mdash; ォヶラ (@okerror) <a href="https://twitter.com/okerror/status/1197830319413481472?ref_src=twsrc%5Etfw">November 22, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+![](/img/blog/2019/10/2019-11-23-0.png)
+
+Twitterデータのzipファイル、またはそれを展開したフォルダをドラッグ&ドロップすることで閲覧ができるようになります。
+執筆時点ではzipファイルを渡すとクラッシュしてしまうようなので、展開したフォルダを渡してあげましょう。
+
+![](/img/blog/2019/10/2019-11-23-1.png)
