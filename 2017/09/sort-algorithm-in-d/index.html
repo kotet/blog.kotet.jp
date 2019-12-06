@@ -7,89 +7,89 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#log Dで巡るソートアルゴリズム その1 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/09/sort-algorithm-in-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#log Dで巡るソートアルゴリズム その1 - Kotet's Personal Blog"><meta name=og:description content="最近はプログラミングについてあまり大きいものを作ったり複雑なものを考えたりする時間がとれないので、 1.それなりにプログラムしてる感がある 2.達成感を得るまでの作業量が少ない という課題が欲しかった。 そこでソートの実装をすることにした。"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/09/sort-algorithm-in-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.59.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#log Dで巡るソートアルゴリズム その1 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/09/sort-algorithm-in-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#log Dで巡るソートアルゴリズム その1 - Kotet's Personal Blog"><meta name=og:description content="最近はプログラミングについてあまり大きいものを作ったり複雑なものを考えたりする時間がとれないので、 1.それなりにプログラムしてる感がある 2.達成感を得るまでの作業量が少ない という課題が欲しかった。 そこでソートの実装をすることにした。"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/09/sort-algorithm-in-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.60.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7S15 8.34314575 15 10C15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13S11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9S11 9.44771525 11 10C11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/log>#log</a>
-Dで巡るソートアルゴリズム その1</h2><p>Created: <time>2017-09-10</time><br><a href=/tags/log>#log</a> <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#テスト>テスト</a><ul><li><a href=#sort-test-d-at-cced9aa354ad54af4ba072f28775350503beb298-kotet-sort-https-github-com-kotet-sort-blob-cced9aa354ad54af4ba072f28775350503beb298-source-test-test-d><a href=https://github.com/kotet/sort/blob/cced9aa354ad54af4ba072f28775350503beb298/source/test/test.d>sort/test.d at cced9aa354ad54af4ba072f28775350503beb298 · kotet/sort</a></a></li></ul></li><li><a href=#std-algorithm-sorting-sort-https-dlang-org-phobos-std-algorithm-sorting-html-sort><a href=https://dlang.org/phobos/std_algorithm_sorting.html#.sort><code>std.algorithm.sorting.sort</code></a></a></li><li><a href=#バブルソート-https-ja-wikipedia-org-wiki-e3-83-90-e3-83-96-e3-83-ab-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%96%E3%83%AB%E3%82%BD%E3%83%BC%E3%83%88>バブルソート</a></a><ul><li><a href=#sort-v1-d-at-5c09eab81b390230fa986ca72d6b24a5bf5aa06f-kotet-sort-https-github-com-kotet-sort-blob-5c09eab81b390230fa986ca72d6b24a5bf5aa06f-source-bubble-v1-d><a href=https://github.com/kotet/sort/blob/5c09eab81b390230fa986ca72d6b24a5bf5aa06f/source/bubble/v1.d>sort/v1.d at 5c09eab81b390230fa986ca72d6b24a5bf5aa06f · kotet/sort</a></a></li></ul></li><li><a href=#コムソート-https-ja-wikipedia-org-wiki-e3-82-b3-e3-83-a0-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%88>コムソート</a></a><ul><li><a href=#sort-v1-d-at-20fb6d7179e74c788b2810241c1a53cc1e5bfcb4-kotet-sort-https-github-com-kotet-sort-blob-20fb6d7179e74c788b2810241c1a53cc1e5bfcb4-source-comb-v1-d><a href=https://github.com/kotet/sort/blob/20fb6d7179e74c788b2810241c1a53cc1e5bfcb4/source/comb/v1.d>sort/v1.d at 20fb6d7179e74c788b2810241c1a53cc1e5bfcb4 · kotet/sort</a></a></li></ul></li><li><a href=#ストゥージソート-https-ja-wikipedia-org-wiki-e3-82-b9-e3-83-88-e3-82-a5-e3-83-bc-e3-82-b8-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%88%E3%82%A5%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>ストゥージソート</a></a><ul><li><a href=#sort-v1-d-at-bed400da50b4e9484ca250b354667e59e515b970-kotet-sort-https-github-com-kotet-sort-blob-bed400da50b4e9484ca250b354667e59e515b970-source-stooge-v1-d><a href=https://github.com/kotet/sort/blob/bed400da50b4e9484ca250b354667e59e515b970/source/stooge/v1.d>sort/v1.d at bed400da50b4e9484ca250b354667e59e515b970 · kotet/sort</a></a></li></ul></li><li><a href=#マージソート-https-ja-wikipedia-org-wiki-e3-83-9e-e3-83-bc-e3-82-b8-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>マージソート</a></a><ul><li><a href=#v1>v1</a><ul><li><a href=#sort-v1-d-at-80841549125d5d308af2c426c9539df69fb847c5-kotet-sort-https-github-com-kotet-sort-blob-80841549125d5d308af2c426c9539df69fb847c5-source-merge-v1-d><a href=https://github.com/kotet/sort/blob/80841549125d5d308af2c426c9539df69fb847c5/source/merge/v1.d>sort/v1.d at 80841549125d5d308af2c426c9539df69fb847c5 · kotet/sort</a></a></li></ul></li><li><a href=#v2>v2</a><ul><li><a href=#sort-v2-d-at-1ec94956420cb3463a357c99c05c7980fd48e994-kotet-sort-https-github-com-kotet-sort-blob-1ec94956420cb3463a357c99c05c7980fd48e994-source-merge-v2-d><a href=https://github.com/kotet/sort/blob/1ec94956420cb3463a357c99c05c7980fd48e994/source/merge/v2.d>sort/v2.d at 1ec94956420cb3463a357c99c05c7980fd48e994 · kotet/sort</a></a></li></ul></li><li><a href=#v3>v3</a><ul><li><a href=#sort-v3-d-at-e165ee036421132e17760a9c264c260a2cf93dc9-kotet-sort-https-github-com-kotet-sort-blob-e165ee036421132e17760a9c264c260a2cf93dc9-source-merge-v3-d><a href=https://github.com/kotet/sort/blob/e165ee036421132e17760a9c264c260a2cf93dc9/source/merge/v3.d>sort/v3.d at e165ee036421132e17760a9c264c260a2cf93dc9 · kotet/sort</a></a></li></ul></li></ul></li><li><a href=#選択ソート-https-ja-wikipedia-org-wiki-e9-81-b8-e6-8a-9e-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E9%81%B8%E6%8A%9E%E3%82%BD%E3%83%BC%E3%83%88>選択ソート</a></a><ul><li><a href=#sort-v1-d-at-beb460e0fae52440e9995d9871bd4e219c973cf2-kotet-sort-https-github-com-kotet-sort-blob-beb460e0fae52440e9995d9871bd4e219c973cf2-source-selection-v1-d><a href=https://github.com/kotet/sort/blob/beb460e0fae52440e9995d9871bd4e219c973cf2/source/selection/v1.d>sort/v1.d at beb460e0fae52440e9995d9871bd4e219c973cf2 · kotet/sort</a></a></li></ul></li><li><a href=#ヒープソート-https-ja-wikipedia-org-wiki-e3-83-92-e3-83-bc-e3-83-97-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%83%92%E3%83%BC%E3%83%97%E3%82%BD%E3%83%BC%E3%83%88>ヒープソート</a></a><ul><li><a href=#v1-1>v1</a><ul><li><a href=#sort-v1-d-at-0a9ef66f909f539fb46f752c661b4482a3854901-kotet-sort-https-github-com-kotet-sort-blob-0a9ef66f909f539fb46f752c661b4482a3854901-source-heap-v1-d><a href=https://github.com/kotet/sort/blob/0a9ef66f909f539fb46f752c661b4482a3854901/source/heap/v1.d>sort/v1.d at 0a9ef66f909f539fb46f752c661b4482a3854901 · kotet/sort</a></a></li></ul></li><li><a href=#v2-1>v2</a><ul><li><a href=#sort-v2-d-at-016e05f004263f72b27c087d202e5e69f17971da-kotet-sort-https-github-com-kotet-sort-blob-016e05f004263f72b27c087d202e5e69f17971da-source-heap-v2-d><a href=https://github.com/kotet/sort/blob/016e05f004263f72b27c087d202e5e69f17971da/source/heap/v2.d>sort/v2.d at 016e05f004263f72b27c087d202e5e69f17971da · kotet/sort</a></a></li></ul></li></ul></li></ul></li></ul></li></ul></nav></aside></header><article><p>最近はプログラミングについてあまり大きいものを作ったり複雑なものを考えたりする時間がとれないので、</p><ol><li>それなりにプログラムしてる感がある</li><li>達成感を得るまでの作業量が少ない</li></ol><p>という課題が欲しかった。
+Dで巡るソートアルゴリズム その1</h2><p>Created: <time>2017-09-10</time><br><a href=/tags/log>#log</a> <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#heading>テスト</a></li><li><a href=#stdalgorithmsortingsorthttpsdlangorgphobosstdalgorithmsortinghtmlsort>std.algorithm.sorting.sort</a></li><li><a href=#httpsjawikipediaorgwikie38390e38396e383abe382bde383bce38388>バブルソート</a></li><li><a href=#httpsjawikipediaorgwikie382b3e383a0e382bde383bce38388>コムソート</a></li><li><a href=#httpsjawikipediaorgwikie382b9e38388e382a5e383bce382b8e382bde383bce38388>ストゥージソート</a></li><li><a href=#httpsjawikipediaorgwikie3839ee383bce382b8e382bde383bce38388>マージソート</a></li><li><a href=#httpsjawikipediaorgwikie981b8e68a9ee382bde383bce38388>選択ソート</a></li><li><a href=#httpsjawikipediaorgwikie38392e383bce38397e382bde383bce38388>ヒープソート</a></li></ul></li></ul></nav></aside></header><article><p>最近はプログラミングについてあまり大きいものを作ったり複雑なものを考えたりする時間がとれないので、</p><ol><li>それなりにプログラムしてる感がある</li><li>達成感を得るまでの作業量が少ない</li></ol><p>という課題が欲しかった。
 そこでソートの実装をすることにした。
 なんだかんだいって今までバブルソートしか書いたことがない。
 最近体調が良くなったことに関連してか頭が働き、Wikipediaの解説を読んで理解できるようになっていたので、
 実際に書いてみたくなったのである。
-そこそこ数が増えてきたので、それぞれのソートを書いた時に知ったことなどを記録する。</p><p>すべてのコードは<a href=https://github.com/kotet/sort>kotet/sort</a>にある。</p><h3 id=テスト>テスト</h3><p>まずはテスト用のコードを書く。
+そこそこ数が増えてきたので、それぞれのソートを書いた時に知ったことなどを記録する。</p><p>すべてのコードは<a href=https://github.com/kotet/sort>kotet/sort</a>にある。</p><h3 id=heading>テスト</h3><p>まずはテスト用のコードを書く。
 このモジュールの<code>mixin template test(alias F)</code>は、与えられた関数<code>F</code>の実行時間を計測する。
-<code>mixin test!&lt;ソート関数の名前&gt;</code>と書けばその場にユニットテストのコードが生成される。
+<code>mixin test!&lt;ソート関数の名前></code>と書けばその場にユニットテストのコードが生成される。
 要素数<code>10 ^^ n</code>の配列を<code>F</code>でソートするというのを100ミリ秒間ひたすら繰り返し、平均の実行時間を出す。
 なお、ソートする配列は<code>iota(10 ^^ n)</code>をシャッフルしたものである。
-つまり、要素は整数で、重複はない。</p><h4 id=sort-test-d-at-cced9aa354ad54af4ba072f28775350503beb298-kotet-sort-https-github-com-kotet-sort-blob-cced9aa354ad54af4ba072f28775350503beb298-source-test-test-d><a href=https://github.com/kotet/sort/blob/cced9aa354ad54af4ba072f28775350503beb298/source/test/test.d>sort/test.d at cced9aa354ad54af4ba072f28775350503beb298 · kotet/sort</a></h4><pre><code class=language-d>module test;
+つまり、要素は整数で、重複はない。</p><h4 id=sorttestd-at-cced9aa354ad54af4ba072f28775350503beb298--kotetsorthttpsgithubcomkotetsortblobcced9aa354ad54af4ba072f28775350503beb298sourcetesttestd><a href=https://github.com/kotet/sort/blob/cced9aa354ad54af4ba072f28775350503beb298/source/test/test.d>sort/test.d at cced9aa354ad54af4ba072f28775350503beb298 · kotet/sort</a></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>test</span><span class=o>;</span>
 
-static import std.algorithm.sorting;
+<span class=kd>static</span> <span class=kn>import</span> <span class=nn>std.algorithm.sorting</span><span class=o>;</span>
 
-mixin test!(std.algorithm.sorting.sort);
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=o>(</span><span class=n>std</span><span class=o>.</span><span class=na>algorithm</span><span class=o>.</span><span class=na>sorting</span><span class=o>.</span><span class=na>sort</span><span class=o>)</span><span class=o>;</span>
 
-mixin template test(alias F)
-{
-    unittest
-    {
-        import std.stdio : writefln;
-        import std.traits : fullyQualifiedName;
-        import std.algorithm : map, reduce;
-        import std.range : iota;
+<span class=k>mixin</span> <span class=kd>template</span> <span class=nf>test</span><span class=o>(</span><span class=kd>alias</span> <span class=n>F</span><span class=o>)</span>
+<span class=o>{</span>
+    <span class=n>unittest</span>
+    <span class=o>{</span>
+        <span class=kn>import</span> <span class=nn>std.stdio</span> <span class=o>:</span> <span class=n>writefln</span><span class=o>;</span>
+        <span class=kn>import</span> <span class=nn>std.traits</span> <span class=o>:</span> <span class=n>fullyQualifiedName</span><span class=o>;</span>
+        <span class=kn>import</span> <span class=nn>std.algorithm</span> <span class=o>:</span> <span class=n>map</span><span class=o>,</span> <span class=n>reduce</span><span class=o>;</span>
+        <span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>iota</span><span class=o>;</span>
 
-        writefln!&quot;Test %s:&quot;(fullyQualifiedName!F);
+        <span class=n>writefln</span><span class=o>!</span><span class=s>&#34;Test %s:&#34;</span><span class=o>(</span><span class=n>fullyQualifiedName</span><span class=o>!</span><span class=n>F</span><span class=o>)</span><span class=o>;</span>
 
-        size_t sample;
-        size_t n;
-        do
-        {
-            import std.datetime : StopWatch;
-            import core.time : TickDuration;
+        <span class=n>size_t</span> <span class=n>sample</span><span class=o>;</span>
+        <span class=n>size_t</span> <span class=n>n</span><span class=o>;</span>
+        <span class=k>do</span>
+        <span class=o>{</span>
+            <span class=kn>import</span> <span class=nn>std.datetime</span> <span class=o>:</span> <span class=n>StopWatch</span><span class=o>;</span>
+            <span class=kn>import</span> <span class=nn>core.time</span> <span class=o>:</span> <span class=n>TickDuration</span><span class=o>;</span>
 
-            n++;
-            sample = 0;
-            double result = 0;
-            StopWatch s;
-            s.start();
-            do
-            {
-                sample++;
-                result += () {
-                    import std.random : randomShuffle;
-                    import std.range : array, iota;
-                    import std.datetime : StopWatch, to;
-                    import std.conv : to;
+            <span class=n>n</span><span class=o>+</span><span class=o>+</span><span class=o>;</span>
+            <span class=n>sample</span> <span class=o>=</span> <span class=mi>0</span><span class=o>;</span>
+            <span class=kt>double</span> <span class=n>result</span> <span class=o>=</span> <span class=mi>0</span><span class=o>;</span>
+            <span class=n>StopWatch</span> <span class=n>s</span><span class=o>;</span>
+            <span class=n>s</span><span class=o>.</span><span class=na>start</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+            <span class=k>do</span>
+            <span class=o>{</span>
+                <span class=n>sample</span><span class=o>+</span><span class=o>+</span><span class=o>;</span>
+                <span class=n>result</span> <span class=o>+</span><span class=o>=</span> <span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+                    <span class=kn>import</span> <span class=nn>std.random</span> <span class=o>:</span> <span class=n>randomShuffle</span><span class=o>;</span>
+                    <span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>array</span><span class=o>,</span> <span class=n>iota</span><span class=o>;</span>
+                    <span class=kn>import</span> <span class=nn>std.datetime</span> <span class=o>:</span> <span class=n>StopWatch</span><span class=o>,</span> <span class=n>to</span><span class=o>;</span>
+                    <span class=kn>import</span> <span class=nn>std.conv</span> <span class=o>:</span> <span class=n>to</span><span class=o>;</span>
 
-                    auto random = iota(10 ^^ n).array();
-                    random.randomShuffle();
-                    auto answer = iota(10 ^^ n).array();
+                    <span class=kd>auto</span> <span class=n>random</span> <span class=o>=</span> <span class=n>iota</span><span class=o>(</span><span class=mi>10</span> <span class=o>^</span><span class=o>^</span> <span class=n>n</span><span class=o>)</span><span class=o>.</span><span class=na>array</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+                    <span class=n>random</span><span class=o>.</span><span class=na>randomShuffle</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+                    <span class=kd>auto</span> <span class=n>answer</span> <span class=o>=</span> <span class=n>iota</span><span class=o>(</span><span class=mi>10</span> <span class=o>^</span><span class=o>^</span> <span class=n>n</span><span class=o>)</span><span class=o>.</span><span class=na>array</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-                    StopWatch s;
-                    s.start();
+                    <span class=n>StopWatch</span> <span class=n>s</span><span class=o>;</span>
+                    <span class=n>s</span><span class=o>.</span><span class=na>start</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-                    F(random);
+                    <span class=n>F</span><span class=o>(</span><span class=n>random</span><span class=o>)</span><span class=o>;</span>
 
-                    s.stop();
+                    <span class=n>s</span><span class=o>.</span><span class=na>stop</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-                    assert(random == answer);
-                    return s.peek().to!(&quot;msecs&quot;, double);
-                }();
-            }
-            while (s.peek() &lt; TickDuration.from!&quot;msecs&quot;(100));
+                    <span class=k>assert</span><span class=o>(</span><span class=n>random</span> <span class=o>=</span><span class=o>=</span> <span class=n>answer</span><span class=o>)</span><span class=o>;</span>
+                    <span class=k>return</span> <span class=n>s</span><span class=o>.</span><span class=na>peek</span><span class=o>(</span><span class=o>)</span><span class=o>.</span><span class=na>to</span><span class=o>!</span><span class=o>(</span><span class=s>&#34;msecs&#34;</span><span class=o>,</span> <span class=kt>double</span><span class=o>)</span><span class=o>;</span>
+                <span class=o>}</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+            <span class=o>}</span>
+            <span class=k>while</span> <span class=o>(</span><span class=n>s</span><span class=o>.</span><span class=na>peek</span><span class=o>(</span><span class=o>)</span> <span class=o>&lt;</span> <span class=n>TickDuration</span><span class=o>.</span><span class=na>from</span><span class=o>!</span><span class=s>&#34;msecs&#34;</span><span class=o>(</span><span class=mi>100</span><span class=o>)</span><span class=o>)</span><span class=o>;</span>
 
-            writefln!&quot;    N = 10^^%s avg: %s msecs (sample: %s)&quot;(n, result / sample, sample);
-        }
-        while (1 &lt; sample);
-    }
-}
-</code></pre><p>以下こんな感じのPCでテストしている。
+            <span class=n>writefln</span><span class=o>!</span><span class=s>&#34;    N = 10^^%s avg: %s msecs (sample: %s)&#34;</span><span class=o>(</span><span class=n>n</span><span class=o>,</span> <span class=n>result</span> <span class=o>/</span> <span class=n>sample</span><span class=o>,</span> <span class=n>sample</span><span class=o>)</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>while</span> <span class=o>(</span><span class=mi>1</span> <span class=o>&lt;</span> <span class=n>sample</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><p>以下こんな感じのPCでテストしている。
 計測時間はこの環境で<code>dub test</code>した結果の抜粋である。</p><pre><code>メモリ: 7.7 GiB
 プロセッサ: Intel® Core™ i7-3770S CPU @ 3.10GHz × 8 
-</code></pre><pre><code class=language-console>$ uname -a
+</code></pre><pre><code class=language-console data-lang=console>$ uname -a
 Linux USB 4.4.0-93-generic #116-Ubuntu SMP Fri Aug 11 21:17:51 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 $ cat /etc/lsb-release
 DISTRIB_ID=Ubuntu
 DISTRIB_RELEASE=16.04
 DISTRIB_CODENAME=xenial
 DISTRIB_DESCRIPTION=&quot;Ubuntu 16.04.3 LTS&quot;
-</code></pre><h3 id=std-algorithm-sorting-sort-https-dlang-org-phobos-std-algorithm-sorting-html-sort><a href=https://dlang.org/phobos/std_algorithm_sorting.html#.sort><code>std.algorithm.sorting.sort</code></a></h3><p>まずは標準ライブラリのソートの実行時間を計測してみる。</p><pre><code>Test std.algorithm.sorting.sort:
+</code></pre><h3 id=stdalgorithmsortingsorthttpsdlangorgphobosstdalgorithmsortinghtmlsort><a href=https://dlang.org/phobos/std_algorithm_sorting.html#.sort><code>std.algorithm.sorting.sort</code></a></h3><p>まずは標準ライブラリのソートの実行時間を計測してみる。</p><pre><code>Test std.algorithm.sorting.sort:
     N = 10^^1 avg: 0.000459964 msecs (sample: 55200)
     N = 10^^2 avg: 0.0158511 msecs (sample: 3797)
     N = 10^^3 avg: 0.178063 msecs (sample: 359)
@@ -97,190 +97,190 @@ DISTRIB_DESCRIPTION=&quot;Ubuntu 16.04.3 LTS&quot;
     N = 10^^5 avg: 24.5707 msecs (sample: 3)
     N = 10^^6 avg: 275.012 msecs (sample: 1)
 </code></pre><p>特にパラメータを指定せずに呼ぶと、
-この関数は<a href=https://github.com/dlang/phobos/blob/416e0c76cd15a3695637b33a281f3790a562f8f0/std/algorithm/sorting.d#L1850>イントロソートになる</a>。</p><h3 id=バブルソート-https-ja-wikipedia-org-wiki-e3-83-90-e3-83-96-e3-83-ab-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%96%E3%83%AB%E3%82%BD%E3%83%BC%E3%83%88>バブルソート</a></h3><p>たぶん一番シンプルな部類のソート。
+この関数は<a href=https://github.com/dlang/phobos/blob/416e0c76cd15a3695637b33a281f3790a562f8f0/std/algorithm/sorting.d#L1850>イントロソートになる</a>。</p><h3 id=httpsjawikipediaorgwikie38390e38396e383abe382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%96%E3%83%AB%E3%82%BD%E3%83%BC%E3%83%88>バブルソート</a></h3><p>たぶん一番シンプルな部類のソート。
 インプレース(ここでは入力のサイズが大きくなっても確保するメモリの量が変わらないことを言うことにする)。
 普通に書いたのに<code>@nogc</code>をつけることができて驚いた。
-スライスや<code>foreach</code>ではGCは一切動かないらしい。</p><h4 id=sort-v1-d-at-5c09eab81b390230fa986ca72d6b24a5bf5aa06f-kotet-sort-https-github-com-kotet-sort-blob-5c09eab81b390230fa986ca72d6b24a5bf5aa06f-source-bubble-v1-d><a href=https://github.com/kotet/sort/blob/5c09eab81b390230fa986ca72d6b24a5bf5aa06f/source/bubble/v1.d>sort/v1.d at 5c09eab81b390230fa986ca72d6b24a5bf5aa06f · kotet/sort</a></h4><pre><code class=language-d>module bubble.v1;
+スライスや<code>foreach</code>ではGCは一切動かないらしい。</p><h4 id=sortv1d-at-5c09eab81b390230fa986ca72d6b24a5bf5aa06f--kotetsorthttpsgithubcomkotetsortblob5c09eab81b390230fa986ca72d6b24a5bf5aa06fsourcebubblev1d><a href=https://github.com/kotet/sort/blob/5c09eab81b390230fa986ca72d6b24a5bf5aa06f/source/bubble/v1.d>sort/v1.d at 5c09eab81b390230fa986ca72d6b24a5bf5aa06f · kotet/sort</a></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>bubble.v1</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] random) @nogc nothrow pure
-{
-    foreach (i, n; random)
-    {
-        foreach (j, m; random[0 .. $ - i - 1])
-        {
-            if (random[j + 1] &lt; m)
-            {
-                random[j] = random[j + 1];
-                random[j + 1] = m;
-            }
-        }
-    }
-}
-</code></pre><pre><code>Test bubble.v1.sort:
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>random</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>,</span> <span class=n>n</span><span class=o>;</span> <span class=n>random</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=k>foreach</span> <span class=o>(</span><span class=n>j</span><span class=o>,</span> <span class=n>m</span><span class=o>;</span> <span class=n>random</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>-</span> <span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=k>if</span> <span class=o>(</span><span class=n>random</span><span class=o>[</span><span class=n>j</span> <span class=o>+</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>m</span><span class=o>)</span>
+            <span class=o>{</span>
+                <span class=n>random</span><span class=o>[</span><span class=n>j</span><span class=o>]</span> <span class=o>=</span> <span class=n>random</span><span class=o>[</span><span class=n>j</span> <span class=o>+</span> <span class=mi>1</span><span class=o>]</span><span class=o>;</span>
+                <span class=n>random</span><span class=o>[</span><span class=n>j</span> <span class=o>+</span> <span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>m</span><span class=o>;</span>
+            <span class=o>}</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><pre><code>Test bubble.v1.sort:
     N = 10^^1 avg: 0.000674258 msecs (sample: 30006)
     N = 10^^2 avg: 0.0330249 msecs (sample: 2087)
     N = 10^^3 avg: 2.09396 msecs (sample: 46)
     N = 10^^4 avg: 257.32 msecs (sample: 1)
-</code></pre><h3 id=コムソート-https-ja-wikipedia-org-wiki-e3-82-b3-e3-83-a0-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%88>コムソート</a></h3><p>これも<code>@nogc</code>かつインプレース。</p><h4 id=sort-v1-d-at-20fb6d7179e74c788b2810241c1a53cc1e5bfcb4-kotet-sort-https-github-com-kotet-sort-blob-20fb6d7179e74c788b2810241c1a53cc1e5bfcb4-source-comb-v1-d><a href=https://github.com/kotet/sort/blob/20fb6d7179e74c788b2810241c1a53cc1e5bfcb4/source/comb/v1.d>sort/v1.d at 20fb6d7179e74c788b2810241c1a53cc1e5bfcb4 · kotet/sort</a></h4><pre><code class=language-d>module comb.v1;
+</code></pre><h3 id=httpsjawikipediaorgwikie382b3e383a0e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%88>コムソート</a></h3><p>これも<code>@nogc</code>かつインプレース。</p><h4 id=sortv1d-at-20fb6d7179e74c788b2810241c1a53cc1e5bfcb4--kotetsorthttpsgithubcomkotetsortblob20fb6d7179e74c788b2810241c1a53cc1e5bfcb4sourcecombv1d><a href=https://github.com/kotet/sort/blob/20fb6d7179e74c788b2810241c1a53cc1e5bfcb4/source/comb/v1.d>sort/v1.d at 20fb6d7179e74c788b2810241c1a53cc1e5bfcb4 · kotet/sort</a></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>comb.v1</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array) @nogc nothrow pure
-{
-    size_t gap = array.length;
-    bool complete;
-    do
-    {
-        complete = true;
-        if (gap != 1)
-            gap = gap * 10 / 13; // gap /= 1.3
-        foreach (i, n; array[0 .. $ - gap])
-        {
-            if (array[i + gap] &lt; n)
-            {
-                complete = false;
-                array[i] = array[i + gap];
-                array[i + gap] = n;
-            }
-        }
-    }
-    while (!(complete &amp;&amp; (gap == 1)));
-}
-</code></pre><p>同じ時間でバブルソートの100倍くらい長いデータを処理できるようになった。</p><pre><code>Test comb.v1.sort:
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>size_t</span> <span class=n>gap</span> <span class=o>=</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+    <span class=kt>bool</span> <span class=n>complete</span><span class=o>;</span>
+    <span class=k>do</span>
+    <span class=o>{</span>
+        <span class=n>complete</span> <span class=o>=</span> <span class=kc>true</span><span class=o>;</span>
+        <span class=k>if</span> <span class=o>(</span><span class=n>gap</span> <span class=o>!</span><span class=o>=</span> <span class=mi>1</span><span class=o>)</span>
+            <span class=n>gap</span> <span class=o>=</span> <span class=n>gap</span> <span class=o>*</span> <span class=mi>10</span> <span class=o>/</span> <span class=mi>13</span><span class=o>;</span> <span class=c1>// gap /= 1.3
+</span><span class=c1></span>        <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>,</span> <span class=n>n</span><span class=o>;</span> <span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>-</span> <span class=n>gap</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=k>if</span> <span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>i</span> <span class=o>+</span> <span class=n>gap</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>n</span><span class=o>)</span>
+            <span class=o>{</span>
+                <span class=n>complete</span> <span class=o>=</span> <span class=kc>false</span><span class=o>;</span>
+                <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>i</span> <span class=o>+</span> <span class=n>gap</span><span class=o>]</span><span class=o>;</span>
+                <span class=n>array</span><span class=o>[</span><span class=n>i</span> <span class=o>+</span> <span class=n>gap</span><span class=o>]</span> <span class=o>=</span> <span class=n>n</span><span class=o>;</span>
+            <span class=o>}</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+    <span class=k>while</span> <span class=o>(</span><span class=o>!</span><span class=o>(</span><span class=n>complete</span> <span class=o>&amp;</span><span class=o>&amp;</span> <span class=o>(</span><span class=n>gap</span> <span class=o>=</span><span class=o>=</span> <span class=mi>1</span><span class=o>)</span><span class=o>)</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>同じ時間でバブルソートの100倍くらい長いデータを処理できるようになった。</p><pre><code>Test comb.v1.sort:
     N = 10^^1 avg: 0.000322626 msecs (sample: 59212)
     N = 10^^2 avg: 0.00597093 msecs (sample: 5986)
     N = 10^^3 avg: 0.0972022 msecs (sample: 502)
     N = 10^^4 avg: 1.40517 msecs (sample: 42)
     N = 10^^5 avg: 17.3313 msecs (sample: 4)
     N = 10^^6 avg: 214.626 msecs (sample: 1)
-</code></pre><h3 id=ストゥージソート-https-ja-wikipedia-org-wiki-e3-82-b9-e3-83-88-e3-82-a5-e3-83-bc-e3-82-b8-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%88%E3%82%A5%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>ストゥージソート</a></h3><p>再帰があるのでインプレースではないが<code>@nogc</code>。
-バブルソートよりも遅いソート。</p><h4 id=sort-v1-d-at-bed400da50b4e9484ca250b354667e59e515b970-kotet-sort-https-github-com-kotet-sort-blob-bed400da50b4e9484ca250b354667e59e515b970-source-stooge-v1-d><a href=https://github.com/kotet/sort/blob/bed400da50b4e9484ca250b354667e59e515b970/source/stooge/v1.d>sort/v1.d at bed400da50b4e9484ca250b354667e59e515b970 · kotet/sort</a></h4><pre><code class=language-d>module stooge.v1;
+</code></pre><h3 id=httpsjawikipediaorgwikie382b9e38388e382a5e383bce382b8e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%88%E3%82%A5%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>ストゥージソート</a></h3><p>再帰があるのでインプレースではないが<code>@nogc</code>。
+バブルソートよりも遅いソート。</p><h4 id=sortv1d-at-bed400da50b4e9484ca250b354667e59e515b970--kotetsorthttpsgithubcomkotetsortblobbed400da50b4e9484ca250b354667e59e515b970sourcestoogev1d><a href=https://github.com/kotet/sort/blob/bed400da50b4e9484ca250b354667e59e515b970/source/stooge/v1.d>sort/v1.d at bed400da50b4e9484ca250b354667e59e515b970 · kotet/sort</a></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>stooge.v1</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array) @nogc nothrow pure
-{
-    if (array[$ - 1] &lt; array[0])
-    {
-        immutable tmp = array[0];
-        array[0] = array[$ - 1];
-        array[$ - 1] = tmp;
-    }
-    if (3 &lt;= array.length)
-    {
-        sort(array[0 .. $ - ($ / 3)]);
-        sort(array[$ / 3 .. $]);
-        sort(array[0 .. $ - ($ / 3)]);
-    }
-}
-</code></pre><p>見ての通りものすごい勢いで実行時間が増えていく。</p><pre><code>Test stooge.v1.sort:
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=k>if</span> <span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>array</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>immutable</span> <span class=n>tmp</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=o>;</span>
+        <span class=n>array</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>;</span>
+        <span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>=</span> <span class=n>tmp</span><span class=o>;</span>
+    <span class=o>}</span>
+    <span class=k>if</span> <span class=o>(</span><span class=mi>3</span> <span class=o>&lt;</span><span class=o>=</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>sort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>-</span> <span class=o>(</span><span class=n>$</span> <span class=o>/</span> <span class=mi>3</span><span class=o>)</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+        <span class=n>sort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>/</span> <span class=mi>3</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+        <span class=n>sort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>-</span> <span class=o>(</span><span class=n>$</span> <span class=o>/</span> <span class=mi>3</span><span class=o>)</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><p>見ての通りものすごい勢いで実行時間が増えていく。</p><pre><code>Test stooge.v1.sort:
     N = 10^^1 avg: 0.00468215 msecs (sample: 16549)
     N = 10^^2 avg: 3.32466 msecs (sample: 30)
     N = 10^^3 avg: 789.923 msecs (sample: 1)
-</code></pre><h3 id=マージソート-https-ja-wikipedia-org-wiki-e3-83-9e-e3-83-bc-e3-82-b8-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>マージソート</a></h3><h4 id=v1>v1</h4><p>素直に書いたもの。
+</code></pre><h3 id=httpsjawikipediaorgwikie3839ee383bce382b8e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>マージソート</a></h3><h4 id=v1>v1</h4><p>素直に書いたもの。
 1再帰ごとに配列を新しく2つ作るので<code>@nogc</code>ではないしインプレースでもない。
-配列の中身をコピーする際は<code>array = ...</code>ではなく<code>array[] = ...</code>と書かなければならないことを知る。</p><h5 id=sort-v1-d-at-80841549125d5d308af2c426c9539df69fb847c5-kotet-sort-https-github-com-kotet-sort-blob-80841549125d5d308af2c426c9539df69fb847c5-source-merge-v1-d><a href=https://github.com/kotet/sort/blob/80841549125d5d308af2c426c9539df69fb847c5/source/merge/v1.d>sort/v1.d at 80841549125d5d308af2c426c9539df69fb847c5 · kotet/sort</a></h5><pre><code class=language-d>module merge.v1;
+配列の中身をコピーする際は<code>array = ...</code>ではなく<code>array[] = ...</code>と書かなければならないことを知る。</p><h5 id=sortv1d-at-80841549125d5d308af2c426c9539df69fb847c5--kotetsorthttpsgithubcomkotetsortblob80841549125d5d308af2c426c9539df69fb847c5sourcemergev1d><a href=https://github.com/kotet/sort/blob/80841549125d5d308af2c426c9539df69fb847c5/source/merge/v1.d>sort/v1.d at 80841549125d5d308af2c426c9539df69fb847c5 · kotet/sort</a></h5><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>merge.v1</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array) nothrow pure
-{
-    array[] = mergeSort(array);
-}
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>array</span><span class=o>[</span><span class=o>]</span> <span class=o>=</span> <span class=n>mergeSort</span><span class=o>(</span><span class=n>array</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
 
-private T[] mergeSort(T)(T[] array) nothrow pure
-{
-    import std.range : empty, front, popFront;
+<span class=kd>private</span> <span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=nf>mergeSort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>empty</span><span class=o>,</span> <span class=n>front</span><span class=o>,</span> <span class=n>popFront</span><span class=o>;</span>
 
-    if (array.length &lt; 2)
-    {
-        return array;
-    }
-    else
-    {
-        auto a = mergeSort(array[0 .. $ / 2]);
-        auto b = mergeSort(array[$ / 2 .. $]);
-        T[] result;
+    <span class=k>if</span> <span class=o>(</span><span class=n>array</span><span class=o>.</span><span class=na>length</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=k>return</span> <span class=n>array</span><span class=o>;</span>
+    <span class=o>}</span>
+    <span class=k>else</span>
+    <span class=o>{</span>
+        <span class=kd>auto</span> <span class=n>a</span> <span class=o>=</span> <span class=n>mergeSort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>/</span> <span class=mi>2</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+        <span class=kd>auto</span> <span class=n>b</span> <span class=o>=</span> <span class=n>mergeSort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>/</span> <span class=mi>2</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+        <span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>result</span><span class=o>;</span>
 
-        foreach (i; 0 .. a.length + b.length)
-        {
-            if (a.empty)
-            {
-                result ~= b.front;
-                b.popFront();
-            }
-            else if (b.empty || a.front &lt; b.front)
-            {
-                result ~= a.front;
-                a.popFront();
-            }
-            else
-            {
-                result ~= b.front;
-                b.popFront();
-            }
-        }
+        <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>a</span><span class=o>.</span><span class=na>length</span> <span class=o>+</span> <span class=n>b</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=k>if</span> <span class=o>(</span><span class=n>a</span><span class=o>.</span><span class=na>empty</span><span class=o>)</span>
+            <span class=o>{</span>
+                <span class=n>result</span> <span class=o>~</span><span class=o>=</span> <span class=n>b</span><span class=o>.</span><span class=na>front</span><span class=o>;</span>
+                <span class=n>b</span><span class=o>.</span><span class=na>popFront</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+            <span class=o>}</span>
+            <span class=k>else</span> <span class=k>if</span> <span class=o>(</span><span class=n>b</span><span class=o>.</span><span class=na>empty</span> <span class=o>|</span><span class=o>|</span> <span class=n>a</span><span class=o>.</span><span class=na>front</span> <span class=o>&lt;</span> <span class=n>b</span><span class=o>.</span><span class=na>front</span><span class=o>)</span>
+            <span class=o>{</span>
+                <span class=n>result</span> <span class=o>~</span><span class=o>=</span> <span class=n>a</span><span class=o>.</span><span class=na>front</span><span class=o>;</span>
+                <span class=n>a</span><span class=o>.</span><span class=na>popFront</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+            <span class=o>}</span>
+            <span class=k>else</span>
+            <span class=o>{</span>
+                <span class=n>result</span> <span class=o>~</span><span class=o>=</span> <span class=n>b</span><span class=o>.</span><span class=na>front</span><span class=o>;</span>
+                <span class=n>b</span><span class=o>.</span><span class=na>popFront</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+            <span class=o>}</span>
+        <span class=o>}</span>
 
-        return result;
-    }
-}
-</code></pre><pre><code>Test merge.v1.sort:
+        <span class=k>return</span> <span class=n>result</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><pre><code>Test merge.v1.sort:
     N = 10^^1 avg: 0.00433028 msecs (sample: 17535)
     N = 10^^2 avg: 0.0651478 msecs (sample: 1314)
     N = 10^^3 avg: 0.838199 msecs (sample: 107)
     N = 10^^4 avg: 9.77354 msecs (sample: 10)
     N = 10^^5 avg: 111.571 msecs (sample: 1)
 </code></pre><h4 id=v2>v2</h4><p>入力を再利用することで使うメモリの量を半分にしたもの。
-関数を分ける必要もなくなった。</p><h5 id=sort-v2-d-at-1ec94956420cb3463a357c99c05c7980fd48e994-kotet-sort-https-github-com-kotet-sort-blob-1ec94956420cb3463a357c99c05c7980fd48e994-source-merge-v2-d><a href=https://github.com/kotet/sort/blob/1ec94956420cb3463a357c99c05c7980fd48e994/source/merge/v2.d>sort/v2.d at 1ec94956420cb3463a357c99c05c7980fd48e994 · kotet/sort</a></h5><pre><code class=language-d>module merge.v2;
+関数を分ける必要もなくなった。</p><h5 id=sortv2d-at-1ec94956420cb3463a357c99c05c7980fd48e994--kotetsorthttpsgithubcomkotetsortblob1ec94956420cb3463a357c99c05c7980fd48e994sourcemergev2d><a href=https://github.com/kotet/sort/blob/1ec94956420cb3463a357c99c05c7980fd48e994/source/merge/v2.d>sort/v2.d at 1ec94956420cb3463a357c99c05c7980fd48e994 · kotet/sort</a></h5><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>merge.v2</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array) nothrow pure
-{
-    import std.range : empty, front, popFront;
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>empty</span><span class=o>,</span> <span class=n>front</span><span class=o>,</span> <span class=n>popFront</span><span class=o>;</span>
 
-    if (array.length &lt; 2)
-    {
-        return;
-    }
+    <span class=k>if</span> <span class=o>(</span><span class=n>array</span><span class=o>.</span><span class=na>length</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=k>return</span><span class=o>;</span>
+    <span class=o>}</span>
 
-    sort(array[0 .. $ / 2]);
-    sort(array[$ / 2 .. $]);
+    <span class=n>sort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>/</span> <span class=mi>2</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=n>sort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>/</span> <span class=mi>2</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
 
-    auto f = array[0 .. $ / 2].dup;
-    size_t b = array.length / 2;
-    foreach (i; 0 .. array.length)
-    {
-        if (f.empty)
-        {
-            array[i] = array[b];
-            b++;
-        }
-        else if (!(b &lt; array.length) || f.front &lt; array[b])
-        {
-            array[i] = f.front;
-            f.popFront();
-        }
-        else
-        {
-            array[i] = array[b];
-            b++;
-        }
-    }
-}
-</code></pre><p>そのおかげかどうか知らないが高速になっている。</p><pre><code>Test merge.v2.sort:
+    <span class=kd>auto</span> <span class=n>f</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>/</span> <span class=mi>2</span><span class=o>]</span><span class=o>.</span><span class=na>dup</span><span class=o>;</span>
+    <span class=n>size_t</span> <span class=n>b</span> <span class=o>=</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span> <span class=o>/</span> <span class=mi>2</span><span class=o>;</span>
+    <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=k>if</span> <span class=o>(</span><span class=n>f</span><span class=o>.</span><span class=na>empty</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>b</span><span class=o>]</span><span class=o>;</span>
+            <span class=n>b</span><span class=o>+</span><span class=o>+</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span> <span class=k>if</span> <span class=o>(</span><span class=o>!</span><span class=o>(</span><span class=n>b</span> <span class=o>&lt;</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span> <span class=o>|</span><span class=o>|</span> <span class=n>f</span><span class=o>.</span><span class=na>front</span> <span class=o>&lt;</span> <span class=n>array</span><span class=o>[</span><span class=n>b</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>f</span><span class=o>.</span><span class=na>front</span><span class=o>;</span>
+            <span class=n>f</span><span class=o>.</span><span class=na>popFront</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span>
+        <span class=o>{</span>
+            <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>b</span><span class=o>]</span><span class=o>;</span>
+            <span class=n>b</span><span class=o>+</span><span class=o>+</span><span class=o>;</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><p>そのおかげかどうか知らないが高速になっている。</p><pre><code>Test merge.v2.sort:
     N = 10^^1 avg: 0.00138706 msecs (sample: 36282)
     N = 10^^2 avg: 0.019115 msecs (sample: 3258)
     N = 10^^3 avg: 0.252587 msecs (sample: 283)
@@ -291,73 +291,73 @@ void sort(T)(T[] array) nothrow pure
 <code>std.parallelism</code>のドキュメントにある<a href=https://dlang.org/phobos/std_parallelism.html#.task><code>parallelSort</code></a>を参考にした。
 複数のスレッドが同じ配列に同時にアクセスしているはずだが、スライスで渡しているので間違えて違う領域にアクセスしていたら教えてくれる……はず。
 好きな割に並列処理の知識がないので危険なことをしているかもしれない。
-あと<code>spinForce</code>、<code>yieldForce</code>、<code>workForce</code>の違いがわかっていない。</p><h5 id=sort-v3-d-at-e165ee036421132e17760a9c264c260a2cf93dc9-kotet-sort-https-github-com-kotet-sort-blob-e165ee036421132e17760a9c264c260a2cf93dc9-source-merge-v3-d><a href=https://github.com/kotet/sort/blob/e165ee036421132e17760a9c264c260a2cf93dc9/source/merge/v3.d>sort/v3.d at e165ee036421132e17760a9c264c260a2cf93dc9 · kotet/sort</a></h5><pre><code class=language-d>module merge.v3;
+あと<code>spinForce</code>、<code>yieldForce</code>、<code>workForce</code>の違いがわかっていない。</p><h5 id=sortv3d-at-e165ee036421132e17760a9c264c260a2cf93dc9--kotetsorthttpsgithubcomkotetsortblobe165ee036421132e17760a9c264c260a2cf93dc9sourcemergev3d><a href=https://github.com/kotet/sort/blob/e165ee036421132e17760a9c264c260a2cf93dc9/source/merge/v3.d>sort/v3.d at e165ee036421132e17760a9c264c260a2cf93dc9 · kotet/sort</a></h5><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>merge.v3</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array)
-{
-    parallelSort(array);
-}
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span>
+<span class=o>{</span>
+    <span class=n>parallelSort</span><span class=o>(</span><span class=n>array</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
 
-void parallelSort(T)(T[] array)
-{
-    if (array.length &lt; 10 ^^ 4)
-    {
-        serialSort(array);
-    }
-    else
-    {
-        import std.parallelism : task;
+<span class=kt>void</span> <span class=nf>parallelSort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span>
+<span class=o>{</span>
+    <span class=k>if</span> <span class=o>(</span><span class=n>array</span><span class=o>.</span><span class=na>length</span> <span class=o>&lt;</span> <span class=mi>10</span> <span class=o>^</span><span class=o>^</span> <span class=mi>4</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>serialSort</span><span class=o>(</span><span class=n>array</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+    <span class=k>else</span>
+    <span class=o>{</span>
+        <span class=kn>import</span> <span class=nn>std.parallelism</span> <span class=o>:</span> <span class=n>task</span><span class=o>;</span>
 
-        auto t = task!parallelSort(array[$ / 2 .. $]);
-        t.executeInNewThread();
+        <span class=kd>auto</span> <span class=n>t</span> <span class=o>=</span> <span class=n>task</span><span class=o>!</span><span class=n>parallelSort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>/</span> <span class=mi>2</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+        <span class=n>t</span><span class=o>.</span><span class=na>executeInNewThread</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-        parallelSort(array[0 .. $ / 2]);
+        <span class=n>parallelSort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>/</span> <span class=mi>2</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
 
-        t.yieldForce();
+        <span class=n>t</span><span class=o>.</span><span class=na>yieldForce</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-        merge(array);
-    }
-}
+        <span class=n>merge</span><span class=o>(</span><span class=n>array</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void serialSort(T)(T[] array)
-{
-    if (array.length &lt; 2)
-        return;
-    sort(array[0 .. $ / 2]);
-    sort(array[$ / 2 .. $]);
-    merge(array);
-}
+<span class=kt>void</span> <span class=nf>serialSort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span>
+<span class=o>{</span>
+    <span class=k>if</span> <span class=o>(</span><span class=n>array</span><span class=o>.</span><span class=na>length</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=o>)</span>
+        <span class=k>return</span><span class=o>;</span>
+    <span class=n>sort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>/</span> <span class=mi>2</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=n>sort</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>$</span> <span class=o>/</span> <span class=mi>2</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=n>merge</span><span class=o>(</span><span class=n>array</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
 
-void merge(T)(T[] array)
-{
-    import std.range : empty, front, popFront;
+<span class=kt>void</span> <span class=nf>merge</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span>
+<span class=o>{</span>
+    <span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>empty</span><span class=o>,</span> <span class=n>front</span><span class=o>,</span> <span class=n>popFront</span><span class=o>;</span>
 
-    auto f = array[0 .. $ / 2].dup;
-    size_t b = array.length / 2;
-    foreach (i; 0 .. array.length)
-    {
-        if (f.empty)
-        {
-            array[i] = array[b];
-            b++;
-        }
-        else if (!(b &lt; array.length) || f.front &lt; array[b])
-        {
-            array[i] = f.front;
-            f.popFront();
-        }
-        else
-        {
-            array[i] = array[b];
-            b++;
-        }
-    }
-}
-</code></pre><p>無事に速くなり、<code>10 ^^ 6</code>要素のソートでは標準のソートよりもいい結果を出した。
+    <span class=kd>auto</span> <span class=n>f</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>/</span> <span class=mi>2</span><span class=o>]</span><span class=o>.</span><span class=na>dup</span><span class=o>;</span>
+    <span class=n>size_t</span> <span class=n>b</span> <span class=o>=</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span> <span class=o>/</span> <span class=mi>2</span><span class=o>;</span>
+    <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=k>if</span> <span class=o>(</span><span class=n>f</span><span class=o>.</span><span class=na>empty</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>b</span><span class=o>]</span><span class=o>;</span>
+            <span class=n>b</span><span class=o>+</span><span class=o>+</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span> <span class=k>if</span> <span class=o>(</span><span class=o>!</span><span class=o>(</span><span class=n>b</span> <span class=o>&lt;</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span> <span class=o>|</span><span class=o>|</span> <span class=n>f</span><span class=o>.</span><span class=na>front</span> <span class=o>&lt;</span> <span class=n>array</span><span class=o>[</span><span class=n>b</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>f</span><span class=o>.</span><span class=na>front</span><span class=o>;</span>
+            <span class=n>f</span><span class=o>.</span><span class=na>popFront</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span>
+        <span class=o>{</span>
+            <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>b</span><span class=o>]</span><span class=o>;</span>
+            <span class=n>b</span><span class=o>+</span><span class=o>+</span><span class=o>;</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div><p>無事に速くなり、<code>10 ^^ 6</code>要素のソートでは標準のソートよりもいい結果を出した。
 欲を出せばv2の半分まで速くなって欲しかったが……</p><pre><code>Test merge.v3.sort:
     N = 10^^1 avg: 0.00155898 msecs (sample: 34202)
     N = 10^^2 avg: 0.0208756 msecs (sample: 3090)
@@ -365,206 +365,206 @@ void merge(T)(T[] array)
     N = 10^^4 avg: 2.77565 msecs (sample: 27)
     N = 10^^5 avg: 26.7383 msecs (sample: 3)
     N = 10^^6 avg: 240.102 msecs (sample: 1)
-</code></pre><h3 id=選択ソート-https-ja-wikipedia-org-wiki-e9-81-b8-e6-8a-9e-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E9%81%B8%E6%8A%9E%E3%82%BD%E3%83%BC%E3%83%88>選択ソート</a></h3><p>インプレースで<code>@nogc</code>。</p><h4 id=sort-v1-d-at-beb460e0fae52440e9995d9871bd4e219c973cf2-kotet-sort-https-github-com-kotet-sort-blob-beb460e0fae52440e9995d9871bd4e219c973cf2-source-selection-v1-d><a href=https://github.com/kotet/sort/blob/beb460e0fae52440e9995d9871bd4e219c973cf2/source/selection/v1.d>sort/v1.d at beb460e0fae52440e9995d9871bd4e219c973cf2 · kotet/sort</a></h4><pre><code class=language-d>module selection.v1;
+</code></pre><h3 id=httpsjawikipediaorgwikie981b8e68a9ee382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E9%81%B8%E6%8A%9E%E3%82%BD%E3%83%BC%E3%83%88>選択ソート</a></h3><p>インプレースで<code>@nogc</code>。</p><h4 id=sortv1d-at-beb460e0fae52440e9995d9871bd4e219c973cf2--kotetsorthttpsgithubcomkotetsortblobbeb460e0fae52440e9995d9871bd4e219c973cf2sourceselectionv1d><a href=https://github.com/kotet/sort/blob/beb460e0fae52440e9995d9871bd4e219c973cf2/source/selection/v1.d>sort/v1.d at beb460e0fae52440e9995d9871bd4e219c973cf2 · kotet/sort</a></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>selection.v1</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array) @nogc nothrow pure
-{
-    foreach (i; 0 .. array.length)
-    {
-        select(array[i .. $]);
-    }
-}
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>select</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>i</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void select(T)(T[] array) @nogc nothrow pure
-{
-    auto i = min(array);
-    auto tmp = array[0];
+<span class=kt>void</span> <span class=nf>select</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=kd>auto</span> <span class=n>i</span> <span class=o>=</span> <span class=n>min</span><span class=o>(</span><span class=n>array</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>auto</span> <span class=n>tmp</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=o>;</span>
 
-    array[0] = array[i];
-    array[i] = tmp;
-}
+    <span class=n>array</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span><span class=o>;</span>
+    <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>tmp</span><span class=o>;</span>
+<span class=o>}</span>
 
-size_t min(T)(T[] array) @nogc nothrow pure
-{
-    size_t result = 0;
-    foreach (i; 0 .. array.length)
-    {
-        if (array[i] &lt; array[result])
-        {
-            result = i;
-        }
-    }
-    return result;
-}
-</code></pre><p>そんなに速くない。</p><pre><code>Test selection.v1.sort:
+<span class=n>size_t</span> <span class=nf>min</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>size_t</span> <span class=n>result</span> <span class=o>=</span> <span class=mi>0</span><span class=o>;</span>
+    <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=k>if</span> <span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>array</span><span class=o>[</span><span class=n>result</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>result</span> <span class=o>=</span> <span class=n>i</span><span class=o>;</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+    <span class=k>return</span> <span class=n>result</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>そんなに速くない。</p><pre><code>Test selection.v1.sort:
     N = 10^^1 avg: 0.000410303 msecs (sample: 56998)
     N = 10^^2 avg: 0.0159089 msecs (sample: 3806)
     N = 10^^3 avg: 1.1031 msecs (sample: 84)
     N = 10^^4 avg: 105.882 msecs (sample: 1)
-</code></pre><h3 id=ヒープソート-https-ja-wikipedia-org-wiki-e3-83-92-e3-83-bc-e3-83-97-e3-82-bd-e3-83-bc-e3-83-88><a href=https://ja.wikipedia.org/wiki/%E3%83%92%E3%83%BC%E3%83%97%E3%82%BD%E3%83%BC%E3%83%88>ヒープソート</a></h3><h4 id=v1-1>v1</h4><p>インプレースで<code>@nogc</code>。
+</code></pre><h3 id=httpsjawikipediaorgwikie38392e383bce38397e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%83%92%E3%83%BC%E3%83%97%E3%82%BD%E3%83%BC%E3%83%88>ヒープソート</a></h3><h4 id=v11>v1</h4><p>インプレースで<code>@nogc</code>。
 スワップを関数に分けた。
-<code>upHeap</code>、<code>downheap</code>がバグって手こずった。</p><h5 id=sort-v1-d-at-0a9ef66f909f539fb46f752c661b4482a3854901-kotet-sort-https-github-com-kotet-sort-blob-0a9ef66f909f539fb46f752c661b4482a3854901-source-heap-v1-d><a href=https://github.com/kotet/sort/blob/0a9ef66f909f539fb46f752c661b4482a3854901/source/heap/v1.d>sort/v1.d at 0a9ef66f909f539fb46f752c661b4482a3854901 · kotet/sort</a></h5><pre><code class=language-d>module heap.v1;
+<code>upHeap</code>、<code>downheap</code>がバグって手こずった。</p><h5 id=sortv1d-at-0a9ef66f909f539fb46f752c661b4482a3854901--kotetsorthttpsgithubcomkotetsortblob0a9ef66f909f539fb46f752c661b4482a3854901sourceheapv1d><a href=https://github.com/kotet/sort/blob/0a9ef66f909f539fb46f752c661b4482a3854901/source/heap/v1.d>sort/v1.d at 0a9ef66f909f539fb46f752c661b4482a3854901 · kotet/sort</a></h5><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>heap.v1</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array) @nogc nothrow pure
-{
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
 
-    foreach (i; 0 .. array.length)
-    {
-        upHeap(array[0 .. i + 1]);
-    }
-    foreach_reverse (i; 0 .. array.length)
-    {
-        downHeap(array[0 .. i + 1]);
-    }
-}
+    <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>upHeap</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+    <span class=k>foreach_reverse</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>downHeap</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void upHeap(T)(T[] heap) @nogc nothrow pure
-{
-    size_t element = heap.length;
-    while (element != 1)
-    {
-        size_t parent = (element) / 2;
-        if (heap[parent - 1] &lt; heap[element - 1])
-        {
-            swap(heap[parent - 1], heap[element - 1]);
-            element = parent;
-        }
-        else
-        {
-            return;
-        }
-    }
-}
+<span class=kt>void</span> <span class=nf>upHeap</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>heap</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>size_t</span> <span class=n>element</span> <span class=o>=</span> <span class=n>heap</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+    <span class=k>while</span> <span class=o>(</span><span class=n>element</span> <span class=o>!</span><span class=o>=</span> <span class=mi>1</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>size_t</span> <span class=n>parent</span> <span class=o>=</span> <span class=o>(</span><span class=n>element</span><span class=o>)</span> <span class=o>/</span> <span class=mi>2</span><span class=o>;</span>
+        <span class=k>if</span> <span class=o>(</span><span class=n>heap</span><span class=o>[</span><span class=n>parent</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>heap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>swap</span><span class=o>(</span><span class=n>heap</span><span class=o>[</span><span class=n>parent</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>,</span> <span class=n>heap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+            <span class=n>element</span> <span class=o>=</span> <span class=n>parent</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span>
+        <span class=o>{</span>
+            <span class=k>return</span><span class=o>;</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void downHeap(T)(T[] heap) @nogc nothrow pure
-{
-    swap(heap[0], heap[$ - 1]);
-    auto newHeap = heap[0 .. $ - 1];
+<span class=kt>void</span> <span class=nf>downHeap</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>heap</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>swap</span><span class=o>(</span><span class=n>heap</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=o>,</span> <span class=n>heap</span><span class=o>[</span><span class=n>$</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>auto</span> <span class=n>newHeap</span> <span class=o>=</span> <span class=n>heap</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>;</span>
 
-    size_t element = 1;
-    while (element * 2 - 1 &lt; newHeap.length)
-    {
-        size_t bigChild = () {
-            immutable child1 = element * 2;
-            immutable child2 = child1 + 1;
+    <span class=n>size_t</span> <span class=n>element</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+    <span class=k>while</span> <span class=o>(</span><span class=n>element</span> <span class=o>*</span> <span class=mi>2</span> <span class=o>-</span> <span class=mi>1</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>size_t</span> <span class=n>bigChild</span> <span class=o>=</span> <span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+            <span class=n>immutable</span> <span class=n>child1</span> <span class=o>=</span> <span class=n>element</span> <span class=o>*</span> <span class=mi>2</span><span class=o>;</span>
+            <span class=n>immutable</span> <span class=n>child2</span> <span class=o>=</span> <span class=n>child1</span> <span class=o>+</span> <span class=mi>1</span><span class=o>;</span>
 
-            immutable child2Exists = child2 - 1 &lt; newHeap.length;
+            <span class=n>immutable</span> <span class=n>child2Exists</span> <span class=o>=</span> <span class=n>child2</span> <span class=o>-</span> <span class=mi>1</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
 
-            if (child2Exists &amp;&amp; newHeap[child1 - 1] &lt; newHeap[child2 - 1])
-                return child2;
-            else
-                return child1;
-        }();
+            <span class=k>if</span> <span class=o>(</span><span class=n>child2Exists</span> <span class=o>&amp;</span><span class=o>&amp;</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>child1</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>child2</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span>
+                <span class=k>return</span> <span class=n>child2</span><span class=o>;</span>
+            <span class=k>else</span>
+                <span class=k>return</span> <span class=n>child1</span><span class=o>;</span>
+        <span class=o>}</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-        if (newHeap[element - 1] &lt; newHeap[bigChild - 1])
-        {
-            swap(newHeap[element - 1], newHeap[bigChild - 1]);
-            element = bigChild;
-        }
-        else
-        {
-            return;
-        }
-    }
-}
+        <span class=k>if</span> <span class=o>(</span><span class=n>newHeap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>bigChild</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>swap</span><span class=o>(</span><span class=n>newHeap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>,</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>bigChild</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+            <span class=n>element</span> <span class=o>=</span> <span class=n>bigChild</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span>
+        <span class=o>{</span>
+            <span class=k>return</span><span class=o>;</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void swap(T)(ref T a, ref T b) @nogc nothrow pure
-{
-    immutable tmp = a;
-    a = b;
-    b = tmp;
-}
-</code></pre><pre><code>Test heap.v1.sort:
+<span class=kt>void</span> <span class=nf>swap</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>ref</span> <span class=n>T</span> <span class=n>a</span><span class=o>,</span> <span class=n>ref</span> <span class=n>T</span> <span class=n>b</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>immutable</span> <span class=n>tmp</span> <span class=o>=</span> <span class=n>a</span><span class=o>;</span>
+    <span class=n>a</span> <span class=o>=</span> <span class=n>b</span><span class=o>;</span>
+    <span class=n>b</span> <span class=o>=</span> <span class=n>tmp</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><pre><code>Test heap.v1.sort:
     N = 10^^1 avg: 0.000534433 msecs (sample: 51557)
     N = 10^^2 avg: 0.0112959 msecs (sample: 4492)
     N = 10^^3 avg: 0.166156 msecs (sample: 371)
     N = 10^^4 avg: 2.22345 msecs (sample: 31)
     N = 10^^5 avg: 28.2982 msecs (sample: 3)
     N = 10^^6 avg: 349.845 msecs (sample: 1)
-</code></pre><h4 id=v2-1>v2</h4><p>一部計算をビット操作に置き換えてみた。</p><h5 id=sort-v2-d-at-016e05f004263f72b27c087d202e5e69f17971da-kotet-sort-https-github-com-kotet-sort-blob-016e05f004263f72b27c087d202e5e69f17971da-source-heap-v2-d><a href=https://github.com/kotet/sort/blob/016e05f004263f72b27c087d202e5e69f17971da/source/heap/v2.d>sort/v2.d at 016e05f004263f72b27c087d202e5e69f17971da · kotet/sort</a></h5><pre><code class=language-d>module heap.v2;
+</code></pre><h4 id=v21>v2</h4><p>一部計算をビット操作に置き換えてみた。</p><h5 id=sortv2d-at-016e05f004263f72b27c087d202e5e69f17971da--kotetsorthttpsgithubcomkotetsortblob016e05f004263f72b27c087d202e5e69f17971dasourceheapv2d><a href=https://github.com/kotet/sort/blob/016e05f004263f72b27c087d202e5e69f17971da/source/heap/v2.d>sort/v2.d at 016e05f004263f72b27c087d202e5e69f17971da · kotet/sort</a></h5><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>module</span> <span class=nn>heap.v2</span><span class=o>;</span>
 
-import test;
+<span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 
-mixin test!sort;
+<span class=k>mixin</span> <span class=n>test</span><span class=o>!</span><span class=n>sort</span><span class=o>;</span>
 
-void sort(T)(T[] array) @nogc nothrow pure
-{
+<span class=kt>void</span> <span class=nf>sort</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>array</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
 
-    foreach (i; 0 .. array.length)
-    {
-        upHeap(array[0 .. i + 1]);
-    }
-    foreach_reverse (i; 0 .. array.length)
-    {
-        downHeap(array[0 .. i + 1]);
-    }
-}
+    <span class=k>foreach</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>upHeap</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+    <span class=k>foreach_reverse</span> <span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>array</span><span class=o>.</span><span class=na>length</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>downHeap</span><span class=o>(</span><span class=n>array</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void upHeap(T)(T[] heap) @nogc nothrow pure
-{
-    size_t element = heap.length;
-    while (element != 1)
-    {
-        size_t parent = element &gt;&gt; 1; // element / 2;
-        if (heap[parent - 1] &lt; heap[element - 1])
-        {
-            swap(heap[parent - 1], heap[element - 1]);
-            element = parent;
-        }
-        else
-        {
-            return;
-        }
-    }
-}
+<span class=kt>void</span> <span class=nf>upHeap</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>heap</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>size_t</span> <span class=n>element</span> <span class=o>=</span> <span class=n>heap</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
+    <span class=k>while</span> <span class=o>(</span><span class=n>element</span> <span class=o>!</span><span class=o>=</span> <span class=mi>1</span><span class=o>)</span>
+    <span class=o>{</span>
+        <span class=n>size_t</span> <span class=n>parent</span> <span class=o>=</span> <span class=n>element</span> <span class=o>&gt;</span><span class=o>&gt;</span> <span class=mi>1</span><span class=o>;</span> <span class=c1>// element / 2;
+</span><span class=c1></span>        <span class=k>if</span> <span class=o>(</span><span class=n>heap</span><span class=o>[</span><span class=n>parent</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>heap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>swap</span><span class=o>(</span><span class=n>heap</span><span class=o>[</span><span class=n>parent</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>,</span> <span class=n>heap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+            <span class=n>element</span> <span class=o>=</span> <span class=n>parent</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span>
+        <span class=o>{</span>
+            <span class=k>return</span><span class=o>;</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void downHeap(T)(T[] heap) @nogc nothrow pure
-{
-    swap(heap[0], heap[$ - 1]);
-    auto newHeap = heap[0 .. $ - 1];
+<span class=kt>void</span> <span class=nf>downHeap</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>T</span><span class=o>[</span><span class=o>]</span> <span class=n>heap</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>swap</span><span class=o>(</span><span class=n>heap</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=o>,</span> <span class=n>heap</span><span class=o>[</span><span class=n>$</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>auto</span> <span class=n>newHeap</span> <span class=o>=</span> <span class=n>heap</span><span class=o>[</span><span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=n>$</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>;</span>
 
-    size_t element = 1;
-    while ((element &lt;&lt; 1) - 1 &lt; newHeap.length) // (element * 2 - 1 &lt; newHeap.length)
-    {
-        size_t bigChild = () {
-            immutable child1 = element &lt;&lt; 1; // element * 2;
-            immutable child2 = child1 + 1;
+    <span class=n>size_t</span> <span class=n>element</span> <span class=o>=</span> <span class=mi>1</span><span class=o>;</span>
+    <span class=k>while</span> <span class=o>(</span><span class=o>(</span><span class=n>element</span> <span class=o>&lt;</span><span class=o>&lt;</span> <span class=mi>1</span><span class=o>)</span> <span class=o>-</span> <span class=mi>1</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>.</span><span class=na>length</span><span class=o>)</span> <span class=c1>// (element * 2 - 1 &lt; newHeap.length)
+</span><span class=c1></span>    <span class=o>{</span>
+        <span class=n>size_t</span> <span class=n>bigChild</span> <span class=o>=</span> <span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+            <span class=n>immutable</span> <span class=n>child1</span> <span class=o>=</span> <span class=n>element</span> <span class=o>&lt;</span><span class=o>&lt;</span> <span class=mi>1</span><span class=o>;</span> <span class=c1>// element * 2;
+</span><span class=c1></span>            <span class=n>immutable</span> <span class=n>child2</span> <span class=o>=</span> <span class=n>child1</span> <span class=o>+</span> <span class=mi>1</span><span class=o>;</span>
 
-            immutable child2Exists = child2 - 1 &lt; newHeap.length;
+            <span class=n>immutable</span> <span class=n>child2Exists</span> <span class=o>=</span> <span class=n>child2</span> <span class=o>-</span> <span class=mi>1</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>.</span><span class=na>length</span><span class=o>;</span>
 
-            if (child2Exists &amp;&amp; newHeap[child1 - 1] &lt; newHeap[child2 - 1])
-                return child2;
-            else
-                return child1;
-        }();
+            <span class=k>if</span> <span class=o>(</span><span class=n>child2Exists</span> <span class=o>&amp;</span><span class=o>&amp;</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>child1</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>child2</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span>
+                <span class=k>return</span> <span class=n>child2</span><span class=o>;</span>
+            <span class=k>else</span>
+                <span class=k>return</span> <span class=n>child1</span><span class=o>;</span>
+        <span class=o>}</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-        if (newHeap[element - 1] &lt; newHeap[bigChild - 1])
-        {
-            swap(newHeap[element - 1], newHeap[bigChild - 1]);
-            element = bigChild;
-        }
-        else
-        {
-            return;
-        }
-    }
-}
+        <span class=k>if</span> <span class=o>(</span><span class=n>newHeap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span> <span class=o>&lt;</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>bigChild</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span>
+        <span class=o>{</span>
+            <span class=n>swap</span><span class=o>(</span><span class=n>newHeap</span><span class=o>[</span><span class=n>element</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>,</span> <span class=n>newHeap</span><span class=o>[</span><span class=n>bigChild</span> <span class=o>-</span> <span class=mi>1</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+            <span class=n>element</span> <span class=o>=</span> <span class=n>bigChild</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>else</span>
+        <span class=o>{</span>
+            <span class=k>return</span><span class=o>;</span>
+        <span class=o>}</span>
+    <span class=o>}</span>
+<span class=o>}</span>
 
-void swap(T)(ref T a, ref T b) @nogc nothrow pure
-{
-    immutable tmp = a;
-    a = b;
-    b = tmp;
-}
-</code></pre><p>全く変化がない。この程度のことは自動でやってくれるということか……</p><pre><code>Test heap.v2.sort:
+<span class=kt>void</span> <span class=nf>swap</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>(</span><span class=n>ref</span> <span class=n>T</span> <span class=n>a</span><span class=o>,</span> <span class=n>ref</span> <span class=n>T</span> <span class=n>b</span><span class=o>)</span> <span class=nd>@nogc</span> <span class=kd>nothrow</span> <span class=kd>pure</span>
+<span class=o>{</span>
+    <span class=n>immutable</span> <span class=n>tmp</span> <span class=o>=</span> <span class=n>a</span><span class=o>;</span>
+    <span class=n>a</span> <span class=o>=</span> <span class=n>b</span><span class=o>;</span>
+    <span class=n>b</span> <span class=o>=</span> <span class=n>tmp</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>全く変化がない。この程度のことは自動でやってくれるということか……</p><pre><code>Test heap.v2.sort:
     N = 10^^1 avg: 0.000520677 msecs (sample: 53282)
     N = 10^^2 avg: 0.0110707 msecs (sample: 4587)
     N = 10^^3 avg: 0.167113 msecs (sample: 371)

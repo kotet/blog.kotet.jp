@@ -7,9 +7,9 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#dlang Brainfuckを出力する自作言語を作ってAtCoderに参加する - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2019/01/dsl-for-brainfuck/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang Brainfuckを出力する自作言語を作ってAtCoderに参加する - Kotet's Personal Blog"><meta name=og:description content="Brainfuckはしばしば難解言語と呼ばれます。 Brainfuckをまともに書こうと思う人は少なく、 多くの場合既存のプログラムをコピペして"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2019/01/dsl-for-brainfuck/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.59.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#dlang Brainfuckを出力する自作言語を作ってAtCoderに参加する - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2019/01/dsl-for-brainfuck/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang Brainfuckを出力する自作言語を作ってAtCoderに参加する - Kotet's Personal Blog"><meta name=og:description content="Brainfuckはしばしば難解言語と呼ばれます。 Brainfuckをまともに書こうと思う人は少なく、 多くの場合既存のプログラムをコピペして"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2019/01/dsl-for-brainfuck/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.60.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7S15 8.34314575 15 10C15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13S11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9S11 9.44771525 11 10C11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
-Brainfuckを出力する自作言語を作ってAtCoderに参加する</h2><p>Created: <time>2019-01-16</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/brainfuck>#brainfuck</a> <a href=/tags/tech>#tech</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#brainfuckを書くために>Brainfuckを書くために</a><ul><li><a href=#スタック>スタック</a></li><li><a href=#push-pop>Push &amp; Pop</a></li><li><a href=#加減乗算>加減乗算</a><ul><li><a href=#加算>加算</a></li><li><a href=#減算>減算</a></li><li><a href=#乗算>乗算</a></li></ul></li><li><a href=#比較>比較</a></li><li><a href=#if文>if文</a></li><li><a href=#while文>while文</a></li></ul></li><li><a href=#bflang-dsl-for-brainf-ck>bflang: DSL for brainf*ck</a></li><li><a href=#pegged-a-parsing-expression-grammar-peg-module-using-the-d-programming-language>Pegged: A Parsing Expression Grammar (PEG) module, using the D programming language.</a></li><li><a href=#問題を解いてみる>問題を解いてみる</a></li></ul></li></ul></li></ul></nav></aside></header><article><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/brainfuck.min.js></script><p>Brainfuckはしばしば難解言語と呼ばれます。
+Brainfuckを出力する自作言語を作ってAtCoderに参加する</h2><p>Created: <time>2019-01-16</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/brainfuck>#brainfuck</a> <a href=/tags/tech>#tech</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#brainfuck>Brainfuckを書くために</a></li><li><a href=#bflang-dsl-for-brainfck>bflang: DSL for brainf*ck</a></li><li><a href=#pegged-a-parsing-expression-grammar-peg-module-using-the-d-programming-language>Pegged: A Parsing Expression Grammar (PEG) module, using the D programming language.</a></li><li><a href=#heading6>問題を解いてみる</a></li></ul></li></ul></nav></aside></header><article><p>Brainfuckはしばしば難解言語と呼ばれます。
 Brainfuckをまともに書こうと思う人は少なく、
 多くの場合既存のプログラムをコピペしてきて楽しむだけで終わります。
 Brainfuck派生言語とかもかなりの割合でHelloWorldしか実行してないんじゃないでしょうか。</p><p>そんな世の中でもBrainfuckを使い、それなりにクリエイティビティあふれるプログラムを書く人は存在します。
@@ -20,109 +20,109 @@ Brainfuck派生言語とかもかなりの割合でHelloWorldしか実行して�
 <a href=https://github.com/shinh/elvm>ELVM</a>なんかはCコンパイラをまるごとBrainfuck化できるらしいので、
 これらのツールを使えば一発でしょう。
 しかし他人の作ったツールでBrainfuckと関係ない言語を書いているなら、
-それは自分の実力でBrainfuckを書いたとは言えないんじゃないかと思ったんです。</p><p>そこでBrainfuckを出力するコンパイラを自作して、それでAtCoderの問題を解くことにしました。</p><h3 id=brainfuckを書くために>Brainfuckを書くために</h3><p>以下のスライドがわかりやすいです。
+それは自分の実力でBrainfuckを書いたとは言えないんじゃないかと思ったんです。</p><p>そこでBrainfuckを出力するコンパイラを自作して、それでAtCoderの問題を解くことにしました。</p><h3 id=brainfuck>Brainfuckを書くために</h3><p>以下のスライドがわかりやすいです。
 というかこのスライドがなかったら自分はこんなことやろうとは思いませんでした。</p><p><a href="https://www.slideshare.net/KMC_JP/brainfck?ref=http://localhost:1313/2019/dsl-for-brainfuck/">実用Brainf*ckプログラミング</a></p><p>スライドのなかで触れられているように、Brainfuckはスタックと相性が良い言語です。
 スタックマシン向けのコンパイラの書き方はわかっているので、
-スタック操作のBrainfuckコードを書くことができれば自動生成ができそうです。</p><h4 id=スタック>スタック</h4><p>今回生成するコードでは以下のようなデータ構造を使うことにしました。
+スタック操作のBrainfuckコードを書くことができれば自動生成ができそうです。</p><h4 id=heading>スタック</h4><p>今回生成するコードでは以下のようなデータ構造を使うことにしました。
 0番地から9番地までにスタック構造を構築した図です。</p><table><thead><tr><th>インデックス</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th></tr></thead><tbody><tr><td>値</td><td>0</td><td>0</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>0</td><td>0</td></tr></tbody></table><p>スタック1要素あたり2バイトを使っています。
 上のテーブルを元に説明します。
 まず、偶数番目はスタック操作のために必要な情報です。
 ここが1の場合「前に要素が存在する」という意味になります。
 これによってスタックの先頭とスタックの根本を自由に行き来できるようになります。</p><p>以下、スタックの操作に必要な情報が入っている部分を操作部、要素の値が入っている部分を値部と呼びます。</p><p>0番地からスタックの先頭要素の値部に行くには以下のようにします。
-0番地にある0番要素はスタックの根本を表すための番兵要素で、0番要素の値部（1番地）の値に意味はありません。</p><pre><code class=language-Brainfuck>&gt;&gt; 1番要素の操作部に移動
-[&gt;&gt;] スタックの外側（上の例では10番地）まで移動。使っていない番地には0が入っていると仮定している
-&lt; 行き過ぎたので戻る
-</code></pre><p>逆にスタック先頭の値部から0番地に行くには以下のようにします。</p><pre><code class=language-Brainfuck>&lt; 操作部に移動
-[&lt;&lt;] 0番地まで移動
-</code></pre><p>とてもシンプルですね。
+0番地にある0番要素はスタックの根本を表すための番兵要素で、0番要素の値部（1番地）の値に意味はありません。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=nv>&gt;&gt;</span><span class=c> 1番要素の操作部に移動
+</span><span class=c></span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=c> スタックの外側（上の例では10番地）まで移動。使っていない番地には0が入っていると仮定している
+</span><span class=c></span><span class=nv>&lt;</span><span class=c> 行き過ぎたので戻る
+</span></code></pre></div><p>逆にスタック先頭の値部から0番地に行くには以下のようにします。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=nv>&lt;</span><span class=c> 操作部に移動
+</span><span class=c></span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=c> 0番地まで移動
+</span></code></pre></div><p>とてもシンプルですね。
 スタックの根本と先頭を自由に行き来できるようになったので、
 スタックの根本より手前にスタックと干渉しない領域を作ることもできます。
 つまり、生成するコードでは自由に伸びるスタックと固定長の変数領域の2つが利用できます。</p><p>ややこしくなるのでこの記事ではこれ以降出てきませんが、スタックを複数本作ることもできます。
-以下は2本のスタックにそれぞれ<code>3</code>、<code>4,5</code>と値が入っている図です。</p><table><thead><tr><th>インデックス</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th></tr></thead><tbody><tr><td>値</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>3</td><td>4</td><td>0</td><td>1</td><td>0</td><td>5</td><td>0</td><td>0</td></tr></tbody></table><p>移動は以下のように<code>&gt;</code>や<code>&lt;</code>の数をスタックの本数分増やして行います。
+以下は2本のスタックにそれぞれ<code>3</code>、<code>4,5</code>と値が入っている図です。</p><table><thead><tr><th>インデックス</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th></tr></thead><tbody><tr><td>値</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>3</td><td>4</td><td>0</td><td>1</td><td>0</td><td>5</td><td>0</td><td>0</td></tr></tbody></table><p>移動は以下のように<code>></code>や<code>&lt;</code>の数をスタックの本数分増やして行います。
 今自分がどのスタックにいるか見失うと操作ができなくなるので、
-操作を行った後は必ず0番スタックに戻ります。</p><pre><code class=language-Brainfuck>&gt;&gt;&gt;&gt;[&gt;&gt;&gt;&gt;]&lt;&lt; 0番スタックの根本(0番地)から先頭(6番地)に移動
-&lt;&lt;[&lt;&lt;&lt;&lt;] 0番スタックの先頭から根本に移動
-&gt; 1番スタックの根本に移動
-&gt;&gt;&gt;&gt;[&gt;&gt;&gt;&gt;]&lt;&lt; 1番スタックの根本から先頭に移動
-&lt;&lt;[&lt;&lt;&lt;&lt;] 0番スタックの先頭から根本に移動
-&lt; 0番スタックの根本に戻る
-</code></pre><h4 id=push-pop>Push &amp; Pop</h4><p>プログラムの実行中は0番スタックの先頭がホームポジションです。
-スタックの先頭で以下の操作を行うとスタックに値を追加したり、取り出したりできます。</p><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><p>3を追加します。</p><pre><code class=language-Brainfuck>&gt;+ 操作部を1にする
-&gt; 値部に移動
-+++ 3をセット
-</code></pre><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><p>削除します。</p><pre><code class=language-Brainfuck>[-] 値部をゼロにする
-&lt;- 操作部をゼロにする
-&lt; 前の要素の値部に移動
-</code></pre><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h4 id=加減乗算>加減乗算</h4><p>除算はまだ作ってないです……</p><h5 id=加算>加算</h5><p><code>4 + 5</code>を計算します。
-アルゴリズムはこんな感じになります。</p><pre><code class=language-c>int add(int a, int b)
-{
-    while (a)
-    {
-        a--;
-        b++;
-    }
-    return b;
-}
-</code></pre><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>4</td><td>1</td><td>5</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><pre><code class=language-Brainfuck>[&lt;&lt;+&gt;&gt;-] 前の要素に先頭の値を足す
-&lt;-&lt;スタックを1戻す
-</code></pre><table><thead><tr><th>ポインタ</th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>9</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h5 id=減算>減算</h5><p><code>5 - 2</code>を計算します。
-基本は加算と同じです。</p><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>5</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><pre><code class=language-Brainfuck>[&lt;&lt;-&gt;&gt;-]
-&lt;-&lt;
-</code></pre><table><thead><tr><th>ポインタ</th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h5 id=乗算>乗算</h5><p><code>3 * 2</code>を計算します。
+操作を行った後は必ず0番スタックに戻ります。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=c> 0番スタックの根本(0番地)から先頭(6番地)に移動
+</span><span class=c></span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;&lt;&lt;</span><span class=k>]</span><span class=c> 0番スタックの先頭から根本に移動
+</span><span class=c></span><span class=nv>&gt;</span><span class=c> 1番スタックの根本に移動
+</span><span class=c></span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=c> 1番スタックの根本から先頭に移動
+</span><span class=c></span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;&lt;&lt;</span><span class=k>]</span><span class=c> 0番スタックの先頭から根本に移動
+</span><span class=c></span><span class=nv>&lt;</span><span class=c> 0番スタックの根本に戻る
+</span></code></pre></div><h4 id=push--pop>Push & Pop</h4><p>プログラムの実行中は0番スタックの先頭がホームポジションです。
+スタックの先頭で以下の操作を行うとスタックに値を追加したり、取り出したりできます。</p><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><p>3を追加します。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=nv>&gt;</span><span class=nb>+</span><span class=c> 操作部を1にする
+</span><span class=c></span><span class=nv>&gt;</span><span class=c> 値部に移動
+</span><span class=c></span><span class=nb>+++</span><span class=c> 3をセット
+</span></code></pre></div><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><p>削除します。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=c> 値部をゼロにする
+</span><span class=c></span><span class=nv>&lt;</span><span class=nb>-</span><span class=c> 操作部をゼロにする
+</span><span class=c></span><span class=nv>&lt;</span><span class=c> 前の要素の値部に移動
+</span></code></pre></div><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>1</td><td>値</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h4 id=heading1>加減乗算</h4><p>除算はまだ作ってないです……</p><h5 id=heading2>加算</h5><p><code>4 + 5</code>を計算します。
+アルゴリズムはこんな感じになります。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>int</span> <span class=nf>add</span><span class=p>(</span><span class=kt>int</span> <span class=n>a</span><span class=p>,</span> <span class=kt>int</span> <span class=n>b</span><span class=p>)</span>
+<span class=p>{</span>
+    <span class=k>while</span> <span class=p>(</span><span class=n>a</span><span class=p>)</span>
+    <span class=p>{</span>
+        <span class=n>a</span><span class=o>-</span><span class=o>-</span><span class=p>;</span>
+        <span class=n>b</span><span class=o>+</span><span class=o>+</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=k>return</span> <span class=n>b</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></div><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>4</td><td>1</td><td>5</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=c> 前の要素に先頭の値を足す
+</span><span class=c></span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>スタックを1戻す
+</span></code></pre></div><table><thead><tr><th>ポインタ</th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>9</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h5 id=heading3>減算</h5><p><code>5 - 2</code>を計算します。
+基本は加算と同じです。</p><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>5</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=nv>&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=c>
+</span><span class=c></span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span></code></pre></div><table><thead><tr><th>ポインタ</th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h5 id=heading4>乗算</h5><p><code>3 * 2</code>を計算します。
 スタックの先頭よりも大きい番地を作業領域に使います。
 <a href="https://fatiherikli.github.io/brainfuck-visualizer/#Kz4rKys+Kz4rKwo8PFsKICAgID4+Wz4rPis8PC1dCiAgICA+WzwrPi1dCiAgICA8PDwtCl0KPj4+Pls8PDw8Kz4+Pj4tXQo8PFstXTwtPA==">ビジュアライザで動作を見る</a>
-とカチャカチャ動いて楽しい。</p><p>Cで同じことをするとこんな感じになります。</p><pre><code class=language-c>int mul(int a,int b)
-{
-    int c = 0;
-    int d = 0;
-    while(a){
-        a--;
-        while(b)
-        {
-            b--;
-            c++;
-            d++;
-        }
-        while(c)
-        {
-            c--;
-            b++;
-        }
-    }
-    while(d)
-    {
-        d--;
-        a++;
-    }
-    return a;
-}
-</code></pre><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>3</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><pre><code class=language-Brainfuck>&lt;&lt;[
-    &gt;&gt;[&gt;+&gt;+&lt;&lt;-] 先頭の値を2つの作業領域に移動
-    &gt;[&lt;+&gt;-] 1つめだけ書き戻す
-    &lt;&lt;&lt;- カウンタ
-]
-&gt;&gt;&gt;&gt;[&lt;&lt;&lt;&lt;+&gt;&gt;&gt;&gt;-] 2つ目の作業領域に結果が入っているので移動させる
-&lt;&lt;[-]&lt;-&lt; 先頭の要素を消去
-</code></pre><table><thead><tr><th>ポインタ</th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>6</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h4 id=比較>比較</h4><p><code>==</code>しか作ってないです。
-スタックの先頭2要素を取り出して、値が同じなら1をPush、違えば0をPushという機能を持ちます。</p><pre><code class=language-Brainfuck>[&lt;&lt;-&gt;&gt;-]&lt;-&lt; 減算
-&gt;+ フラグをセット
-&lt;[&gt;-&lt;[-]] 差がゼロでない=違う時はフラグをリセットしてゼロにする
-&gt;[&lt;+&gt;-]&lt; フラグが立っている=同じ時は1にする
-</code></pre><h4 id=if文>if文</h4><pre><code class=language-Brainfuck>ここで条件式を評価しスタックにPushする
-[
-    if文の中身。先頭要素をPopしてしまわないように気をつける
-[-]] if文終了。スタックの値をゼロにすることで1回でループを抜ける
-&lt;-&lt; スタックを縮める
-</code></pre><h4 id=while文>while文</h4><p>Brainfuckにデフォルトで付属している唯一の制御構文です。
+とカチャカチャ動いて楽しい。</p><p>Cで同じことをするとこんな感じになります。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>int</span> <span class=nf>mul</span><span class=p>(</span><span class=kt>int</span> <span class=n>a</span><span class=p>,</span><span class=kt>int</span> <span class=n>b</span><span class=p>)</span>
+<span class=p>{</span>
+    <span class=kt>int</span> <span class=n>c</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=kt>int</span> <span class=n>d</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=k>while</span><span class=p>(</span><span class=n>a</span><span class=p>)</span><span class=p>{</span>
+        <span class=n>a</span><span class=o>-</span><span class=o>-</span><span class=p>;</span>
+        <span class=k>while</span><span class=p>(</span><span class=n>b</span><span class=p>)</span>
+        <span class=p>{</span>
+            <span class=n>b</span><span class=o>-</span><span class=o>-</span><span class=p>;</span>
+            <span class=n>c</span><span class=o>+</span><span class=o>+</span><span class=p>;</span>
+            <span class=n>d</span><span class=o>+</span><span class=o>+</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=k>while</span><span class=p>(</span><span class=n>c</span><span class=p>)</span>
+        <span class=p>{</span>
+            <span class=n>c</span><span class=o>-</span><span class=o>-</span><span class=p>;</span>
+            <span class=n>b</span><span class=o>+</span><span class=o>+</span><span class=p>;</span>
+        <span class=p>}</span>
+    <span class=p>}</span>
+    <span class=k>while</span><span class=p>(</span><span class=n>d</span><span class=p>)</span>
+    <span class=p>{</span>
+        <span class=n>d</span><span class=o>-</span><span class=o>-</span><span class=p>;</span>
+        <span class=n>a</span><span class=o>+</span><span class=o>+</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=k>return</span> <span class=n>a</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></div><table><thead><tr><th>ポインタ</th><th></th><th></th><th></th><th>*</th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>3</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=c>
+</span><span class=c>    </span><span class=nv>&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=k>]</span><span class=c> 先頭の値を2つの作業領域に移動
+</span><span class=c>    </span><span class=nv>&gt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>-</span><span class=k>]</span><span class=c> 1つめだけ書き戻す
+</span><span class=c>    </span><span class=nv>&lt;&lt;&lt;</span><span class=nb>-</span><span class=c> カウンタ
+</span><span class=c></span><span class=k>]</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&lt;&lt;&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=c> 2つ目の作業領域に結果が入っているので移動させる
+</span><span class=c></span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c> 先頭の要素を消去
+</span></code></pre></div><table><thead><tr><th>ポインタ</th><th></th><th>*</th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td>値</td><td>1</td><td>6</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><h4 id=heading5>比較</h4><p><code>==</code>しか作ってないです。
+スタックの先頭2要素を取り出して、値が同じなら1をPush、違えば0をPushという機能を持ちます。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=nv>&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c> 減算
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=c> フラグをセット
+</span><span class=c></span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&gt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=k>]</span><span class=c> 差がゼロでない=違う時はフラグをリセットしてゼロにする
+</span><span class=c></span><span class=nv>&gt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=c> フラグが立っている=同じ時は1にする
+</span></code></pre></div><h4 id=if>if文</h4><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=c>ここで条件式を評価しスタックにPushする
+</span><span class=c></span><span class=k>[</span><span class=c>
+</span><span class=c>    if文の中身。先頭要素をPopしてしまわないように気をつける
+</span><span class=c></span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=k>]</span><span class=c> if文終了。スタックの値をゼロにすることで1回でループを抜ける
+</span><span class=c></span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c> スタックを縮める
+</span></code></pre></div><h4 id=while>while文</h4><p>Brainfuckにデフォルトで付属している唯一の制御構文です。
 言語機能として組み込まれているだけあって楽にかけます。
-条件式の評価をするコードが2箇所に現れます。</p><pre><code class=language-Brainfuck>ここで条件式を評価しスタックにPushする
-[
-    [-]&lt;-&lt; スタックから条件式の結果をPop
-    while文の中身
-    ここで条件式を評価しスタックにPushする
-]
-&lt;-&lt; スタックを縮める
-</code></pre><h3 id=bflang-dsl-for-brainf-ck>bflang: DSL for brainf*ck</h3><p>上のように独立した「部品」をたくさん作ることができたので、
+条件式の評価をするコードが2箇所に現れます。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=c>ここで条件式を評価しスタックにPushする
+</span><span class=c></span><span class=k>[</span><span class=c>
+</span><span class=c>    </span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c> スタックから条件式の結果をPop
+</span><span class=c>    while文の中身
+</span><span class=c>    ここで条件式を評価しスタックにPushする
+</span><span class=c></span><span class=k>]</span><span class=c>
+</span><span class=c></span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c> スタックを縮める
+</span></code></pre></div><h3 id=bflang-dsl-for-brainfck>bflang: DSL for brainf*ck</h3><p>上のように独立した「部品」をたくさん作ることができたので、
 あとはそれを適宜呼び出すコンパイラを作れば完成です。
 というわけで完成したものがこちらになります。</p><p><a href=https://github.com/kotet/bflang>kotet/bflang: DSL for brainf*ck</a></p><p>完成と言ってもAtCoderのABCのA問題がなんとか解ける程度の機能しかありません。
 まず文字列がないのがつらい……</p><p>しかしともかくプログラミングのようなことができる程度の機能があるので、コードを書いてみます。
@@ -133,48 +133,48 @@ while (getc() == 'Y')
 }
 putc(n + '0');
 </code></pre><p>そして以下が出力されるコードです。
-最適化を全くしていないのでかなり非効率なコードになっています。</p><pre><code class=language-Brainfuck>&gt;
-&gt;&gt;
-&gt;+&gt;
-&lt;[&lt;&lt;]&lt;&lt;[-]&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;[&lt;[&lt;&lt;]&lt;&lt;+&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;-]&lt;-&lt;
-&gt;+&gt;,
-&gt;+&gt;&gt;++++++++[&lt;+++++++++++&gt;-]&lt;+
-[&lt;&lt;-&gt;&gt;-]&lt;-&lt;&gt;+&lt;[[-]&gt;-&lt;]&gt;[-&lt;+&gt;]&lt;
-[[-]&lt;-&lt;
-&gt;+&gt;&lt;[&lt;&lt;]&lt;&lt;[&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;+&lt;[&lt;&lt;]&lt;&lt;-]&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;[&gt;+&gt;+&lt;&lt;-]&gt;[&lt;+&gt;-]+&gt;&lt;[&lt;&lt;]&lt;&lt;[-]&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;[&lt;[&lt;&lt;]&lt;&lt;+&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;-]&lt;-&lt;
-&gt;+&gt;+
-[&lt;&lt;+&gt;&gt;-]&lt;-&lt;
-&lt;[&lt;&lt;]&lt;&lt;[-]&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;[&lt;[&lt;&lt;]&lt;&lt;+&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;-]&lt;-&lt;
-&gt;+&gt;,
-&gt;+&gt;&gt;++++++++[&lt;+++++++++++&gt;-]&lt;+
-[&lt;&lt;-&gt;&gt;-]&lt;-&lt;&gt;+&lt;[[-]&gt;-&lt;]&gt;[-&lt;+&gt;]&lt;
-][-]&lt;-&lt;
-&gt;+&gt;&lt;[&lt;&lt;]&lt;&lt;[&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;+&lt;[&lt;&lt;]&lt;&lt;-]&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;[&gt;+&gt;+&lt;&lt;-]&gt;[&lt;+&gt;-]+&gt;&lt;[&lt;&lt;]&lt;&lt;[-]&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;[&lt;[&lt;&lt;]&lt;&lt;+&gt;&gt;&gt;&gt;[&gt;&gt;]&lt;-]&lt;-&lt;
-&gt;+&gt;&gt;++++++[&lt;++++++++&gt;-]&lt;
-[&lt;&lt;+&gt;&gt;-]&lt;-&lt;
-.[-]&lt;-&lt;
-</code></pre><h3 id=pegged-a-parsing-expression-grammar-peg-module-using-the-d-programming-language>Pegged: A Parsing Expression Grammar (PEG) module, using the D programming language.</h3><p>このコンパイラをつくるにあたって、Peggedというパーサジェネレータを使いました。
-Cコンパイラを作った時は手書きパーサだったので、初めてのパーサジェネレータということになります。</p><p>このように構文をDのソースコードに直接書くと、それを元にしたパーサが使えるようになります。</p><pre><code class=language-d>import pegged.grammar;
+最適化を全くしていないのでかなり非効率なコードになっています。</p><div class=highlight><pre class=chroma><code class=language-Brainfuck data-lang=Brainfuck><span class=nv>&gt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;&gt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=c>
+</span><span class=c></span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nt>,</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;&gt;</span><span class=nb>++++++++</span><span class=k>[</span><span class=nv>&lt;</span><span class=nb>+++++++++++</span><span class=nv>&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>+</span><span class=c>
+</span><span class=c></span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=nv>&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;&gt;</span><span class=nb>+</span><span class=nv>&lt;</span><span class=k>[</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=k>]</span><span class=nv>&gt;</span><span class=k>[</span><span class=nb>-</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=k>[</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nb>+</span><span class=nv>&gt;&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>+</span><span class=c>
+</span><span class=c></span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nt>,</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;&gt;</span><span class=nb>++++++++</span><span class=k>[</span><span class=nv>&lt;</span><span class=nb>+++++++++++</span><span class=nv>&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>+</span><span class=c>
+</span><span class=c></span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=nv>&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;&gt;</span><span class=nb>+</span><span class=nv>&lt;</span><span class=k>[</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=k>]</span><span class=nv>&gt;</span><span class=k>[</span><span class=nb>-</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=k>]</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&lt;&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=nb>+</span><span class=nv>&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nb>+</span><span class=nv>&gt;&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;</span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=k>]</span><span class=nv>&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;&gt;&gt;</span><span class=k>[</span><span class=nv>&gt;&gt;</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nv>&gt;</span><span class=nb>+</span><span class=nv>&gt;&gt;</span><span class=nb>++++++</span><span class=k>[</span><span class=nv>&lt;</span><span class=nb>++++++++</span><span class=nv>&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=k>[</span><span class=nv>&lt;&lt;</span><span class=nb>+</span><span class=nv>&gt;&gt;</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span><span class=c></span><span class=nt>.</span><span class=k>[</span><span class=nb>-</span><span class=k>]</span><span class=nv>&lt;</span><span class=nb>-</span><span class=nv>&lt;</span><span class=c>
+</span></code></pre></div><h3 id=pegged-a-parsing-expression-grammar-peg-module-using-the-d-programming-language>Pegged: A Parsing Expression Grammar (PEG) module, using the D programming language.</h3><p>このコンパイラをつくるにあたって、Peggedというパーサジェネレータを使いました。
+Cコンパイラを作った時は手書きパーサだったので、初めてのパーサジェネレータということになります。</p><p>このように構文をDのソースコードに直接書くと、それを元にしたパーサが使えるようになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>import</span> <span class=nn>pegged.grammar</span><span class=o>;</span>
 
-mixin(grammar(`
-Arithmetic:
-    Term     &lt; Factor (Add / Sub)*
-    Add      &lt; &quot;+&quot; Factor
-    Sub      &lt; &quot;-&quot; Factor
-    Factor   &lt; Primary (Mul / Div)*
-    Mul      &lt; &quot;*&quot; Primary
-    Div      &lt; &quot;/&quot; Primary
-    Primary  &lt; Parens / Neg / Pos / Number / Variable
-    Parens   &lt; &quot;(&quot; Term &quot;)&quot;
-    Neg      &lt; &quot;-&quot; Primary
-    Pos      &lt; &quot;+&quot; Primary
-    Number   &lt; ~([0-9]+)
-
-    Variable &lt;- identifier
-`));
-</code></pre><p>渡された構文の文字列をコンパイル時に解析して、コンパイル時に生成したコードを使います。
+<span class=k>mixin</span><span class=o>(</span><span class=n>grammar</span><span class=o>(</span><span class=s>`
+</span><span class=s>Arithmetic:
+</span><span class=s>    Term     &lt; Factor (Add / Sub)*
+</span><span class=s>    Add      &lt; &#34;+&#34; Factor
+</span><span class=s>    Sub      &lt; &#34;-&#34; Factor
+</span><span class=s>    Factor   &lt; Primary (Mul / Div)*
+</span><span class=s>    Mul      &lt; &#34;*&#34; Primary
+</span><span class=s>    Div      &lt; &#34;/&#34; Primary
+</span><span class=s>    Primary  &lt; Parens / Neg / Pos / Number / Variable
+</span><span class=s>    Parens   &lt; &#34;(&#34; Term &#34;)&#34;
+</span><span class=s>    Neg      &lt; &#34;-&#34; Primary
+</span><span class=s>    Pos      &lt; &#34;+&#34; Primary
+</span><span class=s>    Number   &lt; ~([0-9]+)
+</span><span class=s>
+</span><span class=s>    Variable &lt;- identifier
+</span><span class=s>`</span><span class=o>)</span><span class=o>)</span><span class=o>;</span>
+</code></pre></div><p>渡された構文の文字列をコンパイル時に解析して、コンパイル時に生成したコードを使います。
 やっぱりライブラリとして整備されたパーサは便利でした。
-<code>writeln</code>するだけで構文木全体がわかりやすく出力される機能には助けられた……</p><h3 id=問題を解いてみる>問題を解いてみる</h3><p>そういうわけでできたコンパイラを使って問題を1問解いてみました。</p><p><a href=https://atcoder.jp/contests/abc115/submissions/4023935>提出 #4023935 - AtCoder Beginner Contest 115</a></p><p>計算量とか一切気にしないでとりあえず動くことだけを目標に作った割には実行時間が短いです。
+<code>writeln</code>するだけで構文木全体がわかりやすく出力される機能には助けられた……</p><h3 id=heading6>問題を解いてみる</h3><p>そういうわけでできたコンパイラを使って問題を1問解いてみました。</p><p><a href=https://atcoder.jp/contests/abc115/submissions/4023935>提出 #4023935 - AtCoder Beginner Contest 115</a></p><p>計算量とか一切気にしないでとりあえず動くことだけを目標に作った割には実行時間が短いです。
 高速なBrainfuck処理系の作者に感謝。</p><p>文字列とか除算とか多倍長整数とか欲しい機能はいっぱいありますが、
 気力が尽きてきたので生成されたコードの動きをビジュアライザで眺めて余生を過ごそうと思います。</p></article><footer><h2><a href=/tags/dlang>#dlang</a>
 Brainfuckを出力する自作言語を作ってAtCoderに参加する</h2><p><time>2019-01-16</time>

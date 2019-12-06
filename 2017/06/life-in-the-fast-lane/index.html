@@ -7,9 +7,9 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#dlang 駆け足の人生:GCを減らすための工夫【翻訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/06/life-in-the-fast-lane/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang 駆け足の人生:GCを減らすための工夫【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="この記事は、Life in the Fast Lane – The D Blogを自分用に翻訳したものを 許可を得て 公開するものである。 今回だいぶ翻訳が怪しいので、誤字や誤訳などを見つけたら今すぐ Pull requestだ!"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/06/life-in-the-fast-lane/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.59.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#dlang 駆け足の人生:GCを減らすための工夫【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/06/life-in-the-fast-lane/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang 駆け足の人生:GCを減らすための工夫【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="この記事は、Life in the Fast Lane – The D Blogを自分用に翻訳したものを 許可を得て 公開するものである。 今回だいぶ翻訳が怪しいので、誤字や誤訳などを見つけたら今すぐ Pull requestだ!"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/06/life-in-the-fast-lane/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.60.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7S15 8.34314575 15 10C15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13S11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9S11 9.44771525 11 10C11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
-駆け足の人生:GCを減らすための工夫【翻訳】</h2><p>Created: <time>2017-06-26</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/dlang_gc_series>#dlang_gc_series</a> <a href=/tags/d_blog>#d_blog</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#gc鎮静剤>GC鎮静剤</a></li><li><a href=#gcの壁>GCの壁</a></li><li><a href=#努力する>努力する</a></li><li><a href=#要点>要点</a></li></ul></li></ul></li></ul></nav></aside></header><article><p>この記事は、</p><p><a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/>Life in the Fast Lane – The D Blog</a><sup class=footnote-ref id=fnref:1><a href=#fn:1>1</a></sup></p><p>を自分用に翻訳したものを
+駆け足の人生:GCを減らすための工夫【翻訳】</h2><p>Created: <time>2017-06-26</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/dlang_gc_series>#dlang_gc_series</a> <a href=/tags/d_blog>#d_blog</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#gc>GC鎮静剤</a></li><li><a href=#gc1>GCの壁</a></li><li><a href=#heading>努力する</a></li><li><a href=#heading1>要点</a></li></ul></li></ul></nav></aside></header><article><p>この記事は、</p><p><a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/>Life in the Fast Lane – The D Blog</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup></p><p>を自分用に翻訳したものを
 <a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
 公開するものである。</p><p>今回だいぶ翻訳が怪しいので、誤字や誤訳などを見つけたら今すぐ
 <a href=https://github.com/kotet/blog.kotet.jp>Pull request</a>だ!</p><hr><p>私が書いた<a href=https://dlang.org/blog/category/gc/>GCシリーズ</a>
@@ -29,44 +29,44 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 言語とランタイム両方で保証する組み込みの仕組みを提供しています。
 GCが関わらないようにするのに役立つコマンドラインオプションもあります。</p><p>J.P.という名の仮のプログラマを想像してみてください、彼はそれが有効だと思っているので、
 彼のDプログラムからガベージコレクションを完全に避けたいと思っています。
-彼には即時取れる2つの選択肢があります。</p><h3 id=gc鎮静剤>GC鎮静剤</h3><p>1つの選択肢はプログラムが開始する時に<code>GC.disable</code>を呼ぶことです。
+彼には即時取れる2つの選択肢があります。</p><h3 id=gc>GC鎮静剤</h3><p>1つの選択肢はプログラムが開始する時に<code>GC.disable</code>を呼ぶことです。
 これはアロケーションを止めませんが、コレクションを停止させます。
-ここでいうコレクションとは、他のスレッドでのアロケーションによるものを含む<strong>すべての</strong>コレクションを意味します。</p><pre><code class=language-d>void main() {
-    import core.memory;
-    import std.stdio;
-    GC.disable;
-    writeln(&quot;Goodbye, GC!&quot;);
-}
-</code></pre><p>出力:</p><pre><code class=language-console>Goodbye, GC!
+ここでいうコレクションとは、他のスレッドでのアロケーションによるものを含む<strong>すべての</strong>コレクションを意味します。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+    <span class=kn>import</span> <span class=nn>core.memory</span><span class=o>;</span>
+    <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
+    <span class=n>GC</span><span class=o>.</span><span class=na>disable</span><span class=o>;</span>
+    <span class=n>writeln</span><span class=o>(</span><span class=s>&#34;Goodbye, GC!&#34;</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>出力:</p><pre><code class=language-console data-lang=console>Goodbye, GC!
 </code></pre><p>これにはGCヒープを使うすべての言語機能が期待通りに動くという利点があります。
 しかし、クリーンアップなしにアロケーションが続いていくことを考えると、
 ちょっと計算すればこれが問題だということがわかるでしょう。
 アロケーションが手に負えなくなった時、なにかを妥協しなくてはならなくなるでしょう。
 <a href=http://dlang.org/phobos/core_memory.html#.GC.disable>ドキュメント</a>曰く:</p><blockquote><p>メモリ不足時など、ガベージコレクタによる回収動作がプログラムの正常動作に不可欠な場合は、
-disable 状態でもガベージコレクタが動くことがあります。<sup class=footnote-ref id=fnref:2><a href=#fn:2>2</a></sup></p></blockquote><p>J.P.の視点にたつと、これは良いことではないでしょう。
+disable 状態でもガベージコレクタが動くことがあります。<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup></p></blockquote><p>J.P.の視点にたつと、これは良いことではないでしょう。
 しかしこの制約が容認できるなら、物事をコントロールするのに役立ついくつかのステップがあります。
 J.P.は必要に応じて<code>GC.enable</code>または<code>GC.collect</code>を呼ぶことができます。
-これは単純なCやC++のアロケーション戦略よりも優れたコレクションサイクルへのコントロールを提供します。</p><h3 id=gcの壁>GCの壁</h3><p>単にGCが耐え難い時は、J.P.は<code>@nogc</code>属性をつけることができます。
-それを<code>main</code>関数の前につけることでコレクションに苦しむことはなくなります。</p><pre><code class=language-d>@nogc
-void main() { ... }
-</code></pre><p>これは究極のGC軽減戦略です。
+これは単純なCやC++のアロケーション戦略よりも優れたコレクションサイクルへのコントロールを提供します。</p><h3 id=gc1>GCの壁</h3><p>単にGCが耐え難い時は、J.P.は<code>@nogc</code>属性をつけることができます。
+それを<code>main</code>関数の前につけることでコレクションに苦しむことはなくなります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=nd>@nogc</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span> <span class=o>.</span><span class=o>.</span><span class=o>.</span> <span class=o>}</span>
+</code></pre></div><p>これは究極のGC軽減戦略です。
 <code>@nogc</code>は<code>main</code>のコールスタックの先でガベージコレクタが動作しないことの保証を適用します。
 「実装がどこでコレクティングを必要と判断するか」を気にする必要はありません。</p><p>一見して、これは<code>GC.disable</code>よりもよい選択肢に見えます。
-やってみましょう。</p><pre><code class=language-d>@nogc
-void main() {
-    import std.stdio;
-    writeln(&quot;GC be gone!&quot;);
-}
+やってみましょう。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=nd>@nogc</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+    <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
+    <span class=n>writeln</span><span class=o>(</span><span class=s>&#34;GC be gone!&#34;</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
 
-</code></pre><p>このとき、コンパイラを通すことはできません。</p><pre><code class=language-console>Error: @nogc function 'D main' cannot call non-@nogc function 'std.stdio.writeln!string.writeln'
+</code></pre></div><p>このとき、コンパイラを通すことはできません。</p><pre><code class=language-console data-lang=console>Error: @nogc function 'D main' cannot call non-@nogc function 'std.stdio.writeln!string.writeln'
 </code></pre><p><code>@nogc</code>印はそれを強制するコンパイラの能力です。
 非常に極端なアプローチです。
 関数が<code>@nogc</code>とつけられたとき、その内部から呼びだされた関数にも<code>@nogc</code>がついていなければなりません。
-当然、<code>writeln</code>はそうではありません。</p><p>それだけではありません:</p><pre><code class=language-d>@nogc 
-void main() {
-    auto ints = new int[](100);
-}
-</code></pre><p>コンパイラはこれも見逃しません。</p><pre><code class=language-console>Error: cannot use 'new' in @nogc function 'D main'
+当然、<code>writeln</code>はそうではありません。</p><p>それだけではありません:</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=nd>@nogc</span> 
+<span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+    <span class=kd>auto</span> <span class=n>ints</span> <span class=o>=</span> <span class=k>new</span> <span class=kt>int</span><span class=o>[</span><span class=o>]</span><span class=o>(</span><span class=mi>100</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>コンパイラはこれも見逃しません。</p><pre><code class=language-console data-lang=console>Error: cannot use 'new' in @nogc function 'D main'
 </code></pre><p>GCヒープからアロケートをする言語機能は<code>@nogc</code>とマークした関数には立ち入れません
 (これらの機能については、
 <a href=https://dlang.org/blog/2017/03/20/dont-fear-the-reaper/>このシリーズの最初のポスト</a>を参照してください)。
@@ -78,8 +78,8 @@ void main() {
 とるに足らないものもありますが、いくらかはそうではなく、ほかはほとんど全部動作しません
 (詳細は将来の投稿で掘り下げていきます)。
 明らかでない例は例外を投げることです。
-慣用的方法は:</p><pre><code class=language-d>throw new Exception(&quot;Blah&quot;);
-</code></pre><p>この行の<code>new</code>のために、<code>@nogc</code>関数内でこれは使えません。
+慣用的方法は:</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=k>throw</span> <span class=k>new</span> <span class=n>Exception</span><span class=o>(</span><span class=s>&#34;Blah&#34;</span><span class=o>)</span><span class=o>;</span>
+</code></pre></div><p>この行の<code>new</code>のために、<code>@nogc</code>関数内でこれは使えません。
 これを回避するには投げる例外を事前アロケートする必要があります。
 これは、通常のヒープから割り当てられた例外メモリの割り当てを解除する必要があり、
 参照カウントやスタック割り当てのアイディアにつながるという問題があります……
@@ -93,7 +93,7 @@ Dは<a href=https://dlang.org/spec/class.html#static-constructor>静的コンス
 これらのいずれかがプログラムに存在し、かつ<code>@nogc</code>とアノテートされていない場合、
 技術的にはGCアロケーションとコレクションはプログラムに存在できます。
 しかし依然として<code>@nogc</code>はいちど<code>main</code>に入ったら一切のコレクションが起きないことを意味し、
-事実上全くGCがないのと変わりません。</p><h3 id=努力する>努力する</h3><p>ここまでで私は選択肢を提案しました。
+事実上全くGCがないのと変わりません。</p><h3 id=heading>努力する</h3><p>ここまでで私は選択肢を提案しました。
 GCを完全に無効にしたり切ったりせずに書けるプログラムはたくさんあります。
 GCアロケーションを最小化しホットパスから離すという単純な戦略は多くの利点があり、
 望ましいものです。
@@ -112,15 +112,15 @@ DのGCはプログラマがGCメモリをアロケートした時にのみ実行
 ツールチェインの助けによって理解を深めることができます。</p><p>DRuntimeの<a href=https://dlang.org/spec/garbage.html#gc_config>GCオプション</a>
 <code>--DRT-gcopt=profile:1</code>をコンパイルされたプログラム(コンパイラではありません!)に渡し、
 チューンアップの助けにすることができます。
-これはコレクションの合計数や合計コレクション時間のような役に立つGCプロファイリングデータを報告します。</p><p>デモンストレーションとして、<strong>gcstat.d</strong>は20個の値を整数の動的配列に追加します。</p><pre><code class=language-d>void main() {
-    import std.stdio;
-    int[] ints;
-    foreach(i; 0 .. 20) {
-        ints ~= i;
-    }
-    writeln(ints);
-}
-</code></pre><p>コンパイルしGCプロファイルスイッチ付きで実行します:</p><pre><code class=language-console>dmd gcstat.d
+これはコレクションの合計数や合計コレクション時間のような役に立つGCプロファイリングデータを報告します。</p><p>デモンストレーションとして、<strong>gcstat.d</strong>は20個の値を整数の動的配列に追加します。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+    <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
+    <span class=kt>int</span><span class=o>[</span><span class=o>]</span> <span class=n>ints</span><span class=o>;</span>
+    <span class=k>foreach</span><span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=mi>20</span><span class=o>)</span> <span class=o>{</span>
+        <span class=n>ints</span> <span class=o>~</span><span class=o>=</span> <span class=n>i</span><span class=o>;</span>
+    <span class=o>}</span>
+    <span class=n>writeln</span><span class=o>(</span><span class=n>ints</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>コンパイルしGCプロファイルスイッチ付きで実行します:</p><pre><code class=language-console data-lang=console>dmd gcstat.d
 gcstat --DRT-gcopt=profile:1
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
         Number of collections:  1
@@ -135,41 +135,41 @@ GC summary:    1 MB,    1 GC    0 ms, Pauses    0 ms &lt;    0 ms
 ランタイムがGCを終了させると、現在の実装では、一般的にコレクションをトリガします。
 これは主にコレクトしたオブジェクトでデストラクタを実行するためにおこなわれます。
 DではGCでアロケートされたオブジェクトのデストラクタは必要ありません(将来の投稿のトピックです)。</p><p>DMDは、配列追加演算子のような言語機能に隠れたものも含めた、
-すべてのGCアロケーションを表示するコマンドラインオプション<code>-vgc</code>をサポートしています。</p><p>デモンストレーションとして、<strong>inner.d</strong>をご覧ください:</p><pre><code class=language-d>void printInts(int[] delegate() dg)
-{
-    import std.stdio;
-    foreach(i; dg()) writeln(i);
-} 
+すべてのGCアロケーションを表示するコマンドラインオプション<code>-vgc</code>をサポートしています。</p><p>デモンストレーションとして、<strong>inner.d</strong>をご覧ください:</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>printInts</span><span class=o>(</span><span class=kt>int</span><span class=o>[</span><span class=o>]</span> <span class=nf>delegate</span><span class=o>(</span><span class=o>)</span> <span class=n>dg</span><span class=o>)</span>
+<span class=o>{</span>
+    <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
+    <span class=k>foreach</span><span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=n>dg</span><span class=o>(</span><span class=o>)</span><span class=o>)</span> <span class=n>writeln</span><span class=o>(</span><span class=n>i</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span> 
 
-void main() {
-    int[] ints;
-    auto makeInts() {
-        foreach(i; 0 .. 20) {
-            ints ~= i;
-        }
-        return ints;
-    }
+<span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+    <span class=kt>int</span><span class=o>[</span><span class=o>]</span> <span class=n>ints</span><span class=o>;</span>
+    <span class=kd>auto</span> <span class=nf>makeInts</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+        <span class=k>foreach</span><span class=o>(</span><span class=n>i</span><span class=o>;</span> <span class=mi>0</span> <span class=o>.</span><span class=o>.</span> <span class=mi>20</span><span class=o>)</span> <span class=o>{</span>
+            <span class=n>ints</span> <span class=o>~</span><span class=o>=</span> <span class=n>i</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>return</span> <span class=n>ints</span><span class=o>;</span>
+    <span class=o>}</span>
 
-    printInts(&amp;makeInts);
-}
-</code></pre><p>ここで、<code>makeInts</code>は内部関数です。
+    <span class=n>printInts</span><span class=o>(</span><span class=o>&amp;</span><span class=n>makeInts</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>ここで、<code>makeInts</code>は内部関数です。
 非静的内部関数へのポインタは関数ポインタではなく、<code>delegate</code>です
 (コンテキストポインタと関数ポインタの組;内部関数が<code>static</code>の時は、
 かわりに<code>function</code>型のポインタが作られます)。
 この特殊なケースで、デリゲートは親スコープの変数を使います。
-こちらが<code>-vgc</code>でコンパイルした時の出力です:</p><pre><code class=language-console>dmd -vgc inner.d
+こちらが<code>-vgc</code>でコンパイルした時の出力です:</p><pre><code class=language-console data-lang=console>dmd -vgc inner.d
 inner.d(11): vgc: operator ~= may cause GC allocation
 inner.d(7): vgc: using closure causes GC allocation
 </code></pre><p>ここからわかることはデリゲートが<code>ints</code>の状態、クロージャ(それ自身は型ではありません -
 型はまだ<code>delegate</code>です)を運べるようにメモリがアロケートされる必要があるということです。
 <code>ints</code>の宣言を<code>makeInts</code>のスコープの中に移動させてリコンパイルしてください。
 クロージャのアロケーションがなくなるでしょう。
-よりよい選択肢は<code>printInts</code>の宣言をこのように変えることです:</p><pre><code class=language-d>void printInts(scope int[] delegate() dg)
-</code></pre><p><code>scope</code>を関数パラメータに追加するとパラメータ内の参照は逃れることができません。
+よりよい選択肢は<code>printInts</code>の宣言をこのように変えることです:</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>printInts</span><span class=o>(</span><span class=n>scope</span> <span class=kt>int</span><span class=o>[</span><span class=o>]</span> <span class=nf>delegate</span><span class=o>(</span><span class=o>)</span> <span class=n>dg</span><span class=o>)</span>
+</code></pre></div><p><code>scope</code>を関数パラメータに追加するとパラメータ内の参照は逃れることができません。
 言い換えると、グローバル変数に<code>dg</code>を代入したり、この関数から返すことはできなくなります。
 これによってクロージャを作る必要がなくなり、アロケーションが行われなくなるという利点があります。
 詳細については<a href=https://dlang.org/spec/function.html#closures>関数ポインタ、デリゲート、クロージャ</a>や
-<a href=https://dlang.org/spec/function.html#parameters>関数パラメータストレージクラス</a>のドキュメントを見てください。</p><h3 id=要点>要点</h3><p>DのGCがJavaやC#のような言語のそれと大きく違うことを考えれば、異なるパフォーマンス特性を持つことは明らかです。
+<a href=https://dlang.org/spec/function.html#parameters>関数パラメータストレージクラス</a>のドキュメントを見てください。</p><h3 id=heading1>要点</h3><p>DのGCがJavaやC#のような言語のそれと大きく違うことを考えれば、異なるパフォーマンス特性を持つことは明らかです。
 その上、Dのプログラムはほとんどすべてが参照型のため、
 Javaのような言語で書かれたそれと比べて遥かに生み出すゴミが少ないという傾向があります。
 初めてDのプロジェクトに取り組む時にこれを理解しておくと役立つでしょう。
@@ -182,8 +182,6 @@ Dの標準ライブラリPhobosを可能な限り<code>@nogc</code>フレンド�
 例外の割り当てられ方を変えるWalterの提案のような言語機能の改善はこの作業をかなり速めるはずです。</p><p>このシリーズの将来の投稿では、GCヒープの外側にメモリをアロケートする方法、
 それを同じプログラム内のGCアロケーションと一緒に使う方法、
 <code>@nogc</code>コードで無効になる言語機能を補う方法、
-オブジェクトデストラクタとGCの相互作用を扱う戦略などを見ていきます。</p><p>Vladimir Panteleev、Guillaume Piolat、Steven Schveighofferのこの記事の草稿への貴重なフィードバックに感謝します。</p><p>JavaおよびC#に関する誤った行を削除したり、複数のスレッドに関する情報を追加するために、この記事は改訂されました。</p><div class=footnotes><hr><ol><li id=fn:1>おそらくイーグルスの<a href=https://ja.wikipedia.org/wiki/%E9%A7%86%E3%81%91%E8%B6%B3%E3%81%AE%E4%BA%BA%E7%94%9F_(%E6%9B%B2)>同名の歌</a>が記事タイトルの元ネタ。
-<a class=footnote-return href=#fnref:1><sup>[return]</sup></a></li><li id=fn:2><a href=http://www.kmonos.net/alang/d/phobos/core_memory.html#GC>こちら</a>から翻訳を引用
-<a class=footnote-return href=#fnref:2><sup>[return]</sup></a></li></ol></div></article><footer><h2><a href=/tags/dlang>#dlang</a>
+オブジェクトデストラクタとGCの相互作用を扱う戦略などを見ていきます。</p><p>Vladimir Panteleev、Guillaume Piolat、Steven Schveighofferのこの記事の草稿への貴重なフィードバックに感謝します。</p><p>JavaおよびC#に関する誤った行を削除したり、複数のスレッドに関する情報を追加するために、この記事は改訂されました。</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>おそらくイーグルスの<a href=https://ja.wikipedia.org/wiki/%E9%A7%86%E3%81%91%E8%B6%B3%E3%81%AE%E4%BA%BA%E7%94%9F_(%E6%9B%B2)>同名の歌</a>が記事タイトルの元ネタ。<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;</a></p></li><li id=fn:2 role=doc-endnote><p><a href=http://www.kmonos.net/alang/d/phobos/core_memory.html#GC>こちら</a>から翻訳を引用<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;</a></p></li></ol></section></article><footer><h2><a href=/tags/dlang>#dlang</a>
 駆け足の人生:GCを減らすための工夫【翻訳】</h2><p><time>2017-06-26</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/dlang_gc_series>#dlang_gc_series</a> <a href=/tags/d_blog>#d_blog</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>

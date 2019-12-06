@@ -7,9 +7,9 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#dlang 所有権と借用をD言語に組み込む【翻訳】 - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2019/07/ownership-and-borrowing-in-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang 所有権と借用をD言語に組み込む【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="Ownership and Borrowing in D – The D Blog を 許可を得て 翻訳しました。 誤訳等あれば気軽に Pull requestを投げてください。 ほとんどのプログラムはメモリを確保し、管理し"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2019/07/ownership-and-borrowing-in-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.59.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#dlang 所有権と借用をD言語に組み込む【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2019/07/ownership-and-borrowing-in-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang 所有権と借用をD言語に組み込む【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="Ownership and Borrowing in D – The D Blog を 許可を得て 翻訳しました。 誤訳等あれば気軽に Pull requestを投げてください。 ほとんどのプログラムはメモリを確保し、管理し"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2019/07/ownership-and-borrowing-in-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.60.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7S15 8.34314575 15 10C15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13S11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9S11 9.44771525 11 10C11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
-所有権と借用をD言語に組み込む【翻訳】</h2><p>Created: <time>2019-07-16</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#所有権>所有権</a></li><li><a href=#借用>借用</a></li><li><a href=#原理>原理</a></li><li><a href=#dに所有権-借用を組み入れる>Dに所有権/借用を組み入れる</a></li><li><a href=#かのように>「かのように」</a></li><li><a href=#結論>結論</a></li></ul></li></ul></li></ul></nav></aside></header><article><p><a href=https://dlang.org/blog/2019/07/15/ownership-and-borrowing-in-d/>Ownership and Borrowing in D – The D Blog</a>
+所有権と借用をD言語に組み込む【翻訳】</h2><p>Created: <time>2019-07-16</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#heading>所有権</a></li><li><a href=#heading1>借用</a></li><li><a href=#heading2>原理</a></li><li><a href=#d>Dに所有権/借用を組み入れる</a></li><li><a href=#heading3>「かのように」</a></li><li><a href=#heading4>結論</a></li></ul></li></ul></nav></aside></header><article><p><a href=https://dlang.org/blog/2019/07/15/ownership-and-borrowing-in-d/>Ownership and Borrowing in D – The D Blog</a>
 を
 <a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
 翻訳しました。</p><p>誤訳等あれば気軽に
@@ -40,71 +40,71 @@ RCのマイナス面はカウントのコストが高いことです。
 これにも欠点はあり、アルゴリズムやデータ構造の構成方法を考え直さなければならないと評判です。</p><p>この欠点は対処可能なものであり、この記事の残りでは所有権/借用（ownership/borrowing、OB）システムがどのように動作するか、
 そしてそれをDに組み込む提案について話します。
 最初私は不可能だと思っていましたが、時間をかけて考えた結果、方法はあるとわかりました。
-（推移的イミュータビリティと関数の純粋性によって）関数型プログラミングをDに組み入れたのと同じように。</p><h3 id=所有権>所有権</h3><p>誰がメモリオブジェクトを所有するかはバカバカしいほどシンプルです。
+（推移的イミュータビリティと関数の純粋性によって）関数型プログラミングをDに組み入れたのと同じように。</p><h3 id=heading>所有権</h3><p>誰がメモリオブジェクトを所有するかはバカバカしいほどシンプルです。
 ひとつのポインタがメモリを所有するため、ポインタが所有者です。
 ポインタはそれが有効であることをやめた後にメモリを解放する責任を持ちます。
 当然メモリオブジェクト内のすべてのポインタはそのポインタが指す先のメモリの所有者であり、
-データ構造内にそれ以外のポインタは存在せず、したがってデータ構造は木構造のかたちをとります。</p><p>ポインタはコピーされず、ムーブされます。</p><pre><code class=language-d>T* f();
+データ構造内にそれ以外のポインタは存在せず、したがってデータ構造は木構造のかたちをとります。</p><p>ポインタはコピーされず、ムーブされます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>T</span><span class=o>*</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-void g(T*);
+<span class=kt>void</span> <span class=nf>g</span><span class=o>(</span><span class=n>T</span><span class=o>*</span><span class=o>)</span><span class=o>;</span>
 
-T* p = f();
+<span class=n>T</span><span class=o>*</span> <span class=n>p</span> <span class=o>=</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-T* q = p; // pの値はqにムーブされました。コピーされてはいません
+<span class=n>T</span><span class=o>*</span> <span class=n>q</span> <span class=o>=</span> <span class=n>p</span><span class=o>;</span> <span class=c1>// pの値はqにムーブされました。コピーされてはいません
+</span><span class=c1></span>
+<span class=n>g</span><span class=o>(</span><span class=n>p</span><span class=o>)</span><span class=o>;</span>     <span class=c1>// エラー。pは不正な値を持ちます
+</span></code></pre></div><p>データ構造の外にはポインタをムーブできません。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>struct</span> <span class=nc>S</span> <span class=o>{</span> <span class=n>T</span><span class=o>*</span> <span class=n>p</span><span class=o>;</span> <span class=o>}</span>
 
-g(p);     // エラー。pは不正な値を持ちます
-</code></pre><p>データ構造の外にはポインタをムーブできません。</p><pre><code class=language-d>struct S { T* p; }
+<span class=n>S</span><span class=o>*</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-S* f();
+<span class=n>S</span><span class=o>*</span> <span class=n>s</span> <span class=o>=</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-S* s = f();
-
-T* q = s.p; // エラー。s.pへのポインタを複数持つことはできません
-</code></pre><p>なぜ単に<code>s.p</code>を不正としないのでしょうか？
+<span class=n>T</span><span class=o>*</span> <span class=n>q</span> <span class=o>=</span> <span class=n>s</span><span class=o>.</span><span class=na>p</span><span class=o>;</span> <span class=c1>// エラー。s.pへのポインタを複数持つことはできません
+</span></code></pre></div><p>なぜ単に<code>s.p</code>を不正としないのでしょうか？
 それは実行時にマークされる必要があり、今はコンパイル時のソリューションを想定しているので、
-それは単にエラーになります。</p><p>スコープを超えてポインタを所有することもエラーになります。</p><pre><code class=language-d>void h() {
+それは単にエラーになります。</p><p>スコープを超えてポインタを所有することもエラーになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>h</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
 
-  T* p = f();
+  <span class=n>T</span><span class=o>*</span> <span class=n>p</span> <span class=o>=</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-} // エラー。pの解放を忘れていますね？
-</code></pre><p>ポインターはどこかにムーブする必要があります。</p><pre><code class=language-d>void g(T*);
+<span class=o>}</span> <span class=c1>// エラー。pの解放を忘れていますね？
+</span></code></pre></div><p>ポインターはどこかにムーブする必要があります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>g</span><span class=o>(</span><span class=n>T</span><span class=o>*</span><span class=o>)</span><span class=o>;</span>
 
-void h() {
+<span class=kt>void</span> <span class=nf>h</span><span class=o>(</span><span class=o>)</span> <span class=o>{</span>
 
-  T* p = f();
+  <span class=n>T</span><span class=o>*</span> <span class=n>p</span> <span class=o>=</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-  g(p);  // g()にムーブしたので、これはもうg()の問題です
-
-}
-</code></pre><p>これによりメモリリークとuse-after-freeの問題はきっぱり解決されます
+  <span class=n>g</span><span class=o>(</span><span class=n>p</span><span class=o>)</span><span class=o>;</span>  <span class=c1>// g()にムーブしたので、これはもうg()の問題です
+</span><span class=c1></span>
+<span class=o>}</span>
+</code></pre></div><p>これによりメモリリークとuse-after-freeの問題はきっぱり解決されます
 （ヒント：わかりやすくするために、<code>f()</code>を<code>malloc()</code>に、<code>g()</code>を<code>free()</code>に置き換えてみましょう）。</p><p>これは関数内では、
 <a href=https://ja.wikipedia.org/wiki/%E5%85%B1%E9%80%9A%E9%83%A8%E5%88%86%E5%BC%8F%E9%99%A4%E5%8E%BB>共通部分式</a>
 を求めるのに使われているような
 <a href=https://ja.wikipedia.org/wiki/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%95%E3%83%AD%E3%83%BC%E8%A7%A3%E6%9E%90>データフロー解析（DFA）</a>
 を用いてコンパイル時に追跡できます。
-DFAは<code>goto</code>が何重にも折り重なった中に潜むどんなネズミも見逃しません。</p><h3 id=借用>借用</h3><p>上で説明した所有権システムは堅実ですが、制約が厳しすぎます。
-以下のようなコードを考えてみましょう。</p><pre><code class=language-D>struct S { void car(); void bar(); }
+DFAは<code>goto</code>が何重にも折り重なった中に潜むどんなネズミも見逃しません。</p><h3 id=heading1>借用</h3><p>上で説明した所有権システムは堅実ですが、制約が厳しすぎます。
+以下のようなコードを考えてみましょう。</p><div class=highlight><pre class=chroma><code class=language-D data-lang=D><span class=kd>struct</span> <span class=nc>S</span> <span class=o>{</span> <span class=kt>void</span> <span class=nf>car</span><span class=o>(</span><span class=o>)</span><span class=o>;</span> <span class=kt>void</span> <span class=nf>bar</span><span class=o>(</span><span class=o>)</span><span class=o>;</span> <span class=o>}</span>
 
-struct S* f();
+<span class=kd>struct</span> <span class=nc>S</span><span class=o>*</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-S* s = f();
+<span class=n>S</span><span class=o>*</span> <span class=n>s</span> <span class=o>=</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-s.car();  // sはcar()にムーブされました
-
-s.bar();  // エラー。sは不正です
-</code></pre><p>これを動作させるためには、<code>s.car()</code>から戻ってきたときにムーブしたポインタを<code>s</code>に返す方法が必要です。</p><p>ある意味、これは借用の仕組みそのものです。
+<span class=n>s</span><span class=o>.</span><span class=na>car</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>  <span class=c1>// sはcar()にムーブされました
+</span><span class=c1></span>
+<span class=n>s</span><span class=o>.</span><span class=na>bar</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>  <span class=c1>// エラー。sは不正です
+</span></code></pre></div><p>これを動作させるためには、<code>s.car()</code>から戻ってきたときにムーブしたポインタを<code>s</code>に返す方法が必要です。</p><p>ある意味、これは借用の仕組みそのものです。
 <code>s.car()</code>は<code>s.car()</code>が実行される間<code>s</code>のコピーを借用します。
 <code>s</code>はこの実行の間不正になり、<code>s.car()</code>から返ってきたときふたたび有効になります。</p><p>Dにおいて、構造体のメンバ関数は<code>this</code>を参照としてとるため、エンハンスメントを通して借用に適応できます。
-つまり、引数をrefでとるとそれは借用されます。</p><p>Dはscopeポインタもサポートしているため、これも借用に自然と適応します。</p><pre><code class=language-d>void g(scope T*);
+つまり、引数をrefでとるとそれは借用されます。</p><p>Dはscopeポインタもサポートしているため、これも借用に自然と適応します。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>g</span><span class=o>(</span><span class=n>scope</span> <span class=n>T</span><span class=o>*</span><span class=o>)</span><span class=o>;</span>
 
-T* f();
+<span class=n>T</span><span class=o>*</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-T* p = f();
+<span class=n>T</span><span class=o>*</span> <span class=n>p</span> <span class=o>=</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-g(p);      // g()はpを借用します
-
-g(p);      // g()から返ってきた後はまたpを使用できます
-</code></pre><p>（
+<span class=n>g</span><span class=o>(</span><span class=n>p</span><span class=o>)</span><span class=o>;</span>      <span class=c1>// g()はpを借用します
+</span><span class=c1></span>
+<span class=n>g</span><span class=o>(</span><span class=n>p</span><span class=o>)</span><span class=o>;</span>      <span class=c1>// g()から返ってきた後はまたpを使用できます
+</span></code></pre></div><p>（
 関数が引数をrefまたはscopeポインタとしてとるとき、refやポインタから脱出することはできません。
 これは借用セマンティクスに適合します。
 ）</p><p>この方法で借用を実現すれば、
@@ -112,30 +112,30 @@ g(p);      // g()から返ってきた後はまたpを使用できます
 という小さな洞察によって借用は更に強化できます。
 （constポインタはメモリの解放も変更もしません。）
 これはメモリを所有しているミュータブルなポインタがアクティブでない間であれば、
-複数のconstなポインタがそのポインタの指すメモリを借用できるということを意味します。</p><p>例えば以下のようになります。</p><pre><code class=language-d>T* f();
+複数のconstなポインタがそのポインタの指すメモリを借用できるということを意味します。</p><p>例えば以下のようになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>T</span><span class=o>*</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
 
-void g(T*);
+<span class=kt>void</span> <span class=nf>g</span><span class=o>(</span><span class=n>T</span><span class=o>*</span><span class=o>)</span><span class=o>;</span>
 
-T* p = f();  // pは所有者になります
+<span class=n>T</span><span class=o>*</span> <span class=n>p</span> <span class=o>=</span> <span class=n>f</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>  <span class=c1>// pは所有者になります
+</span><span class=c1></span>
+<span class=o>{</span>
 
-{
+  <span class=n>scope</span> <span class=kd>const</span> <span class=n>T</span><span class=o>*</span> <span class=n>q</span> <span class=o>=</span> <span class=n>p</span><span class=o>;</span> <span class=c1>// constなポインタを借用
+</span><span class=c1></span>
+  <span class=n>scope</span> <span class=kd>const</span> <span class=n>T</span><span class=o>*</span> <span class=n>r</span> <span class=o>=</span> <span class=n>p</span><span class=o>;</span> <span class=c1>// もうひとつ借用
+</span><span class=c1></span>
+  <span class=n>g</span><span class=o>(</span><span class=n>p</span><span class=o>)</span><span class=o>;</span> <span class=c1>// エラー。qとrがスコープ内にある間はpは不正です
+</span><span class=c1></span>
+<span class=o>}</span>
 
-  scope const T* q = p; // constなポインタを借用
-
-  scope const T* r = p; // もうひとつ借用
-
-  g(p); // エラー。qとrがスコープ内にある間はpは不正です
-
-}
-
-g(p); // ok
-</code></pre><h3 id=原理>原理</h3><p>上記はメモリオブジェクトが2つのうち1つの状態をとるかのように振る舞うという概念に蒸留できます。</p><ol><li>メモリオブジェクトへのミュータブルなポインタがただ1つ存在する</li><li>メモリオブジェクトへのconstポインタが1つ以上存在する</li></ol><p>注意深い読者は私が書いた「かのように」という言葉に気づいたことでしょう。
+<span class=n>g</span><span class=o>(</span><span class=n>p</span><span class=o>)</span><span class=o>;</span> <span class=c1>// ok
+</span></code></pre></div><h3 id=heading2>原理</h3><p>上記はメモリオブジェクトが2つのうち1つの状態をとるかのように振る舞うという概念に蒸留できます。</p><ol><li>メモリオブジェクトへのミュータブルなポインタがただ1つ存在する</li><li>メモリオブジェクトへのconstポインタが1つ以上存在する</li></ol><p>注意深い読者は私が書いた「かのように」という言葉に気づいたことでしょう。
 わざと曖昧な言葉遣いをしたのはなぜでしょうか？
 なにかごまかしが行われようとしていたのでしょうか？
 そうです、これはごまかしです。
 コンピュータ言語は「かのように」でいっぱいであり、裏側では銀行に預けたお金が実際には銀行に存在しないのとおなじように
 （だれかショックを受けた人がいたなら謝罪します）ダーティなことが行われています。
-読んでいきましょう！</p><p>でもまずは、少々解説が必要でしょう。</p><h3 id=dに所有権-借用を組み入れる>Dに所有権/借用を組み入れる</h3><p>このスキームは人々が普通に書いているDのコードと互換性がありません。
+読んでいきましょう！</p><p>でもまずは、少々解説が必要でしょう。</p><h3 id=d>Dに所有権/借用を組み入れる</h3><p>このスキームは人々が普通に書いているDのコードと互換性がありません。
 既存のDプログラムをすべて壊してしまわないといけないのでしょうか？
 そして簡単に修正ができなかった場合、アルゴリズムを再設計しなければいけないのでしょうか？</p><p>まあ、そうなります。
 ただしそれはDの隠し玉（別に隠してはいませんが）、関数属性がない場合の話です。
@@ -146,7 +146,7 @@ Dには関数属性を関数のセマンティクスを変化させるために�
 OBセマンティクスを関数に適用するには、<code>@live</code>属性を追加します。</p><p>つまりOBは、必要に応じて、そして時間とリソースに応じてDのコードにインクリメンタルに追加できます。
 プロジェクトを完全に機能し、テストされ、リリース可能な状態に保ちつつOBを追加できるようになります。
 プロジェクトのどれくらいがこの規則の上でメモリ安全化を機械的に監査可能です。
-これはDのさまざまなメモリセーフ保証（スタックを脱出するポインタが存在しない、のような）のリストに加わります。</p><h3 id=かのように>「かのように」</h3><p>リファレンスカウントされるメモリオブジェクトのような、厳格なOBの重要な要素がまだできていません。
+これはDのさまざまなメモリセーフ保証（スタックを脱出するポインタが存在しない、のような）のリストに加わります。</p><h3 id=heading3>「かのように」</h3><p>リファレンスカウントされるメモリオブジェクトのような、厳格なOBの重要な要素がまだできていません。
 なんといってもRCオブジェクトの本質は複数のポインタが存在することにあります。
 RCオブジェクトは（正しく構築された場合）メモリ安全であるため、メモリ安全との悲劇的衝突をせずにOBと同居できます。
 OBの上でRCの構築はできないというだけなのです。
@@ -154,7 +154,7 @@ OBの上でRCの構築はできないというだけなのです。
 <code>@system</code>では様々な安全性チェックが切られます。
 もちろん、OBも<code>@system</code>コードでは無効化されます。
 これによりRCオブジェクトの実装をOBチェッカーから隠すことができます。</p><p>しかしOBコードの中で、OBチェッカーの目にはRCオブジェクトがルールに従っているように見えます。
-これで問題ないですね！</p><p>数多くのライブラリがOBを使えるようになるでしょう。</p><h3 id=結論>結論</h3><p>この記事はOBの基礎の概観をしました。
+これで問題ないですね！</p><p>数多くのライブラリがOBを使えるようになるでしょう。</p><h3 id=heading4>結論</h3><p>この記事はOBの基礎の概観をしました。
 私はさらに総合的な仕様について作業をしています。
 なにかを見逃しており水面下に穴があるという可能性は常にありますが、これまでのところ大丈夫そうです。
 このDのとてもエキサイティングな開発が実装されるのが楽しみです。</p></article><footer><h2><a href=/tags/dlang>#dlang</a>

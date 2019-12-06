@@ -7,103 +7,102 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#dlang 処理後の結果を見られるdmdのスイッチ -vcg-ast - Kotet&#39;s Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/05/vcg-ast/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang 処理後の結果を見られるdmdのスイッチ -vcg-ast - Kotet's Personal Blog"><meta name=og:description content="Dconf 2017で出てきたコマンドラインスイッチ-vcg-astについて書き残しておく。 これはgccでいう-Eオプションのようなもので、これはいろ"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/05/vcg-ast/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.59.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#dlang 処理後の結果を見られるdmdのスイッチ -vcg-ast - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/05/vcg-ast/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang 処理後の結果を見られるdmdのスイッチ -vcg-ast - Kotet's Personal Blog"><meta name=og:description content="Dconf 2017で出てきたコマンドラインスイッチ-vcg-astについて書き残しておく。 これはgccでいう-Eオプションのようなもので、これはいろ"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/05/vcg-ast/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.60.1"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>PODCAST</span><a href=https://podcast.kotet.jp title=podcast><svg width="22" height="20" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="broadcasting" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M9.38742589 20 8.72075922 22H6.61257411L9.89881747 12.1412699C9.34410225 11.5968755 9 10.8386225 9 10 9 8.34314575 10.3431458 7 12 7S15 8.34314575 15 10C15 10.8386225 14.6558977 11.5968755 14.1011825 12.1412699L17.3874259 22H15.2792408L14.6125741 20H9.38742589zM10.7207592 16 10.0540926 18H13.9459074L13.2792408 16H10.7207592zM11.3874259 14H12.6125741L12.2750928 12.987556C12.1844984 12.9957918 12.0927406 13 12 13S11.8155016 12.9957918 11.7249072 12.987556L11.3874259 14zM12 11C12.5522847 11 13 10.5522847 13 10 13 9.44771525 12.5522847 9 12 9S11 9.44771525 11 10C11 10.5522847 11.4477153 11 12 11zm8.108743-8.43301443C21.9041909 4.52460368 23 7.13433188 23 10 23 12.8656681 21.9041909 15.4753963 20.108743 17.4330144L18.6344261 16.0815573C20.103429 14.4798697 21 12.3446376 21 10 21 7.65536245 20.103429 5.52013028 18.6344261 3.91844274L20.108743 2.56698557zM17.1601092 5.26989991C18.302667 6.51565689 19 8.17639301 19 10 19 11.823607 18.302667 13.4843431 17.1601092 14.7301001L15.6857923 13.3786429C16.501905 12.4888165 17 11.3025764 17 10 17 8.69742358 16.501905 7.51118349 15.6857923 6.62135708L17.1601092 5.26989991zM3.89125699 2.56665655 5.3655739 3.91811372C3.89657104 5.51980126 3 7.65503343 3 9.99967098 3 12.3443085 3.89657104 14.4795407 5.3655739 16.0812282L3.89125699 17.4326854C2.09580905 15.4750673 1 12.8653391 1 9.99967098 1 7.13400286 2.09580905 4.52427466 3.89125699 2.56665655zM6.83989081 5.26957089 8.31420772 6.62102806C7.49809502 7.51085447 7 8.69709456 7 9.99967098 7 11.3022474 7.49809502 12.4884875 8.31420772 13.3783139L6.83989081 14.7297711C5.69733303 13.4840141 5 11.823278 5 9.99967098 5 8.17606399 5.69733303 6.51532787 6.83989081 5.26957089z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
-処理後の結果を見られるdmdのスイッチ -vcg-ast</h2><p>Created: <time>2017-05-08</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#使ってみる>使ってみる</a><ul><li><a href=#app-d><code>app.d</code></a></li><li><a href=#app-d-cg><code>app.d.cg</code></a></li></ul></li><li><a href=#dubで使う>dubで使う</a><ul><li><a href=#dub-json><code>dub.json</code></a></li><li><a href=#source-app-d><code>source/app.d</code></a></li><li><a href=#source-app-d-cg><code>source/app.d.cg</code></a></li></ul></li><li><a href=#関連リンク>関連リンク</a></li></ul></li></ul></li></ul></nav></aside></header><article><p><a href=http://dconf.org/2017/talks/koch.html>Dconf 2017で出てきた</a>コマンドラインスイッチ<code>-vcg-ast</code>について書き残しておく。
-これはgccでいう<code>-E</code>オプションのようなもので、これはいろいろな&rdquo;semantic steps&rdquo; <sup class=footnote-ref id=fnref:1><a href=#fn:1>1</a></sup>
-がすべて終了したあとのASTを読めるかたちに書きだすオプションである。</p><iframe width=560 height=315 src="https://www.youtube-nocookie.com/embed/crHnumzsLUs?rel=0" frameborder=0 allow="autoplay; encrypted-media" allowfullscreen></iframe><p><code>-vcg-ast</code>が使われた動画。
-使用箇所付近(25:00)から再生が始まる。</p><h3 id=使ってみる>使ってみる</h3><h4 id=app-d><code>app.d</code></h4><pre><code class=language-d>void main()
-{
-	import std.stdio : writeln;
+処理後の結果を見られるdmdのスイッチ -vcg-ast</h2><p>Created: <time>2017-05-08</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#heading>使ってみる</a></li><li><a href=#dub>dubで使う</a></li><li><a href=#heading1>関連リンク</a></li></ul></li></ul></nav></aside></header><article><p><a href=http://dconf.org/2017/talks/koch.html>Dconf 2017で出てきた</a>コマンドラインスイッチ<code>-vcg-ast</code>について書き残しておく。
+これはgccでいう<code>-E</code>オプションのようなもので、これはいろいろな"semantic steps&rdquo; <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>
+がすべて終了したあとのASTを読めるかたちに書きだすオプションである。</p><p><code>-vcg-ast</code>が使われた動画。
+使用箇所付近(25:00)から再生が始まる。</p><h3 id=heading>使ってみる</h3><h4 id=appd><code>app.d</code></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span>
+<span class=o>{</span>
+	<span class=kn>import</span> <span class=nn>std.stdio</span> <span class=o>:</span> <span class=n>writeln</span><span class=o>;</span>
 
-	static immutable table = () {
-		import std.range : iota, array;
-		import std.algorithm : map;
-		import std.math : sqrt;
+	<span class=kd>static</span> <span class=n>immutable</span> <span class=n>table</span> <span class=o>=</span> <span class=o>(</span><span class=o>)</span> <span class=o>{</span>
+		<span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>iota</span><span class=o>,</span> <span class=n>array</span><span class=o>;</span>
+		<span class=kn>import</span> <span class=nn>std.algorithm</span> <span class=o>:</span> <span class=n>map</span><span class=o>;</span>
+		<span class=kn>import</span> <span class=nn>std.math</span> <span class=o>:</span> <span class=n>sqrt</span><span class=o>;</span>
 
-		return 10.iota.map!((real n) =&gt; n.sqrt()).array;
-	}();
-	alias T = table;
-	mixin(&quot;writeln(T);&quot;);
-}
-</code></pre><p>ここで<code>$ dmd app.d -vcg-ast</code>すると、<code>app.d.cg</code>というファイルが生成される。
-中を見たら7912行もあった。</p><h4 id=app-d-cg><code>app.d.cg</code></h4><pre><code class=language-d>import object;
-void main()
-{
-	import std.stdio : writeln;
-	static immutable immutable(real[]) table = [0.00000L, 1.00000L, 1.41421L, 1.73205L, 2.00000L, 2.23607L, 2.44949L, 2.64575L, 2.82843L, 3.00000L];
-	alias T = static immutable immutable(real[]) table = [0.00000L, 1.00000L, 1.41421L, 1.73205L, 2.00000L, 2.23607L, 2.44949L, 2.64575L, 2.82843L, 3.00000L];
-	;
-	writeln(table);
-	return 0;
-}
-CommonType!(int, int)
-alias CommonType = int;
-CommonType!int
-alias CommonType = int;
-isFloatingPoint!int
-enum bool isFloatingPoint = false;
-Unqual!int
-alias Unqual = int;
-// 以下略
-</code></pre><p>関数リテラルはCTFEの結果である配列になり、文字列mixinは普通のコードになり、さらにaliasも展開されている。
+		<span class=k>return</span> <span class=mf>10.i</span><span class=n>ota</span><span class=o>.</span><span class=na>map</span><span class=o>!</span><span class=o>(</span><span class=o>(</span><span class=kt>real</span> <span class=n>n</span><span class=o>)</span> <span class=o>=</span><span class=o>&gt;</span> <span class=n>n</span><span class=o>.</span><span class=na>sqrt</span><span class=o>(</span><span class=o>)</span><span class=o>)</span><span class=o>.</span><span class=na>array</span><span class=o>;</span>
+	<span class=o>}</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+	<span class=kd>alias</span> <span class=n>T</span> <span class=o>=</span> <span class=n>table</span><span class=o>;</span>
+	<span class=k>mixin</span><span class=o>(</span><span class=s>&#34;writeln(T);&#34;</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>ここで<code>$ dmd app.d -vcg-ast</code>すると、<code>app.d.cg</code>というファイルが生成される。
+中を見たら7912行もあった。</p><h4 id=appdcg><code>app.d.cg</code></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>import</span> <span class=nn>object</span><span class=o>;</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span>
+<span class=o>{</span>
+	<span class=kn>import</span> <span class=nn>std.stdio</span> <span class=o>:</span> <span class=n>writeln</span><span class=o>;</span>
+	<span class=kd>static</span> <span class=n>immutable</span> <span class=nf>immutable</span><span class=o>(</span><span class=kt>real</span><span class=o>[</span><span class=o>]</span><span class=o>)</span> <span class=n>table</span> <span class=o>=</span> <span class=o>[</span><span class=mf>0.00000L</span><span class=o>,</span> <span class=mf>1.00000L</span><span class=o>,</span> <span class=mf>1.41421L</span><span class=o>,</span> <span class=mf>1.73205L</span><span class=o>,</span> <span class=mf>2.00000L</span><span class=o>,</span> <span class=mf>2.23607L</span><span class=o>,</span> <span class=mf>2.44949L</span><span class=o>,</span> <span class=mf>2.64575L</span><span class=o>,</span> <span class=mf>2.82843L</span><span class=o>,</span> <span class=mf>3.00000L</span><span class=o>]</span><span class=o>;</span>
+	<span class=kd>alias</span> <span class=n>T</span> <span class=o>=</span> <span class=kd>static</span> <span class=n>immutable</span> <span class=nf>immutable</span><span class=o>(</span><span class=kt>real</span><span class=o>[</span><span class=o>]</span><span class=o>)</span> <span class=n>table</span> <span class=o>=</span> <span class=o>[</span><span class=mf>0.00000L</span><span class=o>,</span> <span class=mf>1.00000L</span><span class=o>,</span> <span class=mf>1.41421L</span><span class=o>,</span> <span class=mf>1.73205L</span><span class=o>,</span> <span class=mf>2.00000L</span><span class=o>,</span> <span class=mf>2.23607L</span><span class=o>,</span> <span class=mf>2.44949L</span><span class=o>,</span> <span class=mf>2.64575L</span><span class=o>,</span> <span class=mf>2.82843L</span><span class=o>,</span> <span class=mf>3.00000L</span><span class=o>]</span><span class=o>;</span>
+	<span class=o>;</span>
+	<span class=n>writeln</span><span class=o>(</span><span class=n>table</span><span class=o>)</span><span class=o>;</span>
+	<span class=k>return</span> <span class=mi>0</span><span class=o>;</span>
+<span class=o>}</span>
+<span class=n>CommonType</span><span class=o>!</span><span class=o>(</span><span class=kt>int</span><span class=o>,</span> <span class=kt>int</span><span class=o>)</span>
+<span class=kd>alias</span> <span class=n>CommonType</span> <span class=o>=</span> <span class=kt>int</span><span class=o>;</span>
+<span class=n>CommonType</span><span class=o>!</span><span class=kt>int</span>
+<span class=kd>alias</span> <span class=n>CommonType</span> <span class=o>=</span> <span class=kt>int</span><span class=o>;</span>
+<span class=n>isFloatingPoint</span><span class=o>!</span><span class=kt>int</span>
+<span class=kd>enum</span> <span class=kt>bool</span> <span class=n>isFloatingPoint</span> <span class=o>=</span> <span class=kc>false</span><span class=o>;</span>
+<span class=n>Unqual</span><span class=o>!</span><span class=kt>int</span>
+<span class=kd>alias</span> <span class=n>Unqual</span> <span class=o>=</span> <span class=kt>int</span><span class=o>;</span>
+<span class=c1>// 以下略
+</span></code></pre></div><p>関数リテラルはCTFEの結果である配列になり、文字列mixinは普通のコードになり、さらにaliasも展開されている。
 やたら行数が大きいのは自動的にimportされた<code>object</code>のせいだろう。
-コードがコンパイラによってどのように展開されるかを知ることができてためになるし、なんだか見てて楽しい。</p><h3 id=dubで使う>dubで使う</h3><p><blockquote class=twitter-tweet data-lang=ja><p lang=ja dir=ltr>とりあえずdub使ってる人は、dub.jsonの場合、<br>&quot;configuration&quot;: [<br>{ &quot;name&quot;: &quot;ast&quot;, &quot;dflag&quot;: [&quot;-vcg-ast&quot;] }<br>]<br>と書き足すなどしてビルドすると一発の模様です。</p>&mdash; lempiji@思秋期 (@lempiji) <a href=https://twitter.com/lempiji/status/860459096897576960>2017年5月5日</a></blockquote><script async src=//platform.twitter.com/widgets.js></script></p><h4 id=dub-json><code>dub.json</code></h4><pre><code class=language-json>{
-	&quot;name&quot;: &quot;test&quot;,
-	&quot;authors&quot;: [
-		&quot;kotet&quot;
-	],
-	&quot;description&quot;: &quot;A minimal D application.&quot;,
-	&quot;copyright&quot;: &quot;Copyright © 2017, kotet&quot;,
-	&quot;license&quot;: &quot;proprietary&quot;,
-	&quot;dependencies&quot;: {
-		&quot;progress&quot;: &quot;*&quot;
-	},
-	&quot;targetType&quot;: &quot;executable&quot;,
-	&quot;configurations&quot;: [
-		{
-			&quot;name&quot;: &quot;default&quot;
-		},
-		{
-			&quot;name&quot;: &quot;ast&quot;,
-			&quot;dflags&quot;: [
-				&quot;-vcg-ast&quot;
-			]
-		}
-	]
-}
-</code></pre><h4 id=source-app-d><code>source/app.d</code></h4><pre><code class=language-d>void main()
-{
-	import std.stdio : writeln;
-	import std.range : iota;
-	import progress.bar : Bar;
+コードがコンパイラによってどのように展開されるかを知ることができてためになるし、なんだか見てて楽しい。</p><h3 id=dub>dubで使う</h3><h4 id=dubjson><code>dub.json</code></h4><div class=highlight><pre class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+	<span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;test&#34;</span><span class=p>,</span>
+	<span class=nt>&#34;authors&#34;</span><span class=p>:</span> <span class=p>[</span>
+		<span class=s2>&#34;kotet&#34;</span>
+	<span class=p>]</span><span class=p>,</span>
+	<span class=nt>&#34;description&#34;</span><span class=p>:</span> <span class=s2>&#34;A minimal D application.&#34;</span><span class=p>,</span>
+	<span class=nt>&#34;copyright&#34;</span><span class=p>:</span> <span class=s2>&#34;Copyright © 2017, kotet&#34;</span><span class=p>,</span>
+	<span class=nt>&#34;license&#34;</span><span class=p>:</span> <span class=s2>&#34;proprietary&#34;</span><span class=p>,</span>
+	<span class=nt>&#34;dependencies&#34;</span><span class=p>:</span> <span class=p>{</span>
+		<span class=nt>&#34;progress&#34;</span><span class=p>:</span> <span class=s2>&#34;*&#34;</span>
+	<span class=p>}</span><span class=p>,</span>
+	<span class=nt>&#34;targetType&#34;</span><span class=p>:</span> <span class=s2>&#34;executable&#34;</span><span class=p>,</span>
+	<span class=nt>&#34;configurations&#34;</span><span class=p>:</span> <span class=p>[</span>
+		<span class=p>{</span>
+			<span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;default&#34;</span>
+		<span class=p>}</span><span class=p>,</span>
+		<span class=p>{</span>
+			<span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;ast&#34;</span><span class=p>,</span>
+			<span class=nt>&#34;dflags&#34;</span><span class=p>:</span> <span class=p>[</span>
+				<span class=s2>&#34;-vcg-ast&#34;</span>
+			<span class=p>]</span>
+		<span class=p>}</span>
+	<span class=p>]</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=sourceappd><code>source/app.d</code></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span>
+<span class=o>{</span>
+	<span class=kn>import</span> <span class=nn>std.stdio</span> <span class=o>:</span> <span class=n>writeln</span><span class=o>;</span>
+	<span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>iota</span><span class=o>;</span>
+	<span class=kn>import</span> <span class=nn>progress.bar</span> <span class=o>:</span> <span class=n>Bar</span><span class=o>;</span>
 
-	auto b = new Bar();
-	foreach (n; b.iter(10.iota))
-	{
-	}
-	mixin(&quot;writeln(b);&quot;);
-}
-</code></pre><p><code>$ dub build -c ast</code>すると.d.cgファイルが出力される。</p><h4 id=source-app-d-cg><code>source/app.d.cg</code></h4><pre><code class=language-d>import object;
-void main()
-{
-	import std.stdio : writeln;
-	import std.range : iota;
-	import progress.bar : Bar;
-	Bar b = new Bar;
-	{
-		Generator!int __r3001 = b.iter(iota(10));
-		for (; !__r3001.empty(); __r3001.popFront())
-		{
-			int n = __r3001.front();
-		}
-	}
-	writeln(b);
-	return 0;
-}
-// 以下略
-</code></pre><p><code>foreach</code>が<code>for</code>に展開されている。
-たのしい。</p><h3 id=関連リンク>関連リンク</h3><ul><li><a href=http://forum.dlang.org/thread/oendp1$ct4$1@digitalmars.com>-vcg-ast dmd command line switch - D Programming Language Discussion Forum</a></li><li><a href="https://www.youtube.com/playlist?list=PL3jwVPmk_PRxo23yyoc0Ip_cP3-rCm7eB">DConf 2017 - YouTube</a></li></ul><div class=footnotes><hr><ol><li id=fn:1><a href=https://github.com/dlang/dmd/pull/6556>vcg-ast by UplinkCoder · Pull Request #6556 · dlang/dmd</a>
-<a class=footnote-return href=#fnref:1><sup>[return]</sup></a></li></ol></div></article><footer><h2><a href=/tags/dlang>#dlang</a>
+	<span class=kd>auto</span> <span class=n>b</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Bar</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+	<span class=k>foreach</span> <span class=o>(</span><span class=n>n</span><span class=o>;</span> <span class=n>b</span><span class=o>.</span><span class=na>iter</span><span class=o>(</span><span class=mf>10.i</span><span class=n>ota</span><span class=o>)</span><span class=o>)</span>
+	<span class=o>{</span>
+	<span class=o>}</span>
+	<span class=k>mixin</span><span class=o>(</span><span class=s>&#34;writeln(b);&#34;</span><span class=o>)</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p><code>$ dub build -c ast</code>すると.d.cgファイルが出力される。</p><h4 id=sourceappdcg><code>source/app.d.cg</code></h4><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>import</span> <span class=nn>object</span><span class=o>;</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span>
+<span class=o>{</span>
+	<span class=kn>import</span> <span class=nn>std.stdio</span> <span class=o>:</span> <span class=n>writeln</span><span class=o>;</span>
+	<span class=kn>import</span> <span class=nn>std.range</span> <span class=o>:</span> <span class=n>iota</span><span class=o>;</span>
+	<span class=kn>import</span> <span class=nn>progress.bar</span> <span class=o>:</span> <span class=n>Bar</span><span class=o>;</span>
+	<span class=n>Bar</span> <span class=n>b</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Bar</span><span class=o>;</span>
+	<span class=o>{</span>
+		<span class=n>Generator</span><span class=o>!</span><span class=kt>int</span> <span class=n>__r3001</span> <span class=o>=</span> <span class=n>b</span><span class=o>.</span><span class=na>iter</span><span class=o>(</span><span class=n>iota</span><span class=o>(</span><span class=mi>10</span><span class=o>)</span><span class=o>)</span><span class=o>;</span>
+		<span class=k>for</span> <span class=o>(</span><span class=o>;</span> <span class=o>!</span><span class=n>__r3001</span><span class=o>.</span><span class=na>empty</span><span class=o>(</span><span class=o>)</span><span class=o>;</span> <span class=n>__r3001</span><span class=o>.</span><span class=na>popFront</span><span class=o>(</span><span class=o>)</span><span class=o>)</span>
+		<span class=o>{</span>
+			<span class=kt>int</span> <span class=n>n</span> <span class=o>=</span> <span class=n>__r3001</span><span class=o>.</span><span class=na>front</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+		<span class=o>}</span>
+	<span class=o>}</span>
+	<span class=n>writeln</span><span class=o>(</span><span class=n>b</span><span class=o>)</span><span class=o>;</span>
+	<span class=k>return</span> <span class=mi>0</span><span class=o>;</span>
+<span class=o>}</span>
+<span class=c1>// 以下略
+</span></code></pre></div><p><code>foreach</code>が<code>for</code>に展開されている。
+たのしい。</p><h3 id=heading1>関連リンク</h3><ul><li><a href=http://forum.dlang.org/thread/oendp1$ct4$1@digitalmars.com>-vcg-ast dmd command line switch - D Programming Language Discussion Forum</a></li><li><a href="https://www.youtube.com/playlist?list=PL3jwVPmk_PRxo23yyoc0Ip_cP3-rCm7eB">DConf 2017 - YouTube</a></li></ul><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p><a href=https://github.com/dlang/dmd/pull/6556>vcg-ast by UplinkCoder · Pull Request #6556 · dlang/dmd</a><a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;</a></p></li></ol></section></article><footer><h2><a href=/tags/dlang>#dlang</a>
 処理後の結果を見られるdmdのスイッチ -vcg-ast</h2><p><time>2017-05-08</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>
