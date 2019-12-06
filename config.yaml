@@ -21,3 +21,5 @@ Languages:
     params:
   ja:
     params:
+
+pygmentsUseClasses: true
