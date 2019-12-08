@@ -10,6 +10,11 @@ params:
 taxonomies:
   tag: "tags"
 
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
 hasCJKLanguage: true
 
 DefaultContentLanguage: ja
