@@ -60,7 +60,17 @@ Syntax highlighting <span class=p>&lt;</span><span class=nt>span</span> <span cl
 Pythonのキーワードや数値が勝手に強調されています。
 これはまだ邪魔にはなりませんが、
 自動認識した言語でシンタックスエラーになるようなテキストだと真っ赤になって非常に辛い感じになります。
-シンタックスエラーになる時点でおかしいと気づいてくれ……（高望み）</p><p>無効な言語を指定すると勝手に違う言語にすることはありませんが、
+シンタックスエラーになる時点でおかしいと気づいてくれ……（高望み）</p><pre><code class="hljs python">highlight.js
+
+Syntax highlighting <span class=hljs-keyword>for</span> the Web
+
+    <span class=hljs-number>185</span> languages <span class=hljs-keyword>and</span> <span class=hljs-number>89</span> styles
+    automatic language detection
+    multi-language code highlighting
+    available <span class=hljs-keyword>for</span> node.js
+    works <span class=hljs-keyword>with</span> any markup
+    compatible <span class=hljs-keyword>with</span> any js framework
+</code></pre><p>無効な言語を指定すると勝手に違う言語にすることはありませんが、
 こんどは全く触らなくなってしまうので背景色など最低限の整形もしてくれなくなってしまいます。</p><p>一応これはプレインテキストだ、と明示する方法もあって、<code>plaintext</code>クラスをつければ良いです。
 しかしHugoのマークダウンプロセッサは<code>language-&lt;言語名></code>という規則でクラス名をつけます。
 そのため、素直に<code> ```plaintext</code>などと書いてもクラス名は<code>language-plaintext</code>になり、

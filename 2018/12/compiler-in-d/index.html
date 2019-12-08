@@ -74,14 +74,14 @@ gitの使い方もかなり上手になりました。
 今到達している範囲で定数畳み込みはまだ出てきていませんが、
 今までのコードからどんなものを書けばいいか大体推測できます。
 さらに、式変形を自動で行うタイプのプログラムもだいたい作れそうな気がしてきます。
-実際論理式の展開くらいなら１日あればフルスクラッチから書けるようになります。</p><p>あと<a href="https://www.youtube.com/watch?v=0-vWT-t0UHg">malloc動画</a>
+実際論理式の展開くらいなら１日あればフルスクラッチから書けるようになります。</p><blockquote class=twitter-tweet data-lang=ja><p lang=ja dir=ltr>移動中にほぼ何も見ずにパーサが書けるようになっている……！ <a href=https://t.co/K1r0lI1WKf>pic.twitter.com/K1r0lI1WKf</a></p>&mdash; Kotet (@kotetttt) <a href="https://twitter.com/kotetttt/status/1064327578469642241?ref_src=twsrc%5Etfw">2018年11月19日</a></blockquote><blockquote class=twitter-tweet data-lang=ja><p lang=ja dir=ltr>成長を感じる <a href=https://t.co/Unb8xQ0zWi>pic.twitter.com/Unb8xQ0zWi</a></p>&mdash; Kotet (@kotetttt) <a href="https://twitter.com/kotetttt/status/1064525855047602176?ref_src=twsrc%5Etfw">2018年11月19日</a></blockquote><p>あと<a href="https://www.youtube.com/watch?v=0-vWT-t0UHg">malloc動画</a>
 の言ってることが理解できるようになりました。</p><p>Cコンパイラを作ったことによって、その知識を応用できるようになり、
 作れるものの範囲が一気に広がりました。</p><h3 id=9cc-c>9ccと「低レイヤを知りたい人のための Cコンパイラ作成入門」の相違点</h3><p>d9ccを書いている途中で「低レイヤを知りたい人のための Cコンパイラ作成入門」の一部が
 <a href=https://www.sigbus.info/compilerbook/>公開されました</a>が、
 9ccはこの本と作成過程が異なるようです。
 本ではスタックマシンを作っていましたが、9ccでは最初からレジスタマシンを書き始めています。
 スタックにまかせている部分を自分で書くことになるわけですが、そんなに難しいとも思わなかったので、
-人によっては自分のように9ccのコミットログをたどる学習法のほうがしっくりくるかもしれません。</p><h3 id=d>なぜD言語なのか</h3><p>Cコンパイラを書くメリットは上のとおりですが、ではなぜD言語でなければいけないのでしょうか？
+人によっては自分のように9ccのコミットログをたどる学習法のほうがしっくりくるかもしれません。</p><h3 id=d>なぜD言語なのか</h3><blockquote class=twitter-tweet data-lang=ja><p lang=ja dir=ltr>いきなりD言語が飛び出してきてびっくりした<br>低レイヤを知りたい人のための Cコンパイラ作成入門 <a href=https://t.co/NEdfJaCcOp>https://t.co/NEdfJaCcOp</a> <a href=https://t.co/ZKQnIjvAQ1>pic.twitter.com/ZKQnIjvAQ1</a></p>&mdash; Kotet (@kotetttt) <a href="https://twitter.com/kotetttt/status/1058195569632407552?ref_src=twsrc%5Etfw">2018年11月2日</a></blockquote><script async src=https://platform.twitter.com/widgets.js></script><p>Cコンパイラを書くメリットは上のとおりですが、ではなぜD言語でなければいけないのでしょうか？
 一般的には他の言語で書いてもいいし、C言語で書けばセルフホストができます。
 しかし自分にはD言語を使う理由があります。</p><h4 id=heading6>コンパイラが書ける</h4><p>Cコンパイラくらい<a href=http://shinh.skr.jp/elvm/8cc.c.eir.bf>brainf*ckですら作れる</a>
 のでこれはそんなに重要ではないですが、
@@ -138,7 +138,7 @@ Date: Sun Oct 21 16:14:23 2018 +0900</p><p>Add zero-arity function definition</p
 そもそも縦に長過ぎて大量にスクロールしなければならないのもつらい。
 出力されたアセンブリを読むことによるデバッグがどんどん難しくなっていく。
 まあだからこそコンパイラが必要とされるわけだが。</p><p>4 files changed, 24 insertions(+), 5 deletions(-)</p></li><li><p>commit 1b0b2608d4d6d2aef940c73f963af6a6c85179d0<br>Date: Wed Oct 24 16:24:19 2018 +0900</p><p>Allow declarator in the &ldquo;for&rdquo; initializer</p><p>5 files changed, 68 insertions(+), 32 deletions(-)</p></li><li><p>commit 05688d31edec387cac90a1adb9f5604e37821f36<br>Date: Wed Oct 24 17:39:30 2018 +0900</p><p>Simplify</p><p>2 files changed, 12 insertions(+), 16 deletions(-)</p></li><li><p>commit f15c1f5e105000f9c40467cf1a8566228ba6c618<br>Date: Fri Oct 26 16:55:20 2018 +0900</p><p>Add sema.d</p><p>変数のアドレスやスタック領域の大きさを計算する処理をgen_ir.dから分離。
-変なふうにバグらせて最初から書き直したりした。</p><p>5 files changed, 171 insertions(+), 87 deletions(-)</p></li><li><p>commit 65c706190d62bbd9dea3c65ce234150cc09f1d61<br>Date: Sat Oct 27 22:30:45 2018 +0900</p><p>Add pointer</p><p>6 files changed, 141 insertions(+), 63 deletions(-)</p></li><li><p>commit 0e5fdb12c8015c7676a9cf94690df64dcdce87e0<br>Date: Sun Oct 28 15:12:03 2018 +0900</p><p>Add + and -</p><p>4 files changed, 79 insertions(+), 8 deletions(-)</p></li><li><p>commit 4cfc89551e1e76e7e719c41e9d7fbbf1c03c37f1<br>Date: Thu Nov 1 19:43:55 2018 +0900</p><p>Decay &ldquo;array of T&rdquo; to &ldquo;pointer to T&rdquo;</p><p><a href=http://rabbitfoot141.hatenablog.com/entry/2016/11/14/153101>gdbを使ってコアダンプの原因を解析 - それが僕には楽しかったんです。</a><br><a href=https://wiki.archlinux.jp/index.php/%E3%82%B3%E3%82%A2%E3%83%80%E3%83%B3%E3%83%97>コアダンプ - ArchWiki</a><br><a href=https://dlang.org/articles/ctod.html>Programming in D for C Programmers - D Programming Language</a></p><p>ついに配列らしきものが登場する。
+変なふうにバグらせて最初から書き直したりした。</p><p>5 files changed, 171 insertions(+), 87 deletions(-)</p></li><li><p>commit 65c706190d62bbd9dea3c65ce234150cc09f1d61<br>Date: Sat Oct 27 22:30:45 2018 +0900</p><p>Add pointer</p><p>6 files changed, 141 insertions(+), 63 deletions(-)</p></li><li><p>commit 0e5fdb12c8015c7676a9cf94690df64dcdce87e0<br>Date: Sun Oct 28 15:12:03 2018 +0900</p><p>Add <pointer>+ <number>and <pointer>- <number></p><p>4 files changed, 79 insertions(+), 8 deletions(-)</p></li><li><p>commit 4cfc89551e1e76e7e719c41e9d7fbbf1c03c37f1<br>Date: Thu Nov 1 19:43:55 2018 +0900</p><p>Decay &ldquo;array of T&rdquo; to &ldquo;pointer to T&rdquo;</p><p><a href=http://rabbitfoot141.hatenablog.com/entry/2016/11/14/153101>gdbを使ってコアダンプの原因を解析 - それが僕には楽しかったんです。</a><br><a href=https://wiki.archlinux.jp/index.php/%E3%82%B3%E3%82%A2%E3%83%80%E3%83%B3%E3%83%97>コアダンプ - ArchWiki</a><br><a href=https://dlang.org/articles/ctod.html>Programming in D for C Programmers - D Programming Language</a></p><p>ついに配列らしきものが登場する。
 だんだんポインタ操作がややこしくなってきて、セグフォに何度も遭遇するようになった。
 クラスは常に参照なので、クラスを使えばポインタはとりあえずコード中から消える。
 しかしそれでもやはりセグフォは出るのである。

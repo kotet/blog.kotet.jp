@@ -19,7 +19,7 @@ DCompute:ネイティブDによるOpenCLやCUDAのGPGPU【翻訳】</h2><p>Creat
 BEng (Hons)/BScのためにIndustrial Computer Systems (Hons)とInstrumentation & Control/ Molecular Biology & Genetics and Biomedical Scienceを学んでいます。
 彼は電界発光イメージングによるソーラーセルの欠陥のローコストな検出についての卒業論文を書き終わったので、
 DComputeの作業をしてそれについてD Blogに書く時間ができました。
-彼はピアノとアイススケートをたしなみ、number bashing、オートマトン、その他様々なことをDでできるように7年をかけています。</p><hr><p>DComputeはGPUやその他アクセラレータを使う計算集約型コードのためにOpenCLやCUDA用のネイティブカーネルをDで書くことをサポートするフレームワークでありコンパイラ拡張です。
+彼はピアノとアイススケートをたしなみ、number bashing、オートマトン、その他様々なことをDでできるように7年をかけています。</p><hr><img src=/assets/2018/03/ldc.png align=left alt=ldc><p>DComputeはGPUやその他アクセラレータを使う計算集約型コードのためにOpenCLやCUDA用のネイティブカーネルをDで書くことをサポートするフレームワークでありコンパイラ拡張です。
 ハイパフォーマンスDライブラリやアプリケーションの高速な開発を可能にすることを目標にユーザーコードと退屈なものとエラーを起こしがちなコンピュートAPIとの相互作用を自動化するドライバが開発中です。</p><h3 id=heading>イントロダクション</h3><p>昨年5月にOpenCL APIの使用をちょっとひどいものにするDのメタプログラミングを行いながら<a href=http://dconf.org/2016/talks/colvin.html>John ColvinのDConf 2016でのプレゼンテーション</a>を見たあと、私は思いました。
 「Dでカーネルを書けるようになれば、これはOpenCL Cで文字列操作をするよりもっと簡単になるんじゃないか」
 当時は比較的忙しい学期の終わりが来ており、これはいい冬<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>のプロジェクトになると思いました。

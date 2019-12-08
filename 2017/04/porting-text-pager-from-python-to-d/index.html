@@ -13,7 +13,8 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 <a href="https://jugad2.blogspot.com/2017/04/porting-text-pager-from-python-to-d.html?showComment=1492862188174#c3380262533412109352">許可を得て</a>
 公開するものである。
 誤字や誤訳などを見つけたら今すぐ
-<a href=https://github.com/kotet/blog.kotet.jp>Pull request</a>だ!</p><hr><p>数週間前、私はこのような記事を書きました:</p><p><a href=https://jugad2.blogspot.in/2017/02/tp-simple-text-pager-in-python.html>tp, a simple text pager in Python</a></p><p>数日前、私はこのページャをPythonから<a href=https://dlang.org/>D</a>
+<a href=https://github.com/kotet/blog.kotet.jp>Pull request</a>だ!</p><hr><big>$ tp file.txt
+$ dir /s | tp</big><p>数週間前、私はこのような記事を書きました:</p><p><a href=https://jugad2.blogspot.in/2017/02/tp-simple-text-pager-in-python.html>tp, a simple text pager in Python</a></p><p>数日前、私はこのページャをPythonから<a href=https://dlang.org/>D</a>
 <a href=https://en.wikipedia.org/wiki/D_(programming_language)>言語</a>として知られるDに移植しようと思いたち、そして実行しました。</p><p>DについてのWikipediaの記事にはこうあります:</p><blockquote><p>C++のリエンジニアリングとして始まったものですが、Dは他の言語、特にJava、Python、Ruby、C#、やEiffelからもインスピレーションを得て、
 Cのコア機能をリデザインした独自の言語です。</p></blockquote><p>こちらがtp.dのコードです</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=o>/</span><span class=o>*</span>
 <span class=nl>File:</span> <span class=n>tp</span><span class=o>.</span><span class=na>d</span>

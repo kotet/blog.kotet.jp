@@ -17,13 +17,13 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 <a href=https://blog.kotet.jp/2019/05/infiniterange-empty/>無限レンジを作るときはemptyの実装に気をつけなければならない</a></h3><p><time>2019-05-27</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><p>D言語で無限レンジを作るときに注意しなければならないこと。 ドキュメントをちゃんと読み込んでなかったので長らく気づきませんでした。 無限レンジ 無</p><h3><a href=/tags/assembly>#assembly</a>
 <a href=https://blog.kotet.jp/2019/05/gcc-optimization/>gccにおけるモジュラ逆数を用いた(x % m == 0)の最適化</a></h3><p><time>2019-05-06</time>
-<a href=/tags/assembly>#assembly</a> <a href=/tags/tech>#tech</a> <a href=/tags/cpplang>#cpplang</a></p><p>gccの最適化 ある数が定数で割り切れるかを%を使って判定するコードが #include "stdint.h" uint32_t is_div_7(uint32_t k) { return (k % 7)==0; } こんな感じに最適化されるようです。 is_div_7(unsigned int): imul edi, edi, -1227133513 xor eax,</p><h3><a href=/tags/assembly>#assembly</a>
+<a href=/tags/assembly>#assembly</a> <a href=/tags/tech>#tech</a> <a href=/tags/cpplang>#cpplang</a></p><p>gccの最適化 GCC is now transforming: ((x % CONSTANT) == 0) to mod inverse and using rotate when it's even. Not in clang yet thoughhttps://t.co/nfywTIrTe0 &mdash; Marc B. Reynolds (@marc_b_reynolds) May 5, 2019 ある数が定数で割り切れるかを%を使って判定するコードが #include "stdint.h" uint32_t is_div_7(uint32_t k)</p><h3><a href=/tags/assembly>#assembly</a>
 <a href=https://blog.kotet.jp/2019/04/mov-programming/>入門MOVプログラミング 本当にx86のMOVはチューリング完全なのか</a></h3><p><time>2019-04-18</time>
 <a href=/tags/assembly>#assembly</a> <a href=/tags/tech>#tech</a></p><p>TL;DR チューリング完全じゃないかもしれない 作ったもの：kotet/mov-programming: MOV is Turing-Complete はじめに かなり前にx86のmov命令はチ</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2019/03/weasel-program/>無限の猿とイタチのプログラム</a></h3><p><time>2019-03-22</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><p>マシュー・サイドの「失敗の科学（原題：Black Box Thinking）」 を読んでいたらリチャード・ドーキンスの「盲目の時計職人」を参照したこの</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2019/02/era-leaker/>常用漢字表を総当りして新元号をリークする</a></h3><p><time>2019-02-27</time>
-<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><p>ということなので常用漢字表から新元号候補を自動生成しましょう。 常用漢字表をプログラムで使いたい時はこの記事を読むと役に立つかもしれません。 マ</p><h3><a href=/tags/dlang>#dlang</a>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><p>新元号botに新元号をブルートフォースさせ、かつ任意の漢字2文字を除外しておくことで、任意の新元号を設定できてしまう脆弱性が政府にはあると公</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2019/02/tinykaboom-d/>ライブラリ不使用、数百行でレイマーチングを行い爆発した</a></h3><p><time>2019-02-15</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><p>レイマーチングという3Dレンダリング手法があります。 Wikipediaの記事もないくらい知名度の低い手法ですが、 簡単に説明すると描画したいオ</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2019/02/tinyraytracer-d/>ライブラリ不使用、数百行でレイトレーサを書いて新世界の神になる</a></h3><p><time>2019-02-08</time>
@@ -33,7 +33,7 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 <a href=https://blog.kotet.jp/2018/12/the-new-fundraising-campaign/>D言語財団の新規ファンディングキャンペーン【翻訳】</a></h3><p><time>2018-12-25</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><p>はじめに これは D言語 Advent Calendar 2018 25日目の寄付と翻訳記事です。 寄付 少額ながら今回の記事で取り上げられているキャンペーンに寄付をしました。 翻訳 The New Fundraising</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2018/12/lost-in-translation-encapsulation/>ロスト・イン・トランスレーション：カプセル化【翻訳】</a></h3><p><time>2018-12-24</time>
-<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><p>これは Lost in Translation: Encapsulation – The D Blog を 許可を得て 翻訳した D言語 Advent Calendar 2018 - Qiita 24日目の記事です。 誤訳等あれば気軽に Pull requestを投げてください。 私はプログ</p><h3><a href=/tags/tech>#tech</a>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><p>これは Lost in Translation: Encapsulation – The D Blog を 許可を得て 翻訳した D言語 Advent Calendar 2018 - Qiita 24日目の記事です。 誤訳等あれば気軽に Pull requestを投げてください。 I first learned programming in</p><h3><a href=/tags/tech>#tech</a>
 <a href=https://blog.kotet.jp/2018/12/how-to-disable-highlight-js-auto-language-detection/>highlight.jsの言語自動判定を無効化する</a></h3><p><time>2018-12-21</time>
 <a href=/tags/tech>#tech</a></p><p>Hugoのデフォルトのシンタックスハイライトが微妙なため （何よりこのサイトで最も多く出現するD言語に対応していない！）、 このサイトではhig</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2018/12/wtf-is-aliasseq/>AliasSeqで引数をこねくりまわす</a></h3><p><time>2018-12-17</time>
@@ -41,7 +41,7 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 <a href=https://blog.kotet.jp/2018/12/interfacing-d-with-c-arrays-part-1/>DとCのインターフェース：配列 Part 1【翻訳】</a></h3><p><time>2018-12-15</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/d_and_c>#d_and_c</a> <a href=/tags/advent_calendar>#advent_calendar</a> <a href=/tags/cpplang>#cpplang</a></p><p>これは Interfacing D with C: Arrays Part 1 – The D Blog を 許可を得て 翻訳した D言語 Advent Calendar 2018 - Qiita 15日目の記事です。 誤訳等あれば気軽に Pull requestを投げてください。 この</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2018/12/4949-primes-in-d/>シクシク素数列 D言語編</a></h3><p><time>2018-12-15</time>
-<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><p>D言語と聞いて駆けつけてきました。この記事は シクシク素数列 Advent Calendar 2018 15日目の記事です。 これはD言語くんです。 シクシク素数列 以下がルールになりま</p><h3><a href=/tags/dlang>#dlang</a>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><p>シクシク素数列 Advent Calendar 2018 #Qiita https://t.co/sgiUB4S5dE 言語がかぶらないように同一ルールで実装するだけのAdC。まだ空き枠があるのでぜひ。今ならPHP、Perl、D言語、H</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2018/12/compiler-in-d/>君もDでx86_64向けCコンパイラを書こう</a></h3><p><time>2018-12-11</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/assembly>#assembly</a> <a href=/tags/tech>#tech</a> <a href=/tags/advent-calendar>#advent-calendar</a></p><p>これは、強い人が多すぎてもはやCコンパイラ書いた程度では面白味がない気がしてくる D言語 Advent Calendar 2018 11日目の記事です。 この記事の対象読者は過去の自</p><h3><a href=/tags/dlang>#dlang</a>
 <a href=https://blog.kotet.jp/2018/12/compile-time-vs-compile-time/>2つの「コンパイル時」【翻訳】</a></h3><p><time>2018-12-05</time>
@@ -255,7 +255,7 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 <a href=https://blog.kotet.jp/2017/01/dlang-import-expression/>コンパイル時にファイルから文字列を読み込む</a></h3><p><time>2017-01-31</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><p>長い文字列を埋め込むために いろいろ迷走した が、コンパイル時にファイルから文字列を読み込む方法があることに気づいたので詳しく調べる。 Import Expression という</p><h3><a href=/tags/essay>#essay</a>
 <a href=https://blog.kotet.jp/2017/01/github-is-backward-compatible-with-qiita/>サイトの内容をGitHubのリポジトリと同期するメリット3つ</a></h3><p><time>2017-01-29</time>
-<a href=/tags/essay>#essay</a> <a href=/tags/tech>#tech</a></p><p>このようなツイートを見た。 今このサイトはGitHub Pagesを使い公開している。 なので必然的に記事のmarkdownはリポジトリ上にある。</p><h3><a href=/tags/qiita>#qiita</a>
+<a href=/tags/essay>#essay</a> <a href=/tags/tech>#tech</a></p><p>このようなツイートを見た。 理想的にはQiitaとかWikipediaみたいにみんなで編集できる状態にしておいて、より多くの人と合意が取れる状</p><h3><a href=/tags/qiita>#qiita</a>
 <a href=https://blog.kotet.jp/2017/01/64fd38ef5e10bf8ae3fa/>Qiitaの記事をJekyllの投稿の形式に変換してバックアップする</a></h3><p><time>2017-01-09</time>
 <a href=/tags/qiita>#qiita</a> <a href=/tags/tech>#tech</a> <a href=/tags/jekyll>#jekyll</a></p><p>ひょっとしたら隕石が落ちてきたりしてQiitaに投稿した記事が消えてしまうことがあるかもしれない。対策として自分ですべてを管理できるところにも記事をバックアップできるスクリプトを書いた。画像も取得してリンクを書き換えてくれる。</p><h3><a href=/tags/qiita>#qiita</a>
 <a href=https://blog.kotet.jp/2016/12/87e059092aed0a8aee9a/>JekyllでテキストをHTML用にエスケープする</a></h3><p><time>2016-12-31</time>
