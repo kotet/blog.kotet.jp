@@ -7,7 +7,9 @@ tags:
 - tech
 ---
 
-この記事はD言語 Advent Calendar 12日目の記事です。
+この記事は
+[D言語 Advent Calendar 2019](https://qiita.com/advent-calendar/2019/dlang)
+12日目の記事です。
 大学でD言語はいいぞと言い続けていたら[~~感染~~開眼したD言語er](https://atcoder.jp/users/Coleball)との共著です。
 この記事は前後編に分かれているうちの後編です。
 前編は[D言語くん Advent Calendar 12日目の記事](/2019/12/doubly-linked-dman)として投稿されています。
