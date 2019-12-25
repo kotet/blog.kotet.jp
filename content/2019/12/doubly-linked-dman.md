@@ -19,7 +19,9 @@ D言語くんをめぐる最新の研究事情をお届けします。
 
 ---
 
-この記事はD言語くん Advent Calendar 12日目の記事です。
+この記事は
+[D言語くん Advent Calendar 2019](https://qiita.com/advent-calendar/2019/d-man)
+12日目の記事です。
 大学でD言語はいいぞと言い続けていたら[~~感染~~開眼したD言語er](https://twitter.com/x362FvsLbdRGd0V)との共著です。
 
 ---
