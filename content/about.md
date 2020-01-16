@@ -36,6 +36,7 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 [POTS:体位性頻脈](http://potsanddysautonomiajapan.org/pots/)により1年間療養の後、
 愛知県立大学の情報科学部に入学。
+大学のロボサッカーチームRoboDragonsでRoboCupのSSL (Small Size League) に参加している。
 
 ### アカウント
 
