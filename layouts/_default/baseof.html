@@ -22,6 +22,7 @@
     <header class="site">
         <nav>
             <ul>{{ block "header" . }}
+                <li><span class="text-bottom">HOME</span><a href="{{ .Site.LanguagePrefix }}/" title="tag">{{ partial "svg/home" }}</a></li>
                 <li><span class="text-up">ABOUT</span><a href="{{ .Site.LanguagePrefix }}/about"
                         title="about">{{ partial "svg/about" }}</a></li>
                 {{ if eq .Lang "ja" }}
@@ -29,8 +30,7 @@
                         title="download">{{ partial "svg/download" }}</a></li>
                 {{ end }}
                 <li><span class="text-up">TAG</span><a href="{{ .Site.LanguagePrefix }}/tags" title="tag">{{ partial "svg/tags" }}</a></li>
-                <li><span class="text-bottom">PODCAST</span><a href="https://podcast.kotet.jp" title="podcast">{{ partial "svg/podcast" }}</a></li>
-                <li><span class="text-up">FEED</span><a href="{{ .Site.LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" }}</a></li>
+                <li><span class="text-bottom">FEED</span><a href="{{ .Site.LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" }}</a></li>
                 {{ end }}
             </ul>
         </nav>
