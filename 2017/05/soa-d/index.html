@@ -7,7 +7,7 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#dlang なぜ、どういう時にSOAを使うべきなのか【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/05/soa-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang なぜ、どういう時にSOAを使うべきなのか【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="この記事は Why and when you should use SoA · を自分用に訳したものを 許可を得て 公開するものである。 コードのコメントも一部翻訳されている。 ところどころ訳が怪しいと"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/05/soa-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.62.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#dlang なぜ、どういう時にSOAを使うべきなのか【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/05/soa-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang なぜ、どういう時にSOAを使うべきなのか【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="この記事は Why and when you should use SoA · を自分用に訳したものを 許可を得て 公開するものである。 コードのコメントも一部翻訳されている。 ところどころ訳が怪しいと"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/05/soa-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
 なぜ、どういう時にSOAを使うべきなのか【翻訳】</h2><p>Created: <time>2017-05-19</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#soaとは何か>SoAとは何か?</a></li><li><a href=#なぜsoaは便利なのか>なぜSoAは便利なのか?</a></li><li><a href=#soaは使いにくくないのか>SoAは使いにくくないのか?</a></li><li><a href=#dでのsoaの実装>DでのSoAの実装</a></li><li><a href=#soaを使うときはいつか>SoAを使うときはいつか</a></li><li><a href=#soaは時期尚早な最適化ではないのか>SoAは「時期尚早な最適化」ではないのか?</a></li></ul></li></ul></nav></aside></header><article><p>この記事は</p><p><a href=https://maikklein.github.io/post/soa-d/>Why and when you should use SoA ·</a></p><p>を自分用に訳したものを
 <a href=https://maikklein.github.io/post/soa-d/#comment-3309967000>許可を得て</a>
@@ -21,8 +21,8 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 <span class=n>Array</span><span class=o>!</span><span class=n>Vec2</span> <span class=n>vectors</span><span class=o>;</span>
 </code></pre></div><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=c1>//SoA: 配列の構造体
 </span><span class=c1></span><span class=kd>struct</span> <span class=nc>Vec2</span><span class=o>{</span>
-    <span class=kt>float</span><span class=o>[</span><span class=o>]</span> <span class=n>x</span><span class=o>;</span>
-    <span class=kt>float</span><span class=o>[</span><span class=o>]</span> <span class=n>y</span><span class=o>;</span>
+    <span class=kt>float</span><span class=o>[]</span> <span class=n>x</span><span class=o>;</span>
+    <span class=kt>float</span><span class=o>[]</span> <span class=n>y</span><span class=o>;</span>
 <span class=o>}</span>
 </code></pre></div><h3 id=なぜsoaは便利なのか>なぜSoAは便利なのか?</h3><p><code>クライアント・サーバー・アーキテクチャー</code>で小さな<code>udpゲームサーバー</code>を書くことを想像してみてください。
 あなたにはクライアントが接続できるサーバーがあります。
@@ -37,7 +37,7 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 </span><span class=c1></span>    <span class=p>}</span>
     <span class=n>Array</span><span class=o>!</span><span class=n>RemoteClient</span> <span class=n>remoteClients</span><span class=p>;</span>
 
-    <span class=kt>void</span> <span class=nf>poll</span><span class=p>(</span><span class=p>)</span><span class=p>{</span>
+    <span class=kt>void</span> <span class=nf>poll</span><span class=p>(){</span>
         <span class=c1>//Address address
 </span><span class=c1></span>        <span class=c1>//recvfrom(buffer, address);
 </span><span class=c1></span>    <span class=p>}</span>
@@ -106,28 +106,28 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
    <span class=kt>int</span>           <span class=n>needsDispatch</span><span class=p>;</span>
    <span class=n>enet_uint16</span>   <span class=n>incomingUnsequencedGroup</span><span class=p>;</span>
    <span class=n>enet_uint16</span>   <span class=n>outgoingUnsequencedGroup</span><span class=p>;</span>
-   <span class=n>enet_uint32</span>   <span class=n>unsequencedWindow</span> <span class=p>[</span><span class=n>ENET_PEER_UNSEQUENCED_WINDOW_SIZE</span> <span class=o>/</span> <span class=mi>32</span><span class=p>]</span><span class=p>;</span> 
+   <span class=n>enet_uint32</span>   <span class=n>unsequencedWindow</span> <span class=p>[</span><span class=n>ENET_PEER_UNSEQUENCED_WINDOW_SIZE</span> <span class=o>/</span> <span class=mi>32</span><span class=p>];</span> 
    <span class=n>enet_uint32</span>   <span class=n>eventData</span><span class=p>;</span>
    <span class=n>size_t</span>        <span class=n>totalWaitingData</span><span class=p>;</span>
 <span class=p>}</span> <span class=n>ENetPeer</span><span class=p>;</span>
 </code></pre></div><p>では<code>SoA</code>ではどのようになるか見てみましょう。</p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=k>struct</span> <span class=nc>Server</span><span class=p>{</span>
     <span class=k>struct</span> <span class=nc>RemoteClients</span><span class=p>{</span>
         <span class=n>size_t</span> <span class=n>length</span><span class=p>;</span>
-        <span class=n>Address</span><span class=p>[</span><span class=p>]</span> <span class=n>address</span><span class=p>;</span>
-        <span class=n>SysTime</span><span class=p>[</span><span class=p>]</span> <span class=n>lastReceivedPacket</span><span class=p>;</span>
+        <span class=n>Address</span><span class=p>[]</span> <span class=n>address</span><span class=p>;</span>
+        <span class=n>SysTime</span><span class=p>[]</span> <span class=n>lastReceivedPacket</span><span class=p>;</span>
         <span class=c1>//more data
 </span><span class=c1></span>    <span class=p>}</span>
     <span class=n>RemoteClients</span> <span class=n>remoteClients</span><span class=p>;</span>
 
-    <span class=kt>void</span> <span class=nf>poll</span><span class=p>(</span><span class=p>)</span><span class=p>{</span>
+    <span class=kt>void</span> <span class=nf>poll</span><span class=p>(){</span>
         <span class=c1>//Address address
 </span><span class=c1></span>        <span class=c1>//recvfrom(buffer, address);
 </span><span class=c1></span>    <span class=p>}</span>
 <span class=p>}</span>
 </code></pre></div><p>すべての<code>remoteClients.address</code>のアドレスにアクセスでき、不必要なデータをキャッシュにロードする必要はありません。</p><h3 id=soaは使いにくくないのか>SoAは使いにくくないのか?</h3><p>多くの言語ではそのとおりです。</p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=k>struct</span> <span class=nc>RemoteClients</span><span class=p>{</span>
     <span class=n>size_t</span> <span class=n>length</span><span class=p>;</span>
-    <span class=n>Address</span><span class=p>[</span><span class=p>]</span> <span class=n>address</span><span class=p>;</span>
-    <span class=n>SysTime</span><span class=p>[</span><span class=p>]</span> <span class=n>lastReceivedPacket</span><span class=p>;</span>
+    <span class=n>Address</span><span class=p>[]</span> <span class=n>address</span><span class=p>;</span>
+    <span class=n>SysTime</span><span class=p>[]</span> <span class=n>lastReceivedPacket</span><span class=p>;</span>
     <span class=c1>//more data
 </span><span class=c1></span><span class=p>}</span>
 </code></pre></div><p>配列を割り当て、それが動的配列の場合は拡張しなければならないために定義は単純化されています。
@@ -139,16 +139,16 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
     <span class=kt>float</span> <span class=n>x</span><span class=o>;</span>
     <span class=kt>float</span> <span class=n>y</span><span class=o>;</span>
 <span class=o>}</span>
-<span class=kd>auto</span> <span class=n>s</span> <span class=o>=</span> <span class=n>SOA</span><span class=o>!</span><span class=o>(</span><span class=n>Vec2</span><span class=o>)</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+<span class=kd>auto</span> <span class=n>s</span> <span class=o>=</span> <span class=n>SOA</span><span class=o>!(</span><span class=n>Vec2</span><span class=o>)();</span>
 
-<span class=n>s</span><span class=o>.</span><span class=na>insertBack</span><span class=o>(</span><span class=mf>1.0f</span><span class=o>,</span> <span class=mf>2.0f</span><span class=o>)</span><span class=o>;</span>
-<span class=n>s</span><span class=o>.</span><span class=na>insertBack</span><span class=o>(</span><span class=n>Vec2</span><span class=o>(</span><span class=mf>1.0</span><span class=o>,</span> <span class=mf>2.0f</span><span class=o>)</span><span class=o>)</span><span class=o>;</span>
-<span class=n>writeln</span><span class=o>(</span><span class=n>s</span><span class=o>.</span><span class=na>x</span><span class=o>)</span><span class=o>;</span> <span class=c1>// [1, 1]
-</span><span class=c1></span><span class=n>writeln</span><span class=o>(</span><span class=n>s</span><span class=o>.</span><span class=na>y</span><span class=o>)</span><span class=o>;</span> <span class=c1>// [2, 2]
+<span class=n>s</span><span class=o>.</span><span class=na>insertBack</span><span class=o>(</span><span class=mf>1.0f</span><span class=o>,</span> <span class=mf>2.0f</span><span class=o>);</span>
+<span class=n>s</span><span class=o>.</span><span class=na>insertBack</span><span class=o>(</span><span class=n>Vec2</span><span class=o>(</span><span class=mf>1.0</span><span class=o>,</span> <span class=mf>2.0f</span><span class=o>));</span>
+<span class=n>writeln</span><span class=o>(</span><span class=n>s</span><span class=o>.</span><span class=na>x</span><span class=o>);</span> <span class=c1>// [1, 1]
+</span><span class=c1></span><span class=n>writeln</span><span class=o>(</span><span class=n>s</span><span class=o>.</span><span class=na>y</span><span class=o>);</span> <span class=c1>// [2, 2]
 </span></code></pre></div><p>データで構造体を作ることができ、<code>SOA</code>は構造体をみて内部的に適切な配列を作ります。
 持っているフィールドと同じ数の配列があるため、<code>insertBack</code>はちょっと普通の配列と異なります。
 これは<code>insertBack</code>が可変長である必要があることを意味します。
-<code>insertBack</code>はかわりにそれ自身の構造体も受け入れます。</p><p><strong>以下のコードは実際に使うことを意図して書かれたコードではなく、単なる概念実証です。</strong></p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>struct</span> <span class=nf>SOA</span><span class=o>(</span><span class=n>T</span><span class=o>)</span><span class=o>{</span>
+<code>insertBack</code>はかわりにそれ自身の構造体も受け入れます。</p><p><strong>以下のコードは実際に使うことを意図して書かれたコードではなく、単なる概念実証です。</strong></p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>struct</span> <span class=nf>SOA</span><span class=o>(</span><span class=n>T</span><span class=o>){</span>
     <span class=kn>import</span> <span class=nn>std.experimental.allocator</span><span class=o>;</span>
     <span class=kn>import</span> <span class=nn>std.experimental.allocator.mallocator</span><span class=o>;</span>
 
@@ -156,50 +156,50 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
     <span class=kn>import</span> <span class=nn>std.typecons</span><span class=o>:</span> <span class=n>Tuple</span><span class=o>;</span>
     <span class=kn>import</span> <span class=nn>std.traits</span><span class=o>:</span> <span class=n>FieldNameTuple</span><span class=o>;</span>
 
-    <span class=kd>alias</span> <span class=nf>toArray</span><span class=o>(</span><span class=n>T</span><span class=o>)</span> <span class=o>=</span> <span class=n>T</span><span class=o>[</span><span class=o>]</span><span class=o>;</span>
-    <span class=kd>alias</span> <span class=nf>toType</span><span class=o>(</span><span class=kt>string</span> <span class=n>s</span><span class=o>)</span> <span class=o>=</span> <span class=n>typeof</span><span class=o>(</span><span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>T</span><span class=o>,</span> <span class=n>s</span><span class=o>)</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>alias</span> <span class=nf>toArray</span><span class=o>(</span><span class=n>T</span><span class=o>)</span> <span class=o>=</span> <span class=n>T</span><span class=o>[];</span>
+    <span class=kd>alias</span> <span class=nf>toType</span><span class=o>(</span><span class=kt>string</span> <span class=n>s</span><span class=o>)</span> <span class=o>=</span> <span class=n>typeof</span><span class=o>(</span><span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>T</span><span class=o>,</span> <span class=n>s</span><span class=o>));</span>
 
     <span class=kd>alias</span> <span class=n>MemberNames</span> <span class=o>=</span> <span class=n>FieldNameTuple</span><span class=o>!</span><span class=n>T</span><span class=o>;</span>
-    <span class=kd>alias</span> <span class=n>Types</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!</span><span class=o>(</span><span class=n>toType</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>)</span><span class=o>;</span>
-    <span class=kd>alias</span> <span class=n>ArrayTypes</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!</span><span class=o>(</span><span class=n>toArray</span><span class=o>,</span> <span class=n>Types</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>alias</span> <span class=n>Types</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!(</span><span class=n>toType</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>);</span>
+    <span class=kd>alias</span> <span class=n>ArrayTypes</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!(</span><span class=n>toArray</span><span class=o>,</span> <span class=n>Types</span><span class=o>);</span>
 
-    <span class=k>this</span><span class=o>(</span><span class=n>size_t</span> <span class=n>_size</span><span class=o>,</span> <span class=n>IAllocator</span> <span class=n>_alloc</span> <span class=o>=</span> <span class=n>allocatorObject</span><span class=o>(</span><span class=n>Mallocator</span><span class=o>.</span><span class=na>instance</span><span class=o>)</span><span class=o>)</span><span class=o>{</span>
+    <span class=k>this</span><span class=o>(</span><span class=n>size_t</span> <span class=n>_size</span><span class=o>,</span> <span class=n>IAllocator</span> <span class=n>_alloc</span> <span class=o>=</span> <span class=n>allocatorObject</span><span class=o>(</span><span class=n>Mallocator</span><span class=o>.</span><span class=na>instance</span><span class=o>)){</span>
         <span class=n>alloc</span> <span class=o>=</span> <span class=n>_alloc</span><span class=o>;</span>
         <span class=n>size</span> <span class=o>=</span> <span class=n>_size</span><span class=o>;</span>
-        <span class=n>allocate</span><span class=o>(</span><span class=n>size</span><span class=o>)</span><span class=o>;</span>
+        <span class=n>allocate</span><span class=o>(</span><span class=n>size</span><span class=o>);</span>
     <span class=o>}</span>
 
-    <span class=n>ref</span> <span class=kd>auto</span> <span class=nf>opDispatch</span><span class=o>(</span><span class=kt>string</span> <span class=n>name</span><span class=o>)</span><span class=o>(</span><span class=o>)</span><span class=o>{</span>
+    <span class=n>ref</span> <span class=kd>auto</span> <span class=nf>opDispatch</span><span class=o>(</span><span class=kt>string</span> <span class=n>name</span><span class=o>)(){</span>
         <span class=kn>import</span> <span class=nn>std.meta</span><span class=o>:</span> <span class=n>staticIndexOf</span><span class=o>;</span>
-        <span class=kd>alias</span> <span class=n>index</span> <span class=o>=</span> <span class=n>staticIndexOf</span><span class=o>!</span><span class=o>(</span><span class=n>name</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>)</span><span class=o>;</span>
-        <span class=kd>static</span> <span class=nf>assert</span><span class=o>(</span><span class=n>index</span> <span class=o>&gt;</span><span class=o>=</span> <span class=mi>0</span><span class=o>)</span><span class=o>;</span>
-        <span class=k>return</span> <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>;</span>
+        <span class=kd>alias</span> <span class=n>index</span> <span class=o>=</span> <span class=n>staticIndexOf</span><span class=o>!(</span><span class=n>name</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>);</span>
+        <span class=kd>static</span> <span class=nf>assert</span><span class=o>(</span><span class=n>index</span> <span class=o>&gt;=</span> <span class=mi>0</span><span class=o>);</span>
+        <span class=k>return</span> <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>];</span>
     <span class=o>}</span>
 
-    <span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>Types</span> <span class=n>types</span><span class=o>)</span><span class=o>{</span>
-        <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>=</span><span class=o>=</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
-        <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>)</span><span class=o>{</span>
-            <span class=n>container</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>types</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>;</span>
+    <span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>Types</span> <span class=n>types</span><span class=o>){</span>
+        <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>==</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
+        <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>){</span>
+            <span class=n>container</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>types</span><span class=o>[</span><span class=n>index</span><span class=o>];</span>
         <span class=o>}</span>
         <span class=n>length</span> <span class=o>=</span> <span class=n>length</span> <span class=o>+</span> <span class=mi>1</span><span class=o>;</span>
     <span class=o>}</span>
 
-    <span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>T</span> <span class=n>t</span><span class=o>)</span><span class=o>{</span>
-        <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>=</span><span class=o>=</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
-        <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>_</span><span class=o>;</span> <span class=n>Types</span><span class=o>)</span><span class=o>{</span>
-            <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>t</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+    <span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>T</span> <span class=n>t</span><span class=o>){</span>
+        <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>==</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
+        <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>_</span><span class=o>;</span> <span class=n>Types</span><span class=o>){</span>
+            <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>][</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>t</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>[</span><span class=n>index</span><span class=o>]);</span>
         <span class=o>}</span>
         <span class=n>length</span> <span class=o>=</span> <span class=n>length</span> <span class=o>+</span> <span class=mi>1</span><span class=o>;</span>
     <span class=o>}</span>
 
-    <span class=n>size_t</span> <span class=nf>length</span><span class=o>(</span><span class=o>)</span> <span class=kd>const</span> <span class=nd>@property</span><span class=o>{</span>
+    <span class=n>size_t</span> <span class=nf>length</span><span class=o>()</span> <span class=kd>const</span> <span class=nd>@property</span><span class=o>{</span>
         <span class=k>return</span> <span class=n>_length</span><span class=o>;</span>
     <span class=o>}</span>
 
-    <span class=o>~</span><span class=k>this</span><span class=o>(</span><span class=o>)</span><span class=o>{</span>
+    <span class=o>~</span><span class=k>this</span><span class=o>(){</span>
         <span class=k>if</span><span class=o>(</span><span class=n>alloc</span> <span class=k>is</span> <span class=kc>null</span><span class=o>)</span> <span class=k>return</span><span class=o>;</span>
-        <span class=k>foreach</span><span class=o>(</span><span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>)</span><span class=o>{</span>
-            <span class=n>alloc</span><span class=o>.</span><span class=na>dispose</span><span class=o>(</span><span class=n>container</span><span class=o>)</span><span class=o>;</span>
+        <span class=k>foreach</span><span class=o>(</span><span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>){</span>
+            <span class=n>alloc</span><span class=o>.</span><span class=na>dispose</span><span class=o>(</span><span class=n>container</span><span class=o>);</span>
         <span class=o>}</span>
     <span class=o>}</span>
 <span class=nl>
@@ -215,37 +215,37 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
     <span class=n>size_t</span> <span class=n>size</span> <span class=o>=</span> <span class=mi>0</span><span class=o>;</span>
     <span class=kt>short</span> <span class=n>growFactor</span> <span class=o>=</span> <span class=mi>2</span><span class=o>;</span>
 
-    <span class=kt>void</span> <span class=nf>allocate</span><span class=o>(</span><span class=n>size_t</span> <span class=n>size</span><span class=o>)</span><span class=o>{</span>
-        <span class=k>if</span><span class=o>(</span><span class=n>alloc</span> <span class=k>is</span> <span class=kc>null</span><span class=o>)</span><span class=o>{</span>
-            <span class=n>alloc</span> <span class=o>=</span> <span class=n>allocatorObject</span><span class=o>(</span><span class=n>Mallocator</span><span class=o>.</span><span class=na>instance</span><span class=o>)</span><span class=o>;</span>
+    <span class=kt>void</span> <span class=nf>allocate</span><span class=o>(</span><span class=n>size_t</span> <span class=n>size</span><span class=o>){</span>
+        <span class=k>if</span><span class=o>(</span><span class=n>alloc</span> <span class=k>is</span> <span class=kc>null</span><span class=o>){</span>
+            <span class=n>alloc</span> <span class=o>=</span> <span class=n>allocatorObject</span><span class=o>(</span><span class=n>Mallocator</span><span class=o>.</span><span class=na>instance</span><span class=o>);</span>
         <span class=o>}</span>
-        <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>)</span><span class=o>{</span>
-            <span class=n>container</span> <span class=o>=</span> <span class=n>alloc</span><span class=o>.</span><span class=na>makeArray</span><span class=o>!</span><span class=o>(</span><span class=n>Types</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>)</span><span class=o>(</span><span class=n>size</span><span class=o>)</span><span class=o>;</span>
+        <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>){</span>
+            <span class=n>container</span> <span class=o>=</span> <span class=n>alloc</span><span class=o>.</span><span class=na>makeArray</span><span class=o>!(</span><span class=n>Types</span><span class=o>[</span><span class=n>index</span><span class=o>])(</span><span class=n>size</span><span class=o>);</span>
         <span class=o>}</span>
     <span class=o>}</span>
 
-    <span class=kt>void</span> <span class=nf>grow</span><span class=o>(</span><span class=o>)</span><span class=o>{</span>
+    <span class=kt>void</span> <span class=nf>grow</span><span class=o>(){</span>
         <span class=kn>import</span> <span class=nn>std.algorithm</span><span class=o>:</span> <span class=n>max</span><span class=o>;</span>
-        <span class=n>size_t</span> <span class=n>newSize</span> <span class=o>=</span> <span class=n>max</span><span class=o>(</span><span class=mi>1</span><span class=o>,</span><span class=n>size</span> <span class=o>*</span> <span class=n>growFactor</span><span class=o>)</span><span class=o>;</span>
+        <span class=n>size_t</span> <span class=n>newSize</span> <span class=o>=</span> <span class=n>max</span><span class=o>(</span><span class=mi>1</span><span class=o>,</span><span class=n>size</span> <span class=o>*</span> <span class=n>growFactor</span><span class=o>);</span>
         <span class=n>size_t</span> <span class=n>expandSize</span> <span class=o>=</span> <span class=n>newSize</span> <span class=o>-</span> <span class=n>size</span><span class=o>;</span>
 
-        <span class=k>if</span><span class=o>(</span><span class=n>size</span> <span class=k>is</span> <span class=mi>0</span><span class=o>)</span><span class=o>{</span>
-            <span class=n>allocate</span><span class=o>(</span><span class=n>newSize</span><span class=o>)</span><span class=o>;</span>
+        <span class=k>if</span><span class=o>(</span><span class=n>size</span> <span class=k>is</span> <span class=mi>0</span><span class=o>){</span>
+            <span class=n>allocate</span><span class=o>(</span><span class=n>newSize</span><span class=o>);</span>
         <span class=o>}</span>
         <span class=k>else</span><span class=o>{</span>
-            <span class=k>foreach</span><span class=o>(</span><span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>)</span><span class=o>{</span>
-                <span class=n>alloc</span><span class=o>.</span><span class=na>expandArray</span><span class=o>(</span><span class=n>container</span><span class=o>,</span> <span class=n>expandSize</span><span class=o>)</span><span class=o>;</span>
+            <span class=k>foreach</span><span class=o>(</span><span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>){</span>
+                <span class=n>alloc</span><span class=o>.</span><span class=na>expandArray</span><span class=o>(</span><span class=n>container</span><span class=o>,</span> <span class=n>expandSize</span><span class=o>);</span>
             <span class=o>}</span>
         <span class=o>}</span>
         <span class=n>size</span> <span class=o>=</span> <span class=n>newSize</span><span class=o>;</span>
     <span class=o>}</span>
 <span class=o>}</span>
-</code></pre></div><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>alias</span> <span class=nf>toArray</span><span class=o>(</span><span class=n>T</span><span class=o>)</span> <span class=o>=</span> <span class=n>T</span><span class=o>[</span><span class=o>]</span><span class=o>;</span>
-<span class=kd>alias</span> <span class=nf>toType</span><span class=o>(</span><span class=kt>string</span> <span class=n>s</span><span class=o>)</span> <span class=o>=</span> <span class=n>typeof</span><span class=o>(</span><span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>T</span><span class=o>,</span> <span class=n>s</span><span class=o>)</span><span class=o>)</span><span class=o>;</span>
+</code></pre></div><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>alias</span> <span class=nf>toArray</span><span class=o>(</span><span class=n>T</span><span class=o>)</span> <span class=o>=</span> <span class=n>T</span><span class=o>[];</span>
+<span class=kd>alias</span> <span class=nf>toType</span><span class=o>(</span><span class=kt>string</span> <span class=n>s</span><span class=o>)</span> <span class=o>=</span> <span class=n>typeof</span><span class=o>(</span><span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>T</span><span class=o>,</span> <span class=n>s</span><span class=o>));</span>
 
 <span class=kd>alias</span> <span class=n>MemberNames</span> <span class=o>=</span> <span class=n>FieldNameTuple</span><span class=o>!</span><span class=n>T</span><span class=o>;</span>
-<span class=kd>alias</span> <span class=n>Types</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!</span><span class=o>(</span><span class=n>toType</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>)</span><span class=o>;</span>
-<span class=kd>alias</span> <span class=n>ArrayTypes</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!</span><span class=o>(</span><span class=n>toArray</span><span class=o>,</span> <span class=n>Types</span><span class=o>)</span><span class=o>;</span>
+<span class=kd>alias</span> <span class=n>Types</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!(</span><span class=n>toType</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>);</span>
+<span class=kd>alias</span> <span class=n>ArrayTypes</span> <span class=o>=</span> <span class=n>staticMap</span><span class=o>!(</span><span class=n>toArray</span><span class=o>,</span> <span class=n>Types</span><span class=o>);</span>
 </code></pre></div><p><code>MemberNames</code>は単なるフィールドの名前群です。
 たとえば<code>構造体 Vec2{float x; float y}</code>は型<code>AliasSeq!("x", "y")</code>になります。
 <code>toType</code>はメンバ名をとり実際の型にします。
@@ -253,43 +253,43 @@ gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=
 たとえば上の<code>AliasSeq!("x", "y")</code>は<code>AliasSeq!(float, float)</code>に変わります。</p><p>もうすぐ型を配列に変換する必要が出てきます。
 <code>AliasSeq!(float, float)</code>を<code>AliasSeq!(float[], float[])</code>にです。
 それを<code>toArray</code>と<code>staticMap</code>でします。</p><p>その後配列のタプルを作ることができます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>Tuple</span><span class=o>!</span><span class=n>ArrayTypes</span> <span class=n>containers</span><span class=o>;</span>
-</code></pre></div><p>要素の挿入はかなり簡単です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=o>)</span><span class=o>(</span><span class=n>Types</span> <span class=n>types</span><span class=o>)</span><span class=o>{</span>
-    <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>=</span><span class=o>=</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
-    <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>)</span><span class=o>{</span>
-        <span class=n>container</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>types</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>;</span>
+</code></pre></div><p>要素の挿入はかなり簡単です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>insertBack</span><span class=o>()(</span><span class=n>Types</span> <span class=n>types</span><span class=o>){</span>
+    <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>==</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
+    <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>ref</span> <span class=n>container</span><span class=o>;</span> <span class=n>containers</span><span class=o>){</span>
+        <span class=n>container</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>types</span><span class=o>[</span><span class=n>index</span><span class=o>];</span>
     <span class=o>}</span>
     <span class=n>length</span> <span class=o>=</span> <span class=n>length</span> <span class=o>+</span> <span class=mi>1</span><span class=o>;</span>
 <span class=o>}</span>
 </code></pre></div><p><code>insertBack</code>が受け入れるべき型はすでにわかっています。
 構造体のフィールド郡の型をうけいれるべきです。
-そして配列のタプルである<code>containers</code>をコンパイル時にイテレートします。</p><p>それから適切な<code>argument</code>に<code>types[index]</code>でアクセスし、それを配列に挿入するだけです。</p><p>構造体そのものを挿入することもできます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>T</span> <span class=n>t</span><span class=o>)</span><span class=o>{</span>
-    <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>=</span><span class=o>=</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
-    <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>_</span><span class=o>;</span> <span class=n>Types</span><span class=o>)</span><span class=o>{</span>
-        <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>t</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>)</span><span class=o>;</span>
+そして配列のタプルである<code>containers</code>をコンパイル時にイテレートします。</p><p>それから適切な<code>argument</code>に<code>types[index]</code>でアクセスし、それを配列に挿入するだけです。</p><p>構造体そのものを挿入することもできます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>T</span> <span class=n>t</span><span class=o>){</span>
+    <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>==</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
+    <span class=k>foreach</span><span class=o>(</span><span class=n>index</span><span class=o>,</span> <span class=n>_</span><span class=o>;</span> <span class=n>Types</span><span class=o>){</span>
+        <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>][</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=nb>__traits</span><span class=o>(</span><span class=n>getMember</span><span class=o>,</span> <span class=n>t</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>[</span><span class=n>index</span><span class=o>]);</span>
     <span class=o>}</span>
     <span class=n>length</span> <span class=o>=</span> <span class=n>length</span> <span class=o>+</span> <span class=mi>1</span><span class=o>;</span>
 <span class=o>}</span>
 </code></pre></div><p><code>index</code>を取得するために型をイテレートします。
 <code>index</code>を適切なコンテナを得るためと、構造体の適切なフィールド名を見つけるために使います。
-順序は常に同じためこれは動作します。</p><p>上のコードを<code>Vec2</code>ようにするとだいたいこんなふうになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>Vec2</span> <span class=n>t</span><span class=o>)</span><span class=o>{</span>
-    <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>=</span><span class=o>=</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
-    <span class=n>containers</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>t</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
-    <span class=n>containers</span><span class=o>[</span><span class=mi>1</span><span class=o>]</span><span class=o>[</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>t</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
+順序は常に同じためこれは動作します。</p><p>上のコードを<code>Vec2</code>ようにするとだいたいこんなふうになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>insertBack</span><span class=o>(</span><span class=n>Vec2</span> <span class=n>t</span><span class=o>){</span>
+    <span class=k>if</span><span class=o>(</span><span class=n>length</span> <span class=o>==</span> <span class=n>size</span><span class=o>)</span> <span class=n>grow</span><span class=o>;</span>
+    <span class=n>containers</span><span class=o>[</span><span class=mi>0</span><span class=o>][</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>t</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
+    <span class=n>containers</span><span class=o>[</span><span class=mi>1</span><span class=o>][</span><span class=n>length</span><span class=o>]</span> <span class=o>=</span> <span class=n>t</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
     <span class=n>length</span> <span class=o>=</span> <span class=n>length</span> <span class=o>+</span> <span class=mi>1</span><span class=o>;</span>
 <span class=o>}</span>
 </code></pre></div><p>配列にフィールド名でアクセスできます。
-Dでこれは<code>opDispatch</code>によって非常に簡単にできます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>ref</span> <span class=kd>auto</span> <span class=nf>opDispatch</span><span class=o>(</span><span class=kt>string</span> <span class=n>name</span><span class=o>)</span><span class=o>(</span><span class=o>)</span><span class=o>{</span>
+Dでこれは<code>opDispatch</code>によって非常に簡単にできます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>ref</span> <span class=kd>auto</span> <span class=nf>opDispatch</span><span class=o>(</span><span class=kt>string</span> <span class=n>name</span><span class=o>)(){</span>
     <span class=kn>import</span> <span class=nn>std.meta</span><span class=o>:</span> <span class=n>staticIndexOf</span><span class=o>;</span>
-    <span class=kd>alias</span> <span class=n>index</span> <span class=o>=</span> <span class=n>staticIndexOf</span><span class=o>!</span><span class=o>(</span><span class=n>name</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>)</span><span class=o>;</span>
-    <span class=kd>static</span> <span class=nf>assert</span><span class=o>(</span><span class=n>index</span> <span class=o>&gt;</span><span class=o>=</span> <span class=mi>0</span><span class=o>)</span><span class=o>;</span>
-    <span class=k>return</span> <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>;</span>
+    <span class=kd>alias</span> <span class=n>index</span> <span class=o>=</span> <span class=n>staticIndexOf</span><span class=o>!(</span><span class=n>name</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>);</span>
+    <span class=kd>static</span> <span class=nf>assert</span><span class=o>(</span><span class=n>index</span> <span class=o>&gt;=</span> <span class=mi>0</span><span class=o>);</span>
+    <span class=k>return</span> <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>];</span>
 <span class=o>}</span>
 </code></pre></div><p>上のサンプルを<code>Vec2</code>用にした場合ではすべてのxの配列を<code>s.x</code>、すべてのyの配列を<code>s.y</code>で得ることができます。
-<code>s.x</code>を呼んだ場合<code>opDispatch</code>はコンパイル時にこんな感じになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>ref</span> <span class=kd>auto</span> <span class=nf>opDispatch</span><span class=o>(</span><span class=o>)</span><span class=o>{</span>
+<code>s.x</code>を呼んだ場合<code>opDispatch</code>はコンパイル時にこんな感じになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>ref</span> <span class=kd>auto</span> <span class=nf>opDispatch</span><span class=o>(){</span>
     <span class=kn>import</span> <span class=nn>std.meta</span><span class=o>:</span> <span class=n>staticIndexOf</span><span class=o>;</span>
-    <span class=kd>alias</span> <span class=n>index</span> <span class=o>=</span> <span class=n>staticIndexOf</span><span class=o>!</span><span class=o>(</span><span class=s>&#34;x&#34;</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>)</span><span class=o>;</span>
-    <span class=kd>static</span> <span class=nf>assert</span><span class=o>(</span><span class=n>index</span> <span class=o>&gt;</span><span class=o>=</span> <span class=mi>0</span><span class=o>)</span><span class=o>;</span>
-    <span class=k>return</span> <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>;</span>
+    <span class=kd>alias</span> <span class=n>index</span> <span class=o>=</span> <span class=n>staticIndexOf</span><span class=o>!(</span><span class=s>&#34;x&#34;</span><span class=o>,</span> <span class=n>MemberNames</span><span class=o>);</span>
+    <span class=kd>static</span> <span class=nf>assert</span><span class=o>(</span><span class=n>index</span> <span class=o>&gt;=</span> <span class=mi>0</span><span class=o>);</span>
+    <span class=k>return</span> <span class=n>containers</span><span class=o>[</span><span class=n>index</span><span class=o>];</span>
 <span class=o>}</span>
 </code></pre></div><p><code>MemberNames opDispatch</code>内が失敗しなかった場合、<code>opDispatch name</code>のインデックスを<code>MemberNames</code>から取得します。
 <code>MemberNames</code>内にあればそのインデックスで適切なコンテナにアクセスします。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>struct</span> <span class=nc>Server</span><span class=o>{</span>
@@ -300,7 +300,7 @@ Dでこれは<code>opDispatch</code>によって非常に簡単にできます�
 </span><span class=c1></span>    <span class=o>}</span>
     <span class=n>SOA</span><span class=o>!</span><span class=n>RemoteClient</span> <span class=n>remoteClients</span><span class=o>;</span>
 
-    <span class=kt>void</span> <span class=nf>poll</span><span class=o>(</span><span class=o>)</span><span class=o>{</span>
+    <span class=kt>void</span> <span class=nf>poll</span><span class=o>(){</span>
         <span class=c1>//Address address
 </span><span class=c1></span>        <span class=c1>//recvfrom(buffer, address);
 </span><span class=c1></span>    <span class=o>}</span>
@@ -320,7 +320,7 @@ Dでこれは<code>opDispatch</code>によって非常に簡単にできます�
 
 <span class=n>Array</span><span class=o>!</span><span class=n>Vec3</span> <span class=n>positions</span><span class=o>;</span>
 
-<span class=n>positions</span><span class=o>[</span><span class=o>]</span><span class=o>.</span><span class=na>filter</span><span class=o>!</span><span class=o>(</span><span class=n>v</span> <span class=o>=</span><span class=o>&gt;</span> <span class=n>v</span><span class=o>.</span><span class=na>x</span> <span class=o>&lt;</span> <span class=mf>10.0f</span><span class=o>)</span><span class=o>;</span>
+<span class=n>positions</span><span class=o>[].</span><span class=na>filter</span><span class=o>!(</span><span class=n>v</span> <span class=o>=&gt;</span> <span class=n>v</span><span class=o>.</span><span class=na>x</span> <span class=o>&lt;</span> <span class=mf>10.0f</span><span class=o>);</span>
 </code></pre></div><p><code>x コンポーネント</code>が<code>10.0f</code>より小さいすべてのベクトルをフィルタしたくなっても、2つのfloatが余分に読み込まれるだけです。
 <code>Vec3</code>は大きくならず、これ以外の他のデータ構造が成長し、将来のボトルネックになるかもしれません。</p><h3 id=soaは時期尚早な最適化ではないのか>SoAは「時期尚早な最適化」ではないのか?</h3><p>私の意見は違います。
 <code>AoS</code>の問題は、それが将来パフォーマンスボトルネックになった場合、多くのコードをリファクタしなければならないというところです。
@@ -328,12 +328,12 @@ Dでこれは<code>opDispatch</code>によって非常に簡単にできます�
     <span class=kd>struct</span> <span class=nc>Hot</span><span class=o>{</span>
         <span class=n>Data1</span> <span class=n>d1</span><span class=o>;</span>
         <span class=n>Data2</span> <span class=n>d2</span><span class=o>;</span>
-        <span class=o>.</span><span class=o>.</span><span class=o>.</span>
+        <span class=o>...</span>
     <span class=o>}</span>
     <span class=kd>struct</span> <span class=nc>Cold</span><span class=o>{</span>
         <span class=n>Data3</span> <span class=n>d3</span><span class=o>;</span>
         <span class=n>Data4</span> <span class=n>d4</span><span class=o>;</span>
-        <span class=o>.</span><span class=o>.</span><span class=o>.</span>
+        <span class=o>...</span>
     <span class=o>}</span>
 
     <span class=n>Hot</span><span class=o>*</span> <span class=n>hot</span><span class=o>;</span>
@@ -342,12 +342,12 @@ Dでこれは<code>opDispatch</code>によって非常に簡単にできます�
 </code></pre></div><p>しかし言語によってはまだまだ多くのコードをリファクタしなければならないかもしれません。
 早い段階でデータアクセスについて考えることで手間が省けるかもしれません。</p><p><a href="https://www.youtube.com/watch?v=ZHqFrNyLlpA">Jonathan Blow</a>には名無し変数とSoAをカバーする言語デモンストレーションがあります。
 Quick note:Jonathan BlowのやりかたはDの<code>alias this</code>とよく似ています。</p><p>使う言語によっては、<code>SoA</code>は<code>AoS</code>と比べてそんなに悪くはありません。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=c1>//AoS
-</span><span class=c1></span><span class=n>remoteClients</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>.</span><span class=na>address</span><span class=o>;</span>
+</span><span class=c1></span><span class=n>remoteClients</span><span class=o>[</span><span class=n>index</span><span class=o>].</span><span class=na>address</span><span class=o>;</span>
 
 <span class=c1>//vs 
 </span><span class=c1></span>
 <span class=c1>//SoA
-</span><span class=c1></span><span class=n>remoteClients</span><span class=o>.</span><span class=na>address</span><span class=o>[</span><span class=n>index</span><span class=o>]</span><span class=o>;</span>
+</span><span class=c1></span><span class=n>remoteClients</span><span class=o>.</span><span class=na>address</span><span class=o>[</span><span class=n>index</span><span class=o>];</span>
 </code></pre></div><p>しかし<code>SoA</code>はキャッシュからの関係ない不必要なローディングなしにデータに部分的なアクセスができるため、よりスケールします。</p></article><footer><h2><a href=/tags/dlang>#dlang</a>
 なぜ、どういう時にSOAを使うべきなのか【翻訳】</h2><p><time>2017-05-19</time>
 <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site></footer></body></html>

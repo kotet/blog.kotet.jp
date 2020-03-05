@@ -7,7 +7,7 @@ hljs.initHighlightingOnLoad();</script><script defer src="//cdn.rawgit.com/mathj
         processEscapes: true
       }
     });
-</script><title>#dlang PHPからDに切り替えたらコストが削減できました【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2019/10/saving-money-by-switching-from-php-to-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang PHPからDに切り替えたらコストが削減できました【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="Saving Money by Switching from PHP to D – The D Blog を 許可を得て 翻訳しました。 誤訳等あれば気軽に Pull requestを投げてください。 2nightは イタリアのナイトライフと"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2019/10/saving-money-by-switching-from-php-to-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.62.2"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+</script><title>#dlang PHPからDに切り替えたらコストが削減できました【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2019/10/saving-money-by-switching-from-php-to-d/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang PHPからDに切り替えたらコストが削減できました【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="Saving Money by Switching from PHP to D – The D Blog を 許可を得て 翻訳しました。 誤訳等あれば気軽に Pull requestを投げてください。 2nightは イタリアのナイトライフと"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2019/10/saving-money-by-switching-from-php-to-d/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
 PHPからDに切り替えたらコストが削減できました【翻訳】</h2><p>Created: <time>2019-10-01</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#開発>開発</a></li><li><a href=#パフォーマンス>パフォーマンス</a></li><li><a href=#one-more-thing>One more thing…</a></li></ul></li></ul></nav></aside></header><article><p><a href=https://dlang.org/blog/2019/09/30/saving-money-by-switching-from-php-to-d/>Saving Money by Switching from PHP to D – The D Blog</a>
 を
@@ -38,19 +38,19 @@ HTMLタグがページ中を動き回ったとしても問題なく動作しま�
 たとえばブログページをビルドしたいとしましょう。
 まずは以下のようなシンプルなHTMLファイルを作ります。</p><div class=highlight><pre class=chroma><code class=language-html data-lang=html><span class=cp>&lt;!DOCTYPE  html&gt;</span>
 
-<span class=p>&lt;</span><span class=nt>html</span>  <span class=na>lang</span><span class=o>=</span><span class=s>&#34;en&#34;</span><span class=p></span><span class=p>&gt;</span>
+<span class=p>&lt;</span><span class=nt>html</span>  <span class=na>lang</span><span class=o>=</span><span class=s>&#34;en&#34;</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>head</span><span class=p></span><span class=p>&gt;</span><span class=p>&lt;</span><span class=nt>title</span><span class=p></span><span class=p>&gt;</span>Test page<span class=p>&lt;</span><span class=p>/</span><span class=nt>title</span><span class=p>&gt;</span><span class=p>&lt;</span><span class=p>/</span><span class=nt>head</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;&lt;</span><span class=nt>title</span><span class=p>&gt;</span>Test page<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>body</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
 
-  <span class=c>&lt;!--</span><span class=c> Main post </span><span class=c>--&gt;</span>
+  <span class=c>&lt;!-- Main post --&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h1</span><span class=p></span><span class=p>&gt;</span>Post title<span class=p>&lt;</span><span class=p>/</span><span class=nt>h1</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h1</span><span class=p>&gt;</span>Post title<span class=p>&lt;/</span><span class=nt>h1</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h2</span><span class=p></span><span class=p>&gt;</span>The optional subheading<span class=p>&lt;</span><span class=p>/</span><span class=nt>h2</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h2</span><span class=p>&gt;</span>The optional subheading<span class=p>&lt;/</span><span class=nt>h2</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>p</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>
 
    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
@@ -60,19 +60,19 @@ HTMLタグがページ中を動き回ったとしても問題なく動作しま�
 
    Ut dapibus a orci in eleifend.
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>p</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
 
-  <span class=c>&lt;!--</span><span class=c> Two more posts </span><span class=c>--&gt;</span>
+  <span class=c>&lt;!-- Two more posts --&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>div</span>  <span class=na>id</span><span class=o>=</span><span class=s>&#34;others&#34;</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>div</span>  <span class=na>id</span><span class=o>=</span><span class=s>&#34;others&#34;</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h3</span><span class=p></span><span class=p>&gt;</span>Other posts<span class=p>&lt;</span><span class=p>/</span><span class=nt>h3</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h3</span><span class=p>&gt;</span>Other posts<span class=p>&lt;/</span><span class=nt>h3</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>div</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h4</span><span class=p></span><span class=p>&gt;</span>Post#2<span class=p>&lt;</span><span class=p>/</span><span class=nt>h4</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h4</span><span class=p>&gt;</span>Post#2<span class=p>&lt;/</span><span class=nt>h4</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>p</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>
 
    Morbi tempus pretium metus, et aliquet dolor.
 
@@ -82,29 +82,29 @@ HTMLタグがページ中を動き回ったとしても問題なく動作しま�
 
    Morbi hendrerit faucibus sem, ac tristique libero...
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>p</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>div</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>div</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h4</span><span class=p></span><span class=p>&gt;</span>Post #3<span class=p>&lt;</span><span class=p>/</span><span class=nt>h4</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h4</span><span class=p>&gt;</span>Post #3<span class=p>&lt;/</span><span class=nt>h4</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>p</span><span class=p></span><span class=p>&gt;</span>Sed sit amet vehicula nisl. Nulla in mi est.
+  <span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>Sed sit amet vehicula nisl. Nulla in mi est.
 
    Vivamus mollis purus eu magna ullamcorper, eget posuere metus sodales.
 
    Vestibulum ipsum ligula, vehicula sit amet libero at, elementum vestibulum mi.
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>p</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>div</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>div</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>body</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
 
-<span class=p>&lt;</span><span class=p>/</span><span class=nt>html</span><span class=p>&gt;</span>
+<span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
 </code></pre></div><p>これはHTMLを知る誰もが編集できる合法なHTML5ファイルです。
 このテンプレートをデータベースからの実データで埋めなければなりません。
 話を簡単にするために、この例ではデータベースは配列として表現されます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=c1>// A blog post
@@ -123,22 +123,22 @@ HTMLタグがページ中を動き回ったとしても問題なく動作しま�
 
 <span class=o>}</span>
 
-<span class=n>SimplePost</span><span class=o>[</span><span class=o>]</span> <span class=n>posts</span> <span class=o>=</span> <span class=o>[</span>
+<span class=n>SimplePost</span><span class=o>[]</span> <span class=n>posts</span> <span class=o>=</span> <span class=o>[</span>
 
-  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;D is awesome!&#34;</span><span class=o>,</span> <span class=s>&#34;This is a real subheading&#34;</span><span class=o>,</span> <span class=s>&#34;Original content was replaced&#34;</span><span class=o>,</span> <span class=s>&#34;http://dlang.org&#34;</span><span class=o>)</span><span class=o>,</span>
+  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;D is awesome!&#34;</span><span class=o>,</span> <span class=s>&#34;This is a real subheading&#34;</span><span class=o>,</span> <span class=s>&#34;Original content was replaced&#34;</span><span class=o>,</span> <span class=s>&#34;http://dlang.org&#34;</span><span class=o>),</span>
 
-  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #1&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #1&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #1&#34;</span><span class=o>)</span><span class=o>,</span>
+  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #1&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #1&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #1&#34;</span><span class=o>),</span>
 
-  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #2&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #2&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #2&#34;</span><span class=o>)</span><span class=o>,</span>
+  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #2&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #2&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #2&#34;</span><span class=o>),</span>
 
   <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #3&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #3&#34;</span><span class=o>,</span> <span class=s>&#34;This will never be shown&#34;</span><span class=o>)</span>
 
-<span class=o>]</span><span class=o>;</span>
-</code></pre></div><p>最初に、HTMLテンプレートをそのまま読み、<a href=https://github.com/2night/arrogant>我々のHTML5ライブラリ</a>でパースします。</p><div class=highlight><pre class=chroma><code class=language-D data-lang=D>  <span class=kd>auto</span> <span class=n>page</span> <span class=o>=</span> <span class=n>readText</span><span class=o>(</span><span class=s>&#34;html/test.html&#34;</span><span class=o>)</span><span class=o>;</span>
+<span class=o>];</span>
+</code></pre></div><p>最初に、HTMLテンプレートをそのまま読み、<a href=https://github.com/2night/arrogant>我々のHTML5ライブラリ</a>でパースします。</p><div class=highlight><pre class=chroma><code class=language-D data-lang=D>  <span class=kd>auto</span> <span class=n>page</span> <span class=o>=</span> <span class=n>readText</span><span class=o>(</span><span class=s>&#34;html/test.html&#34;</span><span class=o>);</span>
 
   <span class=c1>// Parse the source
 </span><span class=c1></span>
-  <span class=kd>auto</span> <span class=n>dom</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=na>parse</span><span class=o>(</span><span class=n>page</span><span class=o>)</span><span class=o>;</span>
+  <span class=kd>auto</span> <span class=n>dom</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=na>parse</span><span class=o>(</span><span class=n>page</span><span class=o>);</span>
 </code></pre></div><p>そしてメイン記事のコンテンツを配列の最初の要素から得たデータに置き換えます。
 正しいHTML要素を選択するためにタグ名を使います。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d>  <span class=c1>// Take the first element from our data source
 </span><span class=c1></span>
@@ -146,22 +146,22 @@ HTMLタグがページ中を動き回ったとしても問題なく動作しま�
 
   <span class=c1>// Update rendered data of main post
 </span><span class=c1></span>
-  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h1&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
+  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h1&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
 
-  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
+  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
 
-  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;a&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>[</span><span class=s>&#34;href&#34;</span><span class=o>]</span><span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>uri</span><span class=o>;</span>
+  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;a&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>[</span><span class=s>&#34;href&#34;</span><span class=o>]=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>uri</span><span class=o>;</span>
 </code></pre></div><p>記事にサブタイトルがあるかをチェックしたいです。
 存在しない場合は関連するタグを削除します。</p><div class=highlight><pre class=chroma><code class=language-D data-lang=D>  <span class=c1>// If we have a subtitle we show it. If not, we remove the node from our page
 </span><span class=c1></span>
-  <span class=k>if</span> <span class=o>(</span><span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>.</span><span class=na>empty</span><span class=o>)</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>detach</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+  <span class=k>if</span> <span class=o>(</span><span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>.</span><span class=na>empty</span><span class=o>)</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>detach</span><span class=o>();</span>
 
-  <span class=k>else</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>;</span>
-</code></pre></div><p>同じことをテンプレート言語で行おうと思うと、こんなふうにHTMLを散らかさないといけないかもしれません。</p><div class=highlight><pre class=chroma><code class=language-html data-lang=html><span class=c>&lt;!--</span><span class=c> We don&#39;t like this! </span><span class=c>--&gt;</span>
+  <span class=k>else</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>;</span>
+</code></pre></div><p>同じことをテンプレート言語で行おうと思うと、こんなふうにHTMLを散らかさないといけないかもしれません。</p><div class=highlight><pre class=chroma><code class=language-html data-lang=html><span class=c>&lt;!-- We don&#39;t like this! --&gt;</span>
 
 <span class=cp>&lt;? if(!post.subheading.isEmpty) ?&gt;</span>
 
-<span class=p>&lt;</span><span class=nt>h2</span><span class=p></span><span class=p>&gt;</span><span class=cp>&lt;?= post.subheading ?&gt;</span><span class=p>&lt;</span><span class=p>/</span><span class=nt>h2</span><span class=p>&gt;</span>
+<span class=p>&lt;</span><span class=nt>h2</span><span class=p>&gt;</span><span class=cp>&lt;?= post.subheading ?&gt;</span><span class=p>&lt;/</span><span class=nt>h2</span><span class=p>&gt;</span>
 
 <span class=cp>&lt;? endif ?&gt;</span>
 </code></pre></div><p>これではロジックがビューに混ざってしまいHTMLファイル全体が混乱してしまいます。
@@ -169,36 +169,36 @@ HTMLフロントエンドで作業する人皆が<code>post</code>とは何な�
 そしてテンプレート言語そのものについて知っていることを想定しています。
 最後に、多くのHTML編集者がカスタム構文にかき回されることになります。
 さらに言うとこれはまだ単純な例でしかありません!</p><p>例に戻って、ページの最後のパートを埋めるにはDOMからコンテナを取得しなければなりません。
-DOM上をIDで検索することが必要です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>auto</span> <span class=n>container</span> <span class=o>=</span> <span class=n>dom</span><span class=o>.</span><span class=na>byId</span><span class=o>(</span><span class=s>&#34;others&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>;</span>
+DOM上をIDで検索することが必要です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>auto</span> <span class=n>container</span> <span class=o>=</span> <span class=n>dom</span><span class=o>.</span><span class=na>byId</span><span class=o>(</span><span class=s>&#34;others&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>;</span>
 </code></pre></div><p>コンテナ内の最初の要素をテンプレートとして使っています。
 なので最初の要素をクローンして、コンテナ自身は空にします。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d>  <span class=c1>// Use the first children as template
 </span><span class=c1></span>
-  <span class=kd>auto</span> <span class=n>containerItems</span> <span class=o>=</span> <span class=n>container</span><span class=o>.</span><span class=na>byCssSelector</span><span class=o>(</span><span class=s>`div[id=&#34;others&#34;] &gt; div`</span><span class=o>)</span><span class=o>;</span>
+  <span class=kd>auto</span> <span class=n>containerItems</span> <span class=o>=</span> <span class=n>container</span><span class=o>.</span><span class=na>byCssSelector</span><span class=o>(</span><span class=s>`div[id=&#34;others&#34;] &gt; div`</span><span class=o>);</span>
 
-  <span class=kd>auto</span> <span class=n>otherPostTemplate</span> <span class=o>=</span> <span class=n>containerItems</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>clone</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+  <span class=kd>auto</span> <span class=n>otherPostTemplate</span> <span class=o>=</span> <span class=n>containerItems</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>clone</span><span class=o>();</span>
 
   <span class=c1>// Remove all existing children from container
 </span><span class=c1></span>
-  <span class=n>containerItems</span><span class=o>.</span><span class=na>each</span><span class=o>!</span><span class=o>(</span><span class=n>item</span> <span class=o>=</span><span class=o>&gt;</span> <span class=n>item</span><span class=o>.</span><span class=na>detach</span><span class=o>)</span><span class=o>;</span>
+  <span class=n>containerItems</span><span class=o>.</span><span class=na>each</span><span class=o>!(</span><span class=n>item</span> <span class=o>=&gt;</span> <span class=n>item</span><span class=o>.</span><span class=na>detach</span><span class=o>);</span>
 </code></pre></div><p>最後にデータソース内の各投稿を子要素としてコンテナに追加します。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d>  <span class=c1>// Take 2 more posts from list. We drop the first, it&#39;s the main one.
 </span><span class=c1></span>
-  <span class=k>foreach</span><span class=o>(</span><span class=n>post</span><span class=o>;</span> <span class=n>posts</span><span class=o>.</span><span class=na>drop</span><span class=o>(</span><span class=mi>1</span><span class=o>)</span><span class=o>.</span><span class=na>take</span><span class=o>(</span><span class=mi>2</span><span class=o>)</span><span class=o>)</span>
+  <span class=k>foreach</span><span class=o>(</span><span class=n>post</span><span class=o>;</span> <span class=n>posts</span><span class=o>.</span><span class=na>drop</span><span class=o>(</span><span class=mi>1</span><span class=o>).</span><span class=na>take</span><span class=o>(</span><span class=mi>2</span><span class=o>))</span>
 
   <span class=o>{</span>
 
     <span class=c1>// Clone our html template
 </span><span class=c1></span>
-    <span class=kd>auto</span> <span class=n>newOtherPost</span> <span class=o>=</span> <span class=n>otherPostTemplate</span><span class=o>.</span><span class=na>clone</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>auto</span> <span class=n>newOtherPost</span> <span class=o>=</span> <span class=n>otherPostTemplate</span><span class=o>.</span><span class=na>clone</span><span class=o>();</span>
 
     <span class=c1>// Update it with our data
 </span><span class=c1></span>
-    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h4&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
+    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h4&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
 
-    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
+    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
 
     <span class=c1>// Add it to html container
 </span><span class=c1></span>
-    <span class=n>container</span><span class=o>.</span><span class=na>appendChild</span><span class=o>(</span><span class=n>newOtherPost</span><span class=o>)</span><span class=o>;</span>
+    <span class=n>container</span><span class=o>.</span><span class=na>appendChild</span><span class=o>(</span><span class=n>newOtherPost</span><span class=o>);</span>
 
   <span class=o>}</span>
 </code></pre></div><p>まとめると以下のようになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>import</span> <span class=nn>std</span><span class=o>;</span>
@@ -207,7 +207,7 @@ DOM上をIDで検索することが必要です。</p><div class=highlight><pre 
 
 <span class=c1>// Init
 </span><span class=c1></span>
-<span class=kd>auto</span> <span class=n>parser</span> <span class=o>=</span> <span class=n>Arrogant</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+<span class=kd>auto</span> <span class=n>parser</span> <span class=o>=</span> <span class=n>Arrogant</span><span class=o>();</span>
 
 <span class=c1>// A blog post
 </span><span class=c1></span>
@@ -225,37 +225,37 @@ DOM上をIDで検索することが必要です。</p><div class=highlight><pre 
 
 <span class=o>}</span>
 
-<span class=o>/</span><span class=o>*</span>
+<span class=o>/*</span>
 
  <span class=n>Of</span> <span class=n>course</span> <span class=kt>real</span> <span class=n>data</span> <span class=n>should</span> <span class=n>come</span> <span class=n>from</span> <span class=n>a</span> <span class=n>db</span> <span class=n>query</span><span class=o>.</span>
 
  <span class=n>We</span><span class=err>&#39;</span><span class=n>re</span> <span class=n>using</span> <span class=n>an</span> <span class=n>array</span> <span class=k>for</span> <span class=n>simplicity</span>
 
-<span class=o>*</span><span class=o>/</span>
+<span class=o>*/</span>
 
-<span class=n>SimplePost</span><span class=o>[</span><span class=o>]</span> <span class=n>posts</span> <span class=o>=</span> <span class=o>[</span>
+<span class=n>SimplePost</span><span class=o>[]</span> <span class=n>posts</span> <span class=o>=</span> <span class=o>[</span>
 
-  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;D is awesome!&#34;</span><span class=o>,</span> <span class=s>&#34;This is a real subheading&#34;</span><span class=o>,</span> <span class=s>&#34;Original content was replaced&#34;</span><span class=o>,</span> <span class=s>&#34;http://dlang.org&#34;</span><span class=o>)</span><span class=o>,</span>
+  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;D is awesome!&#34;</span><span class=o>,</span> <span class=s>&#34;This is a real subheading&#34;</span><span class=o>,</span> <span class=s>&#34;Original content was replaced&#34;</span><span class=o>,</span> <span class=s>&#34;http://dlang.org&#34;</span><span class=o>),</span>
 
-  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #1&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #1&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #1&#34;</span><span class=o>)</span><span class=o>,</span>
+  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #1&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #1&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #1&#34;</span><span class=o>),</span>
 
-  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #2&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #2&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #2&#34;</span><span class=o>)</span><span class=o>,</span>
+  <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #2&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #2&#34;</span><span class=o>,</span> <span class=s>&#34;Random text #2&#34;</span><span class=o>),</span>
 
   <span class=n>SimplePost</span><span class=o>(</span><span class=s>&#34;Example post #3&#34;</span><span class=o>,</span> <span class=s>&#34;Example subheading #3&#34;</span><span class=o>,</span> <span class=s>&#34;This will never be shown&#34;</span><span class=o>)</span>
 
-<span class=o>]</span><span class=o>;</span>
+<span class=o>];</span>
 
-<span class=kt>void</span> <span class=nf>main</span><span class=o>(</span><span class=o>)</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span>
 
 <span class=o>{</span>
 
   <span class=c1>// Our template from disk
 </span><span class=c1></span>
-  <span class=kd>auto</span> <span class=n>page</span> <span class=o>=</span> <span class=n>readText</span><span class=o>(</span><span class=s>&#34;html/test.html&#34;</span><span class=o>)</span><span class=o>;</span>
+  <span class=kd>auto</span> <span class=n>page</span> <span class=o>=</span> <span class=n>readText</span><span class=o>(</span><span class=s>&#34;html/test.html&#34;</span><span class=o>);</span>
 
   <span class=c1>// Parse the source
 </span><span class=c1></span>
-    <span class=kd>auto</span> <span class=n>dom</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=na>parse</span><span class=o>(</span><span class=n>page</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>auto</span> <span class=n>dom</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=na>parse</span><span class=o>(</span><span class=n>page</span><span class=o>);</span>
 
   <span class=c1>// Take the first element from our data source
 </span><span class=c1></span>
@@ -263,17 +263,17 @@ DOM上をIDで検索することが必要です。</p><div class=highlight><pre 
 
   <span class=c1>// Update rendered data of main post
 </span><span class=c1></span>
-  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h1&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
+  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h1&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
 
-  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
+  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
 
-  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;a&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>[</span><span class=s>&#34;href&#34;</span><span class=o>]</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>uri</span><span class=o>;</span>
+  <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;a&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>[</span><span class=s>&#34;href&#34;</span><span class=o>]</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>uri</span><span class=o>;</span>
 
   <span class=c1>// If we have a subtitle we show it. If not, we remove the node from our page
 </span><span class=c1></span>
-  <span class=k>if</span> <span class=o>(</span><span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>.</span><span class=na>empty</span><span class=o>)</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>detach</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+  <span class=k>if</span> <span class=o>(</span><span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>.</span><span class=na>empty</span><span class=o>)</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>detach</span><span class=o>();</span>
 
-  <span class=k>else</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>;</span>
+  <span class=k>else</span> <span class=n>dom</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h2&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>mainPost</span><span class=o>.</span><span class=na>subheading</span><span class=o>;</span>
 
   <span class=c1>// -----
 </span><span class=c1></span>
@@ -283,82 +283,82 @@ DOM上をIDで検索することが必要です。</p><div class=highlight><pre 
 </span><span class=c1></span>
   <span class=c1>// Get the container
 </span><span class=c1></span>
-  <span class=kd>auto</span> <span class=n>container</span> <span class=o>=</span> <span class=n>dom</span><span class=o>.</span><span class=na>byId</span><span class=o>(</span><span class=s>&#34;others&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>;</span>
+  <span class=kd>auto</span> <span class=n>container</span> <span class=o>=</span> <span class=n>dom</span><span class=o>.</span><span class=na>byId</span><span class=o>(</span><span class=s>&#34;others&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>;</span>
 
   <span class=c1>// Use the first children as template
 </span><span class=c1></span>
-  <span class=kd>auto</span> <span class=n>containerItems</span> <span class=o>=</span> <span class=n>container</span><span class=o>.</span><span class=na>byCssSelector</span><span class=o>(</span><span class=s>`div[id=&#34;others&#34;] &gt; div`</span><span class=o>)</span><span class=o>;</span>
+  <span class=kd>auto</span> <span class=n>containerItems</span> <span class=o>=</span> <span class=n>container</span><span class=o>.</span><span class=na>byCssSelector</span><span class=o>(</span><span class=s>`div[id=&#34;others&#34;] &gt; div`</span><span class=o>);</span>
 
-  <span class=kd>auto</span> <span class=n>otherPostTemplate</span> <span class=o>=</span> <span class=n>containerItems</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>clone</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+  <span class=kd>auto</span> <span class=n>otherPostTemplate</span> <span class=o>=</span> <span class=n>containerItems</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>clone</span><span class=o>();</span>
 
-  <span class=n>containerItems</span><span class=o>.</span><span class=na>each</span><span class=o>!</span><span class=o>(</span><span class=n>item</span> <span class=o>=</span><span class=o>&gt;</span> <span class=n>item</span><span class=o>.</span><span class=na>detach</span><span class=o>)</span><span class=o>;</span>
+  <span class=n>containerItems</span><span class=o>.</span><span class=na>each</span><span class=o>!(</span><span class=n>item</span> <span class=o>=&gt;</span> <span class=n>item</span><span class=o>.</span><span class=na>detach</span><span class=o>);</span>
 
   <span class=c1>// Take 2 more posts from list. We drop the first, it&#39;s the main one.
 </span><span class=c1></span>
-  <span class=k>foreach</span><span class=o>(</span><span class=n>post</span><span class=o>;</span> <span class=n>posts</span><span class=o>.</span><span class=na>drop</span><span class=o>(</span><span class=mi>1</span><span class=o>)</span><span class=o>.</span><span class=na>take</span><span class=o>(</span><span class=mi>2</span><span class=o>)</span><span class=o>)</span>
+  <span class=k>foreach</span><span class=o>(</span><span class=n>post</span><span class=o>;</span> <span class=n>posts</span><span class=o>.</span><span class=na>drop</span><span class=o>(</span><span class=mi>1</span><span class=o>).</span><span class=na>take</span><span class=o>(</span><span class=mi>2</span><span class=o>))</span>
 
   <span class=o>{</span>
 
     <span class=c1>// Clone our html template
 </span><span class=c1></span>
-    <span class=kd>auto</span> <span class=n>newOtherPost</span> <span class=o>=</span> <span class=n>otherPostTemplate</span><span class=o>.</span><span class=na>clone</span><span class=o>(</span><span class=o>)</span><span class=o>;</span>
+    <span class=kd>auto</span> <span class=n>newOtherPost</span> <span class=o>=</span> <span class=n>otherPostTemplate</span><span class=o>.</span><span class=na>clone</span><span class=o>();</span>
 
     <span class=c1>// Update it with our data
 </span><span class=c1></span>
-    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h4&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
+    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;h4&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>heading</span><span class=o>;</span>
 
-    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>)</span><span class=o>.</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
+    <span class=n>newOtherPost</span><span class=o>.</span><span class=na>byTagName</span><span class=o>(</span><span class=s>&#34;p&#34;</span><span class=o>).</span><span class=na>front</span><span class=o>.</span><span class=na>innerText</span> <span class=o>=</span> <span class=n>post</span><span class=o>.</span><span class=na>text</span><span class=o>;</span>
 
     <span class=c1>// Add it to html container
 </span><span class=c1></span>
-    <span class=n>container</span><span class=o>.</span><span class=na>appendChild</span><span class=o>(</span><span class=n>newOtherPost</span><span class=o>)</span><span class=o>;</span>
+    <span class=n>container</span><span class=o>.</span><span class=na>appendChild</span><span class=o>(</span><span class=n>newOtherPost</span><span class=o>);</span>
 
   <span class=o>}</span>
 
-  <span class=n>writeln</span><span class=o>(</span><span class=n>dom</span><span class=o>.</span><span class=na>document</span><span class=o>)</span><span class=o>;</span>
+  <span class=n>writeln</span><span class=o>(</span><span class=n>dom</span><span class=o>.</span><span class=na>document</span><span class=o>);</span>
 
 <span class=o>}</span>
 </code></pre></div><p>このプログラムは以下のような合法なHTML5ページを出力します。</p><div class=highlight><pre class=chroma><code class=language-html data-lang=html><span class=cp>&lt;!DOCTYPE  html&gt;</span>
 
-<span class=p>&lt;</span><span class=nt>html</span>  <span class=na>lang</span><span class=o>=</span><span class=s>&#34;en&#34;</span><span class=p></span><span class=p>&gt;</span>
+<span class=p>&lt;</span><span class=nt>html</span>  <span class=na>lang</span><span class=o>=</span><span class=s>&#34;en&#34;</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>head</span><span class=p></span><span class=p>&gt;</span><span class=p>&lt;</span><span class=nt>title</span><span class=p></span><span class=p>&gt;</span>Test page<span class=p>&lt;</span><span class=p>/</span><span class=nt>title</span><span class=p>&gt;</span><span class=p>&lt;</span><span class=p>/</span><span class=nt>head</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;&lt;</span><span class=nt>title</span><span class=p>&gt;</span>Test page<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>body</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h1</span><span class=p></span><span class=p>&gt;</span>D is awesome!<span class=p>&lt;</span><span class=p>/</span><span class=nt>h1</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h1</span><span class=p>&gt;</span>D is awesome!<span class=p>&lt;/</span><span class=nt>h1</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h2</span><span class=p></span><span class=p>&gt;</span>This is a real subheading<span class=p>&lt;</span><span class=p>/</span><span class=nt>h2</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h2</span><span class=p>&gt;</span>This is a real subheading<span class=p>&lt;/</span><span class=nt>h2</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>p</span><span class=p></span><span class=p>&gt;</span>Original content was replaced<span class=p>&lt;</span><span class=p>/</span><span class=nt>p</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>Original content was replaced<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>a</span>  <span class=na>href</span><span class=o>=</span><span class=s>&#34;http://dlang.org&#34;</span><span class=p></span><span class=p>&gt;</span>More...<span class=p>&lt;</span><span class=p>/</span><span class=nt>a</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>a</span>  <span class=na>href</span><span class=o>=</span><span class=s>&#34;http://dlang.org&#34;</span><span class=p>&gt;</span>More...<span class=p>&lt;/</span><span class=nt>a</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h3</span><span class=p></span><span class=p>&gt;</span>Other posts<span class=p>&lt;</span><span class=p>/</span><span class=nt>h3</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h3</span><span class=p>&gt;</span>Other posts<span class=p>&lt;/</span><span class=nt>h3</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>div</span>  <span class=na>id</span><span class=o>=</span><span class=s>&#34;others&#34;</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>div</span>  <span class=na>id</span><span class=o>=</span><span class=s>&#34;others&#34;</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>div</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h4</span><span class=p></span><span class=p>&gt;</span>Example post #1<span class=p>&lt;</span><span class=p>/</span><span class=nt>h4</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h4</span><span class=p>&gt;</span>Example post #1<span class=p>&lt;/</span><span class=nt>h4</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>p</span><span class=p></span><span class=p>&gt;</span>Random text #1<span class=p>&lt;</span><span class=p>/</span><span class=nt>p</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>Random text #1<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>div</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>div</span><span class=p></span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>h4</span><span class=p></span><span class=p>&gt;</span>Example post #2<span class=p>&lt;</span><span class=p>/</span><span class=nt>h4</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>h4</span><span class=p>&gt;</span>Example post #2<span class=p>&lt;/</span><span class=nt>h4</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=nt>p</span><span class=p></span><span class=p>&gt;</span>Random text #2<span class=p>&lt;</span><span class=p>/</span><span class=nt>p</span><span class=p>&gt;</span>
+  <span class=p>&lt;</span><span class=nt>p</span><span class=p>&gt;</span>Random text #2<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>div</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>div</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
 
-  <span class=p>&lt;</span><span class=p>/</span><span class=nt>body</span><span class=p>&gt;</span>
+  <span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
 
-<span class=p>&lt;</span><span class=p>/</span><span class=nt>html</span><span class=p>&gt;</span>
+<span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
 </code></pre></div><p>もちろん、他の方法、他の言語でも同様の結果を得ることは可能です。
 我々のライブラリは<a href=https://github.com/lexborisov/Modest>Modestと言うプレインCライブラリ</a>のラッパでしかありません。
 違うのはDのパワフルで理解しやすい構文により読み書きしやすいことです。
