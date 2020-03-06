@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cibuilds/hugo
+      - image: cibuilds/hugo:0.66
         environment:
           TZ: Asia/Tokyo
     working_directory: ~/project
@@ -14,7 +14,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cibuilds/hugo
+      - image: cibuilds/hugo:0.66
         environment:
           TZ: Asia/Tokyo
     working_directory: ~/project
