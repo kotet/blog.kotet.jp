@@ -1,2 +1,12 @@
 <footer class="site">
+    <div class="link-wrapper">
+        <a href="{{ .Site.LanguagePrefix }}/" title="tag">Home</a>
+        <a href="{{ .Site.LanguagePrefix }}/about" title="about">About</a>
+        {{ if eq .Lang "ja" }}
+        <a href="/products" title="download">Download</a>
+        {{ end }}
+        <a href="{{ .Site.LanguagePrefix }}/tags" title="tag">Tag</a>
+        <a href="{{ .Site.LanguagePrefix }}/index.xml" title="feed">Feed</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+    </div>
 </footer>

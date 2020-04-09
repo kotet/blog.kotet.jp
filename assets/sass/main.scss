@@ -160,13 +160,25 @@ hr {
 }
 
 footer.site {
+    background-color: $main_dark;
+    margin-top: 1em;
     color: #444;
     display: flex;
     justify-content: right;
 }
 
-footer.site p {
-    margin: .5em;
+footer.site .link-wrapper {
+    max-width: 800px;
+    width: 800px;
+    padding: 1em;
+    margin: 0 auto;
+}
+
+footer.site a {
+    color: white;
+    margin: 0;
+    margin-right: 1em;
+    text-decoration: underline;
 }
 
 code.hljs {
