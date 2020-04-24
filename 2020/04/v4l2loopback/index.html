@@ -18,17 +18,14 @@ v4l2loopbackで画面キャプチャをカメラ入力にする</h2><p>Created: 
 間違えないようにしましょう（1敗）。
 ブイフォーエルツーですよ！
 気をつけて！</p><h4 id=インストール>インストール</h4><p>Arch Linuxでは<a href=https://aur.archlinux.org/packages/v4l2loopback-dkms/>v4l2loopback-dkms</a>というAURパッケージが利用できます。
-Ubuntu 18.04では以下のコマンドでインストールできます。</p><pre><code class=language-console data-lang=console>$ sudo apt install v4l2loopback-dkms
-</code></pre><h4 id=設定>設定</h4><p><code>/etc/modprobe.d/v4l2loopback.conf</code>にオプションを書きます。</p><pre><code class=language-console data-lang=console>$ sudo vim /etc/modprobe.d/v4l2loopback.conf
-</code></pre><h5 id=etcmodprobedv4l2loopbackconf>/etc/modprobe.d/v4l2loopback.conf</h5><pre><code>options v4l2loopback video_nr=42 exclusive_caps=1
+Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。</p><pre><code class=language-console data-lang=console>$ git clone https://github.com/umlaeute/v4l2loopback.git
+$ cd v4l2loopback
+$ make &amp;&amp; sudo make install
+$ sudo depmod -a
+</code></pre><h4 id=設定>設定</h4><p><code>/etc/modprobe.d/v4l2loopback.conf</code>にオプションを書きます。</p><pre><code class=language-console data-lang=console>$ echo &quot;options v4l2loopback video_nr=42 exclusive_caps=1&quot; | sudo tee -a /etc/modprobe.d/v4l2loopback.conf
 </code></pre><p><code>video_nr</code>オプションで作られるループバックデバイスのIDを指定できます。
 今回はてきとうに<code>42</code>にします。
-<code>3,7,21,42</code>のように複数のデバイスを作ることもできます。</p><p><code>exclusive_caps</code>はChrome等でデバイスを使えるようにするためのオプションです。</p><h4 id=ロード>ロード</h4><p>次に<code>/etc/modules-load.d/modules.conf</code>に<code>v4l2loopback</code>と書き足して、カーネルモジュールが自動的にロードされるようにします。</p><pre><code class=language-console data-lang=console>$ sudo vim /etc/modules-load.d/modules.conf
-</code></pre><h5 id=etcmodules-loaddmodulesconf>/etc/modules-load.d/modules.conf</h5><pre><code># /etc/modules: kernel modules to load at boot time.
-#
-# This file contains the names of kernel modules that should be loaded
-# at boot time, one per line. Lines beginning with &quot;#&quot; are ignored.
-v4l2loopback
+<code>3,7,21,42</code>のように複数のデバイスを作ることもできます。</p><p><code>exclusive_caps</code>はChrome等でデバイスを使えるようにするためのオプションです。</p><h4 id=ロード>ロード</h4><p>次に<code>/etc/modules-load.d/modules.conf</code>に<code>v4l2loopback</code>と書き足して、カーネルモジュールが自動的にロードされるようにします。</p><pre><code class=language-console data-lang=console>$ echo v4l2loopback | sudo tee -a /etc/modules-load.d/modules.conf
 </code></pre><p><code>systemd-modules-load.service</code>を再起動することでカーネルモジュールが読み込まれます。
 これ以降は起動時に自動的にカーネルモジュールがロードされるようになります。</p><pre><code class=language-console data-lang=console>$ sudo systemctl restart systemd-modules-load.service
 </code></pre><p>新しく<code>/dev/video42</code>が生えているのがわかります。</p><pre><code class=language-console data-lang=console>$ ls /dev/video*
@@ -39,8 +36,8 @@ ffmpegのインストールは以下のコマンドでできます。</p><pre><c
 </code></pre><p>以下のコマンドで画面キャプチャのビデオストリームの色空間を変換し、<code>/dev/video42</code>に出力します。
 <code>-s 1920x1080</code>にはキャプチャしたい領域のサイズ、<code>-i $DISPLAY+0,0</code>にはキャプチャ領域のオフセットを指定します。
 たとえば画面左上から右に123px、下に456pxの場合<code>-i $DISPLAY+123,456</code>のようになります。
-使っている画面に応じて適宜書き換えてください。</p><p>もちろんスクリーンキャスト以外の映像も送れるので、ffmpegわかるマンはいろいろ遊んでみましょう。</p><pre><code class=language-console data-lang=console>$ ffmpeg -f x11grab -s 1920x1080 -i $DISPLAY+0,0 -vf format=pix_fmts=yuv420p -f v4l2 /dev/video42
-</code></pre><h3 id=結果>結果</h3><p>上のコマンドが走っている間、ChromeでなにかしらのWebビデオチャットを開いたりすると<code>Dummy video device</code>という名前のカメラが増えています。</p><p><img src=/img/blog/2020/04/v4l2loopback.jpg alt></p></article><footer><h2><a href=/tags/linux>#linux</a>
+使っている画面に応じて適宜書き換えてください。</p><pre><code class=language-console data-lang=console>$ ffmpeg -f x11grab -s 1920x1080 -i $DISPLAY+0,0 -vf format=pix_fmts=yuv420p -f v4l2 /dev/video42
+</code></pre><p>もちろんスクリーンキャスト以外の映像も送れるので、ffmpegわかるマンはいろいろ遊んでみましょう。</p><h3 id=結果>結果</h3><p>上のコマンドが走っている間、ChromeでなにかしらのWebビデオチャットを開いたりすると<code>Dummy video device</code>という名前のカメラが増えています。</p><p><img src=/img/blog/2020/04/v4l2loopback.jpg alt></p></article><footer><h2><a href=/tags/linux>#linux</a>
 v4l2loopbackで画面キャプチャをカメラ入力にする</h2><p><time>2020-04-22</time>
 <a href=/tags/linux>#linux</a> <a href=/tags/tech>#tech</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
 <a href=/about title=about>About</a>
