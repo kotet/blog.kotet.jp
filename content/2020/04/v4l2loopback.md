@@ -29,10 +29,13 @@ v4l2loopbackはダミーのビデオデバイスを作れるカーネルモジ�
 #### インストール
 
 Arch Linuxでは[v4l2loopback-dkms](https://aur.archlinux.org/packages/v4l2loopback-dkms/)というAURパッケージが利用できます。
-Ubuntu 18.04では以下のコマンドでインストールできます。
+Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。
 
 ```console
-$ sudo apt install v4l2loopback-dkms
+$ git clone https://github.com/umlaeute/v4l2loopback.git
+$ cd v4l2loopback
+$ make && sudo make install
+$ sudo depmod -a
 ```
 
 #### 設定
@@ -40,12 +43,7 @@ $ sudo apt install v4l2loopback-dkms
 `/etc/modprobe.d/v4l2loopback.conf`にオプションを書きます。
 
 ```console
-$ sudo vim /etc/modprobe.d/v4l2loopback.conf
-```
-
-##### /etc/modprobe.d/v4l2loopback.conf
-```
-options v4l2loopback video_nr=42 exclusive_caps=1
+$ echo "options v4l2loopback video_nr=42 exclusive_caps=1" | sudo tee -a /etc/modprobe.d/v4l2loopback.conf
 ```
 
 `video_nr`オプションで作られるループバックデバイスのIDを指定できます。
@@ -59,16 +57,7 @@ options v4l2loopback video_nr=42 exclusive_caps=1
 次に`/etc/modules-load.d/modules.conf`に`v4l2loopback`と書き足して、カーネルモジュールが自動的にロードされるようにします。
 
 ```console
-$ sudo vim /etc/modules-load.d/modules.conf
-```
-
-##### /etc/modules-load.d/modules.conf
-```
-# /etc/modules: kernel modules to load at boot time.
-#
-# This file contains the names of kernel modules that should be loaded
-# at boot time, one per line. Lines beginning with "#" are ignored.
-v4l2loopback
+$ echo v4l2loopback | sudo tee -a /etc/modules-load.d/modules.conf
 ```
 
 `systemd-modules-load.service`を再起動することでカーネルモジュールが読み込まれます。
@@ -100,11 +89,11 @@ $ sudo apt install ffmpeg
 たとえば画面左上から右に123px、下に456pxの場合`-i $DISPLAY+123,456`のようになります。
 使っている画面に応じて適宜書き換えてください。
 
-もちろんスクリーンキャスト以外の映像も送れるので、ffmpegわかるマンはいろいろ遊んでみましょう。
-
 ```console
 $ ffmpeg -f x11grab -s 1920x1080 -i $DISPLAY+0,0 -vf format=pix_fmts=yuv420p -f v4l2 /dev/video42
 ```
+
+もちろんスクリーンキャスト以外の映像も送れるので、ffmpegわかるマンはいろいろ遊んでみましょう。
 
 ### 結果
 
