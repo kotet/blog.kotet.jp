@@ -32,6 +32,7 @@ Arch Linuxでは[v4l2loopback-dkms](https://aur.archlinux.org/packages/v4l2loopb
 Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。
 
 ```console
+$ sudo apt-get install build-essential libelf-dev linux-headers-$(uname -r) unzip
 $ git clone https://github.com/umlaeute/v4l2loopback.git
 $ cd v4l2loopback
 $ make && sudo make install
@@ -91,6 +92,13 @@ $ sudo apt install ffmpeg
 
 ```console
 $ ffmpeg -f x11grab -s 1920x1080 -i $DISPLAY+0,0 -vf format=pix_fmts=yuv420p -f v4l2 /dev/video42
+```
+
+使うサービスによっては勝手に映像をクリッピングすることがあるので、
+画面全体ではなくマウスを追いかけるような映像にする場合は以下のようにします。
+
+```console
+ffmpeg -f x11grab -follow_mouse centered -video_size vga -i $DISPLAY -vf format=pix_fmts=yuv420p -f v4l2 /dev/video42
 ```
 
 もちろんスクリーンキャスト以外の映像も送れるので、ffmpegわかるマンはいろいろ遊んでみましょう。
