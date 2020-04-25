@@ -32,7 +32,7 @@ Arch Linuxでは[v4l2loopback-dkms](https://aur.archlinux.org/packages/v4l2loopb
 Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。
 
 ```console
-$ sudo apt-get install build-essential libelf-dev linux-headers-$(uname -r) unzip
+$ sudo apt install build-essential libelf-dev linux-headers-$(uname -r) unzip
 $ git clone https://github.com/umlaeute/v4l2loopback.git
 $ cd v4l2loopback
 $ make && sudo make install
