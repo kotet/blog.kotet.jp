@@ -18,7 +18,7 @@ v4l2loopbackで画面キャプチャをカメラ入力にする</h2><p>Created: 
 間違えないようにしましょう（1敗）。
 ブイフォーエルツーですよ！
 気をつけて！</p><h4 id=インストール>インストール</h4><p>Arch Linuxでは<a href=https://aur.archlinux.org/packages/v4l2loopback-dkms/>v4l2loopback-dkms</a>というAURパッケージが利用できます。
-Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。</p><pre><code class=language-console data-lang=console>$ sudo apt-get install build-essential libelf-dev linux-headers-$(uname -r) unzip
+Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。</p><pre><code class=language-console data-lang=console>$ sudo apt install build-essential libelf-dev linux-headers-$(uname -r) unzip
 $ git clone https://github.com/umlaeute/v4l2loopback.git
 $ cd v4l2loopback
 $ make &amp;&amp; sudo make install
