@@ -18,7 +18,8 @@ v4l2loopbackで画面キャプチャをカメラ入力にする</h2><p>Created: 
 間違えないようにしましょう（1敗）。
 ブイフォーエルツーですよ！
 気をつけて！</p><h4 id=インストール>インストール</h4><p>Arch Linuxでは<a href=https://aur.archlinux.org/packages/v4l2loopback-dkms/>v4l2loopback-dkms</a>というAURパッケージが利用できます。
-Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。</p><pre><code class=language-console data-lang=console>$ git clone https://github.com/umlaeute/v4l2loopback.git
+Ubuntuにも同名のパッケージが存在しますが、バージョンが古くてうまく動かなかったりするのでソースからインストールしましょう。</p><pre><code class=language-console data-lang=console>$ sudo apt-get install build-essential libelf-dev linux-headers-$(uname -r) unzip
+$ git clone https://github.com/umlaeute/v4l2loopback.git
 $ cd v4l2loopback
 $ make &amp;&amp; sudo make install
 $ sudo depmod -a
@@ -37,6 +38,8 @@ ffmpegのインストールは以下のコマンドでできます。</p><pre><c
 <code>-s 1920x1080</code>にはキャプチャしたい領域のサイズ、<code>-i $DISPLAY+0,0</code>にはキャプチャ領域のオフセットを指定します。
 たとえば画面左上から右に123px、下に456pxの場合<code>-i $DISPLAY+123,456</code>のようになります。
 使っている画面に応じて適宜書き換えてください。</p><pre><code class=language-console data-lang=console>$ ffmpeg -f x11grab -s 1920x1080 -i $DISPLAY+0,0 -vf format=pix_fmts=yuv420p -f v4l2 /dev/video42
+</code></pre><p>使うサービスによっては勝手に映像をクリッピングすることがあるので、
+画面全体ではなくマウスを追いかけるような映像にする場合は以下のようにします。</p><pre><code class=language-console data-lang=console>ffmpeg -f x11grab -follow_mouse centered -video_size vga -i $DISPLAY -vf format=pix_fmts=yuv420p -f v4l2 /dev/video42
 </code></pre><p>もちろんスクリーンキャスト以外の映像も送れるので、ffmpegわかるマンはいろいろ遊んでみましょう。</p><h3 id=結果>結果</h3><p>上のコマンドが走っている間、ChromeでなにかしらのWebビデオチャットを開いたりすると<code>Dummy video device</code>という名前のカメラが増えています。</p><p><img src=/img/blog/2020/04/v4l2loopback.jpg alt></p></article><footer><h2><a href=/tags/linux>#linux</a>
 v4l2loopbackで画面キャプチャをカメラ入力にする</h2><p><time>2020-04-22</time>
 <a href=/tags/linux>#linux</a> <a href=/tags/tech>#tech</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
