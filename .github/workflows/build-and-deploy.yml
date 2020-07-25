@@ -31,17 +31,17 @@ jobs:
           path: "public"
       - name: hugo build (test)
         run: |
-          ls -la
+          ls -la public
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
         env:
           HUGO_ENV: production
       - name: hugo build (deploy)
         if: github.ref == 'refs/heads/master'
         run: |
-          ls -la
+          ls -la public
           hugo --minify --buildFuture
           echo "blog.kotet.jp" > public/CNAME
-          ls -la
+          ls -la public
         env:
           HUGO_ENV: production
       - name: GitHub Push
