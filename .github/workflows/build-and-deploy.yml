@@ -29,9 +29,16 @@ jobs:
         with:
           ref: "refs/heads/deploy"
           path: "public"
-      - name: hugo build
+      - name: hugo build (test)
         run: |
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
+          echo "blog.kotet.jp" > public/CNAME
+        env:
+          HUGO_ENV: production
+      - name: hugo build (deploy)
+        if: github.ref == 'refs/heads/master'
+        run: |
+          hugo --minify --buildFuture
           echo "blog.kotet.jp" > public/CNAME
         env:
           HUGO_ENV: production
