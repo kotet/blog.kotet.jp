@@ -31,19 +31,22 @@ jobs:
           path: "public"
       - name: hugo build (test)
         run: |
-          ls -la public
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
         env:
           HUGO_ENV: production
       - name: hugo build (deploy)
         if: github.ref == 'refs/heads/master'
         run: |
-          ls -la public
           hugo --minify --buildFuture
           echo "blog.kotet.jp" > public/CNAME
-          ls -la public
         env:
           HUGO_ENV: production
+      - name: Commit files
+        if: github.ref == 'refs/heads/master'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "[actions] deploy" -a --allow-empty
       - name: GitHub Push
         if: github.ref == 'refs/heads/master'
         uses: ad-m/github-push-action@v0.6.0
