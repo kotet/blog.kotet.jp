@@ -44,6 +44,7 @@ jobs:
       - name: Commit files
         if: github.ref == 'refs/heads/master'
         run: |
+          cd public
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "[actions] deploy" -a --allow-empty
