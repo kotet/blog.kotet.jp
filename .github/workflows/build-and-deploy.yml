@@ -25,6 +25,10 @@ jobs:
           hugo-version: "0.66.0"
           extended: true
       - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          ref: "refs/heads/deploy"
+          path: "public"
       - name: hugo build
         run: |
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
