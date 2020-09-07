@@ -15,7 +15,7 @@ AtCoder Beginner Contest 177</h2><p>Created: <time>2020-08-29</time><br><a href=
 ペナルティ覚悟でバンバン提出しているからこそのこのタイムでもあるのだが、少し慎重にならないといけない。</p><p><a href=https://atcoder.jp/users/kotet/history/share/abc177>コンテスト成績証 - AtCoder</a></p><h3 id=a---dont-be-late>A - Don&rsquo;t be late</h3><p>$D/S\leq T$を判定すれば良いのだが、誤差が怖いので式変形して$D\leq ST$にする。</p><p><a href=https://atcoder.jp/contests/abc177/submissions/16305153>提出 #16305153 - AtCoder Beginner Contest 177</a></p><h3 id=b---substring>B - Substring</h3><p>$S$の長さ$|T|$の部分文字列ひとつを取り上げて、それが$T$になるためには何文字書き換えればいいか？
 という問題は部分文字列と$T$の各文字を比較すれば$O(|T|)$で解ける。
 その問題を$S$の長さ$|T|$の部分文字列全てに対して解いて、答えの最小値を求めればよい。</p><p>計算量は$O(N^2)$であり、文字列の長さが最大$10^3$なので間に合う。
-$S$の部分文字列を列挙する部分をバグらせてペナルティを出してしまった。</p><p><a href=https://atcoder.jp/contests/abc177/submissions/16316230>提出 #16316230 - AtCoder Beginner Contest 177</a></p><h3 id=c---sum-of-product-of-pairs>C - Sum of product of pairs</h3><p>答えの$\sum_{i=1}^{N-1} \sum_{j=i+1}^N A_iA_j$は、$\sum_{i=1}^{N-1} A_i\sum_{j=i+1}^N A_j$と式変形できる。
+$S$の部分文字列を列挙する部分をバグらせてペナルティを出してしまった。</p><p><a href=https://atcoder.jp/contests/abc177/submissions/16316230>提出 #16316230 - AtCoder Beginner Contest 177</a></p><h3 id=c---sum-of-product-of-pairs>C - Sum of product of pairs</h3><p>答えの$\sum_{i=1}^{N-1} (\sum_{j=i+1}^N A_iA_j)$は、$\sum_{i=1}^{N-1} (A_i\sum_{j=i+1}^N A_j)$と式変形できる。
 $\sum_{j=i+1}^N A_j$を$O(1)$で計算する方法を考えれば$A_i\sum_{j=i+1}^N A_j$が$O(1)$で計算できるようになる。
 これは累積和を使うことで実現できる。
 各$i$について、$\sum_{j=i+1}^N A_j$の答えを累積和で求めて$A_i$を掛けてやればよい。
