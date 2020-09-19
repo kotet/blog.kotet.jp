@@ -1,10 +1,21 @@
-<script defer src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        displayMath: [['$$','$$']],
-        processEscapes: true
-      }
-    });
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (document.body.querySelector('math') ||
+      document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)) {
+      let config = document.createElement("script");
+      config.type = "text/x-mathjax-config";
+      config[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({\n" +
+        "  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n" +
+        "  displayMath: [['$$','$$']],\n" +
+        "  processEscapes: true\n" +
+        " }\n" +
+        "});";
+      document.head.appendChild(config);
+      var script = document.createElement('script');
+      script.async = 'async';
+      script.src = '//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+      document.head.appendChild(script);
+    }
+  })
 </script>
