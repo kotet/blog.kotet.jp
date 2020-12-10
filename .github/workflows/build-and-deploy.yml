@@ -33,6 +33,10 @@ jobs:
         run: sudo apt-get -y install pngquant
       - name: hugo build (test)
         run: |
+          cd public
+          git rm -rf .
+          git clean -fxd
+          cd ..
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
       - name: optimize images
         run: |
@@ -43,6 +47,10 @@ jobs:
       - name: hugo build (deploy)
         if: github.ref == 'refs/heads/master'
         run: |
+          cd public
+          git rm -rf .
+          git clean -fxd
+          cd ..
           hugo --minify --buildFuture
           find public -name '*.png' | xargs -P8 pngquant
           echo "blog.kotet.jp" > public/CNAME
