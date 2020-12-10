@@ -40,7 +40,8 @@ jobs:
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
       - name: optimize images
         run: |
-          find public -name '*.png' | xargs -P8 pngquant
+          du -s public
+          find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
           du -s public
         env:
           HUGO_ENV: production
@@ -52,7 +53,7 @@ jobs:
           git clean -fxd
           cd ..
           hugo --minify --buildFuture
-          find public -name '*.png' | xargs -P8 pngquant
+          find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
           echo "blog.kotet.jp" > public/CNAME
         env:
           HUGO_ENV: production
