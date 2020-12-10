@@ -6,9 +6,9 @@ name: build-and-deploy
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ "*" ]
+    branches: ["*"]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -29,15 +29,31 @@ jobs:
         with:
           ref: "refs/heads/deploy"
           path: "public"
+      - name: install pngquant
+        run: sudo apt-get -y install pngquant
       - name: hugo build (test)
         run: |
+          cd public
+          git rm -rf .
+          git clean -fxd
+          cd ..
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
+      - name: optimize images
+        run: |
+          du -s public
+          find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
+          du -s public
         env:
           HUGO_ENV: production
       - name: hugo build (deploy)
         if: github.ref == 'refs/heads/master'
         run: |
+          cd public
+          git rm -rf .
+          git clean -fxd
+          cd ..
           hugo --minify --buildFuture
+          find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
           echo "blog.kotet.jp" > public/CNAME
         env:
           HUGO_ENV: production
