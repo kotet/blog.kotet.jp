@@ -1,0 +1,201 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="Interfacing D with C: Arrays and Functions (Arrays Part 2) – The D Blog を 許可を得て 翻訳しました。 これは D言語 Advent Calendar 2020 の4日目の記事です。 この投稿はDとCを同じプロジェクトで動かすシリー"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.fdb2b14fe46d03bf1120be521698e74c42f44ed361232c8eeccc51a6c5e434fb.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
+"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
+"  displayMath: [['$$','$$']],\n"+
+"  processEscapes: true\n"+
+" }\n"+
+"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><title>#dlang DとCのインターフェース：配列 Part 2【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2020/12/interfacing-d-with-c-arrays-part-2/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#dlang DとCのインターフェース：配列 Part 2【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="Interfacing D with C: Arrays and Functions (Arrays Part 2) – The D Blog を 許可を得て 翻訳しました。 これは D言語 Advent Calendar 2020 の4日目の記事です。 この投稿はDとCを同じプロジェクトで動かすシリー"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2020/12/interfacing-d-with-c-arrays-part-2/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script defer src="//www.googletagmanager.com/gtag/js?id=UA-88180620-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-88180620-1');</script><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S<br>PERSONAL<br>BLOG</a></h1></header><main><header><h2><a href=/tags/dlang>#dlang</a>
+DとCのインターフェース：配列 Part 2【翻訳】</h2><p>Created: <time>2020-12-28</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/d_and_c>#d_and_c</a> <a href=/tags/advent_calendar>#advent_calendar</a> <a href=/tags/cpplang>#cpplang</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#配列とcの関数宣言>配列とCの関数宣言</a></li><li><a href=#大解剖-dの配列>大解剖 Dの配列</a></li><li><a href=#cの配列をdに渡す>Cの配列をDに渡す</a></li></ul></li></ul></nav></aside></header><article><p><a href=https://dlang.org/blog/2020/04/28/interfacing-d-with-c-arrays-and-functions-arrays-part-two/>Interfacing D with C: Arrays and Functions (Arrays Part 2) – The D Blog</a>
+を
+<a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
+翻訳しました。</p><p>これは
+<a href=https://qiita.com/advent-calendar/2020/dlang>D言語 Advent Calendar 2020</a>
+の4日目の記事です。</p><hr><p>この投稿はDとCを同じプロジェクトで動かすシリーズの一部です。
+前回の投稿では配列の宣言と初期化に関するDとCの
+<a href=https://dlang.org/blog/2018/10/17/interfacing-d-with-c-arrays-part-1/>違いを確認しました</a>
+(
+訳注: <a href=/2018/12/interfacing-d-with-c-arrays-part-1>日本語訳はこちら</a>
+)
+。</p><h3 id=配列とcの関数宣言>配列とCの関数宣言</h3><p>CのライブラリをDから使うことはとても簡単です。
+ほとんどの場合で期待したとおりに動作しますが、前回見てきたとおり少し違いがあります。
+配列を受け取るCの関数を取り扱う場合は、その違いを深く理解する必要があります。</p><p>引数として配列を受け取るCの関数を宣言する最も素直で一般的な方法は、
+引数リストの中でポインタを使うものです。
+たとえば、このようなCの関数があるとします。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>void</span> <span class=nf>f0</span><span class=p>(</span><span class=kt>int</span> <span class=o>*</span><span class=n>arr</span><span class=p>);</span>
+</code></pre></div><p>この関数には<code>int</code>の配列ならば、それがどのように宣言されたかに関わらず渡すことができます。
+たとえばポインタとしてでも、またCの配列構文(<code>int a[]</code>や<code>int b[3]</code>)を使っても同じです。
+Cプログラマの言葉で言うと、配列はポインタに<strong>減衰</strong>されます。
+つまり<code>f0(a)</code>や<code>f0(b)</code>のような関数呼び出しにおいて、
+関数には配列の最初の要素へのポインタが渡されます。</p><p>通常<code>f0</code>のような関数では、配列は文脈に応じた適切なマーカーで終了することが求められます。
+たとえばCの文字列は文字<code>\0</code>で終了する<code>char</code>の配列です
+(Dの文字列とCの文字列の差については将来の投稿で取り扱います)
+。
+もし終端文字がなければ<code>f0</code>は配列のどの要素が最後の要素か知ることができないため、
+このような文字が必要になります。
+そうではなく、コメントや関数名によって、関数が特定の長さを期待していることを記述することもあります。
+たとえば<code>vector3f_add</code>はちょうど3要素を期待します。
+もう一つの選択肢は別の引数として配列の長さを要求することです。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>void</span> <span class=nf>f1</span><span class=p>(</span><span class=kt>int</span> <span class=o>*</span><span class=n>arr</span><span class=p>,</span> <span class=n>size_t</span> <span class=n>len</span><span class=p>);</span>
+</code></pre></div><p>これらのアプローチにはフールプルーフがありません。
+<code>f0</code>にマーカーが無い、または指示されたよりも短い配列が渡されたとき、
+もしくは<code>f1</code>に渡された配列の実際の長さが<code>len</code>よりも短いときには、
+メモリ破壊への扉が開かれることになります。
+Dの配列ではこの可能性を考慮し、そのような問題を簡単に回避できるようにしました。
+しかしやはり、Cの関数をDから呼ぶときにおいてDの安全機能は100%のフールプルーフにはなりません。</p><p>少々一般的ではなくなりますが、他にもCにおける配列引数の宣言方法があります。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>void</span> <span class=nf>f2</span><span class=p>(</span><span class=kt>int</span> <span class=n>arr</span><span class=p>[]);</span>
+<span class=kt>void</span> <span class=nf>f3</span><span class=p>(</span><span class=kt>int</span> <span class=n>arr</span><span class=p>[</span><span class=mi>9</span><span class=p>]);</span>
+<span class=kt>void</span> <span class=nf>f4</span><span class=p>(</span><span class=kt>int</span> <span class=n>arr</span><span class=p>[</span><span class=k>static</span> <span class=mi>9</span><span class=p>]);</span>
+</code></pre></div><p>しかしこれらのCの配列構文で宣言された引数は、
+前述のポインタ減衰によって<code>f0</code>の関数シグネチャと同じになります。
+<code>f3</code>の角括弧内の<code>9</code>はコンパイラに対して何ら制約を与えません。
+<code>arr</code>は事実上、不明な長さの<code>int</code>の配列のままです。
+<code>9</code>は関数がなにを期待するかのドキュメントとして役立ちますが、
+その実装は配列が9つの要素を持つことに期待してはいけません。</p><p><code>f4</code>だけ違いが生じます。
+宣言に追加された<code>static</code>は、
+<strong>少なくとも</strong>9要素の配列を受け取らなければならないことをコンパイラに伝えます。
+9要素よりも多くなることはできますが、少なくなることはできません。
+ヌルポインタは例外です。
+問題は、これが強制されないことです。
+使っているCコンパイラによっては、有効にしたときにだけ警告が見られるようになっているかもしれません
+(エラーが出てくるのか警告が出てくるのか、この記事を書くにあたって最新のコンパイラでテストしてはいません)
+。</p><p>Cコンパイラの挙動はD側には関係ありません。
+関係あるのはこれらの関数が適切に宣言され、
+クラッシュや予期しない結果がないようにDから呼び出せるようになっていることです。
+なぜならこれらすべては事実上同じであり、Dではこのように宣言できるからです。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>extern</span><span class=o>(</span><span class=n>C</span><span class=o>):</span>
+<span class=kt>void</span> <span class=nf>f0</span><span class=o>(</span><span class=kt>int</span><span class=o>*</span> <span class=n>arr</span><span class=o>);</span>
+<span class=kt>void</span> <span class=nf>f1</span><span class=o>(</span><span class=kt>int</span><span class=o>*</span> <span class=n>arr</span><span class=o>,</span> <span class=n>size_t</span> <span class=n>len</span><span class=o>);</span>
+<span class=kt>void</span> <span class=nf>f2</span><span class=o>(</span><span class=kt>int</span><span class=o>*</span> <span class=n>arr</span><span class=o>);</span>
+<span class=kt>void</span> <span class=nf>f3</span><span class=o>(</span><span class=kt>int</span><span class=o>*</span> <span class=n>arr</span><span class=o>);</span>
+<span class=kt>void</span> <span class=nf>f4</span><span class=o>(</span><span class=kt>int</span><span class=o>*</span> <span class=n>arr</span><span class=o>);</span>
+</code></pre></div><p>しかしできるからといってそうしなければならないわけではありません。
+このような<code>f2</code>、<code>f3</code>、<code>f4</code>の宣言を考えてみましょう。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>extern</span><span class=o>(</span><span class=n>C</span><span class=o>):</span>
+<span class=kt>void</span> <span class=nf>f2</span><span class=o>(</span><span class=kt>int</span><span class=o>[]</span> <span class=n>arr</span><span class=o>);</span>
+<span class=kt>void</span> <span class=nf>f3</span><span class=o>(</span><span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]</span> <span class=n>arr</span><span class=o>);</span>
+<span class=kt>void</span> <span class=nf>f4</span><span class=o>(</span><span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]</span> <span class=n>arr</span><span class=o>);</span>
+</code></pre></div><p>このアプローチによって何か問題が起きるでしょうか?
+答えはイエスですが、それは全部を<code>int*</code>に戻さなければならないということを意味しません。
+その理由を理解するには、まずDの配列の内部にふみ込んでいく必要があります。</p><h3 id=大解剖-dの配列>大解剖 Dの配列</h3><p>前回、Dは動的配列と静的配列を区別するということを見てきました。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>int</span><span class=o>[]</span> <span class=n>a0</span><span class=o>;</span>
+<span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]</span> <span class=n>a1</span><span class=o>;</span>
+</code></pre></div><p><code>a0</code>は動的配列で、<code>a1</code>は静的配列です。
+両者とも<code>.ptr</code>と<code>.length</code>というプロパティを持ちます。
+両者とも同じ構文でインデクシングができます。
+しかし両者の間には重要な違いがあります。</p><h4 id=動的配列>動的配列</h4><p>動的配列は通常ヒープに確保されます(必ずしもそうしないといけないわけではありません)。
+上の例では、<code>a0</code>に関してメモリ割当は発生しません。
+この配列は<code>new</code>、<code>malloc</code>、その他アロケータや配列リテラルによってメモリを確保される必要があります。
+<code>a0</code>が初期化されない場合、<code>a0.ptr</code>は<code>null</code>であり<code>a0.length</code>は<code>0</code>です。</p><p>Dにおける動的配列は以下のような、2つのプロパティをメンバとして持つ複合型です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>struct</span> <span class=nc>DynamicArray</span> <span class=o>{</span>
+    <span class=n>size_t</span> <span class=n>length</span><span class=o>;</span>
+    <span class=n>size_t</span> <span class=n>ptr</span><span class=o>;</span>
+<span class=o>}</span>
+</code></pre></div><p>言い換えると、動的配列は本質的に参照型であり、
+<code>ptr</code>メンバに格納されたアドレスにある要素を参照するためのポインタと長さのペアを持ちます。
+すべての組み込みのD型は<code>.sizeof</code>プロパティを持ち、
+<code>a0.sizeof</code>とすると32bitシステムなら<code>size_t</code>が4バイトの<code>uint</code>のため<code>8</code>が、
+64bitシステムなら<code>size_t</code>が8バイトの<code>ulong</code>のため<code>16</code>が得られます。
+とどのつまり、これは管理領域のサイズであり配列の要素全体のサイズではありません。</p><h4 id=静的配列>静的配列</h4><p>静的配列は一般にスタックに確保されます。
+<code>a1</code>の宣言で、9要素の<code>int</code>値のためのスタック領域が確保され、
+それらすべてがデフォルトでは<code>int.init</code>(<code>0</code>)に初期化されます。
+<code>a1</code>の初期化時に、<code>a1.ptr</code>はその確保された領域を指し、<code>a1.length</code>は<code>9</code>になります。
+これら2つのプロパティは動的配列のそれと同じですが、その実装は異なります。</p><p>静的配列は値型であり、その値は<strong>配列の要素全体</strong>です。
+したがって上のような<code>a1</code>の宣言を考えると、9つの<code>int</code>の要素は<code>a1.sizeof</code>が<code>9 * int.sizeof</code>、
+つまり<code>36</code>であることを示しています。
+<code>.length</code>プロパティは決して変化しないコンパイル時定数であり、
+<code>.ptr</code>プロパティはコンパイル時に読むことはできないものの、
+やはり決して変化しない定数です(左辺値ではないので、他の場所を指すようにすることは不可能です)。</p><p>この実装が、DのソースモジュールにCの配列の宣言をコピペするときに気をつけなければならない理由です。</p><h3 id=cの配列をdに渡す>Cの配列をDに渡す</h3><p>Cにおける<code>f2</code>の宣言を見返して、実装を与えてみます。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>void</span> <span class=nf>f2</span><span class=p>(</span><span class=kt>int</span> <span class=n>arr</span><span class=p>[])</span> <span class=p>{</span>
+    <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span> <span class=n>i</span><span class=o>&lt;</span><span class=mi>3</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+     <span class=n>printf</span><span class=p>(</span><span class=s>&#34;%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>arr</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
+<span class=p>}</span>
+</code></pre></div><p>Dにおける素直な宣言は以下のようになります。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>extern</span><span class=o>(</span><span class=n>C</span><span class=o>)</span> <span class=kt>void</span> <span class=nf>f2</span><span class=o>(</span><span class=kt>int</span><span class=o>[]);</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+    <span class=kt>int</span><span class=o>[]</span> <span class=n>a</span> <span class=o>=</span> <span class=o>[</span><span class=mi>10</span><span class=o>,</span> <span class=mi>20</span><span class=o>,</span> <span class=mi>30</span><span class=o>];</span>
+    <span class=n>f2</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+<span class=o>}</span>
+</code></pre></div><p>素直な、と言ったのはこれが正しい答えではないからです。
+<code>f2.c</code>と<code>df2.d</code>をWindowsでコンパイルし、
+(Visual Studioの"x64 Native Tools"で<code>cl /c f2.c</code>として、その後<code>dmd -m64 df2.d f2.obj</code>です)
+<code>df2.exe</code>を実行すると、以下のような出力が得られます。</p><pre><code>3
+0
+1970470928
+</code></pre><p><code>f2</code>の宣言はDにおいて完全に正しいためコンパイラエラーは発生しません。
+<code>extern(C)</code>はこの関数が<code>cdecl</code>呼び出し規約を使うことを示します。
+呼び出し規約は関数に引数が渡される方法と、関数のシンボルがマングリングされる方法に関わります。
+この例では、シンボルは<code>_f2</code>か<code>f2</code>になります
+(Dで<code>extern(Windows)</code>としたときの<code>stdcall</code>のような、
+他の呼び出し規約はまた異なるマングリングスキームを持ちます)。
+Dにおいて、宣言はやはり正しいままです
+(実際、任意のDの関数に<code>extern(C)</code>をつけることができます。
+これは他の言語から呼ばれるDのライブラリを作る際に必要になります)。</p><p>リンカエラーも発生しません。
+DMDはシステムのリンカを呼び出し
+(この場合Microsoftの<code>link.exe</code>です)
+、システムのC/C++コンパイラも同じリンカを使います。
+つまりリンカはDの関数に関して特になにも知りません。
+関数の実装をリンクするのに必要なこと、つまりシンボル<code>f2</code>か<code>_f2</code>に対する呼び出しがあることが、
+リンカの知るすべてです。
+パラメータの型と個数はシンボル名にマングルされていないため、
+リンカは愉快なことに名前がマッチしたもの全部を見境なくリンクしてくれます
+(ところで、正しくない引数リストで宣言されたCの関数をCのプログラムから呼び出しても、
+これと同じことが起きます)。</p><p>Cの関数は引数としてポインタ1つを受け取ることを期待していますが、実際は2つです。
+つまり、配列のポインタと長さです。</p><p>この話の教訓は、<code>int[]</code>のような配列構文を使って宣言された配列の引数をもつCの関数は、
+D側では配列を受け取るように宣言すべきということです。
+Dのソースを以下のように書き換え、先程と同じコマンドで再コンパイルしましょう
+(Cファイルを再コンパイルする必要はありません)。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>extern</span><span class=o>(</span><span class=n>C</span><span class=o>)</span> <span class=kt>void</span> <span class=nf>f2</span><span class=o>(</span><span class=kt>int</span><span class=o>*);</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+    <span class=kt>int</span><span class=o>[]</span> <span class=n>a</span> <span class=o>=</span> <span class=o>[</span><span class=mi>10</span><span class=o>,</span> <span class=mi>20</span><span class=o>,</span> <span class=mi>30</span><span class=o>];</span>
+    <span class=n>f2</span><span class=o>(</span><span class=n>a</span><span class=o>.</span><span class=na>ptr</span><span class=o>);</span>
+<span class=o>}</span>
+</code></pre></div><p><code>a.ptr</code>を使っていますね。
+ポインタを期待しているところにDの配列を渡してもエラーになります
+(特別な例外として文字列リテラルがありますが、これはこのシリーズの次の記事で取り扱います)。
+したがって、代わりに配列の<code>.ptr</code>プロパティを使う必要があります。</p><p><code>f3</code>と<code>f4</code>にも似たようなことが言えます。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>void</span> <span class=nf>f3</span><span class=p>(</span><span class=kt>int</span> <span class=n>arr</span><span class=p>[</span><span class=mi>9</span><span class=p>]);</span>
+<span class=kt>void</span> <span class=nf>f4</span><span class=p>(</span><span class=kt>int</span> <span class=n>arr</span><span class=p>[</span><span class=k>static</span> <span class=mi>9</span><span class=p>]);</span>
+</code></pre></div><p>Dにおける<code>int[9]</code>は動的配列でなく静的配列です。
+以下のような宣言はCの宣言とマッチしません。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>f3</span><span class=o>(</span><span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]);</span>
+
+<span class=kt>void</span> <span class=nf>f4</span><span class=o>(</span><span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]);</span>
+</code></pre></div><p>試してみましょう。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=kt>void</span> <span class=nf>f3</span><span class=p>(</span><span class=kt>int</span> <span class=n>arr</span><span class=p>[</span><span class=mi>9</span><span class=p>])</span> <span class=p>{</span>
+    <span class=k>for</span><span class=p>(</span><span class=kt>int</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span> <span class=n>i</span><span class=o>&lt;</span><span class=mi>9</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+     <span class=n>printf</span><span class=p>(</span><span class=s>&#34;%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>arr</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
+<span class=p>}</span>
+</code></pre></div><p>Dの実装は以下のとおりです。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>extern</span><span class=o>(</span><span class=n>C</span><span class=o>)</span> <span class=kt>void</span> <span class=nf>f3</span><span class=o>(</span><span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]);</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+    <span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]</span> <span class=n>a</span> <span class=o>=</span> <span class=o>[</span><span class=mi>10</span><span class=o>,</span> <span class=mi>20</span><span class=o>,</span> <span class=mi>30</span><span class=o>,</span> <span class=mi>40</span><span class=o>,</span> <span class=mi>50</span><span class=o>,</span> <span class=mi>60</span><span class=o>,</span> <span class=mi>70</span><span class=o>,</span> <span class=mi>80</span><span class=o>,</span> <span class=mi>90</span><span class=o>];</span>
+    <span class=n>f3</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+<span class=o>}</span>
+</code></pre></div><p>これはシステムによってはクラッシュします。
+配列へのポインタを渡す代わりに、このコードは配列の9つの要素すべてを値として渡しています！
+では、以下のようなことをするCのライブラリについて考えてみましょう。</p><div class=highlight><pre class=chroma><code class=language-c data-lang=c><span class=k>typedef</span> <span class=kt>float</span><span class=p>[</span><span class=mi>16</span><span class=p>]</span> <span class=n>mat4f</span><span class=p>;</span>
+<span class=kt>void</span> <span class=nf>do_stuff</span><span class=p>(</span><span class=n>mat4f</span> <span class=n>mat</span><span class=p>);</span>
+</code></pre></div><p>一般に、Cのライブラリに対するDのバインディングを書くときは、
+Cのライブラリと同じインターフェースを保つべきです。
+しかし上のコードを以下のようなDのコードに翻訳すると問題が起きます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>alias</span> <span class=n>mat4f</span> <span class=o>=</span> <span class=kt>float</span><span class=o>[</span><span class=mi>16</span><span class=o>];</span>
+<span class=n>extern</span><span class=o>(</span><span class=n>C</span><span class=o>)</span> <span class=kt>void</span> <span class=nf>do_stuff</span><span class=o>(</span><span class=n>mat4f</span><span class=o>);</span>
+</code></pre></div><p><code>do_stuff</code>が呼ばれるたびに、16個の浮動小数点数が渡されます。
+これは<code>mat4f</code>型の引数を受け取るすべての関数で同じです。
+<code>int[]</code>の例と同じようにして、ポインタを受け取るように関数を宣言するのもひとつの方法です。
+しかし、期待するよりも少ない要素数の配列を受け入れてしまう点でこれはCに劣ります。
+<code>int[]</code>の例ではどうしようもありませんが、通常はC側で長さパラメータを付けます。
+<code>mat4f</code>のような<code>typedef</code>された型を受け取るCの関数は通常長さパラメータを持たず、
+呼び出し側が正しく呼び出すことに依存します。</p><p>Dでは以下のようにしたほうが良いでしょう。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>do_stuff</span><span class=o>(</span><span class=n>ref</span> <span class=n>mat4f</span><span class=o>);</span>
+</code></pre></div><p>API実装者の意図に沿うだけでなく、
+コンパイラも<code>do_stuff</code>に渡される配列が16の浮動小数点数を要素とする静的配列であると保証するようになります。
+<code>ref</code>パラメータは内部的にただのポインタなので、C側との連携はうまくいきます。</p><p>これをもとに、<code>f3</code>の例も書き直すことができます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>extern</span><span class=o>(</span><span class=n>C</span><span class=o>)</span> <span class=kt>void</span> <span class=nf>f3</span><span class=o>(</span><span class=n>ref</span> <span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]);</span>
+<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+    <span class=kt>int</span><span class=o>[</span><span class=mi>9</span><span class=o>]</span> <span class=n>a</span> <span class=o>=</span> <span class=o>[</span><span class=mi>10</span><span class=o>,</span> <span class=mi>20</span><span class=o>,</span> <span class=mi>30</span><span class=o>,</span> <span class=mi>40</span><span class=o>,</span> <span class=mi>50</span><span class=o>,</span> <span class=mi>60</span><span class=o>,</span> <span class=mi>70</span><span class=o>,</span> <span class=mi>80</span><span class=o>,</span> <span class=mi>90</span><span class=o>];</span>
+    <span class=n>f3</span><span class=o>(</span><span class=n>a</span><span class=o>);</span>
+<span class=o>}</span>
+</code></pre></div><h4 id=結論>結論</h4><p>ほとんどの場合、DからCへのインターフェーシングを行うときは、
+CのAPIの宣言とサンプルコードをDにそのままコピーするだけですみます。
+しかし<strong>ほとんどの場合</strong>というのは<strong>すべての場合</strong>のことではないため、
+そのような例外的ケースにおいては注意が必要となります。
+前回見たように、配列変数における注意はコンパイラに受け持たせることができます。
+今回見てきたように、Cの関数宣言においては同じようには行きません。
+DとCとのインターフェーシングにはCのコードを書くときと同じような注意が必要です。</p><p>本シリーズの次回の記事では、Dの文字列とCの文字列を同じプログラムでまぜこぜにし、
+落とし穴が生じるようすを見ていきます。
+それまで、Steven Schveighofferの素晴らしい記事
+&ldquo;D Slices&rdquo;
+がDの配列についてより深く掘り下げる
+<a href=https://dlang.org/articles/d-array-article.html>よい開始地点となるでしょう</a>。</p><p><em>Walter BrightとÁtila Nevesのこの記事に関する価値あるフィードバックに感謝します。</em></p></article><footer><h2><a href=/tags/dlang>#dlang</a>
+DとCのインターフェース：配列 Part 2【翻訳】</h2><p><time>2020-12-28</time>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/d_blog>#d_blog</a> <a href=/tags/d_and_c>#d_and_c</a> <a href=/tags/advent_calendar>#advent_calendar</a> <a href=/tags/cpplang>#cpplang</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/about title=about>About</a>
+<a href=/products title=download>Download</a>
+<a href=/tags title=tag>Tag</a>
+<a href=/index.xml title=feed>Feed</a>
+<a href=/privacy-policy>Privacy Policy</a></div></footer></body></html>
