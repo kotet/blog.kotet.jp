@@ -60,6 +60,7 @@ Site accessを"On click"にしたまま拡張機能を動かし、エラーメ�
 だれかの役に立つと良いなと思う。
 
 - LINE:
+    - `https://*.line-apps.com/*`
     - `https://*.line.naver.jp/*`
 - Instapaper:
     - `https://www.instapaper.com/*`
