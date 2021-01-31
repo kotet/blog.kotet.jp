@@ -1,0 +1,10 @@
+{{ if isset .Params "tags" }}
+<section class="entry-item">
+    <h3>
+        <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
+        <a href="{{.Permalink}}">{{ .Title }}</a>
+    </h3>
+    <time>{{ .Date.Format "2006-01-02" }}</time>
+    {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
+</section>
+{{ end }}

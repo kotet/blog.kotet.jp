@@ -19,18 +19,6 @@
 
     <p>{{ .Content }}</p>
 
-    {{ range .Data.Pages }} {{ if isset .Params "tags" }}
-    <h3>
-        <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
-        <a href="{{.Permalink}}">{{ .Title }}</a>
-    </h3>
-    <p>
-        <time>{{ .Date.Format "2006-01-02" }}</time>
-        {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
-    </p>
-    <p>
-        {{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }}
-    </p>
-    {{ end }} {{ end }}
+    {{ range .Data.Pages }} {{ partial "entry-item" . }} {{ end }}
 </article>
 {{ end }}
