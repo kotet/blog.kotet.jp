@@ -71,7 +71,6 @@ header.site {
 }
 
 header.site h1 a {
-    color: white;
     width: 800px;
     padding-left: .5em;
     max-width: 100%;
@@ -80,7 +79,6 @@ header.site h1 a {
 
 header.site h1 {
     display: flex;
-    background: $main_dark;
     font-size: 2em;
     width: 100%;
     margin-top: 0;
