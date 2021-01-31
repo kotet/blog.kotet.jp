@@ -39,7 +39,6 @@ h2,
 h3,
 h4,
 h5 {
-    border-bottom: .1em solid $main_dark;
     word-break: break-word;
 }
 
@@ -199,5 +198,14 @@ code.hljs {
         li {
             display: inline;
         }
+    }
+}
+
+.entry-item {
+    margin-bottom: 2em;
+
+    h3 {
+        font-size: 1.2em;
+        margin: 0;
     }
 }

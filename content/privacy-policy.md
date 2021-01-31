@@ -3,16 +3,6 @@ title: Privacy Policy
 excerpt: "プライバシーポリシー"
 ---
 
-### 個人情報の第三者への開示について
-
-このサイトではGoogle Analyticsを利用しています。
-Google Analyticsはトラフィックデータの収集のためにCookieを使用しています。
-このトラフィックデータは匿名で収集されており、個人を特定するものではありません。
-Cookieを無効にすることで収集を拒否することが出来ます。
-詳細は以下のページをご覧ください。
-
-- [Terms of Service | Google Analytics – Google](https://marketingplatform.google.com/about/analytics/terms/jp/)
-
 ### 広告の配信について
 
 このはGoogle及びGoogleのパートナー（第三者配信事業者）の提供する広告を設置しています。
