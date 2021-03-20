@@ -1,0 +1,83 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="ブログを書かなければならない。なぜか。 定期的に更新しないとブログのリニューアルが全然進まないからだ。 電子工作をしよう 自分が配属された研究室は"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.e2f575ccc0d54b301b427197f78f2e733d3ae777e57aebf6831a2f348635e72b.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
+"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
+"  displayMath: [['$$','$$']],\n"+
+"  processEscapes: true\n"+
+" }\n"+
+"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><title>#electronics 電子工作日記: LEDのデータシートを読む - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2021/03/electronics-shopping/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta name=og:title content="#electronics 電子工作日記: LEDのデータシートを読む - Kotet's Personal Blog"><meta name=og:description content="ブログを書かなければならない。なぜか。 定期的に更新しないとブログのリニューアルが全然進まないからだ。 電子工作をしよう 自分が配属された研究室は"><meta name=twitter:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2021/03/electronics-shopping/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><a href=/tags/electronics>#electronics</a>
+電子工作日記: LEDのデータシートを読む</h2><p>Created: <time>2021-03-20</time><br><a href=/tags/electronics>#electronics</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#電子工作をしよう>電子工作をしよう</a></li><li><a href=#道具を揃える>道具を揃える</a></li><li><a href=#ledを光らせたい>LEDを光らせたい</a></li></ul></li></ul></nav></aside></header><article><p>ブログを書かなければならない。なぜか。
+定期的に更新しないとブログのリニューアルが全然進まないからだ。</p><h3 id=電子工作をしよう>電子工作をしよう</h3><p>自分が配属された研究室はかなりハードウェア寄りで、
+今は卒業研究が始まる前の勉強としてArduino互換ボードを作ったり集積回路を設計したりしている。
+しかし自分は電子回路の知識がほぼない。
+回路に関する講義はあったが、ついていくのが大変、というかついていけていなかった気がする。
+はんだごてをまともに使った記憶は小学生くらいのときに行った電子工作教室でうっかり太ももをやけどしたところで止まっている。
+そんな状態で集積回路の設計ができるだろうか、いやできない（反語）というわけで電子工作を始めることにした。</p><p>研究室で必要になるからということ以外にも電子工作を始める理由がある。
+ちょっとした電子工作で生活を豊かにしたいのだ。
+自分は困ったことがあるとプログラムを書いて解決することがある。
+あらゆるサイトを統一したフォーマットでツイートしたいとき、
+今見ているページのURLをmarkdownのリンクにしたいとき、
+AtCoderのコンテストをカレンダーに登録したいとき、
+そんなときブックマークを書けばワンクリックで解決できるボタンになる。
+ウェブサイトの色やレイアウトがあまりにも見づらいときも自分で調整できる。
+ウェブブラウザのようなみんなが使っているツールの困りごとをそんなふうに解決できたとき、
+プログラミングができてよかったと心から思うことができる。
+ハードウェアでもそういうことができたら最強だと思う。</p><p>せっかくブログのネタになりそうだし、学習ノートを作るかわりにここにいろいろ書き込んでいこうと思う。
+たくさん書いてれば他の人の役に立つ記事も出てくるんじゃないかな、知らんけど。
+本当に初心者なので変なことを書くかもしれない。
+誤情報があれば教えてくれればすぐ直すので教えて欲しい。</p><h3 id=道具を揃える>道具を揃える</h3><p>小学生のころに電子工作教室に連れて行かれる程度には親が電子工作をしていたため、既にいくつか機材がある。
+出してきてもらったところ、はんだごてがあった。はんだごて台があった。はんだごて台にくっついてるスポンジはなくなっていた。
+他にはブレッドボードやテスターも揃っていた。
+まずはこのブレッドボードでいろいろ試す感じになるだろう。</p><p>しかし抵抗やコンデンサ等の基本部品がない。
+というわけで
+<a href=https://www.amazon.co.jp/dp/B01MFBMX8A>電子工作基本部品セット</a>
+を買った。
+色々入ってるのでたぶんなんとかなるだろう。</p><p>あと秋月電子で
+<a href=https://akizukidenshi.com/catalog/g/gT-13608/>替スポンジ</a>や
+<a href=https://akizukidenshi.com/catalog/g/gT-02594/>はんだ</a>
+を買った。
+ちょくちょく名前が出てくるので存在は知っていたが、こんなに素朴なサイトだとは思わなかった。</p><p>電源は電池3本を直列接続できる電池ケースがあったが、作ったものがUSB電源で動いてほしい。
+電池には問題が起きたときに電池ケースと電池がダメになるだけで済むという利点があるが、
+USB接続の回路でやらかしたときに考えられる最大の被害はどれくらいだろうか？
+USB充電器につないだままやらかしたら家全体が停電したりするだろうか？
+この質問に自信を持って答える知識を今の自分は持っていないので、
+とりあえず世の回路設計士たちが先回りして自分を守ってくれていると信じて
+<a href=https://akizukidenshi.com/catalog/g/gK-10972/>電源用マイクロUSBコネクタDIP化キット</a>
+を買った。</p><h3 id=ledを光らせたい>LEDを光らせたい</h3><p>電子工作のHello Worldといえばなんだろう、Lチカとかだろうか。
+しかしLチカは太ももをやけどするのでやりたくない。
+そもそもLEDを満足に光らせられるかどうか怪しいのでそこから始めよう。</p><h4 id=データシートを読む>データシートを読む</h4><p>この<a href=https://akizukidenshi.com/catalog/g/gI-01973/>適当に選んだ白色LED（OSPW5111A-YZ）</a>
+を光らせるにはどうすればいいか考えてみる。
+LEDにかかる電圧を順方向電圧効果$\mathrm{V_F}$という。
+そして順方向電圧をかけたときに流れる電流を順方向電流$\mathrm{I_F}$という。
+LEDを光らせるためにはある一定の範囲の電圧をかける必要がある。</p><p>データシートを見てみると
+Absolute Maximum Rating
+と
+Electrical-Optical Characteristics
+という2つの表がある。
+前者は許容できる最大値なので超えないように気をつける必要がある数値だ。
+このブログを書くまでこの数値を基準に抵抗を計算していた。
+ブログ書いてみて本当に良かった。</p><p>重要なのは後者で、これはある条件下でLEDがどのような挙動をするかを書いたものだ。
+表には順方向電流$\mathrm{I_F}=20\mathrm{mA}$のときの挙動が書かれている。
+$\mathrm{V_F}$の最小値が2.8V、最大値が4.0Vとかなり振れ幅が大きいが、
+多分保証値という意味で広めにしていて、実際の分布はそんなでもないんだろう。たぶん。</p><h4 id=抵抗を選ぶ>抵抗を選ぶ</h4><p><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="302" height="165" viewBox="-.5 -.5 302 165" style="background-color:#fff"><defs/><g><path d="M2e2 80h45m10-30v60m0-30h45" fill="none" stroke="#000" stroke-miterlimit="10" transform="translate(250,0)scale(-1,1)translate(-250,0)" pointer-events="all"/><rect x="241" y="65" width="4" height="30" fill="#000" stroke="#000" transform="translate(250,0)scale(-1,1)translate(-250,0)" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow:visible;text-align:left" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display:flex;align-items:unsafe flex-start;justify-content:unsafe center;width:1px;height:1px;padding-top:117px;margin-left:250px"><div style="box-sizing:border-box;font-size:0;text-align:center"><div style="display:inline-block;font-size:12px;font-family:Verdana;color:#000;line-height:1.2;pointer-events:all;white-space:nowrap">V=5V</div></div></div></foreignObject><text x="250" y="129" fill="#000" font-family="Verdana" font-size="12" text-anchor="middle">V=5V</text></switch></g><rect x="100" y="70" width="100" height="20" fill="none" stroke="none" pointer-events="all"/><path d="M1e2 80h18l4-10 8 20 8-20 8 20 8-20 8 20 8-20 8 20 4-10h18" fill="none" stroke="#000" stroke-miterlimit="10" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow:visible;text-align:left" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display:flex;align-items:unsafe flex-end;justify-content:unsafe center;width:1px;height:1px;padding-top:67px;margin-left:150px"><div style="box-sizing:border-box;font-size:0;text-align:center"><div style="display:inline-block;font-size:12px;font-family:Helvetica;color:#000;line-height:1.2;pointer-events:all;white-space:nowrap">R</div></div></div></foreignObject><text x="150" y="67" fill="#000" font-family="Helvetica" font-size="12" text-anchor="middle">R</text></switch></g><rect x="0" y="50" width="100" height="65" fill="none" stroke="none" transform="rotate(-180,50,82.5)" pointer-events="all"/><path d="M30 55 70 85 30 115zM0 85H30M70 55v60M80 57l7-7m0 3V50H84M70 85h30" fill="#fff" stroke="#000" stroke-miterlimit="10" transform="rotate(-180,50,82.5)" pointer-events="all"/><path d="M0 79.9V0H3e2V80" fill="none" stroke="#000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M0 120v20m1e2-20v20M0 130H1e2" fill="#fff" stroke="#000" stroke-miterlimit="10" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow:visible;text-align:left" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display:flex;align-items:unsafe flex-start;justify-content:unsafe center;width:98px;height:1px;padding-top:147px;margin-left:1px"><div style="box-sizing:border-box;font-size:0;text-align:center"><div style="display:inline-block;font-size:12px;font-family:Helvetica;color:#000;line-height:1.2;pointer-events:all;white-space:normal;word-wrap:normal">V<sub>F</sub>=3.4V (20mA)</div></div></div></foreignObject><text x="50" y="159" fill="#000" font-family="Helvetica" font-size="12" text-anchor="middle">VF=3.4V (20mA)</text></switch></g><path d="M1e2 120v20m1e2-20v20M1e2 130H2e2" fill="#fff" stroke="#000" stroke-miterlimit="10" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow:visible;text-align:left" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display:flex;align-items:unsafe flex-start;justify-content:unsafe center;width:98px;height:1px;padding-top:147px;margin-left:101px"><div style="box-sizing:border-box;font-size:0;text-align:center"><div style="display:inline-block;font-size:12px;font-family:Helvetica;color:#000;line-height:1.2;pointer-events:all;white-space:normal;word-wrap:normal">V<sub>R</sub></div></div></div></foreignObject><text x="150" y="159" fill="#000" font-family="Helvetica" font-size="12" text-anchor="middle">VR</text></switch></g></g><switch><g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/><a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank"><text text-anchor="middle" font-size="10" x="50%" y="100%">Viewer does not support full SVG 1.1</text></a></switch></svg></p><p>というわけで、図のような回路を組んでLEDに適切な電圧をかけよう。
+閉回路中の電圧降下の総和は起電力に等しい（キルヒホッフの法則）ので、
+$\mathrm{V_F} + \mathrm{V_R} = \mathrm{V}$
+という関係が成り立ち、これを解いて抵抗Rの電圧降下
+$\mathrm{V_R} = \mathrm{V} - \mathrm{V_F} = 5.0-3.4 = 1.6$（V）を得る。
+流したい電流も決まっているので、オームの法則から必要な抵抗値
+$\mathrm{R}=\frac{1.6}{20\times 10^{-3}} = 80$Ωが求められた。</p><p>さて、先程買った部品セットに80Ωの抵抗は……ない。
+ちょうどの抵抗を作ろうと思うと10Ωを8つ直列につなぐ等しなければならない。
+しかし<a href=https://akizukidenshi.com/download/led-r-calc.pdf>秋月電子の公開しているPDF</a>
+の例を見てみると、1780Ωの抵抗が求められるところで1.5kΩや2kΩの抵抗が近似値として使えると書いてある。
+十数パーセント程度の違いは誤差としていいということだろうか？</p><p>ここで商品画像の袋に貼られているシールを見てみると、
+データシートに書かれていないVf: 2.9-3.6Vという情報が載っていた。
+電圧をこの範囲に広げて再度計算してみると、$70&lt;\mathrm{R}&lt;155$（Ω）になる。
+部品セットの抵抗の中で一番80Ωに近い100Ω抵抗はこの範囲に収まっているので大丈夫そうだ。
+……本当に？流れる電流を固定して計算したがそれで良いのだろうか？</p><p>もうわからない。
+買ったものは10個セットなので、実物が届いてから壊す勢いでいろいろ試してみることにしよう。</p></article><footer><h2><a href=/tags/electronics>#electronics</a>
+電子工作日記: LEDのデータシートを読む</h2><p><time>2021-03-20</time>
+<a href=/tags/electronics>#electronics</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/about title=about>About</a>
+<a href=/products title=download>Download</a>
+<a href=/tags title=tag>Tag</a>
+<a href=/index.xml title=feed>Feed</a>
+<a href=/privacy-policy>Privacy Policy</a></div></footer></body></html>
