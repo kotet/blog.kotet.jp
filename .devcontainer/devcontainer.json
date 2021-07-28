@@ -1,0 +1,26 @@
+{
+    "name": "github-pages",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".",
+    },
+    "settings": {
+        "terminal.integrated.profiles.linux": {
+            "bash": {
+                "path": "bash"
+            },
+        },
+        "terminal.integrated.defaultProfile.linux": "bash",
+    },
+    "extensions": [
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-yaml",
+        "bierner.github-markdown-preview"
+    ],
+    "updateRemoteUserUID": true,
+    "remoteUser": "vscode",
+    "forwardPorts": [
+        1313
+    ],
+}
