@@ -44,9 +44,9 @@ Habitica から取得した日課の完了状況等が表示されている。
 メモを書き込んだり貼り付けたりすればいいのだが、小さすぎて表現したい内容を書ききれなかったり、
 平らな面が少なくてうまく書き込めないことが多い。
 そこで、小さなタグを貼り付けて、それを読み込むことでメモを参照できるようにしようと思った。</p><p>できるだけ簡単に実装しようと思ったら、QR コードがひとつの選択肢となるだろう。
+何らかの方法で QR コードのシールを作って、それを管理したいものに貼り付けるわけだ。
 QR コードは iPhone 組み込みのカメラアプリで読み込んで、その内容を確認できる。
-使い勝手のことを考えると、スマートフォンさえ持っていれば数ステップで内容の確認ができるのは大きい。
-何らかの方法で QR コードのシールを作って、それを管理したいものに</p><p>QR コードを採用するとして、どのようなデータを載せるべきだろうか?
+使い勝手のことを考えると、スマートフォンさえ持っていれば数ステップで内容の確認ができるのは大きい。</p><p>QR コードを採用するとして、どのようなデータを載せるべきだろうか?
 QR コードにメモの内容を直接載せることができれば、データの保存・管理をする必要がなくなる。
 しかし、メモを作るたびに新たな QR コードを生成して、印刷しなければならない。
 テプラは QR コードのような画像データを印刷できるらしい。
@@ -85,12 +85,12 @@ MUI で素直な構造を組むだけでいい感じの UI がほぼ完成する
 これでちゃんとしたサービスと自前ツールとの差がほぼ埋まった感じがある。
 API をあらかじめ決めておけばサーバーは決まったデータを返すものを作っておくだけでテストできる。</p><p><img src=/img/blog/2022/02/qr-webui.png alt></p><p>ただの掲示板と同じくらい単純な物を作っているはずだが、これを作るだけで 1000 近い依存がダウンロードされ、
 数 GB のメモリを消費してビルドが行われる。
-重い処理は好きなのでわりと楽しんでやれてはいるが、それはそれとしてどうかしてると思う。</p><h3 id=名前解決>名前解決</h3><p>最近まで知らなかったのだが、ネームサーバー無しで使えるDNSというものが存在する。
-マルチキャストDNS (MDNS) といって、
+重い処理は好きなのでわりと楽しんでやれてはいるが、それはそれとしてどうかしてると思う。</p><h3 id=名前解決>名前解決</h3><p>最近まで知らなかったのだが、ネームサーバー無しで使える DNS というものが存在する。
+マルチキャスト DNS (MDNS) といって、
 ローカルネットワーク内でクエリメッセージをマルチキャストすることによって名前解決を行う。
-Raspberry Pi OSは<code>{ホスト名}.local</code>というドメイン名でアクセスできるように最初から設定されている。
-インストール直後にssh接続を行うには以下のようにすればいいわけだ。
-これを知るまではがんばってポートスキャンしたりしてRaspberry Piのアドレスを探していた……</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ ssh pi@raspberrypi.local
+Raspberry Pi OS は<code>{ホスト名}.local</code>というドメイン名でアクセスできるように最初から設定されている。
+インストール直後に ssh 接続を行うには以下のようにすればいいわけだ。
+これを知るまではがんばってポートスキャンしたりして Raspberry Pi のアドレスを探していた……</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ ssh pi@raspberrypi.local
 </code></pre></div><p>ホスト名を変えればドメイン名も変わる。
 自分のサーバーを<code>kotet.local</code>でアクセスできるようにした。</p><h3 id=サーバー>サーバー</h3><p>Go で書いた 1 つのサーバーで各種コンテンツの配信をすべて行う。
 chi を使って URL ごとにルーティングしていく。</p><p>今回は静的ファイルの配信を<code>/static</code>、API の提供を<code>/q/{id}</code>以下で行う。</p><h4 id=静的ファイル>静的ファイル</h4><p>作成した静的ファイルを Go で書いたサーバーに埋め込み、配信する。
@@ -102,9 +102,9 @@ gzip で圧縮するとサイズが 4 分の 1 程度になるので、埋め込
 -rw-r--r-- <span class=m>1</span> kotet kotet  <span class=m>278</span>  2月 <span class=m>20</span> 02:09 qr.html.gz
 </code></pre></div><p>バイナリに埋め込まれたファイルにしかアクセスできないとはいえ、
 URL から適切なファイルを持ってくる処理を自分で書くのはめんどくさいしこわい。
-そこで、<a href=https://github.com/vearutop/statigz>statigzというライブラリ</a>を使う。
+そこで、<a href=https://github.com/vearutop/statigz>statigz というライブラリ</a>を使う。
 これは nginx と同じルールで圧縮済みのファイルを探してくれるらしい。
-もしブラウザがgzipに対応していない場合は解凍してくれるらしい。</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>//go:embed dist
+もしブラウザが gzip に対応していない場合は解凍してくれるらしい。</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>//go:embed dist
 </span><span class=c1></span><span class=kd>var</span> <span class=nx>fsDist</span> <span class=nx>embed</span><span class=p>.</span><span class=nx>FS</span>
 
 <span class=nx>router</span> <span class=o>:=</span> <span class=nx>chi</span><span class=p>.</span><span class=nf>NewRouter</span><span class=p>()</span>
@@ -137,9 +137,9 @@ URL から適切なファイルを持ってくる処理を自分で書くのは�
 
 	<span class=nx>router</span><span class=p>.</span><span class=nf>Handle</span><span class=p>(</span><span class=s>&#34;/static/*&#34;</span><span class=p>,</span> <span class=nx>http</span><span class=p>.</span><span class=nf>StripPrefix</span><span class=p>(</span><span class=s>&#34;/static/&#34;</span><span class=p>,</span> <span class=nx>srv</span><span class=p>))</span>
 <span class=p>}</span>
-</code></pre></div><h4 id=api>api</h4><p>こんな感じのAPIを考えた。</p><ul><li>GET <code>/q/{id}</code>: <code>{id}</code>のデータを閲覧・編集できるWeb UI (HTML)</li><li>GET <code>/q/{id}/cards</code>: <code>{id}</code>のデータを配列で返す (JSON)</li><li>POST <code>/q/{id}/cards</code>: <code>{id}</code>に新たなデータを追加する</li><li>DELETE <code>/q/{id}/cards/{card_id}</code>: <code>{id}</code>の<code>{card_id}</code>を削除する</li></ul><p>家で使う分には問題ないだろうという発想で雑に作っているところが多々ある。
-LAN内でのみ公開していて、利用者は数人で、アクセス頻度も高くないからこそできる設計なのであんまり参考にしない方がいいかもしれない。</p><h5 id=get-qid>GET /q/{id}</h5><p><code>/q/{id}</code>は静的ファイルを配信しているだけだ。
-クライアント側で自分のURLをもとにアクセスするIDを決める。
+</code></pre></div><h4 id=api>api</h4><p>こんな感じの API を考えた。</p><ul><li>GET <code>/q/{id}</code>: <code>{id}</code>のデータを閲覧・編集できる Web UI (HTML)</li><li>GET <code>/q/{id}/cards</code>: <code>{id}</code>のデータを配列で返す (JSON)</li><li>POST <code>/q/{id}/cards</code>: <code>{id}</code>に新たなデータを追加する</li><li>DELETE <code>/q/{id}/cards/{card_id}</code>: <code>{id}</code>の<code>{card_id}</code>を削除する</li></ul><p>家で使う分には問題ないだろうという発想で雑に作っているところが多々ある。
+LAN 内でのみ公開していて、利用者は数人で、アクセス頻度も高くないからこそできる設計なのであんまり参考にしない方がいいかもしれない。</p><h5 id=get-qid>GET /q/{id}</h5><p><code>/q/{id}</code>は静的ファイルを配信しているだけだ。
+クライアント側で自分の URL をもとにアクセスする ID を決める。
 この記事を書いてて思ったが、エラーが発生したときにその内容を送り付けるのはセキュリティ的によろしくない気がする。
 まあ家で使う分には問題ないだろう。
 気が向いたら直す。</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=nx>router</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;/q/{id}&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>rw</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
@@ -161,14 +161,14 @@ LAN内でのみ公開していて、利用者は数人で、アクセス頻度�
 	<span class=nx>rw</span><span class=p>.</span><span class=nf>Header</span><span class=p>().</span><span class=nf>Set</span><span class=p>(</span><span class=s>&#34;content-encoding&#34;</span><span class=p>,</span> <span class=s>&#34;gzip&#34;</span><span class=p>)</span>
 	<span class=nx>rw</span><span class=p>.</span><span class=nf>Write</span><span class=p>(</span><span class=nx>b</span><span class=p>)</span>
 <span class=p>})</span>
-</code></pre></div><h5 id=更新処理>更新処理</h5><p>更新はGoのデータ構造に対して行う。
-更新があるたびにその内容をJSONにmarshalingしてファイルに書き込んでいる。
+</code></pre></div><h5 id=更新処理>更新処理</h5><p>更新は Go のデータ構造に対して行う。
+更新があるたびにその内容を JSON に marshaling してファイルに書き込んでいる。
 更新処理が行われる頻度が十分低いと考えての雑設計だ。
 データ量も多くないしいけるいける。
 万がいち同時に複数の更新が走ったりしないようにロックをかけて、
 さらに書き込み中にサーバーが落ちたときのことを考えてアトミックなファイル更新を行うようにした。
 ちゃんとしたデータベースと比べて性能は良くないが、安全性は十分だろう。</p><p>以下はアトミックなファイル更新を行う関数である。
-renameを使うことで、
+rename を使うことで、
 <a href=https://heartbeats.jp/hbblog/2013/10/atomic01.html>ファイルの内容の更新をアトミックに行うことができる</a>。
 <code>f.Write(b)</code>の途中でプログラムが停止しても、元のファイルは変更前の状態に保たれる。</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>atomicWrite</span><span class=p>(</span><span class=nx>b</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>,</span> <span class=nx>path</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
 	<span class=nx>f</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nf>TempFile</span><span class=p>(</span><span class=nx>filepath</span><span class=p>.</span><span class=nf>Dir</span><span class=p>(</span><span class=nx>path</span><span class=p>),</span> <span class=s>&#34;edit&#34;</span><span class=p>)</span>
@@ -185,10 +185,10 @@ renameを使うことで、
 <span class=p>}</span>
 </code></pre></div><p>削除は論理削除オンリーである。
 バグって必要なデータまで消失したらこわいし、家で使う分には手動削除でも問題ないだろう。
-データファイルはJSONなので、エディタで開いて更新できちゃうのが便利だ。
-いつでもサーバーを止められるからこそできる所業だ。</p><h3 id=おわりに>おわりに</h3><p>ずっと動かしておけるLinuxコンピュータがなかなか用意できなかったので、
+データファイルは JSON なので、エディタで開いて更新できちゃうのが便利だ。
+いつでもサーバーを止められるからこそできる所業だ。</p><h3 id=おわりに>おわりに</h3><p>ずっと動かしておける Linux コンピュータがなかなか用意できなかったので、
 こういったサーバーが必要になるプログラムを書いた経験があまりなかった。
-HTTPヘッダー等についての知識が身についてなかなか勉強になった。
+HTTP ヘッダー等についての知識が身についてなかなか勉強になった。
 自分に自信を付けるためにも、今後も家庭の困りごとを解決していこうと思う。</p></article><footer><h2><a href=/tags/log>#log</a>
 Raspberry Piで家の物を管理したらいろいろ勉強になった</h2><p><time>2022-02-25</time>
 <a href=/tags/log>#log</a> <a href=/tags/tech>#tech</a> <a href=/tags/linux>#linux</a> <a href=/tags/golang>#golang</a> <a href=/tags/react>#react</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
