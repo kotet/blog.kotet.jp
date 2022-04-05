@@ -36,6 +36,7 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 [POTS:体位性頻脈](http://potsanddysautonomiajapan.org/pots/)により1年間療養の後、
 愛知県立大学の情報科学部に入学。
+現在は愛知県立大学大学院情報科学研究科に所属。
 大学のロボサッカーチームRoboDragonsでRoboCupのSSL (Small Size League) に参加している。
 
 ### アカウント
@@ -51,9 +52,3 @@ Qiita : [@kotet](https://qiita.com/kotet)
 Niconico : [@kotet](http://www.nicovideo.jp/user/46839326)
 
 Facebook : [@kazutoshi.ban.7](https://www.facebook.com/kazutoshi.ban.7)
-
-LINE : [QRコード](/assets/line-qr.png)
-
-Bitcoin : [1PqMAkVY5GbmgfXs1ogJv2uWpsaf6yMhKY](bitcoin:1PqMAkVY5GbmgfXs1ogJv2uWpsaf6yMhKY)
-
-Ethereum : 0xcBC1160e9F806d3a7D7FdB624fAce3d0841Af853
