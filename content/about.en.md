@@ -51,8 +51,4 @@ Niconico : [@kotet](http://www.nicovideo.jp/user/46839326)
 
 Facebook : [@kazutoshi.ban.7](https://www.facebook.com/kazutoshi.ban.7)
 
-LINE : [QR code](/assets/line-qr.png)
-
-Bitcoin : [1PqMAkVY5GbmgfXs1ogJv2uWpsaf6yMhKY](bitcoin:1PqMAkVY5GbmgfXs1ogJv2uWpsaf6yMhKY)
-
-Ethereum : 0xcBC1160e9F806d3a7D7FdB624fAce3d0841Af853
+Docswell : [@kotet](https://www.docswell.com/user/3409108171)
