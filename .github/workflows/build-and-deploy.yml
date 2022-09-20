@@ -72,3 +72,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: deploy
           directory: public
+          force_with_lease: true
