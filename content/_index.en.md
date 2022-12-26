@@ -11,5 +11,6 @@ Kotet is Japanese student of Computer and Information Science.
 
 GitHub: [@kotet](https://github.com/kotet)
 Twitter: [@kotetttt](https://twitter.com/kotetttt)
+Mastodon: [@kotet@mastodon.kotet.jp](https://mastodon.kotet.jp/@kotet)
 
 ---
