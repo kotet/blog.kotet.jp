@@ -41,6 +41,8 @@ I'm studying Computer and Information Science at Aichi Prefectural University.
 
 Twitter : [@kotetttt](https://twitter.com/kotetttt)
 
+Mastodon : [@kotet@mastodon.kotet.jp](https://mastodon.kotet.jp/@kotet)
+
 GitHub : [@kotet](https://github.com/kotet)
 
 AtCoder : [@kotet](https://atcoder.jp/users/kotet)

@@ -43,6 +43,8 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 Twitter : [@kotetttt](https://twitter.com/kotetttt)
 
+Mastodon : [@kotet@mastodon.kotet.jp](https://mastodon.kotet.jp/@kotet)
+
 GitHub : [@kotet](https://github.com/kotet)
 
 AtCoder : [@kotet](https://atcoder.jp/users/kotet)
