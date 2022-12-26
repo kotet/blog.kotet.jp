@@ -67,7 +67,7 @@ jobs:
           git commit -m "[actions] deploy" --allow-empty
       - name: GitHub Push
         if: github.ref == 'refs/heads/master'
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: deploy
