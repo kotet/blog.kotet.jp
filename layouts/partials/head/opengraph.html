@@ -3,19 +3,30 @@
 {{ else }}
 <meta name="twitter:card" content="summary" />
 {{ end }}
+
+{{ if .IsHome }}
+<meta property="og:type" content="website"/>
+{{ else }}
+<meta property="og:type" content="article"/>
+{{ end }}
+
+<meta property="og:site_name" content="{{ .Site.Title }}" />
 <meta name="og:title"
-    content="{{ if .Params.tags }}#{{ index .Params.tags 0 }}{{ end }} {{ .Title }} - {{ .Site.Title }}" />
+    content="{{ if .Params.tags }}#{{ index .Params.tags 0 }} {{ end }}{{ .Title }} - {{ .Site.Title }}" />
 <meta name="og:description"
     content="{{ if .IsPage }}{{ if .Params.Excerpt }} {{ .Params.Excerpt }} {{ else }} {{ .Summary }} {{ end }} {{ else }}{{ .Site.Params.description }}{{ end }}" />
+<meta property="og:locale" content="ja_JP" />
+
 {{ if .Params.largeimage }}
-<meta name="og:image" content="{{ .Site.BaseURL }}{{ .Params.largeimage }}" />
+    <meta name="og:image" content="{{ .Site.BaseURL }}{{ .Params.largeimage }}" />
 {{ else }}
-{{ if .Params.image }}
-<meta name="og:image" content="{{ .Site.BaseURL }}{{ .Params.image }}" />
-{{ else }}
-<meta name="twitter:image" content="{{ .Site.BaseURL }}/img/common/logo.png" />
+    {{ if .Params.image }}
+    <meta name="og:image" content="{{ .Site.BaseURL }}{{ .Params.image }}" />
+    {{ else }}
+    <meta name="og:image" content="{{ .Site.BaseURL }}/img/common/logo.png" />
+    {{ end }}
 {{ end }}
-{{ end }}
+
 <meta name="twitter:url" content="{{ .Permalink }}" />
 <meta name="twitter:site" content="@kotetttt" />
 <meta name="twitter:creator" content="@kotetttt" />
