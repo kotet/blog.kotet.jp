@@ -51,15 +51,7 @@
     <p>
         {{ if isset .Params "date" }}
             Created: <time>{{ .Date.Format "2006-01-02" }}</time>
-            {{ if and .Page.GitInfo (isset .Params "lastmod") }}
-            /
-            {{ else }}
             <br />
-            {{ end }}
-        {{ end }}
-
-        {{ if and .Page.GitInfo (isset .Params "lastmod") }}
-            Last modified: <time>{{ .Lastmod.Format "2006-01-02" }}</time> (<a href="https://github.com/kotet/blog.kotet.jp/commit/{{ .Page.GitInfo.Hash }}">{{ .Page.GitInfo.AbbreviatedHash }}</a>)<br />
         {{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
     </p>
