@@ -1,0 +1,87 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="12月2日ですね1。 Fediverse Advent Calendar 2022の2日目の記事として参加させていただきます。 Hostodonの使い方を詳細に書いた記事が見つけられなかった"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.ba09bb096c995fc1e5808536dd35616f27fee5c836c786a079af91b6bc126e26.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.configure({languages:[]})
+hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
+"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
+"  displayMath: [['$$','$$']],\n"+
+"  processEscapes: true\n"+
+" }\n"+
+"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><script>document.addEventListener("DOMContentLoaded",function(){let elems=document.querySelectorAll(".footnote-ref");for(const e of elems){let url=new URL(e.href);let footnote=document.getElementById(url.hash.substr(1));let text=footnote.innerText.trim().replace("↩︎","");e.title=text;}});</script><title>#advent_calendar HostodonでひとりMastodonサーバーを立てる - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2022/12/hostodon/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#advent_calendar HostodonでひとりMastodonサーバーを立てる - Kotet's Personal Blog"><meta name=og:description content="12月2日ですね1。 Fediverse Advent Calendar 2022の2日目の記事として参加させていただきます。 Hostodonの使い方を詳細に書いた記事が見つけられなかった"><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2022/12/hostodon/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><a href=/tags/advent_calendar>#advent_calendar</a>
+HostodonでひとりMastodonサーバーを立てる</h2><p>Created: <time>2022-12-28</time>
+/
+Last modified: <time>2022-12-28</time> (<a href=https://github.com/kotet/blog.kotet.jp/commit/462be42d30155f108fc2726f13b71bec46f514cd>462be42</a>)<br><a href=/tags/advent_calendar>#advent_calendar</a> <a href=/tags/fediverse>#fediverse</a> <a href=/tags/tech>#tech</a></p><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#いきさつ>いきさつ</a></li><li><a href=#アカウント登録>アカウント登録</a></li><li><a href=#mastodonインスタンスの新規作成>Mastodonインスタンスの新規作成</a></li><li><a href=#dnsレコードの更新>DNSレコードの更新</a></li><li><a href=#インスタンスの初期設定>インスタンスの初期設定</a></li><li><a href=#インスタンス管理画面>インスタンス管理画面</a></li><li><a href=#アカウントの立ち上げ>アカウントの立ち上げ</a></li><li><a href=#感想>感想</a></li></ul></li></ul></nav></aside></header><article><p>12月2日ですね<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>。
+<a href=https://adventar.org/calendars/8468>Fediverse Advent Calendar 2022</a>の2日目の記事として参加させていただきます。</p><hr><p>Hostodonの使い方を詳細に書いた記事が見つけられなかったので書く。
+Hostodonを使ってみたいけど情報が無くて不安な人は参考にしてほしい。</p><h3 id=いきさつ>いきさつ</h3><p>前からMastodonにアカウントを作りたいと思っていた。
+しかしせっかくの分散SNSだし、
+所属しているサーバーが倒れたときに乗り換えたりリンクを書き換えたりするのもめんどくさいので自前のサーバーを作りたい。
+そんなことを考えているうちに5年が過ぎ、Twitterがイーロンマスクに買収され<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>、他のSNSへのリンクが禁止になった<sup id=fnref:3><a href=#fn:3 class=footnote-ref role=doc-noteref>3</a></sup>。
+どうしよう……</p><p>というわけで慌ててMastodonを始めることになってしまった。
+自分が持っているドメインであるkotet.jpでアカウントを作るためには、自前のサーバーを作らなくてはならない。
+ちょっと今の自分はサーバーの運用に多くの労力を割くことができないので、ホスティングサービスがあればそれを使いたい。
+そう思って探してみるとHostodonというホスティングサービスがあった。</p><h3 id=アカウント登録>アカウント登録</h3><p>まず、<a href=https://hostdon.jp/>トップページ</a>の「アカウント登録」を押すと<strong>仮登録フォーム</strong>に飛ぶ。
+仮登録フォームにメールアドレスを記入し、送信する。
+するとHostodonから<strong>仮登録のお知らせメール</strong>が来るので、そのメールに貼られているリンクから本登録を行う。</p><p>本登録ではパスワードの設定や、クレジットカード情報の登録を行う。
+本登録が完了すると、<strong>本登録のお知らせメール</strong>が届き、コントロールパネルが開けるようになる。</p><p>コントロールパネルからは持っているインスタンスと作成中のインスタンスが一覧で見られる。
+コントロールパネル上部の「Mastodonインスタンス」→「新規作成」からインスタンスを作成できる。
+自分はシンガポールリージョンを申請した。</p><h3 id=mastodonインスタンスの新規作成>Mastodonインスタンスの新規作成</h3><p>インスタンスの新規作成ページでは、作成するインスタンスの構成を選べる。
+プランによって<strong>Sidekiqスレッドの数</strong>と<strong>ローカルのストレージの大きさ</strong>が違うらしい。
+Sidekiqスレッド数は25スレッドから100スレッドまで選択肢があるが、それがどれくらいの性能を意味しているのかよくわからない……</p><p>ここで選べるのは以下の通りである。</p><ul><li>インスタンスタイプ</li><li>ディスク増量: 申し込むとストレージが50GB増えるらしい。330円/月。</li><li>日本語検索機能: 申し込むと全文検索が使えるらしい。165円/月。</li><li>ドメイン: 独自ドメインを利用するか、なければ<code>{好きな文字列}.hostodon.ne.jp</code>というドメインが利用できる。</li></ul><p>hostodonのドメインを利用してしまうと、hostodonの利用をやめることがサーバーの閉鎖と同義になってしまう。
+できれば独自ドメインを使いたい。
+自分はここで<code>mastodon.kotet.jp</code>というドメインを使うことにして入力した。
+<code>m.kotet.jp</code>でも良かったかもしれないが、自分はTwitterが本当にヤバいことになるまでMastodonアカウントを作れなかった人間である。
+貴重な1文字サブドメインを使う勇気が出なかった……</p><p>申請を行うと<strong>インスタンス申し込み受付メール</strong>が届く。
+独自ドメインを設定する場合は24時間以内に必要な操作を連絡するということなので、のんびり待つ。</p><p>ここでコントロールパネルを見ると、作成中のインスタンスに項目ができている。
+自分がやったときはシンガポールリージョンにしたのに東京リージョンと表示されていた。
+インスタンスが作成されたらちゃんとシンガポールリージョンになっていたので、慌てず待てば大丈夫だと思う。</p><h3 id=dnsレコードの更新>DNSレコードの更新</h3><p>のんびり待っていると<strong>DNSレコード変更のお願いメール</strong>が届く。
+DNSサーバーの<code>CNAME</code>レコードをメールで指示されたとおりに書き換えて、またのんびり待つ。
+自分の場合DNSレコードを変えてから7時間待った。
+自分の場合状勢的にユーザーが殺到していて時間がかかったのかもしれないが、ゆっくり待つ心を準備しておいてほしい。</p><h3 id=インスタンスの初期設定>インスタンスの初期設定</h3><h4 id=管理者アカウント作成>管理者アカウント作成</h4><p>待っていると<strong>インスタンス作成完了のお知らせメール</strong>が来る。
+コントロールパネルを見ると、Mastodonインスタンス一覧にインスタンスが増えている。
+インスタンスの<strong>管理</strong>ボタンを押すことでインスタンス管理画面に行けるが、今のところできることはないのでまずは作ったサーバーにアクセスしてみる。</p><p><img src=/img/blog/2022/12/mastodon-signup.png alt></p><p>普通にMastodonアカウントを作成する。
+後でこれを管理者アカウントにする。
+<code>@owner</code>とか<code>@admin</code>にしてもかっこよかったかもしれないが、ざっと調べた感じ名前がドメイン名に入っていても普通に自分の名前をユーザー名にしている人が多かった。
+登録したアドレスに確認メールが届くので、リンクを踏めばアカウントが有効化される。
+ちなみにメールは<code>hostodon.jp</code>から来る。</p><p>アカウントを作ったら再びインスタンス管理画面に移る。
+「各種タスクの実行」の管理者登録フォームに作ったアカウントのユーザー名を入力することで、そのユーザーを管理者にできる。</p><h4 id=新規登録の制限>新規登録の制限</h4><p>このサーバーは自分専用なので、新規登録の制限をする。
+botアカウント等は作るのでMastodonの設定画面の「管理」→「サーバー設定」→「アカウント作成」から「新規登録が可能な人」を「登録には承認が必要」に設定する。
+しばらくアカウントを作らないなら「誰にも許可しない」に設定してもいい。</p><h3 id=インスタンス管理画面>インスタンス管理画面</h3><p>インスタンス管理画面には以下のような項目がある。
+あまりできることは多くない。
+基本的にはお問い合わせフォームを通して操作を行うようだ。</p><h4 id=インスタンス情報>インスタンス情報</h4><p>インスタンスに関する各種情報が見られる。</p><h4 id=ストレージ情報>ストレージ情報</h4><p>ストレージに関する統計が見られる。
+画像を投稿したり投稿したりしているはずだが今見たら0bytesになっている。</p><h4 id=各種タスクの実行>各種タスクの実行</h4><p>管理者登録はこのパネルから行う。
+その他したいことがある場合は申請フォームで運営に申請する必要があるようだ。</p><h4 id=カスタマイズ>カスタマイズ</h4><p>現在はFaviconの変更機能がある。
+あるが現在のところ不具合のため停止しているようだ。</p><h4 id=契約設定>契約設定</h4><p>インスタンスの解約申請ができる。</p><h3 id=アカウントの立ち上げ>アカウントの立ち上げ</h3><p>プロフィールを設定したりした後は、サーバーの設定をいろいろ変えてみる。</p><h4 id=リレーサーバーに接続>リレーサーバーに接続</h4><p>初期状態ではどのサーバーとも繋がっていないので、知っているアカウントのフォロー欄を見るくらいしかアカウントを探す方法がない。
+そのうえ自分がフォローしたアカウントの情報しか入ってこないので、トレンドハッシュタグ機能もまともに機能しない。
+いくらかリレーサーバーに接続するといいだろう。
+リレーサーバーは、参加したサーバーで行われた公開投稿を、参加サーバー全体に送信してくれる。
+知らないアカウントを探したり、逆に自分を見つけてもらったりするなら参加するといい。
+あまり流量の大きいリレーに参加すると負荷が大きいらしい。
+どれくらい負荷が大きくなるかわからないので慎重に参加している。
+とりあえずハッシュタグ付きの投稿だけを選択してリレーしてくれるハッシュタグリレー等に参加している。</p><p><a href=https://hashtag-relay.dtp-mstdn.jp/>ハッシュタグリレーサービス</a></p><h4 id=ドメインブロック>ドメインブロック</h4><p>リレーに参加しているサーバーの中には、botの投稿を未収載設定せずに流したり、ユーザーがタイムライン上で喧嘩していたり等のマナーの悪いサーバーもある。
+そのような投稿で連合タイムラインが押し流されてしまう場合は、ドメインブロックを利用する。
+ひとりサーバーではモデレーションをしてくれる人はいない。
+気分を害すようなことがあったら自衛を心がけたい。</p><p>設定画面から「モデレーション」→「既知のサーバー」を開くと、サーバーのモデレーションが行える。
+そのサーバーのアカウントをフォローする可能性があるなら「重大性」を「サイレンス」に、
+完全につながりを断ってしまっていいなら「停止」にする。</p><p>自分はまだ遭遇したことはないが、データをサーバーのキャッシュに入れておくだけで自国の法的に危なくなるようなサーバーもあるかもしれない。
+そのような時もドメインブロックを利用する。</p><h4 id=カスタムcss>カスタムCSS</h4><p>サーバー内で独自のCSSを適用できる。
+「管理」→「サーバー設定」→「外観」からカスタムCSSを設定する。
+最近Mastodonの投稿の文字数制限が5000まで拡大されたらしい。
+めちゃくちゃ長い投稿が来ると邪魔なので、以下のようにすると長さを制限できる。</p><div class=highlight><pre class=chroma><code class=language-css data-lang=css><span class=c>/* テキストの行数を制限 */</span>
+<span class=p>.</span><span class=nc>status__content__text</span> <span class=p>{</span>
+    <span class=k>max-height</span><span class=p>:</span> <span class=mi>10</span><span class=kt>em</span><span class=p>;</span>
+    <span class=k>overflow-y</span><span class=p>:</span> <span class=kc>auto</span><span class=p>;</span>
+<span class=p>}</span>
+<span class=c>/* マウスホバーで展開 */</span>
+<span class=p>.</span><span class=nc>status__content__text</span><span class=p>:</span><span class=nd>hover</span> <span class=p>{</span>
+    <span class=k>max-height</span><span class=p>:</span> <span class=kc>unset</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></div><h3 id=感想>感想</h3><p>というわけでできたのが <a href=https://mastodon.kotet.jp/>mastodon.kotet.jp</a> だ。
+管理者兼メインアカウントは <a href=https://mastodon.kotet.jp/@kotet>@kotet@mastodon.kotet.jp</a>。
+自分の投稿はこのように埋め込めるが、どうもフォールバックが存在しないので<code>mastodon.kotet.jp</code>の閉鎖と同時に見えなくなってしまうようだ。</p><iframe src=https://mastodon.kotet.jp/@kotet/109540883458507195/embed class=mastodon-embed style=max-width:100%;border:0 width=400 allowfullscreen></iframe>
+<script src=https://mastodon.kotet.jp/embed.js async></script><p>HostodonはどうもAWSのような自動化されたサービスというより、人間がサーバーの運営をしてくれるMastodonサーバー運営代行サービスといった使い勝手だ。
+ともかくこれでMastodonの世界と、それにつながるFediverseに入門できた。
+一度ブームが過ぎ去ってしまっていろんなサーバーや関連ウェブサイトが閉鎖してリンク切れになってしまっていて悲しかったので、このサーバーは細々とでもできるだけ長く運用していきたい。</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>12月28日 <a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2 role=doc-endnote><p><a href=https://www.bbc.com/japanese/63466797>マスク氏、ツイッター最高経営責任者に　取締役会を解散 - BBCニュース</a> <a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:3 role=doc-endnote><p><a href=https://www.watch.impress.co.jp/docs/news/1464674.html>Twitter、他のSNSへのリンクを禁止 違反でアカウント凍結 - Impress Watch</a> <a href=#fnref:3 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></article><footer><h2><a href=/tags/advent_calendar>#advent_calendar</a>
+HostodonでひとりMastodonサーバーを立てる</h2><p><time>2022-12-28</time>
+<a href=/tags/advent_calendar>#advent_calendar</a> <a href=/tags/fediverse>#fediverse</a> <a href=/tags/tech>#tech</a></p></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/about title=about>About</a>
+<a href=/products title=download>Download</a>
+<a href=/tags title=tag>Tag</a>
+<a href=/index.xml title=feed>Feed</a>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2022-12-28T03:05:42 UTC</div></footer></body></html>
