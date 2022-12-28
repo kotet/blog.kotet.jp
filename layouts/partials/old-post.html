@@ -1,8 +1,8 @@
 {{ if isset .Params "date" }}
-{{ if gt (now.AddDate -1 0 0) .Lastmod }}
+{{ if gt (now.AddDate -1 0 0) .Date }}
 <div style="border: .5em solid gold;padding:1em;margin-bottom:1em;">
 <p style="font-weight: bold;margin: 0;">
-    1年以上更新されていない記事です
+    これは1年以上前の記事です
 </p>
 <p style="margin: 0;">
     ここに書かれている情報、見解は現在のものとは異なっている場合があります。
