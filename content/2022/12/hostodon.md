@@ -7,6 +7,8 @@ tags:
     - tech
 ---
 
+<script src="https://mastodon.kotet.jp/embed.js" async="async"></script>
+
 12月2日ですね[^1]。
 [Fediverse Advent Calendar 2022](https://adventar.org/calendars/8468)の2日目の記事として参加させていただきます。
 
@@ -71,6 +73,20 @@ hostodonのドメインを利用してしまうと、hostodonの利用をやめ�
 ここでコントロールパネルを見ると、作成中のインスタンスに項目ができている。
 自分がやったときはシンガポールリージョンにしたのに東京リージョンと表示されていた。
 インスタンスが作成されたらちゃんとシンガポールリージョンになっていたので、慌てず待てば大丈夫だと思う。
+
+#### 追記: ライトプランの性能について
+
+[YUKIMOCHI Toot Relay Service](https://relay.toot.yukimochi.jp/)という日本最大級のリレーサーバーに登録してみた。
+
+<iframe src="https://mastodon.kotet.jp/@kotet/109619833664812586/embed" class="mastodon-embed" style="max-width: 100%; border: 0" width="400" allowfullscreen="allowfullscreen"></iframe>
+<!-- 
+YUKIMOCHI Toot Relayに接続してみたが思ったより負荷は重くないな。ひとりサーバーならHostodonの最安プランでも割とやりたい事全部やれる感じっぽい
+Kotet --verbose (@kotet@mastodon.kotet.jp)
+-->
+
+リレーサーバーに登録し、治安が悪かったり悪意を持って運用されているっぽいサーバーを数個ブロックした。
+その結果、Sidekiqの使用率はほとんどの時間15%を下回っている。
+自分専用サーバーとして使い、メディアファイルの投稿も控え目ならば一番安いプランでも困ることはなさそうだ。
 
 ### DNSレコードの更新
 
@@ -190,7 +206,6 @@ botアカウント等は作るのでMastodonの設定画面の「管理」→「
 自分の投稿はこのように埋め込めるが、どうもフォールバックが存在しないので`mastodon.kotet.jp`の閉鎖と同時に見えなくなってしまうようだ。
 
 <iframe src="https://mastodon.kotet.jp/@kotet/109540883458507195/embed" class="mastodon-embed" style="max-width: 100%; border: 0" width="400" allowfullscreen="allowfullscreen"></iframe>
-<script src="https://mastodon.kotet.jp/embed.js" async="async"></script>
 
 <!--
 
