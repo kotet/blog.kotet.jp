@@ -4,7 +4,7 @@ FROM golang:1.13
 # VARIANT can be either 'hugo' for the standard version or 'hugo_extended' for the extended version.
 ARG VARIANT=hugo_extended
 # VERSION can be either 'latest' or a specific version number
-ARG VERSION=latest
+ARG VERSION=0.111.3
 
 RUN apt-get update && apt-get install -y ca-certificates openssl git curl && \
     rm -rf /var/lib/apt/lists/* && \
