@@ -1,5 +1,6 @@
 baseURL: "https://blog.kotet.jp"
 languageCode: "ja"
+timeZone: "Asia/Tokyo"
 
 title: "Kotet's Personal Blog"
 
