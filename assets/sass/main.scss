@@ -158,6 +158,8 @@ hr {
 
 footer.site {
     background-color: $main_dark;
+    max-width: 100%;
+    padding: 0 calc((100vw - 800px) / 2);
     margin-top: 1em;
     color: #444;
     display: flex;
@@ -167,7 +169,7 @@ footer.site {
 
 footer.site .link-wrapper {
     max-width: 800px;
-    width: 800px;
+    width: 100%;
     margin: 1em auto 0 auto;
 }
 
@@ -180,7 +182,7 @@ footer.site .link-wrapper a {
 
 footer.site .generated {
     max-width: 800px;
-    width: 800px;
+    width: 100%;
     margin: 1em auto;
     color: lightgray;
 }
