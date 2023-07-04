@@ -46,7 +46,11 @@ botアカウント等は作るのでMastodonの設定画面の「管理」→「
 あまりできることは多くない。
 基本的にはお問い合わせフォームを通して操作を行うようだ。</p><h4 id=インスタンス情報>インスタンス情報</h4><p>インスタンスに関する各種情報が見られる。</p><h4 id=ストレージ情報>ストレージ情報</h4><p>ストレージに関する統計が見られる。
 画像を投稿したり投稿したりしているはずだが今見たら0bytesになっている。</p><h4 id=各種タスクの実行>各種タスクの実行</h4><p>管理者登録はこのパネルから行う。
-その他したいことがある場合は申請フォームで運営に申請する必要があるようだ。</p><h4 id=カスタマイズ>カスタマイズ</h4><p>現在はFaviconの変更機能がある。
+その他したいことがある場合は申請フォームで運営に申請する必要があるようだ。</p><p><strong>追記:</strong></p><p>絵文字追加機能が追加されたようだ。</p><p><img src=/img/blog/2022/12/hostdon-emoji-form.png alt></p><p>まず、作りたい絵文字の画像ファイルをtarballにする。
+このときのファイル名が絵文字の名前になる。</p><pre><code class=language-console data-lang=console>$ tar czf emojis.tar.gz kotet.png
+</code></pre><p>ファイルをアップロードすると以下のようになり、処理が始まる。
+処理は数分で完了する。
+完了したときはタスク完了メールが届く。</p><p><img src=/img/blog/2022/12/hostdon-emoji-processing.png alt></p><p>実際に追加された絵文字が以下の通り。ファイル名が<code>kotet.png</code>なので<code>:kotet:</code>と入力することで表示できる。</p><iframe src=https://mastodon.kotet.jp/@kotet/110654645788971078/embed class=mastodon-embed style=max-width:100%;border:0 width=400 allowfullscreen></iframe><script src=https://mastodon.kotet.jp/embed.js async></script><h4 id=カスタマイズ>カスタマイズ</h4><p>現在はFaviconの変更機能がある。
 あるが現在のところ不具合のため停止しているようだ。</p><h4 id=契約設定>契約設定</h4><p>インスタンスの解約申請ができる。</p><h3 id=アカウントの立ち上げ>アカウントの立ち上げ</h3><p>プロフィールを設定したりした後は、サーバーの設定をいろいろ変えてみる。</p><h4 id=リレーサーバーに接続>リレーサーバーに接続</h4><p>初期状態ではどのサーバーとも繋がっていないので、知っているアカウントのフォロー欄を見るくらいしかアカウントを探す方法がない。
 そのうえ自分がフォローしたアカウントの情報しか入ってこないので、トレンドハッシュタグ機能もまともに機能しない。
 いくらかリレーサーバーに接続するといいだろう。
@@ -83,4 +87,4 @@ HostdonでひとりMastodonサーバーを立てる</h2><p><time>2022-12-28</tim
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-07-04T07:24:34 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-07-04T07:42:09 UTC</div></footer></body></html>
