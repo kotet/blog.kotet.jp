@@ -140,6 +140,32 @@ botアカウント等は作るのでMastodonの設定画面の「管理」→「
 管理者登録はこのパネルから行う。
 その他したいことがある場合は申請フォームで運営に申請する必要があるようだ。
 
+**追記:**
+
+絵文字追加機能が追加されたようだ。
+
+![](/img/blog/2022/12/hostdon-emoji-form.png)
+
+まず、作りたい絵文字の画像ファイルをtarballにする。
+このときのファイル名が絵文字の名前になる。
+
+```console
+$ tar czf emojis.tar.gz kotet.png
+```
+
+ファイルをアップロードすると以下のようになり、処理が始まる。
+処理は数分で完了する。
+完了したときはタスク完了メールが届く。
+
+![](/img/blog/2022/12/hostdon-emoji-processing.png)
+
+実際に追加された絵文字が以下の通り。ファイル名が`kotet.png`なので`:kotet:`と入力することで表示できる。
+
+<iframe src="https://mastodon.kotet.jp/@kotet/110654645788971078/embed" class="mastodon-embed" style="max-width: 100%; border: 0" width="400" allowfullscreen="allowfullscreen"></iframe><script src="https://mastodon.kotet.jp/embed.js" async="async"></script>
+<!-- Kotet
+@kotet@mastodon.kotet.jp
+test :kotet: -->
+
 #### カスタマイズ
 
 現在はFaviconの変更機能がある。
