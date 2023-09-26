@@ -59,6 +59,14 @@ main {
             display: inline;
             margin-left: 1em;
         }
+        .subscribe {
+            border-bottom: 1px solid $main_light;
+            width: fit-content;
+            svg {
+                height: 1em;
+                vertical-align: sub;
+            }
+        }
     }
 }
 

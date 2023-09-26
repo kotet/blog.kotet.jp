@@ -70,5 +70,8 @@
         {{ if isset .Params "date" }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
     </p>
+    <div class="subscribe">
+        <a href="/tags/{{ index .Params.tags 0 }}/index.xml">{{ partial "svg/feed" "lightsalmon" }}{{ index .Params.tags 0 }}の記事を購読</a>
+    </div>
 </footer>
 {{ end }}
