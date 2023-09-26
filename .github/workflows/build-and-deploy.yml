@@ -12,43 +12,44 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  test:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Hugo setup
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.66.0"
+          extended: true
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+      - name: install pngquant
+        run: sudo apt-get -y install pngquant
+      - name: hugo build (test)
+        run: |
+          hugo --minify --buildFuture --templateMetrics --templateMetricsHints
+          find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Hugo setup
         uses: peaceiris/actions-hugo@v2.4.13
         with:
           hugo-version: "0.66.0"
           extended: true
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/checkout@v2
+          filter: blob:none
+      - uses: actions/checkout@v4
         with:
           ref: "refs/heads/deploy"
           path: "public"
       - name: install pngquant
         run: sudo apt-get -y install pngquant
-      - name: hugo build (test)
-        run: |
-          cd public
-          git rm -rf .  || true
-          git clean -fxd
-          cd ..
-          hugo --minify --buildFuture --templateMetrics --templateMetricsHints
-      - name: optimize images
-        run: |
-          du -s public
-          find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
-          du -s public
-        env:
-          HUGO_ENV: production
       - name: hugo build (deploy)
-        if: github.ref == 'refs/heads/master'
         run: |
           cd public
           git rm -rf . || true
@@ -60,7 +61,6 @@ jobs:
         env:
           HUGO_ENV: production
       - name: Commit files
-        if: github.ref == 'refs/heads/master'
         run: |
           cd public
           git config --local user.email "action@github.com"
@@ -68,7 +68,6 @@ jobs:
           git add .
           git commit -m "[actions] deploy" --allow-empty
       - name: GitHub Push
-        if: github.ref == 'refs/heads/master'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
