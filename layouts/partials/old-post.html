@@ -1,5 +1,4 @@
-{{ if isset .Params "date" }}
-{{ if gt (now.AddDate -1 0 0) .Date }}
+{{ if gt (now.AddDate -1 0 0) .GitInfo.AuthorDate }}
 <div style="border: .5em solid gold;padding:1em;margin-bottom:1em;">
 <p style="font-weight: bold;margin: 0;">
     これは1年以上前の記事です
@@ -8,5 +7,4 @@
     ここに書かれている情報、見解は現在のものとは異なっている場合があります。
 </p>
 </div>
-{{ end }}
 {{ end }}
