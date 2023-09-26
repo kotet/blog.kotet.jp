@@ -50,7 +50,8 @@
     </h2>
     <p>
         {{ if isset .Params "date" }}
-            Created: <time>{{ .Date.Format "2006-01-02" }}</time>
+            Created: <time>{{ .Date.Format "2006-01-02" }}</time>,
+            Last modified: <time>{{ .GitInfo.AuthorDate.Format "2006-01-02" }}</time>
             <br />
         {{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
