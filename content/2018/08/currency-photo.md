@@ -6,7 +6,7 @@ title: "仮想通貨の写真素材を手に入れた"
 tags:
 - essay
 - log
-image: 2018/08/currency.jpg
+image: /assets/2018/08/currency.jpg
 ---
 
 仮想通貨について書かれた記事のトップにありがちな画像素材をたくさん手に入れた。

@@ -6,7 +6,7 @@ title: "Dでマンデルブロ集合を書く"
 tags:
 - dlang
 - tech
-image: 2017/04/12/twitter.png
+image: /assets/2017/04/12/twitter.png
 mathjax: on
 ---
 
@@ -18,7 +18,7 @@ mathjax: on
 ### マンデルブロ集合とは
 いろいろなサイトで出尽くしているけど一応書く。
 
-\\(z_{n+1}=z_n^2+c\\)  
+\\(z_{n+1}=z_n^2+c\\)
 \\(z_1=0\\)
 
 という漸化式が\\(x \\to \\infty\\)の極限で無限大に発散しない\\(c\\)の集合がマンデルブロ集合である。

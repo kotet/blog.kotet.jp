@@ -8,7 +8,7 @@ tags:
 - tech
 - log
 - ipfs体験記
-image: 2017/10/18/twitter.png
+image: /assets/2017/10/18/twitter.png
 excerpt: "“InterPlanetary File System“というあまりにも魅力的な名前から、 以前よりIPFSを試してみたかった。 やってみたいなーとずっと言っているだけなのもアレなので、少しづつ触っていこうと思う。 今後「IPFS体験記」として投稿するのは、その記録である。 試したことをただ時系列順に書くだけなので、参考にするには読みづらいかもしれない。"
 ---
 

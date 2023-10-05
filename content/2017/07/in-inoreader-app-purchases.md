@@ -8,7 +8,7 @@ tags:
 excerpt: "InoreaderというRSSクライアントサービスがある。
 いろいろ機能があって使っていたのだが、Basicプランの機能を減らすことにしたらしい。
 アプリ内課金では最高グレードのプランしか選べないことについて聞いてみた。"
-image: 2017/07/13/twitter.png
+image: /assets/2017/07/13/twitter.png
 ---
 
 InoreaderというRSSクライアントサービスがある。
@@ -26,11 +26,11 @@ InoreaderというRSSクライアントがある。
 
 そんなInoreaderからメールが来た。
 
-> (前略)  
+> (前略)
 > Therefore, on the 31st of July, 2017 premium features like boosted feeds,
-> filters and rules, active searches and social media feeds will be discontinued 
+> filters and rules, active searches and social media feeds will be discontinued
 > for Basic user accounts. If you need the premium functionality of Inoreader
-> or are still debating whether to become a paid member, we invite you to try our 30-Day Trial.   
+> or are still debating whether to become a paid member, we invite you to try our 30-Day Trial.
 > (後略)
 
 要するにプレミアムプランを使ってもらうために今までBasicプランでも制限つきで有料機能を使えるようにしていたけど、
@@ -56,8 +56,8 @@ InoreaderというRSSクライアントがある。
 >
 > Unfortunately at this stage you can upgrade to our Pro plan only.
 > If we add all plans we'll need to implement the ability to "upgrade" (to a higher tiers) too,
-> but there are too many culprits and technical issues hindering us to implement it. So at this stage we prefer to keep it that way. 
-> We hope you understand. 
+> but there are too many culprits and technical issues hindering us to implement it. So at this stage we prefer to keep it that way.
+> We hope you understand.
 > But I suppose that you are aware you can do that from our web version even from your mobile device.
 
 プレミアムなら1、そうでなければ3営業日以内に返信すると控えめなことを言っていたが、なんと20分で返信がきた。

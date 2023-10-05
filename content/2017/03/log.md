@@ -5,7 +5,7 @@ aliases:
 title: "ForestとSiri等9件"
 tags:
 - log
-image: "2017/03/13/siri.jpg"
+image: "/assets/2017/03/13/siri.jpg"
 ---
 
 普段からどうしようもない生活を送っているが、今日は特にどうしようもなかった。

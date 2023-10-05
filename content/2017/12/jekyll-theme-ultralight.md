@@ -8,7 +8,7 @@ tags:
 - ipfs
 - tech
 excerpt: "CNNの低帯域の人向けのテキストオンリーのサイトlite.cnn.ioを見た。 とても軽い。 しかしニュースを快適に閲覧するための要素はすべて満たしており、むしろ色々くっついたオリジナルのCNNよりも見やすいかもしれないと思った。"
-image: 2017/12/27/twitter.png
+image: /assets/2017/12/27/twitter.png
 ---
 
 CNNの低帯域の人向けのテキストオンリーのサイト[lite.cnn.io](http://lite.cnn.io/)を見た。

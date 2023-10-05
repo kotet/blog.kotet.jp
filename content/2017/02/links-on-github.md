@@ -6,7 +6,7 @@ title: "コミットメッセージ上で他のリポジトリの特定のコミ
 tags:
 - github
 - tech
-image: "2017/02/28/twitter.png"
+image: "/assets/2017/02/28/twitter.png"
 ---
 
 GitHubには、Issue番号などを自動的にリンクにする機能がある。
