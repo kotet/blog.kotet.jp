@@ -5,7 +5,7 @@ aliases:
 title:  "多元宇宙とたんぽぽのコーヒーについて(制作記)"
 tags:
 - log
-image: "2017/01/22/twitter-card.png"
+image: "/assets/2017/01/22/twitter-card.png"
 ---
 
 昔から身近なものを有効活用するのを考えることが好きだった。

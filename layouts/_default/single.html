@@ -43,10 +43,13 @@
 {{ end }}
 <header>
     <h2>
-        {{ if isset .Params "tags" }}
-        <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
-        {{ end }}
-        {{ .Title }}
+        <span>
+            {{ if isset .Params "tags" }}
+            <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
+            {{ end }}
+            {{ .Title }}
+        </span>
+        {{ if isset .Params "image" }}<img height="200" width="200" src="{{ .Site.BaseURL }}{{ .Params.image }}"></img> {{ end }}
     </h2>
     <p>
         {{ if isset .Params "date" }}
@@ -59,7 +62,10 @@
     {{ partial "old-post" . }}
     {{ partial "toc" . }}
 </header>
-<article>{{ .Content }}</article>
+<article>
+    {{ if isset .Params "largeimage" }}<img class="headerimage" src="{{ .Site.BaseURL }}{{ .Params.largeimage }}"></img>{{ end }}
+    {{ .Content }}
+</article>
 <footer>
     <h2>
         {{ if isset .Params "tags" }}

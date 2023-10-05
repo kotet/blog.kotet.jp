@@ -10,7 +10,7 @@ tags:
 excerpt: "どうも数式表示のために読み込ませていたMathJaxのCDNである
 `cdn.mathjax.org`が今年の4月30日でシャットダウンされていたようだ。
 しかしどうもMathJaxは変わらず数式をレンダリングし続けてくれているように見える。"
-image: 2017/07/06/twitter.png
+image: /assets/2017/07/06/twitter.png
 ---
 
 生成されているHTMLを確認しようとChrome DevToolsを開いたところ、なにかWarningが出ていた。
@@ -48,7 +48,7 @@ image: 2017/07/06/twitter.png
     //
     //  Move onload and onerror handlers to new script
     //
-    newScript.onload = script.onload; 
+    newScript.onload = script.onload;
     newScript.onerror = script.onerror;
     script.onload = script.onerror = null;
     //

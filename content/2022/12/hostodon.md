@@ -5,6 +5,7 @@ tags:
     - advent_calendar
     - fediverse
     - tech
+image: /img/blog/2022/12/hostodon-card.png
 ---
 
 <script src="https://mastodon.kotet.jp/embed.js" async="async"></script>
