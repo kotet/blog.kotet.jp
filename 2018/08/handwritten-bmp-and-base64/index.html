@@ -1,10 +1,8 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="文名は容易に揚らず、生活リズムは日を逐うて崩れてゆく。 Kotetは漸く焦躁に駆られて来た。 この頃からその容貌も峭刻となり、肉落ち骨秀で、眼光"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.configure({languages:[]})
-hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
-"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
-"  displayMath: [['$$','$$']],\n"+
-"  processEscapes: true\n"+
-" }\n"+
-"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><script>document.addEventListener("DOMContentLoaded",function(){let elems=document.querySelectorAll(".footnote-ref");for(const e of elems){let url=new URL(e.href);let footnote=document.getElementById(url.hash.substr(1));let text=footnote.innerText.trim().replace("↩︎","");e.title=text;}});</script><title>#tech 紙とペンでビットマップ画像を生成してbase64としてツイート - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/08/handwritten-bmp-and-base64/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#tech 紙とペンでビットマップ画像を生成してbase64としてツイート - Kotet's Personal Blog"><meta name=og:description content="文名は容易に揚らず、生活リズムは日を逐うて崩れてゆく。 Kotetは漸く焦躁に駆られて来た。 この頃からその容貌も峭刻となり、肉落ち骨秀で、眼光"><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2018/08/handwritten-bmp-and-base64/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/tech>#tech</a>
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content=" 文名は容易に揚らず、生活リズムは日を逐うて崩れてゆく。 Kotetは漸く焦躁に駆られて来た。 この頃からその容貌も峭刻となり、肉落ち骨秀で、眼光 "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script>
+<script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#tech 紙とペンでビットマップ画像を生成してbase64としてツイート - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/08/handwritten-bmp-and-base64/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#tech 紙とペンでビットマップ画像を生成してbase64としてツイート - Kotet's Personal Blog"><meta name=og:description content=" 文名は容易に揚らず、生活リズムは日を逐うて崩れてゆく。 Kotetは漸く焦躁に駆られて来た。 この頃からその容貌も峭刻となり、肉落ち骨秀で、眼光  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2018/08/handwritten-bmp-and-base64/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/tech>#tech</a>
 紙とペンでビットマップ画像を生成してbase64としてツイート</span></h2><p>Created: <time>2018-08-21</time>,
 Last modified: <time>2018-09-07</time><br><a href=/tags/tech>#tech</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#ビットマップ画像を手書きしてツイートしよう>ビットマップ画像を手書きしてツイートしよう</a></li><li><a href=#ツイートできる最大サイズ>ツイートできる最大サイズ</a></li><li><a href=#画像の作成>画像の作成</a></li><li><a href=#base64でエンコード>base64でエンコード</a></li><li><a href=#完成そしてツイート>完成、そしてツイート</a></li><li><a href=#参考>参考</a></li></ul></li></ul></nav></aside></header><article><blockquote><p>文名は容易に揚らず、生活リズムは日を逐うて崩れてゆく。
 Kotetは漸く焦躁に駆られて来た。
@@ -40,44 +38,44 @@ Kotetは漸く焦躁に駆られて来た。
 今回作るのはこの縦横2ピクセルの画像である。
 左上から順に赤 (#FF0000)、緑 (#00FF00)、青 (#0000FF)、白 (#FFFFFF) で塗ってある。
 最初はがんばって絵を書こうとしたが、画像が大きくなるに従って計算ミスも増えてくるのでしかたない。</p><p><img src=/assets/2018/08/bitmap.svg alt=お題></p><h4 id=ファイルヘッダー>ファイルヘッダー</h4><h5 id=ファイルタイプ>ファイルタイプ</h5><p>必ず先頭に<code>BM</code>の2文字が入る。
-<code>A</code>が0x41であるということさえ覚えておけば計算できるだろう。</p><pre><code>42 4D
+<code>A</code>が0x41であるということさえ覚えておけば計算できるだろう。</p><pre tabindex=0><code>42 4D
 </code></pre><h5 id=ファイルサイズ>ファイルサイズ</h5><p>ファイル全体のバイト数。
 32ビット整数。
 変な数値を入れても入れなくてもまともなビューアーはよしなに表示してくれるらしい。
 ノートに余白を設けておいて最後に計算するといいだろう。</p><p>今回は70バイトだったので<code>00 00 00 46</code>(<code>00000000 00000000 00000000 01000110</code>)である。
 リトルエンディアンにしなければならないので実際のバイト列はこれを反転したものになる。
-今回255を超える数値は登場しないので、何も考えずに数値の後ろにゼロを連ねるだけで良くて非常に楽。</p><pre><code>46 00 00 00
+今回255を超える数値は登場しないので、何も考えずに数値の後ろにゼロを連ねるだけで良くて非常に楽。</p><pre tabindex=0><code>46 00 00 00
 </code></pre><h5 id=予約領域>予約領域</h5><p>2バイトの予約領域が2つある。
-ここはゼロ埋めしなければならない。</p><pre><code>00 00 00 00
+ここはゼロ埋めしなければならない。</p><pre tabindex=0><code>00 00 00 00
 </code></pre><h5 id=画像データまでのオフセット>画像データまでのオフセット</h5><p>画像データが何バイトめから始まるかを書く。
 これも32ビット整数。
-ヘッダのバイト数である54 = 0x36を書いたが、これでよかったのだろうか?</p><pre><code>36 00 00 00
+ヘッダのバイト数である54 = 0x36を書いたが、これでよかったのだろうか?</p><pre tabindex=0><code>36 00 00 00
 </code></pre><h4 id=情報ヘッダー>情報ヘッダー</h4><h5 id=情報ヘッダーのサイズ>情報ヘッダーのサイズ</h5><p>Windows 式なので40バイト。
-これも32ビット整数。</p><pre><code>28 00 00 00
+これも32ビット整数。</p><pre tabindex=0><code>28 00 00 00
 </code></pre><h5 id=画像サイズ>画像サイズ</h5><p>ピクセル数。
 幅、高さの順番にどちらも符号付き32ビット整数。
 高さは通常正の数にするが、負にすると上下が反転して
 <a href=#%E7%94%BB%E5%83%8F%E3%83%87%E3%83%BC%E3%82%BF>後述する</a>
 画像データの並びがわかりやすくなるらしい。
 わざわざ負数にして計算ミスを起こしたくないし、変なことして表示されなかったら悲しいので、
-ここはお行儀よくしておく。</p><pre><code>02 00 00 00
+ここはお行儀よくしておく。</p><pre tabindex=0><code>02 00 00 00
 02 00 00 00
 </code></pre><h5 id=プレーン数>プレーン数</h5><p>これは16ビット整数。
 「ターゲット・デバイスのプレーンの枚数」らしいが、1で固定である。
-何を想定しているんだろうか。</p><pre><code>01 00
+何を想定しているんだろうか。</p><pre tabindex=0><code>01 00
 </code></pre><h5 id=色ビット数>色ビット数</h5><p>1画素を表現するのに使うビット数。
 これも16ビット整数。
 0 (プリンター等で使う)、1、4、8、16 (「正式に対応していない」らしい)、24、32から選ぶことができる。
-今回は一般的な8ビット×3の24ビット。</p><pre><code>18 00
+今回は一般的な8ビット×3の24ビット。</p><pre tabindex=0><code>18 00
 </code></pre><h5 id=圧縮形式>圧縮形式</h5><p>条件によってはちょっとした圧縮をかけることができるらしい。
 32ビット整数。</p><p>今回小さな画像を作っているのでバイト列にゼロが多い。
 しかし大きい画像の場合はファイルサイズなど32ビット整数でないと不十分なときもあるだろう。
 それを考慮してもこの項目は今までで一番ムダにスペースをとっているように思える。
 4億通りも圧縮形式の選択肢ができるものだろうか?
 余ったビットに圧縮に必要な情報でも入れるのだろうか。</p><p>今回は色ビット数に24を指定してしまったので0 (無圧縮) 1択である。
-ビットマップのくせに圧縮なんて生意気なんだよ (暴言)</p><pre><code>00 00 00 00
+ビットマップのくせに圧縮なんて生意気なんだよ (暴言)</p><pre tabindex=0><code>00 00 00 00
 </code></pre><h5 id=その他>その他</h5><p>この後にも画像データサイズ、解像度、パレット数、重要色数と項目が続いているが、今回の場合はすべてゼロでいい。
-5項目すべて32ビット整数。</p><pre><code>00 00 00 00
+5項目すべて32ビット整数。</p><pre tabindex=0><code>00 00 00 00
 00 00 00 00
 00 00 00 00
 00 00 00 00
@@ -88,10 +86,10 @@ Kotetは漸く焦躁に駆られて来た。
 したがって行は上下反転した順番に並ぶ。
 次に、行は4バイトの境界でアラインされている必要がある。
 今回は1行が24ビット×2=6バイトになっているので、2バイトのパディングを入れてやらなければならない。
-最後に、色の並び順は RGB ではなく BGR である。</p><pre><code>FF 00 00 FF FF FF 00 00
+最後に、色の並び順は RGB ではなく BGR である。</p><pre tabindex=0><code>FF 00 00 FF FF FF 00 00
 00 00 FF 00 FF 00 00 00
 </code></pre><h3 id=base64でエンコード>base64でエンコード</h3><p>以上でバイナリデータが完成したので、base64にしていく。
-参考までにここまでで作ってきたビットマップ画像の全体を載せておく。</p><pre><code>42 4D
+参考までにここまでで作ってきたビットマップ画像の全体を載せておく。</p><pre tabindex=0><code>42 4D
 46 00 00 00
 00 00 00 00
 36 00 00 00
@@ -111,7 +109,7 @@ FF 00 00 FF FF FF 00 00
 </code></pre><p>base64はASCIIの文字だけを使ってバイナリデータを表現するフォーマットである。
 6ビットを1文字で表現するため、データ量としては3分の4に増えることになる。</p><h4 id=3バイトごとに区切る>3バイトごとに区切る</h4><p>上のバイト列から毎回6ビットごと切り出して変換していくのは大変に辛そうなので、
 lcm(6,8) = 24ビット = 3バイトごとのブロックに分けて変換していく。
-上のバイト列を3バイトごとに改行するようにしたのがこちらである。</p><pre><code>42 4D 46
+上のバイト列を3バイトごとに改行するようにしたのがこちらである。</p><pre tabindex=0><code>42 4D 46
 00 00 00
 00 00 00
 00 36 00
@@ -138,32 +136,33 @@ FF 00 00
 </code></pre><p><code>00 00 00</code>が多くて楽そうだ。
 というわけで変換していく。</p><h4 id=ブロックの変換>ブロックの変換</h4><p>最初の<code>42 4D 46</code>を変換してみる。
 まずはバイト列を2進数に直してみる。
-元が16進数なので1文字づつ置き換えていけばいい。</p><pre><code>0100 0010 0100 1101 0100 0110
-</code></pre><p>次にこれを6ビットごとに区切る。</p><pre><code>010000 100100 110101 000110
+元が16進数なので1文字づつ置き換えていけばいい。</p><pre tabindex=0><code>0100 0010 0100 1101 0100 0110
+</code></pre><p>次にこれを6ビットごとに区切る。</p><pre tabindex=0><code>010000 100100 110101 000110
 </code></pre><p>ひとつづつ変換していく。
 ビット列と文字の対応は大文字、小文字、数値、+、/ という並びになっており規則性があるが、
 毎回計算すると (少なくとも自分は) 必ずミスをするので
 <a href=https://ja.wikipedia.org/wiki/Base64>Wikipedia</a>の対応表などをしっかり見ながらやろう。
-すると3バイトのブロックが以下のように4文字にエンコードされる。</p><pre><code>Qk1G
+すると3バイトのブロックが以下のように4文字にエンコードされる。</p><pre tabindex=0><code>Qk1G
 </code></pre><h4 id=最後の処理>最後の処理</h4><p>一番最後の1バイトが仲間を作れないでいる。
-ここでは上に加えて特別な処理が必要になる。</p><p>まず2進数にして6ビットごとに区切ってみる。</p><pre><code>000000 00
-</code></pre><p>余った2ビットの後ろに0を続けて、6ビットに揃える。</p><pre><code>000000 000000
-</code></pre><p>そして同じように変換する。</p><pre><code>AA
+ここでは上に加えて特別な処理が必要になる。</p><p>まず2進数にして6ビットごとに区切ってみる。</p><pre tabindex=0><code>000000 00
+</code></pre><p>余った2ビットの後ろに0を続けて、6ビットに揃える。</p><pre tabindex=0><code>000000 000000
+</code></pre><p>そして同じように変換する。</p><pre tabindex=0><code>AA
 </code></pre><p>これで終わりではない。
 文字列の長さが4の倍数になるように<code>=</code>でパディングをしてやる必要がある。
-ここまでブロックを4文字に変換してきたので、ここも4文字になるようにしてやればいい。</p><pre><code>AA==
-</code></pre><p>というわけでできた文字列がこちらになる。</p><pre><code>Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAA////AAAAAP8A/wAAAA==
+ここまでブロックを4文字に変換してきたので、ここも4文字になるようにしてやればいい。</p><pre tabindex=0><code>AA==
+</code></pre><p>というわけでできた文字列がこちらになる。</p><pre tabindex=0><code>Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAA////AAAAAP8A/wAAAA==
 </code></pre><p>ちゃんと画像になっているかテストしてみよう。
 Arch Linuxの場合<code>base64</code>というコマンドが
 <a href=https://www.archlinux.org/packages/core/x86_64/coreutils/files/>coreutils</a>
-の中に入っている。</p><pre><code class=language-console data-lang=console>$ echo &quot;Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAA////AAAAAP8A/wAAAA==&quot; | base64 -d &gt; test.bmp
-</code></pre><h3 id=完成そしてツイート>完成、そしてツイート</h3><img src=/assets/2018/08/bitmap.png alt=ノート width=400><p>ノート1ページ (と複数の失敗ページ) の計算の結果、base64にエンコードされたビットマップ画像が完成した。
+の中に入っている。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> <span class=nb>echo</span> <span class=s2>&#34;Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAA////AAAAAP8A/wAAAA==&#34;</span> <span class=p>|</span> base64 -d &gt; test.bmp
+</span></span></code></pre></div><h3 id=完成そしてツイート>完成、そしてツイート</h3><img src=/assets/2018/08/bitmap.png alt=ノート width=400><p>ノート1ページ (と複数の失敗ページ) の計算の結果、base64にエンコードされたビットマップ画像が完成した。
 後は<code>data:image/bmp;base64,</code>をくっつけてツイートするだけだ。</p><blockquote class=twitter-tweet data-lang=en><p lang=tl dir=ltr>data:image/bmp;base64,Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAA////AAAAAP8A/wAAAA==</p>&mdash; Kotet (@kotetttt) <a href="https://twitter.com/kotetttt/status/1031647349838241792?ref_src=twsrc%5Etfw">August 20, 2018</a></blockquote><script async src=https://platform.twitter.com/widgets.js></script><p>完成した画像を下に貼っておく。
-たった4ドットだが、たしかにそこにある。</p><p><img src="data:image/bmp;base64,Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAA////AAAAAP8A/wAAAA==" alt=画像></p><h3 id=参考>参考</h3><ul><li><a href=http://www.umekkii.jp/data/computer/file_format/bitmap.cgi>Bitmapファイルフォーマット</a></li><li><a href=http://www5d.biglobe.ne.jp/~noocyte/Programming/Windows/BmpFileFormat.html>BMPファイルのフォーマット</a></li></ul><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p><a href=https://www.aozora.gr.jp/cards/000119/files/624_14544.html>中島敦 山月記</a> <a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></article><footer><h2><a href=/tags/tech>#tech</a>
+たった4ドットだが、たしかにそこにある。</p><p><img src="data:image/bmp;base64,Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAA////AAAAAP8A/wAAAA==" alt=画像></p><h3 id=参考>参考</h3><ul><li><a href=http://www.umekkii.jp/data/computer/file_format/bitmap.cgi>Bitmapファイルフォーマット</a></li><li><a href=http://www5d.biglobe.ne.jp/~noocyte/Programming/Windows/BmpFileFormat.html>BMPファイルのフォーマット</a></li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p><a href=https://www.aozora.gr.jp/cards/000119/files/624_14544.html>中島敦 山月記</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></article><footer><h2><a href=/tags/tech>#tech</a>
 紙とペンでビットマップ画像を生成してbase64としてツイート</h2><p><time>2018-08-21</time>
-<a href=/tags/tech>#tech</a></p><div class=subscribe><a href=/tags/tech/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>techの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/tags/tech>#tech</a></p><div class=subscribe><a href=/tags/tech/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>techの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
 <a href=/about title=about>About</a>
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:26:55 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:36:41 UTC</div></footer></body></html>

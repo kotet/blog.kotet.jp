@@ -1,10 +1,8 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="この記事は、 Go Your Own Way (Part One: The Stack) – The D Blog1 を自分用に翻訳したものを 許可を得て 公開するものである。 誤字や誤訳などを見つけたら今すぐ Pull requestだ"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.configure({languages:[]})
-hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
-"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
-"  displayMath: [['$$','$$']],\n"+
-"  processEscapes: true\n"+
-" }\n"+
-"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><script>document.addEventListener("DOMContentLoaded",function(){let elems=document.querySelectorAll(".footnote-ref");for(const e of elems){let url=new URL(e.href);let footnote=document.getElementById(url.hash.substr(1));let text=footnote.innerText.trim().replace("↩︎","");e.title=text;}});</script><title>#dlang オウン・ウェイ - GCを避けたアロケーション (Part1: スタック)【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/07/go-your-own-way-part-one-the-stack/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#dlang オウン・ウェイ - GCを避けたアロケーション (Part1: スタック)【翻訳】 - Kotet's Personal Blog"><meta name=og:description content="この記事は、 Go Your Own Way (Part One: The Stack) – The D Blog1 を自分用に翻訳したものを 許可を得て 公開するものである。 誤字や誤訳などを見つけたら今すぐ Pull requestだ"><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/07/go-your-own-way-part-one-the-stack/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/dlang>#dlang</a>
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content=" この記事は、 Go Your Own Way (Part One: The Stack) – The D Blog1 を自分用に翻訳したものを 許可を得て 公開するものである。 誤字や誤訳などを見つけたら今すぐ Pull requestだ "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script>
+<script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#dlang オウン・ウェイ - GCを避けたアロケーション (Part1: スタック)【翻訳】 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/07/go-your-own-way-part-one-the-stack/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#dlang オウン・ウェイ - GCを避けたアロケーション (Part1: スタック)【翻訳】 - Kotet's Personal Blog"><meta name=og:description content=" この記事は、 Go Your Own Way (Part One: The Stack) – The D Blog1 を自分用に翻訳したものを 許可を得て 公開するものである。 誤字や誤訳などを見つけたら今すぐ Pull requestだ  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/07/go-your-own-way-part-one-the-stack/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/dlang>#dlang</a>
 オウン・ウェイ - GCを避けたアロケーション (Part1: スタック)【翻訳】</span></h2><p>Created: <time>2017-07-15</time>,
 Last modified: <time>2018-09-07</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/dlang_gc_series>#dlang_gc_series</a> <a href=/tags/d_blog>#d_blog</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#スタックアロケーション>スタックアロケーション</a></li><li><a href=#静的配列>静的配列</a></li><li><a href=#構造体とクラス>構造体とクラス</a></li><li><a href=#alloca>alloca</a></li><li><a href=#シンプルな例>シンプルな例</a></li><li><a href=#結論>結論</a></li></ul></li></ul></nav></aside></header><article><p>この記事は、</p><p><a href=http://dlang.org/blog/2017/07/07/go-your-own-way-part-one-the-stack/>Go Your Own Way (Part One: The Stack) – The D Blog</a><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup></p><p>を自分用に翻訳したものを
 <a href=http://dlang.org/blog/2017/06/16/life-in-the-fast-lane/#comment-1631>許可を得て</a>
@@ -31,67 +29,67 @@ GCを完全に含む時であっても、GCヒープアロケーションのサ�
 ローカル配列が必要でそのサイズがコンパイル時にわかっている場合は、動的配列よりも静的配列を使ってください。
 値型でありデフォルトではスタックからアロケートされる構造体は、可能であれば、
 参照型であり通常はヒープからアロケートされるクラスなどよりも好ましいものです。
-ここでDのコンパイル時言語機能はそれがなければできなかった可能性を与えてくれます。</p><h3 id=静的配列>静的配列</h3><p>Dの静的配列の宣言にはコンパイル時にわかる長さが必要です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=c1>// OK
-</span><span class=c1></span><span class=kt>int</span><span class=o>[</span><span class=mi>10</span><span class=o>]</span> <span class=n>nums</span><span class=o>;</span>
-
-<span class=c1>// Error: variable x cannot be read at compile time
-</span><span class=c1></span><span class=kt>int</span> <span class=n>x</span> <span class=o>=</span> <span class=mi>10</span><span class=o>;</span>
-<span class=kt>int</span><span class=o>[</span><span class=n>x</span><span class=o>]</span> <span class=n>err</span><span class=o>;</span>
-</code></pre></div><p>動的配列とは違い、静的配列はGCヒープからのアロケーションなしに配列リテラルで初期化可能です。
-その長さはぴったり合っていなければならず、そうでなければコンパイラはエラーを送出します。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=nd>@nogc</span> <span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
-    <span class=kt>int</span><span class=o>[</span><span class=mi>3</span><span class=o>]</span> <span class=n>nums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>,</span> <span class=mi>3</span><span class=o>];</span>
-<span class=o>}</span>
-</code></pre></div><p>静的配列はスライスをパラメータにとる関数に渡される時に自動的にスライスされ、
-動的配列と交換可能です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>printNums</span><span class=o>(</span><span class=kt>int</span><span class=o>[]</span> <span class=n>nums</span><span class=o>)</span> <span class=o>{</span>
-    <span class=kn>import</span> <span class=nn>std.stdio</span> <span class=o>:</span> <span class=n>writeln</span><span class=o>;</span>
-    <span class=n>writeln</span><span class=o>(</span><span class=n>nums</span><span class=o>);</span>
-<span class=o>}</span>
-
-<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
-    <span class=kt>int</span><span class=o>[]</span>  <span class=n>dnums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
-    <span class=kt>int</span><span class=o>[</span><span class=mi>3</span><span class=o>]</span> <span class=n>snums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
-    <span class=n>printNums</span><span class=o>(</span><span class=n>dnums</span><span class=o>);</span>
-    <span class=n>printNums</span><span class=o>(</span><span class=n>snums</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></div><p><code>-vgc</code>でコンパイルするとプログラム中の潜在的GCアロケーションがわかり、
+ここでDのコンパイル時言語機能はそれがなければできなかった可能性を与えてくれます。</p><h3 id=静的配列>静的配列</h3><p>Dの静的配列の宣言にはコンパイル時にわかる長さが必要です。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=c1>// OK
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>int</span><span class=o>[</span><span class=mi>10</span><span class=o>]</span> <span class=n>nums</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// Error: variable x cannot be read at compile time
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>int</span> <span class=n>x</span> <span class=o>=</span> <span class=mi>10</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=kt>int</span><span class=o>[</span><span class=n>x</span><span class=o>]</span> <span class=n>err</span><span class=o>;</span>
+</span></span></code></pre></div><p>動的配列とは違い、静的配列はGCヒープからのアロケーションなしに配列リテラルで初期化可能です。
+その長さはぴったり合っていなければならず、そうでなければコンパイラはエラーを送出します。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=nd>@nogc</span> <span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span><span class=o>[</span><span class=mi>3</span><span class=o>]</span> <span class=n>nums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>,</span> <span class=mi>3</span><span class=o>];</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>静的配列はスライスをパラメータにとる関数に渡される時に自動的にスライスされ、
+動的配列と交換可能です。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kt>void</span> <span class=nf>printNums</span><span class=o>(</span><span class=kt>int</span><span class=o>[]</span> <span class=n>nums</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kn>import</span> <span class=nn>std.stdio</span> <span class=o>:</span> <span class=n>writeln</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>writeln</span><span class=o>(</span><span class=n>nums</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span><span class=o>[]</span>  <span class=n>dnums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span><span class=o>[</span><span class=mi>3</span><span class=o>]</span> <span class=n>snums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>printNums</span><span class=o>(</span><span class=n>dnums</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>printNums</span><span class=o>(</span><span class=n>snums</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p><code>-vgc</code>でコンパイルするとプログラム中の潜在的GCアロケーションがわかり、
 なくせるところはなくす、これは非常に簡単なことです。
-以下のようなシチュエーションを注意深く見てください:</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>int</span><span class=o>[]</span> <span class=nf>foo</span><span class=o>()</span> <span class=o>{</span>
-    <span class=kd>auto</span> <span class=n>nums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
-
-    <span class=c1>// numsでなにかしらをする...
-</span><span class=c1></span>
-    <span class=k>return</span> <span class=n>nums</span><span class=o>;</span>
-<span class=o>}</span>
-</code></pre></div><p>この例の<code>nums</code>を静的配列に変換するのは間違いでしょう。
+以下のようなシチュエーションを注意深く見てください:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kt>int</span><span class=o>[]</span> <span class=nf>foo</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>auto</span> <span class=n>nums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// numsでなにかしらをする...
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>nums</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>この例の<code>nums</code>を静的配列に変換するのは間違いでしょう。
 このケースでreturn文はスタックからアロケートされた配列のスライスを返す可能性があり、それはプログラミングエラーです。
 幸い、このようなことをするとコンパイルエラーが生成されます。</p><p>一方で、returnが条件つきである場合、関数が呼び出されるたびに毎回、ではなく、
 絶対に必要なときのみ配列をヒープアロケートすることが望ましいかもしれません。
 その場合、静的配列をローカルに宣言して、returnで動的コピーをすることができます。
-<code>.dup</code>プロパティを入力しましょう:</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>int</span><span class=o>[]</span> <span class=nf>foo</span><span class=o>()</span> <span class=o>{</span>
-    <span class=kt>int</span><span class=o>[</span><span class=mi>3</span><span class=o>]</span> <span class=n>nums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
-    
-    <span class=c1>// Let x = numsでの何かしらの作業の結果
-</span><span class=c1></span>    <span class=kt>bool</span> <span class=n>condtion</span> <span class=o>=</span> <span class=n>x</span><span class=o>;</span>
-
-    <span class=k>if</span><span class=o>(</span><span class=n>condition</span><span class=o>)</span> <span class=k>return</span> <span class=n>nums</span><span class=o>.</span><span class=na>dup</span><span class=o>;</span>
-    <span class=k>else</span> <span class=k>return</span> <span class=o>[];</span>
-<span class=o>}</span>
-</code></pre></div><p>この関数はGCを<code>.dup</code>で使いますが、する必要があるときのみアロケートをし、そうでない時はアロケーションを避けます。
+<code>.dup</code>プロパティを入力しましょう:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kt>int</span><span class=o>[]</span> <span class=nf>foo</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span><span class=o>[</span><span class=mi>3</span><span class=o>]</span> <span class=n>nums</span> <span class=o>=</span> <span class=o>[</span><span class=mi>0</span><span class=o>,</span> <span class=mi>1</span><span class=o>,</span> <span class=mi>2</span><span class=o>];</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1>// Let x = numsでの何かしらの作業の結果
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>bool</span> <span class=n>condtion</span> <span class=o>=</span> <span class=n>x</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span><span class=o>(</span><span class=n>condition</span><span class=o>)</span> <span class=k>return</span> <span class=n>nums</span><span class=o>.</span><span class=na>dup</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=k>return</span> <span class=o>[];</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>この関数はGCを<code>.dup</code>で使いますが、する必要があるときのみアロケートをし、そうでない時はアロケーションを避けます。
 <code>[]</code>はこのケースで<code>null</code>と等価で、<code>.length</code>が<code>0</code>で<code>.ptr</code>が<code>null</code>のスライス(または動的配列)です。</p><h3 id=構造体とクラス>構造体とクラス</h3><p>Dでは構造体のインスタンスはデフォルトでスタックにアロケートされますが、それが望ましい時はヒープにアロケートできます。
 スタックにアロケートされた構造体はデストラクトが保証されており(have deterministic destruction)、
-デストラクタは囲まれているスコープから出ると即座に呼ばれます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>struct</span> <span class=nc>Foo</span> <span class=o>{</span>
-    <span class=kt>int</span> <span class=n>x</span><span class=o>;</span>
-    <span class=o>~</span><span class=k>this</span><span class=o>()</span> <span class=o>{</span>
-        <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
-        <span class=n>writefln</span><span class=o>(</span><span class=s>&#34;#%s says bye!&#34;</span><span class=o>,</span> <span class=n>x</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
-    <span class=n>Foo</span> <span class=n>f1</span> <span class=o>=</span> <span class=n>Foo</span><span class=o>(</span><span class=mi>1</span><span class=o>);</span>
-    <span class=n>Foo</span> <span class=n>f2</span> <span class=o>=</span> <span class=n>Foo</span><span class=o>(</span><span class=mi>2</span><span class=o>);</span>
-    <span class=n>Foo</span> <span class=n>f3</span> <span class=o>=</span> <span class=n>Foo</span><span class=o>(</span><span class=mi>3</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></div><p>予想通り、これはこう出力します:</p><pre><code>#3 says bye!
+デストラクタは囲まれているスコープから出ると即座に呼ばれます。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kd>struct</span> <span class=nc>Foo</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>x</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>~</span><span class=k>this</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>writefln</span><span class=o>(</span><span class=s>&#34;#%s says bye!&#34;</span><span class=o>,</span> <span class=n>x</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>Foo</span> <span class=n>f1</span> <span class=o>=</span> <span class=n>Foo</span><span class=o>(</span><span class=mi>1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Foo</span> <span class=n>f2</span> <span class=o>=</span> <span class=n>Foo</span><span class=o>(</span><span class=mi>2</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>Foo</span> <span class=n>f3</span> <span class=o>=</span> <span class=n>Foo</span><span class=o>(</span><span class=mi>3</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>予想通り、これはこう出力します:</p><pre tabindex=0><code>#3 says bye!
 #2 says bye!
 #1 says bye!
 </code></pre><p>参照型であるクラスはほぼ常にヒープからアロケートされます。
@@ -99,25 +97,25 @@ GCを完全に含む時であっても、GCヒープアロケーションのサ�
 しかしクラスがスタックからアロケートできないというルールはありません。
 標準ライブラリのテンプレート
 <a href=https://dlang.org/phobos/std_typecons.html#.scoped>std.typecons.scoped</a>
-で簡単にそれを行うことができます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kd>class</span> <span class=nc>Foo</span> <span class=o>{</span>
-    <span class=kt>int</span> <span class=n>x</span><span class=o>;</span>
-
-    <span class=k>this</span><span class=o>(</span><span class=kt>int</span> <span class=n>x</span><span class=o>)</span> <span class=o>{</span> 
-        <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>=</span> <span class=n>x</span><span class=o>;</span> 
-    <span class=o>}</span>
-    
-    <span class=o>~</span><span class=k>this</span><span class=o>()</span> <span class=o>{</span>
-        <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
-        <span class=n>writefln</span><span class=o>(</span><span class=s>&#34;#%s says bye!&#34;</span><span class=o>,</span> <span class=n>x</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
-    <span class=kn>import</span> <span class=nn>std.typecons</span> <span class=o>:</span> <span class=n>scoped</span><span class=o>;</span>
-    <span class=kd>auto</span> <span class=n>f1</span> <span class=o>=</span> <span class=n>scoped</span><span class=o>!</span><span class=n>Foo</span><span class=o>(</span><span class=mi>1</span><span class=o>);</span>
-    <span class=kd>auto</span> <span class=n>f2</span> <span class=o>=</span> <span class=n>scoped</span><span class=o>!</span><span class=n>Foo</span><span class=o>(</span><span class=mi>2</span><span class=o>);</span>
-    <span class=kd>auto</span> <span class=n>f3</span> <span class=o>=</span> <span class=n>scoped</span><span class=o>!</span><span class=n>Foo</span><span class=o>(</span><span class=mi>3</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></div><p>機能的に、これは上の<code>struct</code>の例と全く同じです;
+で簡単にそれを行うことができます。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Foo</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>x</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>(</span><span class=kt>int</span> <span class=n>x</span><span class=o>)</span> <span class=o>{</span> 
+</span></span><span class=line><span class=cl>        <span class=k>this</span><span class=o>.</span><span class=na>x</span> <span class=o>=</span> <span class=n>x</span><span class=o>;</span> 
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=o>~</span><span class=k>this</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>writefln</span><span class=o>(</span><span class=s>&#34;#%s says bye!&#34;</span><span class=o>,</span> <span class=n>x</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kn>import</span> <span class=nn>std.typecons</span> <span class=o>:</span> <span class=n>scoped</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=kd>auto</span> <span class=n>f1</span> <span class=o>=</span> <span class=n>scoped</span><span class=o>!</span><span class=n>Foo</span><span class=o>(</span><span class=mi>1</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=kd>auto</span> <span class=n>f2</span> <span class=o>=</span> <span class=n>scoped</span><span class=o>!</span><span class=n>Foo</span><span class=o>(</span><span class=mi>2</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=kd>auto</span> <span class=n>f3</span> <span class=o>=</span> <span class=n>scoped</span><span class=o>!</span><span class=n>Foo</span><span class=o>(</span><span class=mi>3</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>機能的に、これは上の<code>struct</code>の例と全く同じです;
 同じ結果が出力されます。
 デストラクトの保証は、デストラクタがGCコレクションの外側で呼ばれるようにする
 <code>core.object.destroy</code>関数によってなされています。</p><p>現時点では<code>scoped</code>も<code>destroy</code>も<code>@nogc</code>関数内で使えないことに注意してください。
@@ -133,16 +131,16 @@ POD<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>
 <code>alloca</code>もスタックアロケーションの選択肢です。
 これは特にローカルGCアロケーションを避けたり取り除いたりしたいけれど、
 配列のサイズが実行時にしかわからない時に候補になります。
-下記の例はスタックから動的配列を実行時のサイズでアロケートします。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kn>import</span> <span class=nn>core.stdc.stdlib</span> <span class=o>:</span> <span class=n>alloca</span><span class=o>;</span>
-
-<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
-    <span class=n>size_t</span> <span class=n>size</span> <span class=o>=</span> <span class=mi>10</span><span class=o>;</span>
-    <span class=kt>void</span><span class=o>*</span> <span class=n>mem</span> <span class=o>=</span> <span class=n>alloca</span><span class=o>(</span><span class=n>size</span><span class=o>);</span>
-
-    <span class=c1>// メモリブロックをスライス
-</span><span class=c1></span>    <span class=kt>int</span><span class=o>[]</span> <span class=n>arr</span> <span class=o>=</span> <span class=k>cast</span><span class=o>(</span><span class=kt>int</span><span class=o>[])</span><span class=n>mem</span><span class=o>[</span><span class=mi>0</span> <span class=o>..</span> <span class=n>size</span><span class=o>];</span>
-<span class=o>}</span>
-</code></pre></div><p>Cで<code>alloca</code>を使う時と同じ注意事項がここでも言えます:
+下記の例はスタックから動的配列を実行時のサイズでアロケートします。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kn>import</span> <span class=nn>core.stdc.stdlib</span> <span class=o>:</span> <span class=n>alloca</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>main</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>size_t</span> <span class=n>size</span> <span class=o>=</span> <span class=mi>10</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span><span class=o>*</span> <span class=n>mem</span> <span class=o>=</span> <span class=n>alloca</span><span class=o>(</span><span class=n>size</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// メモリブロックをスライス
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span><span class=o>[]</span> <span class=n>arr</span> <span class=o>=</span> <span class=k>cast</span><span class=o>(</span><span class=kt>int</span><span class=o>[])</span><span class=n>mem</span><span class=o>[</span><span class=mi>0</span> <span class=o>..</span> <span class=n>size</span><span class=o>];</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>Cで<code>alloca</code>を使う時と同じ注意事項がここでも言えます:
 スタックを爆発させないよう気をつけてください。
 そして静的配列と同様に、<code>arr</code>のスライスを返り値にしないでください。
 かわりに<code>arr.dup</code>を返すようにしてください。</p><h3 id=シンプルな例>シンプルな例</h3><p><code>Queue</code>データ型の実装を考えてみましょう。
@@ -163,72 +161,72 @@ Dの構造体はインタフェースを実装できませんが、多くのケ�
 すでにそれがテンプレート化された型の場合、追加のデフォルト値つきの
 <a href=http://dlang.org/spec/template.html#TemplateValueParameter>テンプレート値パラメータ</a>
 を、配列を静的にすべきか否か、
-静的にするならどれくらいのスペースが必要かをコンパイル時に決めるために簡単に追加できます。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=c1>// デフォルトのサイズである0はバックの格納場所に
-</span><span class=c1>// 動的配列を使うことを意味します;非ゼロは静的配列を表します。
-</span><span class=c1></span><span class=kd>struct</span> <span class=nf>Queue</span><span class=o>(</span><span class=n>T</span><span class=o>,</span> <span class=n>size_t</span> <span class=n>Size</span> <span class=o>=</span> <span class=mi>0</span><span class=o>)</span> 
-<span class=o>{</span>
-    <span class=c1>// この定数はbool値であると推論されます。publicにすることによって、
-</span><span class=c1></span>    <span class=c1>// このモジュールの外部のDbIテンプレートはキューが成長しうるかどうか
-</span><span class=c1></span>    <span class=c1>// 判断できます。
-</span><span class=c1></span>    <span class=kd>enum</span> <span class=n>isFixedSize</span> <span class=o>=</span> <span class=n>Size</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=o>;</span>
-
-    <span class=kt>void</span> <span class=nf>enqueue</span><span class=o>(</span><span class=n>T</span> <span class=n>item</span><span class=o>)</span> 
-    <span class=o>{</span>
-        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
-            <span class=k>assert</span><span class=o>(</span><span class=n>_itemCount</span> <span class=o>&lt;</span> <span class=n>_items</span><span class=o>.</span><span class=na>length</span><span class=o>);</span>
-        <span class=o>}</span>
-        <span class=k>else</span> <span class=o>{</span>
-            <span class=n>ensureCapacity</span><span class=o>();</span>
-        <span class=o>}</span>
-        <span class=n>push</span><span class=o>(</span><span class=n>item</span><span class=o>);</span>
-    <span class=o>}</span>
-
-    <span class=n>T</span> <span class=nf>dequeue</span><span class=o>()</span> <span class=o>{</span>
-        <span class=k>assert</span><span class=o>(</span><span class=n>_itemCount</span> <span class=o>!=</span> <span class=mi>0</span><span class=o>);</span>
-        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
-            <span class=k>return</span> <span class=n>pop</span><span class=o>();</span>
-        <span class=o>}</span>
-        <span class=k>else</span> <span class=o>{</span>
-            <span class=kd>auto</span> <span class=n>ret</span> <span class=o>=</span> <span class=n>pop</span><span class=o>();</span>
-            <span class=n>ensurePacked</span><span class=o>();</span>
-            <span class=k>return</span> <span class=n>ret</span><span class=o>;</span>
-        <span class=o>}</span>
-    <span class=o>}</span>
-
-    <span class=c1>// 成長できる配列でのみ利用できます
-</span><span class=c1></span>    <span class=kd>static</span> <span class=nf>if</span><span class=o>(!</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
-        <span class=kt>void</span> <span class=nf>reserve</span><span class=o>(</span><span class=n>size_t</span> <span class=n>capacity</span><span class=o>)</span> <span class=o>{</span> <span class=cm>/* 新しいアイテムのためのスペースをアロケートする */</span> <span class=o>}</span>
-    <span class=o>}</span>
-<span class=nl>
-</span><span class=nl>private:</span>   
-    <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
-        <span class=n>T</span><span class=o>[</span><span class=n>Size</span><span class=o>]</span> <span class=n>_items</span><span class=o>;</span>     
-    <span class=o>}</span>
-    <span class=k>else</span> <span class=n>T</span><span class=o>[]</span> <span class=n>_items</span><span class=o>;</span>
-    <span class=n>size_t</span> <span class=n>_head</span><span class=o>,</span> <span class=n>_tail</span><span class=o>;</span>
-    <span class=n>size_t</span> <span class=n>_itemCount</span><span class=o>;</span>
-
-    <span class=kt>void</span> <span class=nf>push</span><span class=o>(</span><span class=n>T</span> <span class=n>item</span><span class=o>)</span> <span class=o>{</span> 
-        <span class=cm>/* アイテムを追加し、_headと_tailの更新をします */</span>
-        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
-        <span class=k>else</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
-    <span class=o>}</span>
-
-    <span class=n>T</span> <span class=nf>pop</span><span class=o>()</span> <span class=o>{</span> 
-        <span class=cm>/* アイテムを削除し、_headと_tailの更新をします */</span> 
-        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
-        <span class=k>else</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
-    <span class=o>}</span>
-
-    <span class=c1>// これらは成長できる配列でのみ利用できます
-</span><span class=c1></span>    <span class=kd>static</span> <span class=nf>if</span><span class=o>(!</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
-        <span class=kt>void</span> <span class=nf>ensureCapacity</span><span class=o>()</span> <span class=o>{</span> <span class=cm>/* 必要に応じてメモリをアロケートします */</span> <span class=o>}</span>
-        <span class=kt>void</span> <span class=nf>ensurePacked</span><span class=o>()</span> <span class=o>{</span> <span class=cm>/* 必要に応じて配列を縮小します */</span><span class=o>}</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></div><p>これによって、クライアントはインスタンスをこのように宣言できます:</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=n>Queue</span><span class=o>!</span><span class=n>Foo</span> <span class=n>qUnbounded</span><span class=o>;</span>
-<span class=n>Queue</span><span class=o>!(</span><span class=n>Foo</span><span class=o>,</span> <span class=mi>128</span><span class=o>)</span> <span class=n>qBounded</span><span class=o>;</span>
-</code></pre></div><p><code>qBounded</code>はヒープアロケーションを必要としません。
+静的にするならどれくらいのスペースが必要かをコンパイル時に決めるために簡単に追加できます。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=c1>// デフォルトのサイズである0はバックの格納場所に
+</span></span></span><span class=line><span class=cl><span class=c1>// 動的配列を使うことを意味します;非ゼロは静的配列を表します。
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>struct</span> <span class=nf>Queue</span><span class=o>(</span><span class=n>T</span><span class=o>,</span> <span class=nb>size_t</span> <span class=n>Size</span> <span class=o>=</span> <span class=mi>0</span><span class=o>)</span> 
+</span></span><span class=line><span class=cl><span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// この定数はbool値であると推論されます。publicにすることによって、
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// このモジュールの外部のDbIテンプレートはキューが成長しうるかどうか
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// 判断できます。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kd>enum</span> <span class=n>isFixedSize</span> <span class=o>=</span> <span class=n>Size</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>enqueue</span><span class=o>(</span><span class=n>T</span> <span class=n>item</span><span class=o>)</span> 
+</span></span><span class=line><span class=cl>    <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>assert</span><span class=o>(</span><span class=n>_itemCount</span> <span class=o>&lt;</span> <span class=n>_items</span><span class=o>.</span><span class=na>length</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>ensureCapacity</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=n>push</span><span class=o>(</span><span class=n>item</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>T</span> <span class=nf>dequeue</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>assert</span><span class=o>(</span><span class=n>_itemCount</span> <span class=o>!=</span> <span class=mi>0</span><span class=o>);</span>
+</span></span><span class=line><span class=cl>        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>pop</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>            <span class=kd>auto</span> <span class=n>ret</span> <span class=o>=</span> <span class=n>pop</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=n>ensurePacked</span><span class=o>();</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>ret</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>        <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// 成長できる配列でのみ利用できます
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kd>static</span> <span class=nf>if</span><span class=o>(!</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>void</span> <span class=nf>reserve</span><span class=o>(</span><span class=nb>size_t</span> <span class=n>capacity</span><span class=o>)</span> <span class=o>{</span> <span class=cm>/* 新しいアイテムのためのスペースをアロケートする */</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=nl>
+</span></span></span><span class=line><span class=cl><span class=nl>private:</span>   
+</span></span><span class=line><span class=cl>    <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>T</span><span class=o>[</span><span class=n>Size</span><span class=o>]</span> <span class=n>_items</span><span class=o>;</span>     
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=n>T</span><span class=o>[]</span> <span class=n>_items</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>size_t</span> <span class=n>_head</span><span class=o>,</span> <span class=n>_tail</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>size_t</span> <span class=n>_itemCount</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>push</span><span class=o>(</span><span class=n>T</span> <span class=n>item</span><span class=o>)</span> <span class=o>{</span> 
+</span></span><span class=line><span class=cl>        <span class=cm>/* アイテムを追加し、_headと_tailの更新をします */</span>
+</span></span><span class=line><span class=cl>        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>T</span> <span class=nf>pop</span><span class=o>()</span> <span class=o>{</span> 
+</span></span><span class=line><span class=cl>        <span class=cm>/* アイテムを削除し、_headと_tailの更新をします */</span> 
+</span></span><span class=line><span class=cl>        <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// これらは成長できる配列でのみ利用できます
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kd>static</span> <span class=nf>if</span><span class=o>(!</span><span class=n>isFixedSize</span><span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>void</span> <span class=nf>ensureCapacity</span><span class=o>()</span> <span class=o>{</span> <span class=cm>/* 必要に応じてメモリをアロケートします */</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=kt>void</span> <span class=nf>ensurePacked</span><span class=o>()</span> <span class=o>{</span> <span class=cm>/* 必要に応じて配列を縮小します */</span><span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>これによって、クライアントはインスタンスをこのように宣言できます:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=n>Queue</span><span class=o>!</span><span class=n>Foo</span> <span class=n>qUnbounded</span><span class=o>;</span>
+</span></span><span class=line><span class=cl><span class=n>Queue</span><span class=o>!(</span><span class=n>Foo</span><span class=o>,</span> <span class=mi>128</span><span class=o>)</span> <span class=n>qBounded</span><span class=o>;</span>
+</span></span></code></pre></div><p><code>qBounded</code>はヒープアロケーションを必要としません。
 <code>qUnbounded</code>で何が起こるかは実装によります。
 さらに、インスタンスのサイズが固定かそうでないか、
 コンパイル時イントロスペクションを使ってテストできます。
@@ -239,20 +237,21 @@ Dの構造体はインタフェースを実装できませんが、多くのケ�
 (<a href=https://dlang.org/spec/traits.html>__traits</a>と
 <a href=https://dlang.org/phobos/std_traits.html>std.traits</a>
 はDbIに最適で、同じ機能を提供するなら後者がより好ましいです)が、
-その型の中の定数を含むほうが便利です。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=kt>void</span> <span class=nf>doSomethingWithQueueInterface</span><span class=o>(</span><span class=n>T</span><span class=o>)(</span><span class=n>T</span> <span class=n>queue</span><span class=o>)</span>
-<span class=o>{</span>
-    <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>T</span><span class=o>.</span><span class=na>isFixedSize</span><span class=o>)</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
-    <span class=k>else</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></div><h3 id=結論>結論</h3><p>これがGCヒープからのアロケーションを避けるための、
+その型の中の定数を含むほうが便利です。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kt>void</span> <span class=nf>doSomethingWithQueueInterface</span><span class=o>(</span><span class=n>T</span><span class=o>)(</span><span class=n>T</span> <span class=n>queue</span><span class=o>)</span>
+</span></span><span class=line><span class=cl><span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>static</span> <span class=nf>if</span><span class=o>(</span><span class=n>T</span><span class=o>.</span><span class=na>isFixedSize</span><span class=o>)</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=o>{</span> <span class=o>...</span> <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><h3 id=結論>結論</h3><p>これがGCヒープからのアロケーションを避けるための、
 Dにおけるスタックアロケーションの選択肢のかいつまんだ概要です。
 可能な時にこれらを使うことはGCアロケーションのサイズと回数を最小化する簡単な方法であり、
-ガベージコレクションによるパフォーマンスへの潜在的悪影響を軽減する先を見越した戦略です。</p><p>このシリーズの次の投稿では非GCヒープアロケーションを可能にするいくつかの選択肢をカバーします。</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>おそらく<a href=https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%AA%E3%83%BC%E3%83%88%E3%82%A6%E3%83%83%E3%83%89%E3%83%BB%E3%83%9E%E3%83%83%E3%82%AF>フリートウッド・マック</a>
-の同名の曲が題の元ネタと思われる <a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2 role=doc-endnote><p>Plain old data structure - Cの構造体と互換性をもつデータ構造 <a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></article><footer><h2><a href=/tags/dlang>#dlang</a>
+ガベージコレクションによるパフォーマンスへの潜在的悪影響を軽減する先を見越した戦略です。</p><p>このシリーズの次の投稿では非GCヒープアロケーションを可能にするいくつかの選択肢をカバーします。</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>おそらく<a href=https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%AA%E3%83%BC%E3%83%88%E3%82%A6%E3%83%83%E3%83%89%E3%83%BB%E3%83%9E%E3%83%83%E3%82%AF>フリートウッド・マック</a>
+の同名の曲が題の元ネタと思われる&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p>Plain old data structure - Cの構造体と互換性をもつデータ構造&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></article><footer><h2><a href=/tags/dlang>#dlang</a>
 オウン・ウェイ - GCを避けたアロケーション (Part1: スタック)【翻訳】</h2><p><time>2017-07-15</time>
-<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/dlang_gc_series>#dlang_gc_series</a> <a href=/tags/d_blog>#d_blog</a></p><div class=subscribe><a href=/tags/dlang/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>dlangの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a> <a href=/tags/translation>#translation</a> <a href=/tags/dlang_gc_series>#dlang_gc_series</a> <a href=/tags/d_blog>#d_blog</a></p><div class=subscribe><a href=/tags/dlang/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>dlangの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
 <a href=/about title=about>About</a>
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:26:55 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:36:40 UTC</div></footer></body></html>

@@ -1,10 +1,8 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="内向けの記事を書く。 正規表現の問題の解説記事である。 解説記事と言いつつ複数の解を提示してしかも結局どれも正解ではないというとんでもない結論に"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.configure({languages:[]})
-hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
-"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
-"  displayMath: [['$$','$$']],\n"+
-"  processEscapes: true\n"+
-" }\n"+
-"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><script>document.addEventListener("DOMContentLoaded",function(){let elems=document.querySelectorAll(".footnote-ref");for(const e of elems){let url=new URL(e.href);let footnote=document.getElementById(url.hash.substr(1));let text=footnote.innerText.trim().replace("↩︎","");e.title=text;}});</script><title>#regexp 同じ文字の繰り返しが3回続く単語にマッチする正規表現 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/05/grep-literacy/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#regexp 同じ文字の繰り返しが3回続く単語にマッチする正規表現 - Kotet's Personal Blog"><meta name=og:description content="内向けの記事を書く。 正規表現の問題の解説記事である。 解説記事と言いつつ複数の解を提示してしかも結局どれも正解ではないというとんでもない結論に"><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2018/05/grep-literacy/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/regexp>#regexp</a>
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content=" 内向けの記事を書く。 正規表現の問題の解説記事である。 解説記事と言いつつ複数の解を提示してしかも結局どれも正解ではないというとんでもない結論に "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script>
+<script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#regexp 同じ文字の繰り返しが3回続く単語にマッチする正規表現 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/05/grep-literacy/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#regexp 同じ文字の繰り返しが3回続く単語にマッチする正規表現 - Kotet's Personal Blog"><meta name=og:description content=" 内向けの記事を書く。 正規表現の問題の解説記事である。 解説記事と言いつつ複数の解を提示してしかも結局どれも正解ではないというとんでもない結論に  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2018/05/grep-literacy/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/regexp>#regexp</a>
 同じ文字の繰り返しが3回続く単語にマッチする正規表現</span></h2><p>Created: <time>2018-05-10</time>,
 Last modified: <time>2018-09-29</time><br><a href=/tags/regexp>#regexp</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#問題文>問題文</a></li><li><a href=#複数の解釈>複数の解釈</a></li></ul></li></ul></nav></aside></header><article><p>内向けの記事を書く。
 正規表現の問題の解説記事である。
@@ -14,13 +12,13 @@ Last modified: <time>2018-09-29</time><br><a href=/tags/regexp>#regexp</a> <a hr
 自分なら正規表現を使わずに普通に判定用のプログラムを書く。</p><h3 id=問題文>問題文</h3><p>以下の単語にマッチする正規表現を書いてgrepで使うという問題である。</p><blockquote><p>同じ文字の繰り返しが3回続く単語(2回であればballoon, coffee, succeedなど多数存在する)</p></blockquote><p>この問題には複数の解釈があり、それぞれの解釈ごとにまた複数の解法がある。
 なお、この記事内では問題のファイルではなくKotetのPCの<code>/usr/share/dict/cracklib-small</code>の中身に対してgrepをかけているので注意である。</p><h3 id=複数の解釈>複数の解釈</h3><h4 id=1-kotetの解釈---agreeeth>1: Kotetの解釈 - &ldquo;agreeeth&rdquo;</h4><p>同じ文字が3回ということで自分が考えたもの。
 自分はすでにこの解釈で提出してしまっているのでもし出題意図が違っても修正できない。</p><p>ここでは後方参照という概念が必要になる。
-まず自分の書いた正規表現を書いておく。</p><pre><code>(.)\1{2}
+まず自分の書いた正規表現を書いておく。</p><pre tabindex=0><code>(.)\1{2}
 </code></pre><p>以降構成要素を一つづつ取り上げていく。</p><h5 id=ドット--->ドット ( <code>.</code> )</h5><p>&ldquo;<code>.</code>&rdquo; は任意の1文字にマッチする。
-<code>ABC</code>という文字列の場合<code>A</code>と<code>B</code>と<code>C</code>がマッチする。</p><h5 id=カッコ--->カッコ ( <code>()</code> )</h5><p>&ldquo;<code>()</code>"はグループ化をする。
+<code>ABC</code>という文字列の場合<code>A</code>と<code>B</code>と<code>C</code>がマッチする。</p><h5 id=カッコ--->カッコ ( <code>()</code> )</h5><p>&ldquo;<code>()</code>&ldquo;はグループ化をする。
 例えば<code>(AB)</code>という正規表現は<code>ABC</code>の<code>AB</code>の部分にマッチする。
 また、ここでマッチしたパターンをあとで再利用できる。
 これを後方参照という。</p><p>たとえば<code>(.)\1</code>という正規表現を考えてみる。
-まず最初に"<code>.</code>"があるので任意の1文字にマッチする。
+まず最初に&rdquo;<code>.</code>&ldquo;があるので任意の1文字にマッチする。
 <code>ABC</code>の場合<code>A</code>である。
 そしてこのマッチ結果が1から始まる番号の振られたバッファに保存される。
 1番目のバッファに<code>A</code>が保存されたということになる。
@@ -31,64 +29,65 @@ Last modified: <time>2018-09-29</time><br><a href=/tags/regexp>#regexp</a> <a hr
 ここまでくればおわかりだろう……というほど自分の説明能力に自身がないが、つまり<code>(.)\1</code>は同じ文字が2回続いた場合にマッチする正規表現である。
 たぶんもっとわかりやすい説明がたくさんあるのでわからなかったら後方参照でググってみてほしい。</p><p>ここまでの知識でも問題を解くことができる。
 先程の例に1つ継ぎ足して<code>(.)\1\1</code>とすれば答えである。
-これは拡張正規表現なので <code>-E</code> オプションをつけて、さらに正規表現をクオート( <code>'</code> )で囲っておくと確実である。</p><pre><code class=language-console data-lang=console>$ grep -E '(.)\1\1' &lt; /usr/share/dict/cracklib-small
-aaa
-aaas
-death666
-devil666
-gsxr1000
-hal9000
-ieee
-iii
-postov1000
-satan666
-viii
-</code></pre><h5 id=波括弧-->波括弧 ( `</h5><p>&ldquo;<code>{}</code>&rdquo; は &ldquo;<code>*</code>&rdquo; や &ldquo;<code>+</code>&rdquo; のように繰り返しを表す。
+これは拡張正規表現なので <code>-E</code> オプションをつけて、さらに正規表現をクオート( <code>'</code> )で囲っておくと確実である。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> grep -E <span class=s1>&#39;(.)\1\1&#39;</span> &lt; /usr/share/dict/cracklib-small
+</span></span><span class=line><span class=cl><span class=go>aaa
+</span></span></span><span class=line><span class=cl><span class=go>aaas
+</span></span></span><span class=line><span class=cl><span class=go>death666
+</span></span></span><span class=line><span class=cl><span class=go>devil666
+</span></span></span><span class=line><span class=cl><span class=go>gsxr1000
+</span></span></span><span class=line><span class=cl><span class=go>hal9000
+</span></span></span><span class=line><span class=cl><span class=go>ieee
+</span></span></span><span class=line><span class=cl><span class=go>iii
+</span></span></span><span class=line><span class=cl><span class=go>postov1000
+</span></span></span><span class=line><span class=cl><span class=go>satan666
+</span></span></span><span class=line><span class=cl><span class=go>viii
+</span></span></span></code></pre></div><h5 id=波括弧--->波括弧 ( <code>{}</code> )</h5><p>&ldquo;<code>{}</code>&rdquo; は &ldquo;<code>*</code>&rdquo; や &ldquo;<code>+</code>&rdquo; のように繰り返しを表す。
 &ldquo;<code>*</code>&rdquo; や &ldquo;<code>+</code>&rdquo; はそれぞれ0回以上と1回以上の繰り返しにマッチするが (たとえば<code>A+</code>は<code>A</code>、<code>AA</code>、<code>AAA</code>などにマッチする) 、<code>{}</code>を使えば繰り返しの回数を細かく指定できる。
 <code>{2}</code>はちょうど2回、<code>{2,}</code>は2回以上、<code>{2,3}</code>は2回以上3回以下を意味する。</p><p>ここまでの要素をすべて使ったのが自分の書いた正規表現である。
 まず任意の文字列にマッチし、その後最初にマッチしたパターンが2回続く、という意味になる。
-繰り返しは2回同じことを書くのが嫌で使ったが、むしろ文字数は増えているし再利用するような正規表現でもないので素直に2回書いたほうが良かったかもしれない。</p><pre><code class=language-console data-lang=console>$ grep -E '(.)\1{2}' &lt; /usr/share/dict/cracklib-small
-</code></pre><p>ちなみに拡張正規表現を使わないとこんな感じになる。
-バックスラッシュがいっぱいで読みにくいので素直に <code>-E</code> をつけたほうがいいと思う。</p><pre><code class=language-console data-lang=console>$ grep '\(.\)\1\{2\}' &lt; /usr/share/dict/cracklib-small
-</code></pre><h5 id=不具合-4文字以上の繰り返しは不正か>不具合: 4文字以上の繰り返しは不正か?</h5><p>この正規表現は3文字の繰り返しがあったらそれ以上先は見ないので、<code>aaaa</code>などの4文字以上の繰り返しの行も残ってしまう。
+繰り返しは2回同じことを書くのが嫌で使ったが、むしろ文字数は増えているし再利用するような正規表現でもないので素直に2回書いたほうが良かったかもしれない。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> grep -E <span class=s1>&#39;(.)\1{2}&#39;</span> &lt; /usr/share/dict/cracklib-small
+</span></span></code></pre></div><p>ちなみに拡張正規表現を使わないとこんな感じになる。
+バックスラッシュがいっぱいで読みにくいので素直に <code>-E</code> をつけたほうがいいと思う。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> grep <span class=s1>&#39;\(.\)\1\{2\}&#39;</span> &lt; /usr/share/dict/cracklib-small
+</span></span></code></pre></div><h5 id=不具合-4文字以上の繰り返しは不正か>不具合: 4文字以上の繰り返しは不正か?</h5><p>この正規表現は3文字の繰り返しがあったらそれ以上先は見ないので、<code>aaaa</code>などの4文字以上の繰り返しの行も残ってしまう。
 これを回避できないかちょっと試してみたが、どうも思うようにいかない。
 だれか正規表現に詳しい人がいたら教えてほしい。</p><p><strong>追記:</strong> 上記の問題を解決することができたのでここに書く。
 解決はできたがこれは拡張正規表現ではなくPerl互換正規表現(PCRE)である。
 仕組みを知りたい人は否定先読みでググってほしい。
-やたら複雑になって可読性が低下した上に、たぶんこういう答えは求められていない。</p><pre><code class=language-console data-lang=console>$ cat test.txt 
-a
-aa
-aaa
-aaaa
-abbb
-abbbb
-aaab
-aaaab
-abbbc
-abbbbc
-aaaabbb
-$ grep -P '(^|(.)(?!\2))(.)\3{2}(?!\3)(.|$)' &lt; test.txt
-aaa
-abbb
-aaab
-abbbc
-aaaabbb
-</code></pre><h4 id=2-jjjohn_sonの解釈---bookkeep>2: @jjjohn_sonの解釈 - &ldquo;bookkeep&rdquo;</h4><p>「繰り返し」が3回続く、という解釈。
+やたら複雑になって可読性が低下した上に、たぶんこういう答えは求められていない。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> cat test.txt 
+</span></span><span class=line><span class=cl><span class=go>a
+</span></span></span><span class=line><span class=cl><span class=go>aa
+</span></span></span><span class=line><span class=cl><span class=go>aaa
+</span></span></span><span class=line><span class=cl><span class=go>aaaa
+</span></span></span><span class=line><span class=cl><span class=go>abbb
+</span></span></span><span class=line><span class=cl><span class=go>abbbb
+</span></span></span><span class=line><span class=cl><span class=go>aaab
+</span></span></span><span class=line><span class=cl><span class=go>aaaab
+</span></span></span><span class=line><span class=cl><span class=go>abbbc
+</span></span></span><span class=line><span class=cl><span class=go>abbbbc
+</span></span></span><span class=line><span class=cl><span class=go>aaaabbb
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=gp>$</span> grep -P <span class=s1>&#39;(^|(.)(?!\2))(.)\3{2}(?!\3)(.|$)&#39;</span> &lt; test.txt
+</span></span><span class=line><span class=cl><span class=go>aaa
+</span></span></span><span class=line><span class=cl><span class=go>abbb
+</span></span></span><span class=line><span class=cl><span class=go>aaab
+</span></span></span><span class=line><span class=cl><span class=go>abbbc
+</span></span></span><span class=line><span class=cl><span class=go>aaaabbb
+</span></span></span></code></pre></div><h4 id=2-jjjohn_sonの解釈---bookkeep>2: @jjjohn_sonの解釈 - &ldquo;bookkeep&rdquo;</h4><p>「繰り返し」が3回続く、という解釈。
 これに基づいた回答を見るまで全くこの解釈ができることに気づかなかった。</p><p>こちらも同じ要素を使って解くことができる。
 グループ化を多重に使うのでどのカッコが何番かちょっとわかりづらい。
 どうも開きカッコが出現した順に番号が振られるようだ。
-一番外側のカッコ(1番)は単にグループ化のためだけに使っているもので、後方参照は内側のカッコ(2番)でのみ使われていることに注意である。</p><p>この解釈の場合繰り返しの文字数については言及されていない(<code>aaabbbbcc</code>などもマッチする)ということになるのでそれも考慮した正規表現を書こうとしてみる。</p><pre><code class=language-console data-lang=console>$ grep -E '((.)\2+){3}' &lt; /usr/share/dict/cracklib-small
-bookkeep
-bookkeeper
-bookkeeper's
-bookkeepers
-bookkeeping
-</code></pre><h5 id=4文字の連続した文字が2つの連続として扱われる不具合>4文字の連続した文字が2つの連続として扱われる不具合</h5><p>じつはこれだと<code>aabbbb</code>などでもマッチしてしまう。
+一番外側のカッコ(1番)は単にグループ化のためだけに使っているもので、後方参照は内側のカッコ(2番)でのみ使われていることに注意である。</p><p>この解釈の場合繰り返しの文字数については言及されていない(<code>aaabbbbcc</code>などもマッチする)ということになるのでそれも考慮した正規表現を書こうとしてみる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> grep -E <span class=s1>&#39;((.)\2+){3}&#39;</span> &lt; /usr/share/dict/cracklib-small
+</span></span><span class=line><span class=cl><span class=go>bookkeep
+</span></span></span><span class=line><span class=cl><span class=go>bookkeeper
+</span></span></span><span class=line><span class=cl><span class=go>bookkeeper&#39;s
+</span></span></span><span class=line><span class=cl><span class=go>bookkeepers
+</span></span></span><span class=line><span class=cl><span class=go>bookkeeping
+</span></span></span></code></pre></div><h5 id=4文字の連続した文字が2つの連続として扱われる不具合>4文字の連続した文字が2つの連続として扱われる不具合</h5><p>じつはこれだと<code>aabbbb</code>などでもマッチしてしまう。
 それを回避するバージョンも今の所思いついていないので誰かできたら教えてほしい。</p></article><footer><h2><a href=/tags/regexp>#regexp</a>
 同じ文字の繰り返しが3回続く単語にマッチする正規表現</h2><p><time>2018-05-10</time>
-<a href=/tags/regexp>#regexp</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><div class=subscribe><a href=/tags/regexp/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>regexpの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/tags/regexp>#regexp</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><div class=subscribe><a href=/tags/regexp/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>regexpの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
 <a href=/about title=about>About</a>
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:26:55 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:36:41 UTC</div></footer></body></html>

@@ -1,105 +1,102 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="ipfs mount というコマンドがある。 FUSE を使って IPFS を通常のファイルシステムとしてマウントできる。 ただし、以下に書かれているようにこれはあくまで読み込み専用であり、 これを使って IPFS になにか働きかけたりはできない。……と思っていた。"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.configure({languages:[]})
-hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
-"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
-"  displayMath: [['$$','$$']],\n"+
-"  processEscapes: true\n"+
-" }\n"+
-"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><script>document.addEventListener("DOMContentLoaded",function(){let elems=document.querySelectorAll(".footnote-ref");for(const e of elems){let url=new URL(e.href);let footnote=document.getElementById(url.hash.substr(1));let text=footnote.innerText.trim().replace("↩︎","");e.title=text;}});</script><title>#ipfs体験記 17:普通のファイルシステムのようにIPFSで読み書き - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/09/ipfs-mount-rw/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#ipfs体験記 17:普通のファイルシステムのようにIPFSで読み書き - Kotet's Personal Blog"><meta name=og:description content="ipfs mount というコマンドがある。 FUSE を使って IPFS を通常のファイルシステムとしてマウントできる。 ただし、以下に書かれているようにこれはあくまで読み込み専用であり、 これを使って IPFS になにか働きかけたりはできない。……と思っていた。"><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2018/09/ipfs-mount-rw/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a>
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content=" ipfs mount というコマンドがある。 FUSE を使って IPFS を通常のファイルシステムとしてマウントできる。 ただし、以下に書かれているようにこれはあくまで読み込み専用であり、 これを使って IPFS になにか働きかけたりはできない。……と思っていた。 "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script>
+<script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#ipfs体験記 17:普通のファイルシステムのようにIPFSで読み書き - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2018/09/ipfs-mount-rw/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#ipfs体験記 17:普通のファイルシステムのようにIPFSで読み書き - Kotet's Personal Blog"><meta name=og:description content=" ipfs mount というコマンドがある。 FUSE を使って IPFS を通常のファイルシステムとしてマウントできる。 ただし、以下に書かれているようにこれはあくまで読み込み専用であり、 これを使って IPFS になにか働きかけたりはできない。……と思っていた。  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2018/09/ipfs-mount-rw/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a>
 17:普通のファイルシステムのようにIPFSで読み書き</span></h2><p>Created: <time>2018-09-11</time>,
 Last modified: <time>2018-09-11</time><br><a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a> <a href=/tags/ipfs>#ipfs</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#ipns>IPNS</a></li><li><a href=#ipnslocal>/ipns/local</a></li><li><a href=#実用っぽいことをしてみる>実用っぽいことをしてみる</a></li><li><a href=#自動化が楽になりそう>自動化が楽になりそう</a></li></ul></li></ul></nav></aside></header><article><p><code>ipfs mount</code> というコマンドがある。
 <a href=https://ja.wikipedia.org/wiki/Filesystem_in_Userspace>FUSE</a>
 を使って IPFS を通常のファイルシステムとしてマウントできる。
 ただし、以下に書かれているようにこれはあくまで読み込み専用であり、
-これを使って IPFS になにか働きかけたりはできない。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ ipfs mount -h
-USAGE
-  ipfs mount - Mounts IPFS to the filesystem <span class=o>(</span>read-only<span class=o>)</span>.
-
-  ipfs mount <span class=o>[</span>--ipfs-path<span class=o>=</span>&lt;ipfs-path&gt; <span class=p>|</span> -f<span class=o>]</span> <span class=o>[</span>--ipns-path<span class=o>=</span>&lt;ipns-path&gt; <span class=p>|</span> -n<span class=o>]</span>
-
-  Mount IPFS at a read-only mountpoint on the OS <span class=o>(</span>default: /ipfs and /ipns<span class=o>)</span>.
-  All IPFS objects will be accessible under that directory. Note that the
-  root will not be listable, as it is virtual. Access known paths directly.
-  
-  You may have to create /ipfs and /ipns before using <span class=s1>&#39;ipfs mount&#39;</span>:
-  
-  &gt; sudo mkdir /ipfs /ipns
-  &gt; sudo chown <span class=k>$(</span>whoami<span class=k>)</span> /ipfs /ipns
-  &gt; ipfs daemon <span class=p>&amp;</span>
-  &gt; ipfs mount
-
-Use <span class=s1>&#39;ipfs mount --help&#39;</span> <span class=k>for</span> more information about this command.
-
-</code></pre></div><p>……と思っていた。</p><p><a href=https://github.com/ipfs/ipfs/issues/341>Transparent FUSE · Issue #341 · ipfs/ipfs</a></p><blockquote><p>We can <em>almost</em> do parts of this, it&rsquo;s just really buggy. You can mount <code>/ipns</code> and read/write to <code>/ipns/local</code>. This will even update your IPNS address to point to the latest version of the directory.</p><p>However, it&rsquo;s really buggy and slow.</p><hr><p>But yeah, many of us have been wanting to do this for a while.</p></blockquote><p>マジで？</p><h3 id=ipns>IPNS</h3><p>IPFS 上で変化するものを公開する方法のひとつとして、IPNS がある。
+これを使って IPFS になにか働きかけたりはできない。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ ipfs mount -h
+</span></span><span class=line><span class=cl>USAGE
+</span></span><span class=line><span class=cl>  ipfs mount - Mounts IPFS to the filesystem <span class=o>(</span>read-only<span class=o>)</span>.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  ipfs mount <span class=o>[</span>--ipfs-path<span class=o>=</span>&lt;ipfs-path&gt; <span class=p>|</span> -f<span class=o>]</span> <span class=o>[</span>--ipns-path<span class=o>=</span>&lt;ipns-path&gt; <span class=p>|</span> -n<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  Mount IPFS at a read-only mountpoint on the OS <span class=o>(</span>default: /ipfs and /ipns<span class=o>)</span>.
+</span></span><span class=line><span class=cl>  All IPFS objects will be accessible under that directory. Note that the
+</span></span><span class=line><span class=cl>  root will not be listable, as it is virtual. Access known paths directly.
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  You may have to create /ipfs and /ipns before using <span class=s1>&#39;ipfs mount&#39;</span>:
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  &gt; sudo mkdir /ipfs /ipns
+</span></span><span class=line><span class=cl>  &gt; sudo chown <span class=k>$(</span>whoami<span class=k>)</span> /ipfs /ipns
+</span></span><span class=line><span class=cl>  &gt; ipfs daemon <span class=p>&amp;</span>
+</span></span><span class=line><span class=cl>  &gt; ipfs mount
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Use <span class=s1>&#39;ipfs mount --help&#39;</span> <span class=k>for</span> more information about this command.
+</span></span></code></pre></div><p>……と思っていた。</p><p><a href=https://github.com/ipfs/ipfs/issues/341>Transparent FUSE · Issue #341 · ipfs/ipfs</a></p><blockquote><p>We can <em>almost</em> do parts of this, it&rsquo;s just really buggy. You can mount <code>/ipns</code> and read/write to <code>/ipns/local</code>. This will even update your IPNS address to point to the latest version of the directory.</p><p>However, it&rsquo;s really buggy and slow.</p><hr><p>But yeah, many of us have been wanting to do this for a while.</p></blockquote><p>マジで？</p><h3 id=ipns>IPNS</h3><p>IPFS 上で変化するものを公開する方法のひとつとして、IPNS がある。
 これは ID と IPFS 上のリソースを結びつけるものだ。
 いわば IPFS 上に作ることのできる自分専用のディレクトリである。
-これはたとえば以下のように使う。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ <span class=nb>echo</span> hello! &gt; test.txt
-$ ipfs add test.txt 
-added QmUCChJVPoiGqHmSCdoDBoTU1BgC3AGBoy4sAk1wYcFhPg test.txt
- <span class=m>7</span> B / <span class=m>7</span> B <span class=o>[=========================================================================================================================================]</span> 100.00%
-$ ipfs name publish /ipfs/QmUCChJVPoiGqHmSCdoDBoTU1BgC3AGBoy4sAk1wYcFhPg
-Published to QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5: /ipfs/QmUCChJVPoiGqHmSCdoDBoTU1BgC3AGBoy4sAk1wYcFhPg
-$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
-hello!
-</code></pre></div><p>コンテンツを変更したくなったら、もう一度 <code>ipfs name publish</code> すればよい。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ <span class=nb>echo</span> <span class=s2>&#34;hello world!&#34;</span> &gt; test.txt
-$ ipfs add test.txt 
-added QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT test.txt
- <span class=m>13</span> B / <span class=m>13</span> B <span class=o>[=======================================================================================================================================]</span> 100.00%
-$ ipfs name publish /ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
-Published to QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5: /ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
-$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
-hello world!
-</code></pre></div><p>もちろんディレクトリでも大丈夫。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ mkdir <span class=nb>test</span>
-$ <span class=nb>echo</span> hey! &gt; test/test.txt
-$ ipfs add -r test/
-added QmNqugRcYjwh9pEQUK7MLuxvLjxDNZL1DH8PJJgWtQXxuF test/test.txt
-added QmRf8ffz9d7nK8BXbGjaAb4i1GoDX8CZyyqXqRjrBefY29 <span class=nb>test</span>
- <span class=m>5</span> B / <span class=m>65</span> B <span class=o>[==========</span>&gt;-----------------------------------------------------------------------------------------------------------------------------<span class=o>]</span>   7.69%
-$ ipfs name publish /ipfs/QmRf8ffz9d7nK8BXbGjaAb4i1GoDX8CZyyqXqRjrBefY29
-Published to QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5: /ipfs/QmRf8ffz9d7nK8BXbGjaAb4i1GoDX8CZyyqXqRjrBefY29
-$ ipfs ls /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
-QmNqugRcYjwh9pEQUK7MLuxvLjxDNZL1DH8PJJgWtQXxuF <span class=m>13</span> test.txt 
-</code></pre></div><p>IPFS だけでウェブサイトを配信したいときなんかは必須ではないだろうか。</p><p>これは今回の話とはあまり関係ないが、ここまでの <code>ipfs name publish</code> などが尋常でなく遅い。
+これはたとえば以下のように使う。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ <span class=nb>echo</span> hello! &gt; test.txt
+</span></span><span class=line><span class=cl>$ ipfs add test.txt 
+</span></span><span class=line><span class=cl>added QmUCChJVPoiGqHmSCdoDBoTU1BgC3AGBoy4sAk1wYcFhPg test.txt
+</span></span><span class=line><span class=cl> <span class=m>7</span> B / <span class=m>7</span> B <span class=o>[=========================================================================================================================================]</span> 100.00%
+</span></span><span class=line><span class=cl>$ ipfs name publish /ipfs/QmUCChJVPoiGqHmSCdoDBoTU1BgC3AGBoy4sAk1wYcFhPg
+</span></span><span class=line><span class=cl>Published to QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5: /ipfs/QmUCChJVPoiGqHmSCdoDBoTU1BgC3AGBoy4sAk1wYcFhPg
+</span></span><span class=line><span class=cl>$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
+</span></span><span class=line><span class=cl>hello!
+</span></span></code></pre></div><p>コンテンツを変更したくなったら、もう一度 <code>ipfs name publish</code> すればよい。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ <span class=nb>echo</span> <span class=s2>&#34;hello world!&#34;</span> &gt; test.txt
+</span></span><span class=line><span class=cl>$ ipfs add test.txt 
+</span></span><span class=line><span class=cl>added QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT test.txt
+</span></span><span class=line><span class=cl> <span class=m>13</span> B / <span class=m>13</span> B <span class=o>[=======================================================================================================================================]</span> 100.00%
+</span></span><span class=line><span class=cl>$ ipfs name publish /ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+</span></span><span class=line><span class=cl>Published to QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5: /ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+</span></span><span class=line><span class=cl>$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
+</span></span><span class=line><span class=cl>hello world!
+</span></span></code></pre></div><p>もちろんディレクトリでも大丈夫。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ mkdir <span class=nb>test</span>
+</span></span><span class=line><span class=cl>$ <span class=nb>echo</span> hey! &gt; test/test.txt
+</span></span><span class=line><span class=cl>$ ipfs add -r test/
+</span></span><span class=line><span class=cl>added QmNqugRcYjwh9pEQUK7MLuxvLjxDNZL1DH8PJJgWtQXxuF test/test.txt
+</span></span><span class=line><span class=cl>added QmRf8ffz9d7nK8BXbGjaAb4i1GoDX8CZyyqXqRjrBefY29 <span class=nb>test</span>
+</span></span><span class=line><span class=cl> <span class=m>5</span> B / <span class=m>65</span> B <span class=o>[==========</span>&gt;-----------------------------------------------------------------------------------------------------------------------------<span class=o>]</span>   7.69%
+</span></span><span class=line><span class=cl>$ ipfs name publish /ipfs/QmRf8ffz9d7nK8BXbGjaAb4i1GoDX8CZyyqXqRjrBefY29
+</span></span><span class=line><span class=cl>Published to QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5: /ipfs/QmRf8ffz9d7nK8BXbGjaAb4i1GoDX8CZyyqXqRjrBefY29
+</span></span><span class=line><span class=cl>$ ipfs ls /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
+</span></span><span class=line><span class=cl>QmNqugRcYjwh9pEQUK7MLuxvLjxDNZL1DH8PJJgWtQXxuF <span class=m>13</span> test.txt 
+</span></span></code></pre></div><p>IPFS だけでウェブサイトを配信したいときなんかは必須ではないだろうか。</p><p>これは今回の話とはあまり関係ないが、ここまでの <code>ipfs name publish</code> などが尋常でなく遅い。
 バグだろうか、それとも自分がなにか遅くなるようなことをしているのだろうか……。
-とりあえず、コマンドを実行して返事が帰ってこなくても気長に待つことだ。</p><h3 id=ipnslocal>/ipns/local</h3><p>自分の ID が <code>/ipns/local</code> にリンクされているようだ。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ sudo mkdir /ipfs /ipns
-$ sudo chown <span class=k>$(</span>whoami<span class=k>)</span> /ipfs /ipns
-$ ipfs mount
-IPFS mounted at: /ipfs
-IPNS mounted at: /ipns
-$ ls -l /ipns
-total <span class=m>0</span>
-lr-xr-xr-x <span class=m>1</span> root  root  <span class=m>0</span> Sep <span class=m>11</span> 19:57 <span class=nb>local</span> -&gt; QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
-dr-xr-xr-x <span class=m>1</span> kotet users <span class=m>0</span> Sep <span class=m>11</span> 19:57 QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
-$ ls /ipns/local
-test.txt
-$ cat /ipns/local/test.txt
-hey!
-</code></pre></div><p>さらに書き込みもできるようになっている。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ <span class=nb>echo</span> <span class=s2>&#34;hello world!&#34;</span> &gt;&gt; /ipns/local/test.txt
-$ <span class=nb>echo</span> <span class=s2>&#34;another world!&#34;</span> &gt; /ipns/local/test2.txt
-</code></pre></div><p>やはりこちらも反映にとても時間がかかる。
+とりあえず、コマンドを実行して返事が帰ってこなくても気長に待つことだ。</p><h3 id=ipnslocal>/ipns/local</h3><p>自分の ID が <code>/ipns/local</code> にリンクされているようだ。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ sudo mkdir /ipfs /ipns
+</span></span><span class=line><span class=cl>$ sudo chown <span class=k>$(</span>whoami<span class=k>)</span> /ipfs /ipns
+</span></span><span class=line><span class=cl>$ ipfs mount
+</span></span><span class=line><span class=cl>IPFS mounted at: /ipfs
+</span></span><span class=line><span class=cl>IPNS mounted at: /ipns
+</span></span><span class=line><span class=cl>$ ls -l /ipns
+</span></span><span class=line><span class=cl>total <span class=m>0</span>
+</span></span><span class=line><span class=cl>lr-xr-xr-x <span class=m>1</span> root  root  <span class=m>0</span> Sep <span class=m>11</span> 19:57 <span class=nb>local</span> -&gt; QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
+</span></span><span class=line><span class=cl>dr-xr-xr-x <span class=m>1</span> kotet users <span class=m>0</span> Sep <span class=m>11</span> 19:57 QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
+</span></span><span class=line><span class=cl>$ ls /ipns/local
+</span></span><span class=line><span class=cl>test.txt
+</span></span><span class=line><span class=cl>$ cat /ipns/local/test.txt
+</span></span><span class=line><span class=cl>hey!
+</span></span></code></pre></div><p>さらに書き込みもできるようになっている。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ <span class=nb>echo</span> <span class=s2>&#34;hello world!&#34;</span> &gt;&gt; /ipns/local/test.txt
+</span></span><span class=line><span class=cl>$ <span class=nb>echo</span> <span class=s2>&#34;another world!&#34;</span> &gt; /ipns/local/test2.txt
+</span></span></code></pre></div><p>やはりこちらも反映にとても時間がかかる。
 何もしないで待つには長すぎるほどだ。
-お茶でものんで気長に待とう。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ ipfs ls /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
-QmQwQzEedqC7vP6VWQujNKr6at9jSRtAJVraF7p7rdxoBs <span class=m>128</span> test.txt
-QmTjiABbErriHkDp9QCbrbarHEcgCRqicX62fTqgKdDihJ <span class=m>73</span>  test2.txt
-$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5/test.txt
-hey!
-hello world!
-$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5/test2.txt
-another world!
-</code></pre></div><h3 id=実用っぽいことをしてみる>実用っぽいことをしてみる</h3><p>試しにこのサイトを生成して置いてみる。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>$ hugo -d /ipns/local
-
-                   <span class=p>|</span> EN   
-+------------------+-----+
-  Pages            <span class=p>|</span> <span class=m>216</span>  
-  Paginator pages  <span class=p>|</span>   <span class=m>0</span>  
-  Non-page files   <span class=p>|</span>   <span class=m>0</span>  
-  Static files     <span class=p>|</span> <span class=m>105</span>  
-  Processed images <span class=p>|</span>   <span class=m>0</span>  
-  Aliases          <span class=p>|</span> <span class=m>148</span>  
-  Sitemaps         <span class=p>|</span>   <span class=m>1</span>  
-  Cleaned          <span class=p>|</span>   <span class=m>0</span>  
-
-Total in <span class=m>79556</span> ms
-</code></pre></div><p>いつもなら0.5秒あれば終わるところを1分以上かかっている。
+お茶でものんで気長に待とう。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ ipfs ls /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
+</span></span><span class=line><span class=cl>QmQwQzEedqC7vP6VWQujNKr6at9jSRtAJVraF7p7rdxoBs <span class=m>128</span> test.txt
+</span></span><span class=line><span class=cl>QmTjiABbErriHkDp9QCbrbarHEcgCRqicX62fTqgKdDihJ <span class=m>73</span>  test2.txt
+</span></span><span class=line><span class=cl>$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5/test.txt
+</span></span><span class=line><span class=cl>hey!
+</span></span><span class=line><span class=cl>hello world!
+</span></span><span class=line><span class=cl>$ ipfs cat /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5/test2.txt
+</span></span><span class=line><span class=cl>another world!
+</span></span></code></pre></div><h3 id=実用っぽいことをしてみる>実用っぽいことをしてみる</h3><p>試しにこのサイトを生成して置いてみる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ hugo -d /ipns/local
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                   <span class=p>|</span> EN   
+</span></span><span class=line><span class=cl>+------------------+-----+
+</span></span><span class=line><span class=cl>  Pages            <span class=p>|</span> <span class=m>216</span>  
+</span></span><span class=line><span class=cl>  Paginator pages  <span class=p>|</span>   <span class=m>0</span>  
+</span></span><span class=line><span class=cl>  Non-page files   <span class=p>|</span>   <span class=m>0</span>  
+</span></span><span class=line><span class=cl>  Static files     <span class=p>|</span> <span class=m>105</span>  
+</span></span><span class=line><span class=cl>  Processed images <span class=p>|</span>   <span class=m>0</span>  
+</span></span><span class=line><span class=cl>  Aliases          <span class=p>|</span> <span class=m>148</span>  
+</span></span><span class=line><span class=cl>  Sitemaps         <span class=p>|</span>   <span class=m>1</span>  
+</span></span><span class=line><span class=cl>  Cleaned          <span class=p>|</span>   <span class=m>0</span>  
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Total in <span class=m>79556</span> ms
+</span></span></code></pre></div><p>いつもなら0.5秒あれば終わるところを1分以上かかっている。
 別の場所で生成してからコピーしてみたらそのコピーにも同じだけの時間がかかった。
 書き込み中は CPU 使用率が上がっていたりするので、
 変更があるたびに何かしらの処理をしているのだろう。
@@ -109,22 +106,22 @@ Total in <span class=m>79556</span> ms
 なので、この記事を読んでいる現時点では
 <code>/ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5</code>
 にアクセスすることはおそらくできないだろう。
-そもそも現状このサイトは IPFS で公開してもちゃんと表示できるようにはできていない。</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>ipfs ls /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
-Qmb8rMxBfc3ZcDoYTBy1pPW2pVncEDvRwP2jcAaQn7pWji <span class=m>229815</span>   2016/
-QmdJy32q1mwfr2n3NsyaejFUFbDa14vwLQ5zsp1L5EvUzC <span class=m>1391891</span>  2017/
-Qma3xvg2ez7cXL71L7yjC4srbuUGGkv9kj6cu2raGmyxAP <span class=m>601006</span>   2018/
-QmQyFnH5V3JQYCwYuCa7Ug8AT8aCSMR8KCahG8rsbcHANC <span class=m>7372</span>     about/
-QmfK2rJYqLPuhFFj9tUacs14uDcesfsmkdNpoJMPW73gw7 <span class=m>13827370</span> assets/
-QmXneZHFVikyzRNYXTnZ7gxy2K5PUEsphyuWQaR2yBkaLV <span class=m>2302</span>     favicon.ico
-QmeUsXAK4MD61bKn2CZUmTe1dYx48f7Rwj8QNUL1VFuoEo <span class=m>26594</span>    img/
-QmZrUnUaxcRFNgR2154A6YdDyxmrkHvMCrKrozXAz4nNCy <span class=m>95432</span>    index.html
-QmeYr4jfFGVtzogDBacgWCfxsg4T4Xm16XM1tgdgCA2p1d <span class=m>84278</span>    index.xml
-QmPQQ4Rt8ucv5XUNBoei7JWGGMPo9VS8f5ADbWPbjRFtQz <span class=m>1466</span>     main.css
-QmZXWCcXJHbxjWAzt7m4SFRXv41oaGnRYxt7CDyTNvvkRG <span class=m>4384</span>     products/
-QmPFEBFAP2Q7P2cZXAwYjexEXsrUXEMRpkkujHMMFfS8mD <span class=m>963</span>      single.css
-QmVxw1h7qHT6r5ND5CCHVD489yndbApe99VSyKeUWnRTud <span class=m>25458</span>    sitemap.xml
-QmX5oxwU4CEkpMWpH4bfWkx8v482PFZAdiouvgrw1KCyhC <span class=m>381452</span>   tags/
-</code></pre></div><h3 id=自動化が楽になりそう>自動化が楽になりそう</h3><p>この機能を使わずにウェブサイトのデプロイをする場合、
+そもそも現状このサイトは IPFS で公開してもちゃんと表示できるようにはできていない。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>ipfs ls /ipns/QmYFjBY2jGetJV6zCYgWWt1zcgzFYooAdbNiXU9paM4uz5
+</span></span><span class=line><span class=cl>Qmb8rMxBfc3ZcDoYTBy1pPW2pVncEDvRwP2jcAaQn7pWji <span class=m>229815</span>   2016/
+</span></span><span class=line><span class=cl>QmdJy32q1mwfr2n3NsyaejFUFbDa14vwLQ5zsp1L5EvUzC <span class=m>1391891</span>  2017/
+</span></span><span class=line><span class=cl>Qma3xvg2ez7cXL71L7yjC4srbuUGGkv9kj6cu2raGmyxAP <span class=m>601006</span>   2018/
+</span></span><span class=line><span class=cl>QmQyFnH5V3JQYCwYuCa7Ug8AT8aCSMR8KCahG8rsbcHANC <span class=m>7372</span>     about/
+</span></span><span class=line><span class=cl>QmfK2rJYqLPuhFFj9tUacs14uDcesfsmkdNpoJMPW73gw7 <span class=m>13827370</span> assets/
+</span></span><span class=line><span class=cl>QmXneZHFVikyzRNYXTnZ7gxy2K5PUEsphyuWQaR2yBkaLV <span class=m>2302</span>     favicon.ico
+</span></span><span class=line><span class=cl>QmeUsXAK4MD61bKn2CZUmTe1dYx48f7Rwj8QNUL1VFuoEo <span class=m>26594</span>    img/
+</span></span><span class=line><span class=cl>QmZrUnUaxcRFNgR2154A6YdDyxmrkHvMCrKrozXAz4nNCy <span class=m>95432</span>    index.html
+</span></span><span class=line><span class=cl>QmeYr4jfFGVtzogDBacgWCfxsg4T4Xm16XM1tgdgCA2p1d <span class=m>84278</span>    index.xml
+</span></span><span class=line><span class=cl>QmPQQ4Rt8ucv5XUNBoei7JWGGMPo9VS8f5ADbWPbjRFtQz <span class=m>1466</span>     main.css
+</span></span><span class=line><span class=cl>QmZXWCcXJHbxjWAzt7m4SFRXv41oaGnRYxt7CDyTNvvkRG <span class=m>4384</span>     products/
+</span></span><span class=line><span class=cl>QmPFEBFAP2Q7P2cZXAwYjexEXsrUXEMRpkkujHMMFfS8mD <span class=m>963</span>      single.css
+</span></span><span class=line><span class=cl>QmVxw1h7qHT6r5ND5CCHVD489yndbApe99VSyKeUWnRTud <span class=m>25458</span>    sitemap.xml
+</span></span><span class=line><span class=cl>QmX5oxwU4CEkpMWpH4bfWkx8v482PFZAdiouvgrw1KCyhC <span class=m>381452</span>   tags/
+</span></span></code></pre></div><h3 id=自動化が楽になりそう>自動化が楽になりそう</h3><p>この機能を使わずにウェブサイトのデプロイをする場合、
 専用のスクリプトを組んで複数のコマンドを組み合わせないといけないはずだ。
 対してこちらは <code>/ipns/local</code> に何も考えず放り込めばいいので、
 自動化のハードルが一段下がる。
@@ -134,9 +131,10 @@ QmX5oxwU4CEkpMWpH4bfWkx8v482PFZAdiouvgrw1KCyhC <span class=m>381452</span>   tag
 Go を読めるようになって実装を見てみなければならない。
 早く実用できる段階になってほしいものだ。</p></article><footer><h2><a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a>
 17:普通のファイルシステムのようにIPFSで読み書き</h2><p><time>2018-09-11</time>
-<a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a> <a href=/tags/ipfs>#ipfs</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><div class=subscribe><a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>ipfs体験記の記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a> <a href=/tags/ipfs>#ipfs</a> <a href=/tags/tech>#tech</a> <a href=/tags/log>#log</a></p><div class=subscribe><a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>ipfs体験記の記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
 <a href=/about title=about>About</a>
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:26:55 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:36:41 UTC</div></footer></body></html>

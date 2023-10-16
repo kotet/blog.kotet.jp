@@ -1,10 +1,8 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="最近D言語を書いていない。というかプログラミングらしいことをしていない。さらに今使っているコンピュータにはDMDがインストールされてすらいない。"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.configure({languages:[]})
-hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
-"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
-"  displayMath: [['$$','$$']],\n"+
-"  processEscapes: true\n"+
-" }\n"+
-"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><script>document.addEventListener("DOMContentLoaded",function(){let elems=document.querySelectorAll(".footnote-ref");for(const e of elems){let url=new URL(e.href);let footnote=document.getElementById(url.hash.substr(1));let text=footnote.innerText.trim().replace("↩︎","");e.title=text;}});</script><title>#dlang DMDとDUBをソースからインストールする - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/12/d-from-source/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#dlang DMDとDUBをソースからインストールする - Kotet's Personal Blog"><meta name=og:description content="最近D言語を書いていない。というかプログラミングらしいことをしていない。さらに今使っているコンピュータにはDMDがインストールされてすらいない。"><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/12/d-from-source/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/dlang>#dlang</a>
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content=" 最近D言語を書いていない。というかプログラミングらしいことをしていない。さらに今使っているコンピュータにはDMDがインストールされてすらいない。 "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script>
+<script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#dlang DMDとDUBをソースからインストールする - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/12/d-from-source/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#dlang DMDとDUBをソースからインストールする - Kotet's Personal Blog"><meta name=og:description content=" 最近D言語を書いていない。というかプログラミングらしいことをしていない。さらに今使っているコンピュータにはDMDがインストールされてすらいない。  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/12/d-from-source/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/dlang>#dlang</a>
 DMDとDUBをソースからインストールする</span></h2><p>Created: <time>2017-12-04</time>,
 Last modified: <time>2018-12-04</time><br><a href=/tags/dlang>#dlang</a> <a href=/tags/log>#log</a> <a href=/tags/tech>#tech</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#dmd>DMD</a></li><li><a href=#dub>DUB</a></li><li><a href=#最新版のビルド>最新版のビルド</a></li></ul></li></ul></nav></aside></header><article><p>最近D言語を書いていない。
 というかプログラミングらしいことをしていない。
@@ -12,231 +10,231 @@ Last modified: <time>2018-12-04</time><br><a href=/tags/dlang>#dlang</a> <a href
 <a href=https://qiita.com/advent-calendar/2017/dlang>D言語 Advent Calendar 2017</a>の4日目のこの記事はその時の記録である。</p><p>出力はその場の気分で省略したりしなかったりしてある。
 ものすごくのんびりやったため実際の作業は数日にわかれている。</p><p><code>v2.077.0</code>と最新版をインストールしたのだが、思っていたよりも遥かに簡単で時間もかからなかった。
 速すぎて冬場の暖房には使えないかもしれない。</p><h3 id=dmd>DMD</h3><h4 id=ソースのダウンロード>ソースのダウンロード</h4><p>まずはソースをダウンロードしてくる。
-最初は最新版ではなくバージョンを<code>v2.077.0</code>に指定してやってみようと思う。</p><pre><code class=language-console data-lang=console>~$ mkdir src/dlang-v2.077.0
-~$ cd src/dlang-v2.077.0/
-~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/dmd
-~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/druntime
-~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/phobos
-~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/tools
-</code></pre><h4 id=dmdのビルド>DMDのビルド</h4><p>ある一定以上バージョンが上のDMDのビルドにはDMDが必要なので、
+最初は最新版ではなくバージョンを<code>v2.077.0</code>に指定してやってみようと思う。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~$ mkdir src/dlang-v2.077.0
+</span></span></span><span class=line><span class=cl><span class=go>~$ cd src/dlang-v2.077.0/
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/dmd
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/druntime
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/phobos
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ git clone -b v2.077.0 https://github.com/dlang/tools
+</span></span></span></code></pre></div><h4 id=dmdのビルド>DMDのビルド</h4><p>ある一定以上バージョンが上のDMDのビルドにはDMDが必要なので、
 古いバージョンのDMDを自分でビルドするか、バイナリをダウンロードしてくる必要がある。
 ……と思っていたのだが、どうもそのあたりも<a href=https://wiki.dlang.org/Building_under_Posix#Bootstrap_dmd>自分でやってくれる</a>らしい。
 もちろんPATHの通ったDMDがすでにあるならそちらを使ってビルドを高速化できる。
-しかしそんなことをしなくても割とあっという間に終わった。</p><pre><code class=language-console data-lang=console>~/src/dlang-v2.077.0/dmd$ make -f posix.mak -j8 AUTO_BOOTSTRAP=1
-</code></pre><pre><code class=language-console data-lang=console>~/src/dlang-v2.077.0/dmd$ ./generated/linux/release/64/dmd --version
-DMD64 D Compiler v2.077.0
-Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
-</code></pre><h4 id=その他のビルド>その他のビルド</h4><p>標準ライブラリのphobosをビルドする。
+しかしそんなことをしなくても割とあっという間に終わった。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0/dmd$ make -f posix.mak -j8 AUTO_BOOTSTRAP=1
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0/dmd$ ./generated/linux/release/64/dmd --version
+</span></span></span><span class=line><span class=cl><span class=go>DMD64 D Compiler v2.077.0
+</span></span></span><span class=line><span class=cl><span class=go>Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
+</span></span></span></code></pre></div><h4 id=その他のビルド>その他のビルド</h4><p>標準ライブラリのphobosをビルドする。
 PATHを通していないのに<code>../dmd/generated/linux/release/64/dmd</code>を使ってくれる。
-しかも<code>druntime</code>もいっしょにビルドされている。</p><pre><code class=language-console data-lang=console>~/src/dlang-v2.077.0$ cd phobos/
-~/src/dlang-v2.077.0/phobos$ make -f posix.mak -j8
-</code></pre><pre><code class=language-console data-lang=console>~/src/dlang-v2.077.0$ tree phobos/generated/
-phobos/generated/
-└── linux
-    └── release
-        └── 64
-            ├── etc
-            │   └── c
-            │       └── zlib
-            │           ├── adler32.o
-            │           ├── compress.o
-            │           ├── crc32.o
-            │           ├── deflate.o
-            │           ├── gzclose.o
-            │           ├── gzlib.o
-            │           ├── gzread.o
-            │           ├── gzwrite.o
-            │           ├── infback.o
-            │           ├── inffast.o
-            │           ├── inflate.o
-            │           ├── inftrees.o
-            │           ├── trees.o
-            │           ├── uncompr.o
-            │           └── zutil.o
-            ├── libphobos2.a
-            ├── libphobos2.so -&gt; libphobos2.so.0.77.0
-            ├── libphobos2.so.0.77 -&gt; libphobos2.so.0.77.0
-            ├── libphobos2.so.0.77.0
-            └── libphobos2.so.0.77.o
-
-6 directories, 20 files
-~/src/dlang-v2.077.0$ tree druntime/generated/
-druntime/generated/
-└── linux
-    └── release
-        └── 64
-            ├── bss_section.o
-            ├── errno_c.o
-            ├── libdruntime.a
-            ├── libdruntime.so.a
-            ├── libdruntime.so.o
-            └── threadasm.o
-
-3 directories, 6 files
-</code></pre><h4 id=動作確認>動作確認</h4><p><code>static foreach</code>を使ったことがないので試してみる。</p><div class=highlight><pre class=chroma><code class=language-d data-lang=d><span class=c1>/// test.d
-</span><span class=c1></span>
-<span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
-
-<span class=kd>static</span> <span class=nf>foreach</span><span class=o>(</span><span class=n>i</span><span class=o>;</span><span class=mf>0.</span><span class=o>.</span><span class=na>10</span><span class=o>)</span>
-<span class=o>{</span>
-    <span class=k>pragma</span><span class=o>(</span><span class=n>msg</span><span class=o>,</span><span class=n>i</span><span class=o>);</span>
-<span class=o>}</span>
-
-<span class=kt>void</span> <span class=nf>main</span><span class=o>()</span>
-<span class=o>{</span>
-    <span class=n>writeln</span><span class=o>(</span><span class=s>&#34;hello&#34;</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></div><pre><code class=language-console data-lang=console>~/src/dlang-v2.077.0$ dmd/generated/linux/release/64/dmd test.d
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-~/src/dlang-v2.077.0$ ./test 
-hello
-</code></pre><p>ちゃんと動いた。</p><h4 id=インストール>インストール</h4><p>適当な場所に置く。</p><pre><code class=language-console data-lang=console>~/src/dlang-v2.077.0$ ln -s ~/src/dlang-v2.077.0/dmd/generated/linux/release/64/dmd ~/bin/ # ~/bin はPATHを通してあるディレクトリ
-</code></pre><pre><code class=language-console data-lang=console>~/src/dlang-v2.077.0$ which dmd
-/home/kotet/bin/dmd
-</code></pre><p>というわけで、これでDMD 2.077.0のインストールが完了した。
-思っていたよりも短い時間でできてびっくりした。</p><h3 id=dub>DUB</h3><p>せっかくなのでこの調子でDUBもインストールする。</p><h4 id=ビルド>ビルド</h4><p>DMDとlibcurlが必要らしいが両方あるのでそのまま<code>build.sh</code>を実行する。</p><pre><code class=language-console data-lang=console>~/src$ git clone -b v1.6.0 https://github.com/dlang/dub.git dub-v1.6.0
-~/src$ cd dub-v1.6.0/
-~/src/dub-v1.6.0$ ./build.sh 
-Generating version file...
-Running dmd...
-source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
-source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
-DUB version 1.6.0, built on Nov 15 2017
-DUB has been built as bin/dub.
-
-You may want to run
-sudo ln -s /home/kotet/src/dub-v1.6.0/bin/dub /usr/local/bin
-now.
-</code></pre><h4 id=インストール-1>インストール</h4><p><code>/usr/local/bin</code>へのインストールをおすすめされているが今回は<code>~/bin</code>にした。</p><pre><code class=language-console data-lang=console>~/src/dub-v1.6.0$ ln -s /home/kotet/src/dub-v1.6.0/bin/dub ~/bin
-</code></pre><pre><code class=language-console data-lang=console>~/src/dub-v1.6.0$ which dub
-/home/kotet/bin/dub
-~/src/dub-v1.6.0$ dub --version
-DUB version 1.6.0, built on Nov 15 2017
-</code></pre><h4 id=動作確認-1>動作確認</h4><p><a href=https://qiita.com/lempiji/items/03629cd46fcbd948ca41>D言語くんが走りだす</a>。</p><pre><code class=language-console data-lang=console>~$ dub fetch dl
-Fetching dl 1.0.1...
-Please note that you need to use `dub run &lt;pkgname&gt;` or add it to dependencies of your package to actually use/run it. dub does not do actual installation of packages outside of its own ecosystem.
-~$ dub run dl
-Building package dl in /home/kotet/.dub/packages/dl-1.0.1/dl/
-Performing &quot;debug&quot; build using dmd for x86_64.
-dl 1.0.1: building configuration &quot;executable&quot;...
-Linking...
-Running .dub/packages/dl-1.0.1/dl/dl 
-
-
-
-  _   _
- (_) (_)
-/______ \
-\\(O(O \/
- | | | |
- | |_| |
-/______/
-  &lt;   &gt;
- (_) (_)
-</code></pre><p>というわけでD言語の基本的なツールがインストールできた。
+しかも<code>druntime</code>もいっしょにビルドされている。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ cd phobos/
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0/phobos$ make -f posix.mak -j8
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ tree phobos/generated/
+</span></span></span><span class=line><span class=cl><span class=go>phobos/generated/
+</span></span></span><span class=line><span class=cl><span class=go>└── linux
+</span></span></span><span class=line><span class=cl><span class=go>    └── release
+</span></span></span><span class=line><span class=cl><span class=go>        └── 64
+</span></span></span><span class=line><span class=cl><span class=go>            ├── etc
+</span></span></span><span class=line><span class=cl><span class=go>            │   └── c
+</span></span></span><span class=line><span class=cl><span class=go>            │       └── zlib
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── adler32.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── compress.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── crc32.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── deflate.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── gzclose.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── gzlib.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── gzread.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── gzwrite.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── infback.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── inffast.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── inflate.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── inftrees.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── trees.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           ├── uncompr.o
+</span></span></span><span class=line><span class=cl><span class=go>            │           └── zutil.o
+</span></span></span><span class=line><span class=cl><span class=go>            ├── libphobos2.a
+</span></span></span><span class=line><span class=cl><span class=go>            ├── libphobos2.so -&gt; libphobos2.so.0.77.0
+</span></span></span><span class=line><span class=cl><span class=go>            ├── libphobos2.so.0.77 -&gt; libphobos2.so.0.77.0
+</span></span></span><span class=line><span class=cl><span class=go>            ├── libphobos2.so.0.77.0
+</span></span></span><span class=line><span class=cl><span class=go>            └── libphobos2.so.0.77.o
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>6 directories, 20 files
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ tree druntime/generated/
+</span></span></span><span class=line><span class=cl><span class=go>druntime/generated/
+</span></span></span><span class=line><span class=cl><span class=go>└── linux
+</span></span></span><span class=line><span class=cl><span class=go>    └── release
+</span></span></span><span class=line><span class=cl><span class=go>        └── 64
+</span></span></span><span class=line><span class=cl><span class=go>            ├── bss_section.o
+</span></span></span><span class=line><span class=cl><span class=go>            ├── errno_c.o
+</span></span></span><span class=line><span class=cl><span class=go>            ├── libdruntime.a
+</span></span></span><span class=line><span class=cl><span class=go>            ├── libdruntime.so.a
+</span></span></span><span class=line><span class=cl><span class=go>            ├── libdruntime.so.o
+</span></span></span><span class=line><span class=cl><span class=go>            └── threadasm.o
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>3 directories, 6 files
+</span></span></span></code></pre></div><h4 id=動作確認>動作確認</h4><p><code>static foreach</code>を使ったことがないので試してみる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=c1>/// test.d
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>std.stdio</span><span class=o>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>static</span> <span class=nf>foreach</span><span class=o>(</span><span class=n>i</span><span class=o>;</span><span class=mf>0.</span><span class=o>.</span><span class=na>10</span><span class=o>)</span>
+</span></span><span class=line><span class=cl><span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>pragma</span><span class=o>(</span><span class=n>msg</span><span class=o>,</span><span class=n>i</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>main</span><span class=o>()</span>
+</span></span><span class=line><span class=cl><span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>writeln</span><span class=o>(</span><span class=s>&#34;hello&#34;</span><span class=o>);</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ dmd/generated/linux/release/64/dmd test.d
+</span></span></span><span class=line><span class=cl><span class=go>0
+</span></span></span><span class=line><span class=cl><span class=go>1
+</span></span></span><span class=line><span class=cl><span class=go>2
+</span></span></span><span class=line><span class=cl><span class=go>3
+</span></span></span><span class=line><span class=cl><span class=go>4
+</span></span></span><span class=line><span class=cl><span class=go>5
+</span></span></span><span class=line><span class=cl><span class=go>6
+</span></span></span><span class=line><span class=cl><span class=go>7
+</span></span></span><span class=line><span class=cl><span class=go>8
+</span></span></span><span class=line><span class=cl><span class=go>9
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ ./test 
+</span></span></span><span class=line><span class=cl><span class=go>hello
+</span></span></span></code></pre></div><p>ちゃんと動いた。</p><h4 id=インストール>インストール</h4><p>適当な場所に置く。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ ln -s ~/src/dlang-v2.077.0/dmd/generated/linux/release/64/dmd ~/bin/ # ~/bin はPATHを通してあるディレクトリ
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-v2.077.0$ which dmd
+</span></span></span><span class=line><span class=cl><span class=go>/home/kotet/bin/dmd
+</span></span></span></code></pre></div><p>というわけで、これでDMD 2.077.0のインストールが完了した。
+思っていたよりも短い時間でできてびっくりした。</p><h3 id=dub>DUB</h3><p>せっかくなのでこの調子でDUBもインストールする。</p><h4 id=ビルド>ビルド</h4><p>DMDとlibcurlが必要らしいが両方あるのでそのまま<code>build.sh</code>を実行する。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src$ git clone -b v1.6.0 https://github.com/dlang/dub.git dub-v1.6.0
+</span></span></span><span class=line><span class=cl><span class=go>~/src$ cd dub-v1.6.0/
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dub-v1.6.0$ ./build.sh 
+</span></span></span><span class=line><span class=cl><span class=go>Generating version file...
+</span></span></span><span class=line><span class=cl><span class=go>Running dmd...
+</span></span></span><span class=line><span class=cl><span class=go>source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
+</span></span></span><span class=line><span class=cl><span class=go>source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
+</span></span></span><span class=line><span class=cl><span class=go>DUB version 1.6.0, built on Nov 15 2017
+</span></span></span><span class=line><span class=cl><span class=go>DUB has been built as bin/dub.
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>You may want to run
+</span></span></span><span class=line><span class=cl><span class=go>sudo ln -s /home/kotet/src/dub-v1.6.0/bin/dub /usr/local/bin
+</span></span></span><span class=line><span class=cl><span class=go>now.
+</span></span></span></code></pre></div><h4 id=インストール-1>インストール</h4><p><code>/usr/local/bin</code>へのインストールをおすすめされているが今回は<code>~/bin</code>にした。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dub-v1.6.0$ ln -s /home/kotet/src/dub-v1.6.0/bin/dub ~/bin
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dub-v1.6.0$ which dub
+</span></span></span><span class=line><span class=cl><span class=go>/home/kotet/bin/dub
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dub-v1.6.0$ dub --version
+</span></span></span><span class=line><span class=cl><span class=go>DUB version 1.6.0, built on Nov 15 2017
+</span></span></span></code></pre></div><h4 id=動作確認-1>動作確認</h4><p><a href=https://qiita.com/lempiji/items/03629cd46fcbd948ca41>D言語くんが走りだす</a>。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~$ dub fetch dl
+</span></span></span><span class=line><span class=cl><span class=go>Fetching dl 1.0.1...
+</span></span></span><span class=line><span class=cl><span class=go>Please note that you need to use `dub run &lt;pkgname&gt;` or add it to dependencies of your package to actually use/run it. dub does not do actual installation of packages outside of its own ecosystem.
+</span></span></span><span class=line><span class=cl><span class=go>~$ dub run dl
+</span></span></span><span class=line><span class=cl><span class=go>Building package dl in /home/kotet/.dub/packages/dl-1.0.1/dl/
+</span></span></span><span class=line><span class=cl><span class=go>Performing &#34;debug&#34; build using dmd for x86_64.
+</span></span></span><span class=line><span class=cl><span class=go>dl 1.0.1: building configuration &#34;executable&#34;...
+</span></span></span><span class=line><span class=cl><span class=go>Linking...
+</span></span></span><span class=line><span class=cl><span class=go>Running .dub/packages/dl-1.0.1/dl/dl 
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>  _   _
+</span></span></span><span class=line><span class=cl><span class=go> (_) (_)
+</span></span></span><span class=line><span class=cl><span class=go>/______ \
+</span></span></span><span class=line><span class=cl><span class=go>\\(O(O \/
+</span></span></span><span class=line><span class=cl><span class=go> | | | |
+</span></span></span><span class=line><span class=cl><span class=go> | |_| |
+</span></span></span><span class=line><span class=cl><span class=go>/______/
+</span></span></span><span class=line><span class=cl><span class=go>  &lt;   &gt;
+</span></span></span><span class=line><span class=cl><span class=go> (_) (_)
+</span></span></span></code></pre></div><p>というわけでD言語の基本的なツールがインストールできた。
 想像以上に簡単だった。
 やはり何事もやってみることが大事ということだ。</p><h3 id=最新版のビルド>最新版のビルド</h3><p>せっかくなので最新版もビルドしてみる。
-全く同じようにインストールを行える。</p><h4 id=dmd-1>DMD</h4><p>同じようにダウンロード。</p><pre><code class=language-console data-lang=console>~/src$ mkdir dlang-$(date -I)
-~/src$ ls
-dlang-2017-11-22  dlang-v2.077.0  dub-v1.6.0
-~/src$ cd dlang-2017-11-22/
-~/src/dlang-2017-11-22$ git clone https://github.com/dlang/dmd
-~/src/dlang-2017-11-22$ git clone https://github.com/dlang/druntime
-~/src/dlang-2017-11-22$ git clone https://github.com/dlang/phobos
-~/src/dlang-2017-11-22$ git clone https://github.com/dlang/tools
-</code></pre><p>すでにDMDをインストール済みなのでそれを使ってくれる。</p><pre><code class=language-console data-lang=console>~/src/dlang-2017-11-22/dmd$ make -f posix.mak -j8
-</code></pre><pre><code class=language-console data-lang=console>~/src/dlang-2017-11-22/dmd$ ./generated/linux/release/64/dmd --version
-DMD64 D Compiler v2.077.0-251-g46fc949
-Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
-</code></pre><p>続けてPhobos等のビルド。</p><pre><code class=language-console data-lang=console>~/src/dlang-2017-11-22/dmd$ cd ../phobos/
-~/src/dlang-2017-11-22/phobos$ make -f posix.mak -j8
-</code></pre><p>インストール。</p><pre><code class=language-console data-lang=console>~/src/dlang-2017-11-22/phobos$ ln -s ~/src/dlang-2017-11-22/dmd/generated/linux/release/64/dmd ~/bin/dmd-latest
-</code></pre><p>動作確認。</p><pre><code class=language-console data-lang=console>~$ which dmd-latest
-/home/kotet/bin/dmd-latest
-~$ dmd-latest --version
-DMD64 D Compiler v2.077.0-251-g46fc949
-Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
-~$ dmd-latest test.d
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-~$ ./test
-hello
-</code></pre><p>ちゃんと最新版の方のPhobosが使われているか確認するのを忘れていた。</p><pre><code class=language-console data-lang=console>~$ dmd-latest --help
-DMD64 D Compiler v2.077.0-251-g46fc949
-Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
-
-Documentation: http://dlang.org/
-Config file: /home/kotet/src/dlang-2017-11-22/dmd/generated/linux/release/64/dmd.conf
-...
-$ cat /home/kotet/src/dlang-2017-11-22/dmd/generated/linux/release/64/dmd.conf
-[Environment32]
-DFLAGS=-I%@P%/../../../../../druntime/import -I%@P%/../../../../../phobos -L-L%@P%/../../../../../phobos/generated/linux/release/32 -L--export-dynamic
-
-[Environment64]
-DFLAGS=-I%@P%/../../../../../druntime/import -I%@P%/../../../../../phobos -L-L%@P%/../../../../../phobos/generated/linux/release/64 -L--export-dynamic -fPIC
-$ readlink -f /home/kotet/src/dlang-2017-11-22/dmd/generated/linux/release/64/../../../../../phobos/generated/linux/release/64
-/home/kotet/src/dlang-2017-11-22/phobos/generated/linux/release/64
-</code></pre><p>大丈夫そう。</p><h4 id=dub-1>DUB</h4><p>せっかくなので先ほどの最新版を使ってビルドする。</p><pre><code class=language-console data-lang=console>~/src$ git clone https://github.com/dlang/dub.git dub-$(date -I)
-~/src$ cd dub-2017-11-22/
-~/src/dub-2017-11-22$ DMD=&quot;dmd-latest&quot; ./build.sh
-Generating version file...
-Running dmd-latest...
-source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
-source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
-DUB version 1.6.0+28-gf7d620b, built on Nov 22 2017
-DUB has been built as bin/dub.
-
-You may want to run
-sudo ln -s /home/kotet/src/dub-2017-11-22/bin/dub /usr/local/bin
-now.
-~/src/dub-2017-11-22$ ln -s /home/kotet/src/dub-2017-11-22/bin/dub ~/bin/dub-latest
-</code></pre><p>動作確認。</p><pre><code class=language-console data-lang=console>~$ which dub-latest 
-/home/kotet/bin/dub-latest
-~$ dub-latest --version
-DUB version 1.6.0+28-gf7d620b, built on Nov 22 2017
-~$ dub-latest fetch dl
-Please note that you need to use `dub run &lt;pkgname&gt;` or add it to dependencies of your package to actually use/run it. dub does not do actual installation of packages outside of its own ecosystem.
-~$ dub-latest run dl
-Building package dl in /home/kotet/.dub/packages/dl-1.0.1/dl/
-Performing &quot;debug&quot; build using dmd for x86_64.
-dl 1.0.1: target for configuration &quot;executable&quot; is up to date.
-To force a rebuild of up-to-date targets, run again with --force.
-Running .dub/packages/dl-1.0.1/dl/dl 
-
-
-
-  _   _
- (_) (_)
-/______ \
-\\(O(O \/
- | | | |
- | |_| |
-/______/
-  &lt;   &gt;
- (_) (_)
-
-</code></pre></article><footer><h2><a href=/tags/dlang>#dlang</a>
+全く同じようにインストールを行える。</p><h4 id=dmd-1>DMD</h4><p>同じようにダウンロード。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src$ mkdir dlang-$(date -I)
+</span></span></span><span class=line><span class=cl><span class=go>~/src$ ls
+</span></span></span><span class=line><span class=cl><span class=go>dlang-2017-11-22  dlang-v2.077.0  dub-v1.6.0
+</span></span></span><span class=line><span class=cl><span class=go>~/src$ cd dlang-2017-11-22/
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22$ git clone https://github.com/dlang/dmd
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22$ git clone https://github.com/dlang/druntime
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22$ git clone https://github.com/dlang/phobos
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22$ git clone https://github.com/dlang/tools
+</span></span></span></code></pre></div><p>すでにDMDをインストール済みなのでそれを使ってくれる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22/dmd$ make -f posix.mak -j8
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22/dmd$ ./generated/linux/release/64/dmd --version
+</span></span></span><span class=line><span class=cl><span class=go>DMD64 D Compiler v2.077.0-251-g46fc949
+</span></span></span><span class=line><span class=cl><span class=go>Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
+</span></span></span></code></pre></div><p>続けてPhobos等のビルド。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22/dmd$ cd ../phobos/
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22/phobos$ make -f posix.mak -j8
+</span></span></span></code></pre></div><p>インストール。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src/dlang-2017-11-22/phobos$ ln -s ~/src/dlang-2017-11-22/dmd/generated/linux/release/64/dmd ~/bin/dmd-latest
+</span></span></span></code></pre></div><p>動作確認。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~$ which dmd-latest
+</span></span></span><span class=line><span class=cl><span class=go>/home/kotet/bin/dmd-latest
+</span></span></span><span class=line><span class=cl><span class=go>~$ dmd-latest --version
+</span></span></span><span class=line><span class=cl><span class=go>DMD64 D Compiler v2.077.0-251-g46fc949
+</span></span></span><span class=line><span class=cl><span class=go>Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
+</span></span></span><span class=line><span class=cl><span class=go>~$ dmd-latest test.d
+</span></span></span><span class=line><span class=cl><span class=go>0
+</span></span></span><span class=line><span class=cl><span class=go>1
+</span></span></span><span class=line><span class=cl><span class=go>2
+</span></span></span><span class=line><span class=cl><span class=go>3
+</span></span></span><span class=line><span class=cl><span class=go>4
+</span></span></span><span class=line><span class=cl><span class=go>5
+</span></span></span><span class=line><span class=cl><span class=go>6
+</span></span></span><span class=line><span class=cl><span class=go>7
+</span></span></span><span class=line><span class=cl><span class=go>8
+</span></span></span><span class=line><span class=cl><span class=go>9
+</span></span></span><span class=line><span class=cl><span class=go>~$ ./test
+</span></span></span><span class=line><span class=cl><span class=go>hello
+</span></span></span></code></pre></div><p>ちゃんと最新版の方のPhobosが使われているか確認するのを忘れていた。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~$ dmd-latest --help
+</span></span></span><span class=line><span class=cl><span class=go>DMD64 D Compiler v2.077.0-251-g46fc949
+</span></span></span><span class=line><span class=cl><span class=go>Copyright (c) 1999-2017 by Digital Mars written by Walter Bright
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>Documentation: http://dlang.org/
+</span></span></span><span class=line><span class=cl><span class=go>Config file: /home/kotet/src/dlang-2017-11-22/dmd/generated/linux/release/64/dmd.conf
+</span></span></span><span class=line><span class=cl><span class=go>...
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=gp>$</span> cat /home/kotet/src/dlang-2017-11-22/dmd/generated/linux/release/64/dmd.conf
+</span></span><span class=line><span class=cl><span class=go>[Environment32]
+</span></span></span><span class=line><span class=cl><span class=go>DFLAGS=-I%@P%/../../../../../druntime/import -I%@P%/../../../../../phobos -L-L%@P%/../../../../../phobos/generated/linux/release/32 -L--export-dynamic
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>[Environment64]
+</span></span></span><span class=line><span class=cl><span class=go>DFLAGS=-I%@P%/../../../../../druntime/import -I%@P%/../../../../../phobos -L-L%@P%/../../../../../phobos/generated/linux/release/64 -L--export-dynamic -fPIC
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=gp>$</span> readlink -f /home/kotet/src/dlang-2017-11-22/dmd/generated/linux/release/64/../../../../../phobos/generated/linux/release/64
+</span></span><span class=line><span class=cl><span class=go>/home/kotet/src/dlang-2017-11-22/phobos/generated/linux/release/64
+</span></span></span></code></pre></div><p>大丈夫そう。</p><h4 id=dub-1>DUB</h4><p>せっかくなので先ほどの最新版を使ってビルドする。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~/src$ git clone https://github.com/dlang/dub.git dub-$(date -I)
+</span></span></span><span class=line><span class=cl><span class=go>~/src$ cd dub-2017-11-22/
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dub-2017-11-22$ DMD=&#34;dmd-latest&#34; ./build.sh
+</span></span></span><span class=line><span class=cl><span class=go>Generating version file...
+</span></span></span><span class=line><span class=cl><span class=go>Running dmd-latest...
+</span></span></span><span class=line><span class=cl><span class=go>source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
+</span></span></span><span class=line><span class=cl><span class=go>source/dub/internal/sdlang/token.d(26): Deprecation: struct core.time.FracSec is deprecated - FracSec has been deprecated in favor of just using Duration for the sake of simplicity
+</span></span></span><span class=line><span class=cl><span class=go>DUB version 1.6.0+28-gf7d620b, built on Nov 22 2017
+</span></span></span><span class=line><span class=cl><span class=go>DUB has been built as bin/dub.
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>You may want to run
+</span></span></span><span class=line><span class=cl><span class=go>sudo ln -s /home/kotet/src/dub-2017-11-22/bin/dub /usr/local/bin
+</span></span></span><span class=line><span class=cl><span class=go>now.
+</span></span></span><span class=line><span class=cl><span class=go>~/src/dub-2017-11-22$ ln -s /home/kotet/src/dub-2017-11-22/bin/dub ~/bin/dub-latest
+</span></span></span></code></pre></div><p>動作確認。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=go>~$ which dub-latest 
+</span></span></span><span class=line><span class=cl><span class=go>/home/kotet/bin/dub-latest
+</span></span></span><span class=line><span class=cl><span class=go>~$ dub-latest --version
+</span></span></span><span class=line><span class=cl><span class=go>DUB version 1.6.0+28-gf7d620b, built on Nov 22 2017
+</span></span></span><span class=line><span class=cl><span class=go>~$ dub-latest fetch dl
+</span></span></span><span class=line><span class=cl><span class=go>Please note that you need to use `dub run &lt;pkgname&gt;` or add it to dependencies of your package to actually use/run it. dub does not do actual installation of packages outside of its own ecosystem.
+</span></span></span><span class=line><span class=cl><span class=go>~$ dub-latest run dl
+</span></span></span><span class=line><span class=cl><span class=go>Building package dl in /home/kotet/.dub/packages/dl-1.0.1/dl/
+</span></span></span><span class=line><span class=cl><span class=go>Performing &#34;debug&#34; build using dmd for x86_64.
+</span></span></span><span class=line><span class=cl><span class=go>dl 1.0.1: target for configuration &#34;executable&#34; is up to date.
+</span></span></span><span class=line><span class=cl><span class=go>To force a rebuild of up-to-date targets, run again with --force.
+</span></span></span><span class=line><span class=cl><span class=go>Running .dub/packages/dl-1.0.1/dl/dl 
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=go>  _   _
+</span></span></span><span class=line><span class=cl><span class=go> (_) (_)
+</span></span></span><span class=line><span class=cl><span class=go>/______ \
+</span></span></span><span class=line><span class=cl><span class=go>\\(O(O \/
+</span></span></span><span class=line><span class=cl><span class=go> | | | |
+</span></span></span><span class=line><span class=cl><span class=go> | |_| |
+</span></span></span><span class=line><span class=cl><span class=go>/______/
+</span></span></span><span class=line><span class=cl><span class=go>  &lt;   &gt;
+</span></span></span><span class=line><span class=cl><span class=go> (_) (_)
+</span></span></span></code></pre></div></article><footer><h2><a href=/tags/dlang>#dlang</a>
 DMDとDUBをソースからインストールする</h2><p><time>2017-12-04</time>
-<a href=/tags/dlang>#dlang</a> <a href=/tags/log>#log</a> <a href=/tags/tech>#tech</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><div class=subscribe><a href=/tags/dlang/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>dlangの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/tags/dlang>#dlang</a> <a href=/tags/log>#log</a> <a href=/tags/tech>#tech</a> <a href=/tags/advent_calendar>#advent_calendar</a></p><div class=subscribe><a href=/tags/dlang/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>dlangの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
 <a href=/about title=about>About</a>
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:26:55 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:36:41 UTC</div></footer></body></html>

@@ -1,331 +1,329 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content="IPFSのハッシュを自動的に収集できるのではないかということに気がついた。スイカネットを流れるデータを拾って集める横浜駅SFのワンシーンを思い出してテンションが上がった。"><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.configure({languages:[]})
-hljs.initHighlightingOnLoad();</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector('math')||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let config=document.createElement("script");config.type="text/x-mathjax-config";config[(window.opera?"innerHTML":"text")]="MathJax.Hub.Config({\n"+
-"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n"+
-"  displayMath: [['$$','$$']],\n"+
-"  processEscapes: true\n"+
-" }\n"+
-"});";document.head.appendChild(config);var script=document.createElement('script');script.async='async';script.src='//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';document.head.appendChild(script);}})</script><script>document.addEventListener("DOMContentLoaded",function(){let elems=document.querySelectorAll(".footnote-ref");for(const e of elems){let url=new URL(e.href);let footnote=document.getElementById(url.hash.substr(1));let text=footnote.innerText.trim().replace("↩︎","");e.title=text;}});</script><title>#ipfs IPFS体験記8:IPFS網漁 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/11/ipfs-trap/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#ipfs IPFS体験記8:IPFS網漁 - Kotet's Personal Blog"><meta name=og:description content="IPFSのハッシュを自動的に収集できるのではないかということに気がついた。スイカネットを流れるデータを拾って集める横浜駅SFのワンシーンを思い出してテンションが上がった。"><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/11/ipfs-trap/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.66.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:true});</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs /><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24" /><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20C20 21.1045695 19.1045695 22 18 22H6C4.8954305 22 4 21.1045695 4 20V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898C11.3673575 1.8049034 12.6326139 1.8049034 13.4130003 2.5852898l9.4769857 9.4769858L21.4767879 13.4754737 20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero" /></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1 18.0751322 1 23 5.92486775 23 12 23 18.0751322 18.0751322 23 12 23zm0-2C16.9705627 21 21 16.9705627 21 12 21 7.02943725 16.9705627 3 12 3 7.02943725 3 3 7.02943725 3 12 3 16.9705627 7.02943725 21 12 21zM13.0036109 13.9983464H14.0029544v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639C11.4478622 8.99834639 11 8.55063114 11 7.99834639s.44786219999999943-1 1.0003282999999996-1C12.5527943 6.99834639 13.0006565 7.44606164 13.0006565 7.99834639s-.44786219999999943 1-1.0003282000000002 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4C22 21.1045695 21.1045695 22 20 22H4C2.8954305 22 2 21.1045695 2 20V16H4v4H20V16h2zm-9-3.4142136L16.2928932 9.29289322 17.7071068 10.7071068 12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21C22.1045695 5 23 5.8954305 23 7V17C23 18.1045695 22.1045695 19 21 19H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002C.944016765 12.2188008.944016765 11.7811992 1.16794971 11.4452998L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12S6.44771525 11 7 11 8 11.4477153 8 12 7.55228475 13 7 13z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/ipfs>#ipfs</a>
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content=" IPFSのハッシュを自動的に収集できるのではないかということに気がついた。スイカネットを流れるデータを拾って集める横浜駅SFのワンシーンを思い出してテンションが上がった。 "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.897e35b2ee21faf73b17d429f29539685a0190fe67191b5fed30e1d076e0a90e.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script>
+<script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#ipfs IPFS体験記8:IPFS網漁 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/11/ipfs-trap/><link rel=icon href=/favicon.ico><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#ipfs IPFS体験記8:IPFS網漁 - Kotet's Personal Blog"><meta name=og:description content=" IPFSのハッシュを自動的に収集できるのではないかということに気がついた。スイカネットを流れるデータを拾って集める横浜駅SFのワンシーンを思い出してテンションが上がった。  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/11/ipfs-trap/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/ipfs>#ipfs</a>
 IPFS体験記8:IPFS網漁</span></h2><p>Created: <time>2017-11-10</time>,
 Last modified: <time>2018-09-01</time><br><a href=/tags/ipfs>#ipfs</a> <a href=/tags/tech>#tech</a> <a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#ログを見る>ログを見る</a></li></ul></li></ul></nav></aside></header><article><p>IPFSのハッシュを自動的に収集できるのではないかということに気がついた。
 スイカネットを流れるデータを拾って集める<a href=https://kakuyomu.jp/works/4852201425154905871/episodes/4852201425154905928>横浜駅SFのワンシーン</a>を思い出してテンションが上がった。</p><h3 id=ログを見る>ログを見る</h3><p><code>ipfs log tail</code> でイベントのログを見ることができる。
-どのイベントが何を意味するのか、ドキュメントは見つけられなかった。</p><pre><code class=language-console data-lang=console>$ ipfs log tail
-{&quot;event&quot;:&quot;updatePeer&quot;,&quot;peerID&quot;:&quot;QmZY7MtK8ZbG1suwrxc7xEYZ2hQLf1dAWPRHhjxC8rjq8E&quot;,&quot;session&quot;:&quot;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&quot;,&quot;system&quot;:&quot;dht&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:33.049612976Z&quot;}
-{&quot;event&quot;:&quot;handleFindPeerBegin&quot;,&quot;peerID&quot;:&quot;QmZY7MtK8ZbG1suwrxc7xEYZ2hQLf1dAWPRHhjxC8rjq8E&quot;,&quot;session&quot;:&quot;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&quot;,&quot;system&quot;:&quot;dht&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:33.049723954Z&quot;}
-{&quot;duration&quot;:1341286,&quot;event&quot;:&quot;handleFindPeer&quot;,&quot;peerID&quot;:&quot;QmZY7MtK8ZbG1suwrxc7xEYZ2hQLf1dAWPRHhjxC8rjq8E&quot;,&quot;session&quot;:&quot;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&quot;,&quot;system&quot;:&quot;dht&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:33.051066612Z&quot;}
-{&quot;event&quot;:&quot;updatePeer&quot;,&quot;peerID&quot;:&quot;QmUpKSoobhgcdLcR3rgusnPyRiRg2GCjuE4ekb79vhaLdK&quot;,&quot;session&quot;:&quot;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&quot;,&quot;system&quot;:&quot;dht&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:36.674229585Z&quot;}
-{&quot;event&quot;:&quot;handleFindPeerBegin&quot;,&quot;peerID&quot;:&quot;QmUpKSoobhgcdLcR3rgusnPyRiRg2GCjuE4ekb79vhaLdK&quot;,&quot;session&quot;:&quot;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&quot;,&quot;system&quot;:&quot;dht&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:36.674340168Z&quot;}
-{&quot;duration&quot;:1351836,&quot;event&quot;:&quot;handleFindPeer&quot;,&quot;peerID&quot;:&quot;QmUpKSoobhgcdLcR3rgusnPyRiRg2GCjuE4ekb79vhaLdK&quot;,&quot;session&quot;:&quot;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&quot;,&quot;system&quot;:&quot;dht&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:36.675678763Z&quot;}
-{&quot;duration&quot;:8996677675,&quot;error&quot;:&quot;no route to host&quot;,&quot;event&quot;:&quot;tptDialReusePort&quot;,&quot;raddr&quot;:{},&quot;system&quot;:&quot;tcp-tpt&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:37.322662561Z&quot;}
-{&quot;duration&quot;:8996323673,&quot;error&quot;:&quot;no route to host&quot;,&quot;event&quot;:&quot;tptDialReusePort&quot;,&quot;raddr&quot;:{},&quot;system&quot;:&quot;tcp-tpt&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:37.322712121Z&quot;}
-{&quot;duration&quot;:8996400695,&quot;error&quot;:&quot;no route to host&quot;,&quot;event&quot;:&quot;tptDialReusePort&quot;,&quot;raddr&quot;:{},&quot;system&quot;:&quot;tcp-tpt&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:37.322749876Z&quot;}
-{&quot;duration&quot;:9000177945,&quot;error&quot;:&quot;no route to host&quot;,&quot;event&quot;:&quot;tptDialReusePort&quot;,&quot;raddr&quot;:{},&quot;system&quot;:&quot;tcp-tpt&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:37.326684296Z&quot;}
-{&quot;duration&quot;:9000218920,&quot;error&quot;:&quot;no route to host&quot;,&quot;event&quot;:&quot;tptDialReusePort&quot;,&quot;raddr&quot;:{},&quot;system&quot;:&quot;tcp-tpt&quot;,&quot;time&quot;:&quot;2017-11-10T06:44:37.32671394Z&quot;}
-...
-</code></pre><p>イベント名を抽出してみる。</p><pre><code class=language-console data-lang=console>$ ipfs log tail | jq &quot;.event&quot; | awk '!colname[$1]++{print $1}'
-&quot;updatePeer&quot;
-&quot;handleFindPeerBegin&quot;
-&quot;handleFindPeer&quot;
-&quot;Bitswap.Rebroadcast.idle&quot;
-&quot;handleAddProviderBegin&quot;
-&quot;handleAddProvider&quot;
-&quot;tptDialReusePort&quot;
-&quot;connDial&quot;
-&quot;swarmDialDo&quot;
-&quot;swarmDialBackoffAdd&quot;
-&quot;swarmDialAttemptStart&quot;
-&quot;swarmDialAttemptSync&quot;
-&quot;getClosestPeers&quot;
-&quot;swarmDialAttemptSyncBegin&quot;
-&quot;dhtSentMessage&quot;
-&quot;swarmDialAttemptStartBegin&quot;
-&quot;swarmDialDoBegin&quot;
-&quot;interfaceListenAddresses&quot;
-&quot;provide&quot;
-&quot;provideBegin&quot;
-&quot;getClosestPeersBegin&quot;
-&quot;findPeerSingleBegin&quot;
-&quot;dhtReceivedMessage&quot;
-&quot;findPeerSingle&quot;
-&quot;connDialBegin&quot;
-&quot;tptDialReusePortBegin&quot;
-&quot;connLifetime&quot;
-&quot;handleGetProvidersBegin&quot;
-&quot;handleGetProviders&quot;
-&quot;connDialZeroAddr&quot;
-&quot;handleGetValueBegin&quot;
-&quot;handleGetValue&quot;
-&quot;swarmDialBackoff&quot;
-&quot;connLifetimeBegin&quot;
-&quot;secureHandshakeBegin&quot;
-&quot;secureHandshake&quot;
-&quot;swarmDialDoSetupBegin&quot;
-&quot;swarmDialDoSetup&quot;
-&quot;swarmDialBackoffClear&quot;
-&quot;periodicBootstrapBegin&quot;
-&quot;bootstrapSkip&quot;
-&quot;periodicBootstrap&quot;
-</code></pre><p>このうち<code>handleGetProviders</code>というイベントは
+どのイベントが何を意味するのか、ドキュメントは見つけられなかった。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> ipfs log tail
+</span></span><span class=line><span class=cl><span class=go>{&#34;event&#34;:&#34;updatePeer&#34;,&#34;peerID&#34;:&#34;QmZY7MtK8ZbG1suwrxc7xEYZ2hQLf1dAWPRHhjxC8rjq8E&#34;,&#34;session&#34;:&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;,&#34;system&#34;:&#34;dht&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:33.049612976Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;event&#34;:&#34;handleFindPeerBegin&#34;,&#34;peerID&#34;:&#34;QmZY7MtK8ZbG1suwrxc7xEYZ2hQLf1dAWPRHhjxC8rjq8E&#34;,&#34;session&#34;:&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;,&#34;system&#34;:&#34;dht&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:33.049723954Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;duration&#34;:1341286,&#34;event&#34;:&#34;handleFindPeer&#34;,&#34;peerID&#34;:&#34;QmZY7MtK8ZbG1suwrxc7xEYZ2hQLf1dAWPRHhjxC8rjq8E&#34;,&#34;session&#34;:&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;,&#34;system&#34;:&#34;dht&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:33.051066612Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;event&#34;:&#34;updatePeer&#34;,&#34;peerID&#34;:&#34;QmUpKSoobhgcdLcR3rgusnPyRiRg2GCjuE4ekb79vhaLdK&#34;,&#34;session&#34;:&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;,&#34;system&#34;:&#34;dht&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:36.674229585Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;event&#34;:&#34;handleFindPeerBegin&#34;,&#34;peerID&#34;:&#34;QmUpKSoobhgcdLcR3rgusnPyRiRg2GCjuE4ekb79vhaLdK&#34;,&#34;session&#34;:&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;,&#34;system&#34;:&#34;dht&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:36.674340168Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;duration&#34;:1351836,&#34;event&#34;:&#34;handleFindPeer&#34;,&#34;peerID&#34;:&#34;QmUpKSoobhgcdLcR3rgusnPyRiRg2GCjuE4ekb79vhaLdK&#34;,&#34;session&#34;:&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;,&#34;system&#34;:&#34;dht&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:36.675678763Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;duration&#34;:8996677675,&#34;error&#34;:&#34;no route to host&#34;,&#34;event&#34;:&#34;tptDialReusePort&#34;,&#34;raddr&#34;:{},&#34;system&#34;:&#34;tcp-tpt&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:37.322662561Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;duration&#34;:8996323673,&#34;error&#34;:&#34;no route to host&#34;,&#34;event&#34;:&#34;tptDialReusePort&#34;,&#34;raddr&#34;:{},&#34;system&#34;:&#34;tcp-tpt&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:37.322712121Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;duration&#34;:8996400695,&#34;error&#34;:&#34;no route to host&#34;,&#34;event&#34;:&#34;tptDialReusePort&#34;,&#34;raddr&#34;:{},&#34;system&#34;:&#34;tcp-tpt&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:37.322749876Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;duration&#34;:9000177945,&#34;error&#34;:&#34;no route to host&#34;,&#34;event&#34;:&#34;tptDialReusePort&#34;,&#34;raddr&#34;:{},&#34;system&#34;:&#34;tcp-tpt&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:37.326684296Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>{&#34;duration&#34;:9000218920,&#34;error&#34;:&#34;no route to host&#34;,&#34;event&#34;:&#34;tptDialReusePort&#34;,&#34;raddr&#34;:{},&#34;system&#34;:&#34;tcp-tpt&#34;,&#34;time&#34;:&#34;2017-11-10T06:44:37.32671394Z&#34;}
+</span></span></span><span class=line><span class=cl><span class=go>...
+</span></span></span></code></pre></div><p>イベント名を抽出してみる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> ipfs log tail <span class=p>|</span> jq <span class=s2>&#34;.event&#34;</span> <span class=p>|</span> awk <span class=s1>&#39;!colname[$1]++{print $1}&#39;</span>
+</span></span><span class=line><span class=cl><span class=go>&#34;updatePeer&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleFindPeerBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleFindPeer&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;Bitswap.Rebroadcast.idle&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleAddProviderBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleAddProvider&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;tptDialReusePort&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;connDial&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialDo&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialBackoffAdd&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialAttemptStart&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialAttemptSync&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;getClosestPeers&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialAttemptSyncBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;dhtSentMessage&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialAttemptStartBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialDoBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;interfaceListenAddresses&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;provide&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;provideBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;getClosestPeersBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;findPeerSingleBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;dhtReceivedMessage&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;findPeerSingle&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;connDialBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;tptDialReusePortBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;connLifetime&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleGetProvidersBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleGetProviders&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;connDialZeroAddr&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleGetValueBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;handleGetValue&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialBackoff&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;connLifetimeBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;secureHandshakeBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;secureHandshake&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialDoSetupBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialDoSetup&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;swarmDialBackoffClear&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;periodicBootstrapBegin&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;bootstrapSkip&#34;
+</span></span></span><span class=line><span class=cl><span class=go>&#34;periodicBootstrap&#34;
+</span></span></span></code></pre></div><p>このうち<code>handleGetProviders</code>というイベントは
 「誰かが<code>ipfs dht findprov</code>したか、ゲートウェイ等で自動的に呼ばれたかで、ハッシュと対応したコンテンツを持っていないかを他のノードが聞いてきた」
 という意味のイベント（だと思う）。
-つまり、このイベントをキャッチすれば誰かがアクセスしようとしたハッシュを収集できる。</p><pre><code class=language-console data-lang=console>$ ipfs log tail | grep '&quot;handleGetProviders&quot;' -m 1 --line-buffered | jq
-</code></pre><div class=highlight><pre class=chroma><code class=language-json data-lang=json><span class=p>{</span>
-  <span class=nt>&#34;duration&#34;</span><span class=p>:</span> <span class=mi>2045973</span><span class=p>,</span>
-  <span class=nt>&#34;event&#34;</span><span class=p>:</span> <span class=s2>&#34;handleGetProviders&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;key&#34;</span><span class=p>:</span> <span class=s2>&#34;QmXLjNdoUETwAi8bErpc73FQEESTovBscu5XaC2wnpgfpY&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;peer&#34;</span><span class=p>:</span> <span class=s2>&#34;QmX9Nhr56k7K2JBQbu9JBpF2s1AQk8WpmZc6v4sqZERMRu&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;session&#34;</span><span class=p>:</span> <span class=s2>&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;system&#34;</span><span class=p>:</span> <span class=s2>&#34;dht&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;time&#34;</span><span class=p>:</span> <span class=s2>&#34;2017-11-10T06:56:50.517580514Z&#34;</span>
-<span class=p>}</span>
-</code></pre></div><p><code>key</code>が、誰かが探そうとしているハッシュだと思う。
+つまり、このイベントをキャッチすれば誰かがアクセスしようとしたハッシュを収集できる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> ipfs log tail <span class=p>|</span> grep <span class=s1>&#39;&#34;handleGetProviders&#34;&#39;</span> -m <span class=m>1</span> --line-buffered <span class=p>|</span> jq
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;duration&#34;</span><span class=p>:</span> <span class=mi>2045973</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;event&#34;</span><span class=p>:</span> <span class=s2>&#34;handleGetProviders&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;key&#34;</span><span class=p>:</span> <span class=s2>&#34;QmXLjNdoUETwAi8bErpc73FQEESTovBscu5XaC2wnpgfpY&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;peer&#34;</span><span class=p>:</span> <span class=s2>&#34;QmX9Nhr56k7K2JBQbu9JBpF2s1AQk8WpmZc6v4sqZERMRu&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;session&#34;</span><span class=p>:</span> <span class=s2>&#34;8e57bece-9c9d-400f-b0ff-ab616dcdfe91&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;system&#34;</span><span class=p>:</span> <span class=s2>&#34;dht&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;time&#34;</span><span class=p>:</span> <span class=s2>&#34;2017-11-10T06:56:50.517580514Z&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p><code>key</code>が、誰かが探そうとしているハッシュだと思う。
 とりあえず200件ほど集めてみる。
-それなりに時間がかかる。</p><pre><code class=language-console data-lang=console>$ ipfs log tail | grep '&quot;handleGetProviders&quot;' -m 200 --line-buffered | jq &quot;.key&quot; -r --unbuffered &gt;&gt; hashes.txt
-$ cat hashes.txt 
-Qmd38FX6orV498CN1Z17997R26jZUwgicb1GXZ2kp9kAmq
-QmW9zpbtUnym5MrZFTqx1gqcRPBn7LYsQmYjGF6go3MKNy
-QmXfUy6oCwYNaU87rN9vprMqL9soaBWvZqkTkjyKfCvgBE
-QmdaM5GdH8a3YAXJfxeLNWX5MRvZ6nPtXLfqBx27kmaPU4
-QmTawgaWc5mbFXb1YsG3USSvGyERwD4YW38HmmqzvutxWQ
-QmaUYFPjZE4Zttrd8bWUH5aXchWSNZsCdb9aXH4zMpjreL
-QmVU78LkGcNCWJiHKQTjkbXei4KXA5GhPb3ZJt4ET9pVmh
-QmTPYx6QsCcGjd1BRR55kJWAcEaAv1ypG5DpegRciC2VS9
-QmTfMqZsa2GzY1qyZ9H3s246qTbXZQfXkkb5xv7wVtzMV4
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmV8Emsju7VDsKYURQPFKkF3YqDDwgJ2nfxvEGU8hRa73r
-QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-Qmc4vcxmMMZDj5sq67exuMtmHbYiKWZdwYSzJ6XtW41pYU
-zb2rhhBBo75RS1WjAjsDsne3H1dvqcGkFmmtRRPDta57NMH5T
-QmePgqz7wrU6SF1wxF1oSDgPBvMxf7nqbwtpQQJhov5kzu
-QmPJAPbCfN4Lo6bwchNGTctGNQtd4AbmubeBASgry2rY2c
-QmZupYaAmmRnimpR9RQZuaU1X239m9HjyiyekJMKMuABt8
-QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
-QmVW9hZP3YVuEswAig3fdn4PZtiJrzT4L9dLPDHdzfxtjY
-QmTFzjH1cC9cdj7B8WTmsQjEqWKdVFjf8gxCEFUS6S3jf5
-QmWWW1UuPQvu87iL1XE81BWqyPwAW7ArSgt5jpbDR39Cqd
-zb2rhkNQ9F9aimY19GTqUTkAy5c2AV3yzgLrKrAYnF7pgsSKv
-zb2rhjiXqnYwigVLuoTcYNea9LgU5G4pCFDSzjuzxMTN4sWy9
-QmTWYoBgfnHGMeEVLhGxSKjQLbFyrTQyjNy9PXkLKwDFUR
-QmVSubKStQRVigJMoGUdpq9m7XfzKc5cp9w94HXDHLJfqJ
-zb2rhgpzJka244jia1uc7n8djXndB7tSwtfaJgX1ndf7ghMnu
-QmYKVG8An1a7nLFirf6QqJhZfoyPquj6xh5hYiqe6HULpF
-QmPW9zEqcDEWeFPSeyYf3o9Xvvu93TX7j1v2rhxhvyHR2P
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmUotHZmVLsqEjp3kYS2sE4b51ZE5UWm8rSw7yPsVJr22d
-zb2rhiXhD4b5ewXPXnpyFtFuGnBKkpAy68CZdN9Zakraurg3P
-QmdacU3xWUDvp57qkpAUSVZJXkUKMQr26sZfCPMthGmcKH
-QmNjdKSeBP39zjs44vEhV5DqexHvMY6Aa2zs89sP578KaN
-QmYiYA2NYprtunFCWpHUsuyzWNraM5PWoAyQUJywumLYhn
-QmSKtbTRvbm3WmMUMUQ5f75QAxMJQ2fDy8r4qdzm3Af6mk
-QmfGfPiiL9JSYAWXnLncQEW7umHh2S6Vx3wTr65cuxneT3
-QmfH9baorAhyAXFMi5UssmUDfxPu9VTzrtkjFe99rW6rKR
-QmPRWS8Dkpz1gApoiRMXgNiETxqTKsvJcJBC1PNvzNEGKC
-QmXbVcibcYVN6beabcAxzF83bqfeW2YZpyMcsuH9ykYJWk
-QmTGEiyXfDMzZpntHKBaucJPK8wPgztDPFMia2RjGgQGgz
-QmaENKCYRaZxpxYhCX8G2nJuE8JL7p57R6qoX4Jdqfg4zu
-QmUoqY9yBKG4nWgvcsD2XXHjDVkK8YhTHwZ6h7LQybfEZM
-QmUQMpidJUxgSd6d5ehvPGWrfe2rYmhGoMdL8nkPodvYyt
-QmYqMd4JidWfme7JSVjzN3e4TC7z4E3GnvMRDJuXAa5nv8
-zb2rha1kCsAqbk6uLAg3RPunE3R8HJNAbX1tRAC8ppUzh7SHx
-QmXnRqunY1ZTCR1RgbSc9pfjjmRrAd3h3bP5hwpbLGBTPk
-QmewcoN9jXMuF2v9YmiYvp6gDQf1h9JvZPQywhn9isDpRd
-QmV2vxCKrJzh6SGAmXa5KHSwwrZsoMBnyoZapUECxrqnEq
-QmPtxs8Lgrxq2MtzGZT8DL65jwdkjT64B24NkmdVbteNwL
-QmVWJsyspezc1yo6QZcWMMbh8knNPawcxz6YnVgcLvZVrm
-QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
-Qme2DySzpw8C93JKDekGfiP1TNTtB8mz7pNVxo8GUN78pe
-QmeBQVu3MSqRdA7LiHUUumgn8jnvYvCk9sjQRbjTEGTXG4
-QmbmGzgqoSXwE7181V9EtR8744JpfqoJixTuF6dsF62DrC
-QmeHoJWmEGQPeWS1VkGDCQT2JCrzVsR4bNQwHhogDknMPV
-QmbLAKr73XQR1MSA5GsEcsbzkoyxBhvP7oWdz4J4FnQffD
-QmRGnSXmnKSqAPBZHnqKC89nGX1TqXauGdF72VTRVeoKjW
-zb2rhb4hNCrLr2mYLeGk9f2zmgFevhGvhtpVH82SD1xs7PdH9
-QmaR3XtEz9o7f3UE8T3pnTJeaFLXbRBrMYnUvqqJ7byuxs
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-Qmcs5AJvpbhZbfegsfW6oLUZpiaeHTSEDhNT9w8ZYARrw8
-Qmes3DUxXU2iKw998kYbicUWDtHqDdhGrwC6bnXGkyXGCK
-Qmf8uT9Nz9FkC5yUJcYpTR6PyePzrvBVkh4RQi5tNJaB6R
-QmWDnRxGA7UHnuR6f6vq6ddkfZtyCCRtQuBkiLXqJ19EhY
-QmWkYhqa4Ltbs8y6GgAGZCES6wpXfeGiMwmyJu1zqS9drE
-QmXMnJQGRo3Rob6nh1yc4VYhoTs2FsMajqVpk5j8DGD8Dn
-QmbwFC2Yr59UMMhVgKiu4dgKksusqCh6ZGsUMW4C9Np5aP
-QmaoDee5YaBaA2ZE5MSDRgjM71t9RbQVRii8eBuYLFM59P
-QmSgb5o2r49Lg8hthvkH6hjAVXqTa798dTzjpynMu1TTqe
-QmdgbRGSnwZ8NM2HFrGyvbT6Ay5a5KP166bYZ3vP358F7D
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmSgb5o2r49Lg8hthvkH6hjAVXqTa798dTzjpynMu1TTqe
-QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
-QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
-QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
-QmQ2qUmEaLWiDxxe6Ke7BYnzddTcWFdnZqY7vt4Ke1gJ9p
-QmUcSPmsgtqHpKtemor9Ti385GHFKU23joC6TTfwE4aNs8
-zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
-zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
-QmaAJLdvbmqXMcDZmZjN9pDPAdojecZ3aFDujTsj5vyHvu
-zb2rhncb5GbjCr84TC4uWP5YzzqKJ3iV3cnJWmizViEMaDZea
-QmYP2Lj4tTU8FHN5ZMgbFiwsys8MauRizwveY7VtsYvjy4
-QmYP2Lj4tTU8FHN5ZMgbFiwsys8MauRizwveY7VtsYvjy4
-QmdYwmmuUEuMMvDuMcjGX3djVHXsqh7shFYdywTCh3KeN1
-QmXMQkhrouWWocU5UvEbz7JzvWSPFBtVRyUBbK5bAMnSv2
-QmXMQkhrouWWocU5UvEbz7JzvWSPFBtVRyUBbK5bAMnSv2
-zb2rhcJEBMctyC2yag4LEVm7FFWmB2jbftsJxMpZPbYqPeT8X
-QmPtub7JM3SL3t4oFtGpd2DWXBq29XBbcAMnfNzRxiiqT5
-QmR6grEwzX4EKPbaZ2xF85cFSz9HmDBD2miPr2Nv3u1ZEK
-QmaiphPA536mmjpBXymSD63DFaGXj7CKp1ntdQme9beXTK
-QmSC7UiPh19fyjXRRtfdXm1ty9Eim149wuXbx75WkudSBt
-QmWyXJna7aUd46oYkCNnG2FCbZeK3BNYSzYm1634iiDebu
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmNjdKSeBP39zjs44vEhV5DqexHvMY6Aa2zs89sP578KaN
-QmYv33uvWpgYDgQvGhqhu3WJn4YkcBp3wCj2JGW1mZp4sv
-QmYv33uvWpgYDgQvGhqhu3WJn4YkcBp3wCj2JGW1mZp4sv
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmbtwrYwdcEKkxHp2oCEkutwLvTNVn4LozCx1VRx4B2hXE
-QmbCrkMtaCunhBBTSfMzoP1Tp1Se7nBG7i3YDN4UoWsAk5
-QmegNe5PmJZcbH5zd3Z8WKU9Yd1YcnHW6UYGs8KSAGw1pf
-QmbKh76jmDMo7Y9F6eUpQBr5sZHLvo9qLDjbfo8nU1XfQq
-QmU9fszFB8PxG5xRSiBko5MK51e4bpvvw2KkM4NvAXcgkn
-QmSojPvSgEtWfDBqm35bPDqKAJ7jx8JF1JdxMRqc6wSCY3
-QmUWdq6dY5kWynGi6HRxVaUP9FRAynSFTdjidafr7vuGjc
-QmRNAQXyWuyJHnkHMNGAgeuFgpisdtZ13otutN8hcMG5AU
-QmUWdq6dY5kWynGi6HRxVaUP9FRAynSFTdjidafr7vuGjc
-QmVSXfnPx8FxcTtg3ni6gkUFx2vZohiM4F18EebrptbL6A
-QmbvNovbMWVec41Jo1q72Cwqb4cxTy2C1vm5dZPfEX1cP1
-Qmb2ujuFej5p2vZitjZxkF2jkqsng9Tw3ki7b3LvK2adEC
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmTmGDTvgNAtMjzVYjnrPgiZN5BdnAnydQQAdC1UA5i228
-QmebCTBJBYnB3GyoD5tATjfnhKvmSbqWjPT7STLgNN2egy
-QmQVRMKU8ShRBihz8K5XwigT5vXLNSP4XgEPh9EHpHijRB
-QmebCTBJBYnB3GyoD5tATjfnhKvmSbqWjPT7STLgNN2egy
-QmebCTBJBYnB3GyoD5tATjfnhKvmSbqWjPT7STLgNN2egy
-QmQVRMKU8ShRBihz8K5XwigT5vXLNSP4XgEPh9EHpHijRB
-QmXKU4f4d9LhvozyPL8g6H7fiPkfsDfGBrZo9vwB2WHLNU
-QmXKU4f4d9LhvozyPL8g6H7fiPkfsDfGBrZo9vwB2WHLNU
-QmXKU4f4d9LhvozyPL8g6H7fiPkfsDfGBrZo9vwB2WHLNU
-Qme55pTceNQJs2gD5cqEiWhXvWtgAY72weaVfBzPAf1kt1
-QmbiWETVreeuHPMBXViq3etXDZhdKZ6UjsLVBfghpeJsUD
-QmbiWETVreeuHPMBXViq3etXDZhdKZ6UjsLVBfghpeJsUD
-QmWq9GzoYSK6Xg31pRCuB2mbjsGpWPHAnMPb6jfnTBMB4a
-QmQZ2VYyYPAV3ceqSfe78D13DS8uSxxF5veQkSXi8r2bxu
-QmYAoVXrNuYNMEjpcGQr5ApUCEZf9AxE73RZXJQPxrXqcR
-QmcwwHU9JdNnZPUXwe7QYmBKdJxZwEgwTc2VFB7jHoVRcb
-Qme8wmA1GZDnbcDvrxff9LFZtL6rZssnZ3oPUhMnYM4Fmd
-QmbwCCFPUCy6S1A7qXBKfmMh6cE8XsFAv2tcDuF43gkJT2
-QmbQ723wn3MZdYQsgTUgvZAGKiCp4Wgfa2V7jL4bXuB7mQ
-QmPMTcGvu5eiJY1ujU1BRCzmzrF7YQSX2Wzfv5Ao5YnPBo
-QmQ5C88JcZdm3MyQEZccnuGfopgw13PtRTFmY3jQD4mGsU
-QmYkQN6AtFB3HN3gYRgW2pkzZVmG86RUziPpKc9VF5QnCU
-QmQEF2NKBfGbeBjEtPW1CKCPhKsc3RmEKNTpQofbJfa69K
-QmUwAULyGsVqN8pK5WoAV1tmZvAtttQyTmYq8xmkXML7EU
-QmafT98p4BPQJ3RE6RKiwaF1WvnJ5SkZcAkK7G6fiRxWCX
-QmQEF2NKBfGbeBjEtPW1CKCPhKsc3RmEKNTpQofbJfa69K
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmYzGQsw2R6zKZUduJogHy1SPCq52Nwu63CvVfAAWScW7k
-QmTjaLeJkgTP5Q9dcmgTuwVpjWz8sEGRcNCTUyd9x4yxVb
-QmeDxJ8jxW5xwsbY2uMsfGKpJdM4N5iNhFyxd7HunSwsKi
-QmeDxJ8jxW5xwsbY2uMsfGKpJdM4N5iNhFyxd7HunSwsKi
-QmeDxJ8jxW5xwsbY2uMsfGKpJdM4N5iNhFyxd7HunSwsKi
-QmR6c8WnASomXVxTrjygd7NRL8aRFeMoe33A4XW4BNDz4g
-QmZPgjJnby5zkc2TuJqmSynDF5ZcKDEpR4d3UmZMdBPDtu
-QmckniiH8kHBiB4UNtYZoiqBAuWU5eHDjH3n99LWjMLJxY
-QmaMFwnhwAdmSy4xh2mr7Y93ykq8BdK72mqiWaqmCA5MoP
-QmRp2r3B1MicoGG9S9e5mS9LPRrFiVEPvpyBd1RU9viWJc
-QmUvG2K1auRehPDV9A1mWmLtvEu15DLdfHUegGh4jPhnag
-QmR6c8WnASomXVxTrjygd7NRL8aRFeMoe33A4XW4BNDz4g
-QmZPgjJnby5zkc2TuJqmSynDF5ZcKDEpR4d3UmZMdBPDtu
-QmVrpdrh5uzn8EdDhJEVTr7eLSmqcWfFgsvYGcwhm6t4xB
-QmPQ8PTjzR5n643W5sSz6dojBqjBJM1Y54hWKKipHSmVN7
-Qmb2He57x4cE7mvcmSccP1YgfNuWM8gvqFAaBUZPXkKyZz
-QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
-QmUvG2K1auRehPDV9A1mWmLtvEu15DLdfHUegGh4jPhnag
-QmXzgpDNMbzGMjTfBd5H3K9hxY4T2WiKvybuFFsHnSR9ia
-QmXzgpDNMbzGMjTfBd5H3K9hxY4T2WiKvybuFFsHnSR9ia
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmPtub7JM3SL3t4oFtGpd2DWXBq29XBbcAMnfNzRxiiqT5
-QmZh7oKYfmzY4Gvf1seJ44ZDt7QoRtum1Uh7HUMtJxrb8D
-QmZPgjJnby5zkc2TuJqmSynDF5ZcKDEpR4d3UmZMdBPDtu
-QmcJZgFDLpFJUzE2PaqUFsjH3gGSvfZmy84RG5Lk6x2fge
-QmaP5qHHUtj2V6dkuY83vNcCjvYSJzpZSWfxJoYnPjYDA4
-QmS2s4AR8YctYoVLeZYTt4k8XPMY9qHE39rqWEocmuUuuw
-QmeMoF4YAfyXPbvjr1hGo2RntLYcgtfPek4fDVY7Y7mNtz
-QmPmJ44bxwoXw8SjPFRPZ8tia7GDxEaFVzHi7hsCCPBrr7
-Qmd4xTKfLKSiVokoAC1pKAKcgYuirBqr9akLQeCyQBvT4y
-Qmf5A4HCebbf37rZMSDkGSUBX5LcHfYf35hTB1U7Fhcw2z
-QmNz9xKc5qN5y19BeG8eU1ybkrcNxsvkenW2JviUQcgapV
-QmPTRT53jbt38gPBwRgo9fG7MaNa2wZ1vSUiio9qRcpCpJ
-QmNz9xKc5qN5y19BeG8eU1ybkrcNxsvkenW2JviUQcgapV
-QmeymSWhV4uymKB3QaBYYXTPVigBmsS6qcViMZVSwsmiHZ
-QmfAPkmscpcULVL5EBXaMcPQA5rM9zbjpnjQn3fyergSq5
-QmZkSpqxiViGKrf1pCMVoVFJU7rvzoaYya96ZyFt7SatKL
-QmeYnPaUaAVWCHueTW2M2LdhmpBXpBXTPq85Rtpr6JiM5o
-QmbVePcoHDiZLiPcsJmG96ViJcxDE2z4se1Tc4K4STgNTT
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-Qmf9Aqp3WwzxcHpJNi8zafEfRs9ze3rBhSu3EQZB1PBQ6d
-QmX1dCic7XsBPjR6q5hK7PDiLbnDUzJZFUgNcjpyfPvZ9w
-QmeiHXMB7eDNkkG3YSJADP3vPJBYju7y29tvQx62VScxiS
-QmRiJNrL5TjkyydhJAGWW9jAf38CgwZkhs3MmciLnjDc3k
-QmPyy4TpXcHgv9JCMGxtdcvNnDrj1VFXcT82ZWTJNVnh1Y
-QmTimP9SxACuysybbAoM2aPVJRYxcsd7rgCM4QF9Ri3Ex7
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmcRZnY13MM45VJhx5JtKsYSxuZCJVWzUawNG7HSjPuPkR
-zb2rhYM79n5DCyojxo2MUfuLS3rLd1hh9KB6PSsYLfci8BRjs
-Qmf9Aqp3WwzxcHpJNi8zafEfRs9ze3rBhSu3EQZB1PBQ6d
-QmQMZb2AS8ssnKhDz2cUbwvvwAA66w3jEuod58zRaW19xJ
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
-QmRDHEjXnnR79hMS2yNsgVPYmnrT695zJdRBjFLYHkZN2x
-Qma8KT2c7GaQT82BZGgZGtn4deD5gFtFd5FLfBytt15q8W
-QmZTT6JS1hLhqupREUb8dwcRUkSaion4SE7F8aCGGdfSxy
-Qmf2rBnUYQjazKzv7gfbirTKS6cZR192koJErNpauaJNFj
-QmZ6RcsQbfpjYG5eKLFged2oUQKDVwQyE9Rzvsj4oVRKbK
-QmZop9gkPTQJCr8RYDtoxzVc8okiMJRLtEVueZqTLW4G64
-QmT1xRnP52NjAT1JCXwfvMyjiidZ1CCtzBQxeXFz2XCKjA
-QmRKQjaybXLfnfcoDEGGfzcNa7qULQZcuVagVhHP2TjveX
-QmRBD7YZYdLPCvZdn8xQF3G8czkSbw3AET7WwFbMXs8SSW
-</code></pre><p>このなかでアクセスできるハッシュだけをフィルタする。
+それなりに時間がかかる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> ipfs log tail <span class=p>|</span> grep <span class=s1>&#39;&#34;handleGetProviders&#34;&#39;</span> -m <span class=m>200</span> --line-buffered <span class=p>|</span> jq <span class=s2>&#34;.key&#34;</span> -r --unbuffered &gt;&gt; hashes.txt
+</span></span><span class=line><span class=cl><span class=gp>$</span> cat hashes.txt 
+</span></span><span class=line><span class=cl><span class=go>Qmd38FX6orV498CN1Z17997R26jZUwgicb1GXZ2kp9kAmq
+</span></span></span><span class=line><span class=cl><span class=go>QmW9zpbtUnym5MrZFTqx1gqcRPBn7LYsQmYjGF6go3MKNy
+</span></span></span><span class=line><span class=cl><span class=go>QmXfUy6oCwYNaU87rN9vprMqL9soaBWvZqkTkjyKfCvgBE
+</span></span></span><span class=line><span class=cl><span class=go>QmdaM5GdH8a3YAXJfxeLNWX5MRvZ6nPtXLfqBx27kmaPU4
+</span></span></span><span class=line><span class=cl><span class=go>QmTawgaWc5mbFXb1YsG3USSvGyERwD4YW38HmmqzvutxWQ
+</span></span></span><span class=line><span class=cl><span class=go>QmaUYFPjZE4Zttrd8bWUH5aXchWSNZsCdb9aXH4zMpjreL
+</span></span></span><span class=line><span class=cl><span class=go>QmVU78LkGcNCWJiHKQTjkbXei4KXA5GhPb3ZJt4ET9pVmh
+</span></span></span><span class=line><span class=cl><span class=go>QmTPYx6QsCcGjd1BRR55kJWAcEaAv1ypG5DpegRciC2VS9
+</span></span></span><span class=line><span class=cl><span class=go>QmTfMqZsa2GzY1qyZ9H3s246qTbXZQfXkkb5xv7wVtzMV4
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmV8Emsju7VDsKYURQPFKkF3YqDDwgJ2nfxvEGU8hRa73r
+</span></span></span><span class=line><span class=cl><span class=go>QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>Qmc4vcxmMMZDj5sq67exuMtmHbYiKWZdwYSzJ6XtW41pYU
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhhBBo75RS1WjAjsDsne3H1dvqcGkFmmtRRPDta57NMH5T
+</span></span></span><span class=line><span class=cl><span class=go>QmePgqz7wrU6SF1wxF1oSDgPBvMxf7nqbwtpQQJhov5kzu
+</span></span></span><span class=line><span class=cl><span class=go>QmPJAPbCfN4Lo6bwchNGTctGNQtd4AbmubeBASgry2rY2c
+</span></span></span><span class=line><span class=cl><span class=go>QmZupYaAmmRnimpR9RQZuaU1X239m9HjyiyekJMKMuABt8
+</span></span></span><span class=line><span class=cl><span class=go>QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
+</span></span></span><span class=line><span class=cl><span class=go>QmVW9hZP3YVuEswAig3fdn4PZtiJrzT4L9dLPDHdzfxtjY
+</span></span></span><span class=line><span class=cl><span class=go>QmTFzjH1cC9cdj7B8WTmsQjEqWKdVFjf8gxCEFUS6S3jf5
+</span></span></span><span class=line><span class=cl><span class=go>QmWWW1UuPQvu87iL1XE81BWqyPwAW7ArSgt5jpbDR39Cqd
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhkNQ9F9aimY19GTqUTkAy5c2AV3yzgLrKrAYnF7pgsSKv
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhjiXqnYwigVLuoTcYNea9LgU5G4pCFDSzjuzxMTN4sWy9
+</span></span></span><span class=line><span class=cl><span class=go>QmTWYoBgfnHGMeEVLhGxSKjQLbFyrTQyjNy9PXkLKwDFUR
+</span></span></span><span class=line><span class=cl><span class=go>QmVSubKStQRVigJMoGUdpq9m7XfzKc5cp9w94HXDHLJfqJ
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhgpzJka244jia1uc7n8djXndB7tSwtfaJgX1ndf7ghMnu
+</span></span></span><span class=line><span class=cl><span class=go>QmYKVG8An1a7nLFirf6QqJhZfoyPquj6xh5hYiqe6HULpF
+</span></span></span><span class=line><span class=cl><span class=go>QmPW9zEqcDEWeFPSeyYf3o9Xvvu93TX7j1v2rhxhvyHR2P
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmUotHZmVLsqEjp3kYS2sE4b51ZE5UWm8rSw7yPsVJr22d
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhiXhD4b5ewXPXnpyFtFuGnBKkpAy68CZdN9Zakraurg3P
+</span></span></span><span class=line><span class=cl><span class=go>QmdacU3xWUDvp57qkpAUSVZJXkUKMQr26sZfCPMthGmcKH
+</span></span></span><span class=line><span class=cl><span class=go>QmNjdKSeBP39zjs44vEhV5DqexHvMY6Aa2zs89sP578KaN
+</span></span></span><span class=line><span class=cl><span class=go>QmYiYA2NYprtunFCWpHUsuyzWNraM5PWoAyQUJywumLYhn
+</span></span></span><span class=line><span class=cl><span class=go>QmSKtbTRvbm3WmMUMUQ5f75QAxMJQ2fDy8r4qdzm3Af6mk
+</span></span></span><span class=line><span class=cl><span class=go>QmfGfPiiL9JSYAWXnLncQEW7umHh2S6Vx3wTr65cuxneT3
+</span></span></span><span class=line><span class=cl><span class=go>QmfH9baorAhyAXFMi5UssmUDfxPu9VTzrtkjFe99rW6rKR
+</span></span></span><span class=line><span class=cl><span class=go>QmPRWS8Dkpz1gApoiRMXgNiETxqTKsvJcJBC1PNvzNEGKC
+</span></span></span><span class=line><span class=cl><span class=go>QmXbVcibcYVN6beabcAxzF83bqfeW2YZpyMcsuH9ykYJWk
+</span></span></span><span class=line><span class=cl><span class=go>QmTGEiyXfDMzZpntHKBaucJPK8wPgztDPFMia2RjGgQGgz
+</span></span></span><span class=line><span class=cl><span class=go>QmaENKCYRaZxpxYhCX8G2nJuE8JL7p57R6qoX4Jdqfg4zu
+</span></span></span><span class=line><span class=cl><span class=go>QmUoqY9yBKG4nWgvcsD2XXHjDVkK8YhTHwZ6h7LQybfEZM
+</span></span></span><span class=line><span class=cl><span class=go>QmUQMpidJUxgSd6d5ehvPGWrfe2rYmhGoMdL8nkPodvYyt
+</span></span></span><span class=line><span class=cl><span class=go>QmYqMd4JidWfme7JSVjzN3e4TC7z4E3GnvMRDJuXAa5nv8
+</span></span></span><span class=line><span class=cl><span class=go>zb2rha1kCsAqbk6uLAg3RPunE3R8HJNAbX1tRAC8ppUzh7SHx
+</span></span></span><span class=line><span class=cl><span class=go>QmXnRqunY1ZTCR1RgbSc9pfjjmRrAd3h3bP5hwpbLGBTPk
+</span></span></span><span class=line><span class=cl><span class=go>QmewcoN9jXMuF2v9YmiYvp6gDQf1h9JvZPQywhn9isDpRd
+</span></span></span><span class=line><span class=cl><span class=go>QmV2vxCKrJzh6SGAmXa5KHSwwrZsoMBnyoZapUECxrqnEq
+</span></span></span><span class=line><span class=cl><span class=go>QmPtxs8Lgrxq2MtzGZT8DL65jwdkjT64B24NkmdVbteNwL
+</span></span></span><span class=line><span class=cl><span class=go>QmVWJsyspezc1yo6QZcWMMbh8knNPawcxz6YnVgcLvZVrm
+</span></span></span><span class=line><span class=cl><span class=go>QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
+</span></span></span><span class=line><span class=cl><span class=go>Qme2DySzpw8C93JKDekGfiP1TNTtB8mz7pNVxo8GUN78pe
+</span></span></span><span class=line><span class=cl><span class=go>QmeBQVu3MSqRdA7LiHUUumgn8jnvYvCk9sjQRbjTEGTXG4
+</span></span></span><span class=line><span class=cl><span class=go>QmbmGzgqoSXwE7181V9EtR8744JpfqoJixTuF6dsF62DrC
+</span></span></span><span class=line><span class=cl><span class=go>QmeHoJWmEGQPeWS1VkGDCQT2JCrzVsR4bNQwHhogDknMPV
+</span></span></span><span class=line><span class=cl><span class=go>QmbLAKr73XQR1MSA5GsEcsbzkoyxBhvP7oWdz4J4FnQffD
+</span></span></span><span class=line><span class=cl><span class=go>QmRGnSXmnKSqAPBZHnqKC89nGX1TqXauGdF72VTRVeoKjW
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhb4hNCrLr2mYLeGk9f2zmgFevhGvhtpVH82SD1xs7PdH9
+</span></span></span><span class=line><span class=cl><span class=go>QmaR3XtEz9o7f3UE8T3pnTJeaFLXbRBrMYnUvqqJ7byuxs
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>Qmcs5AJvpbhZbfegsfW6oLUZpiaeHTSEDhNT9w8ZYARrw8
+</span></span></span><span class=line><span class=cl><span class=go>Qmes3DUxXU2iKw998kYbicUWDtHqDdhGrwC6bnXGkyXGCK
+</span></span></span><span class=line><span class=cl><span class=go>Qmf8uT9Nz9FkC5yUJcYpTR6PyePzrvBVkh4RQi5tNJaB6R
+</span></span></span><span class=line><span class=cl><span class=go>QmWDnRxGA7UHnuR6f6vq6ddkfZtyCCRtQuBkiLXqJ19EhY
+</span></span></span><span class=line><span class=cl><span class=go>QmWkYhqa4Ltbs8y6GgAGZCES6wpXfeGiMwmyJu1zqS9drE
+</span></span></span><span class=line><span class=cl><span class=go>QmXMnJQGRo3Rob6nh1yc4VYhoTs2FsMajqVpk5j8DGD8Dn
+</span></span></span><span class=line><span class=cl><span class=go>QmbwFC2Yr59UMMhVgKiu4dgKksusqCh6ZGsUMW4C9Np5aP
+</span></span></span><span class=line><span class=cl><span class=go>QmaoDee5YaBaA2ZE5MSDRgjM71t9RbQVRii8eBuYLFM59P
+</span></span></span><span class=line><span class=cl><span class=go>QmSgb5o2r49Lg8hthvkH6hjAVXqTa798dTzjpynMu1TTqe
+</span></span></span><span class=line><span class=cl><span class=go>QmdgbRGSnwZ8NM2HFrGyvbT6Ay5a5KP166bYZ3vP358F7D
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmSgb5o2r49Lg8hthvkH6hjAVXqTa798dTzjpynMu1TTqe
+</span></span></span><span class=line><span class=cl><span class=go>QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
+</span></span></span><span class=line><span class=cl><span class=go>QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
+</span></span></span><span class=line><span class=cl><span class=go>QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
+</span></span></span><span class=line><span class=cl><span class=go>QmQ2qUmEaLWiDxxe6Ke7BYnzddTcWFdnZqY7vt4Ke1gJ9p
+</span></span></span><span class=line><span class=cl><span class=go>QmUcSPmsgtqHpKtemor9Ti385GHFKU23joC6TTfwE4aNs8
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
+</span></span></span><span class=line><span class=cl><span class=go>QmaAJLdvbmqXMcDZmZjN9pDPAdojecZ3aFDujTsj5vyHvu
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhncb5GbjCr84TC4uWP5YzzqKJ3iV3cnJWmizViEMaDZea
+</span></span></span><span class=line><span class=cl><span class=go>QmYP2Lj4tTU8FHN5ZMgbFiwsys8MauRizwveY7VtsYvjy4
+</span></span></span><span class=line><span class=cl><span class=go>QmYP2Lj4tTU8FHN5ZMgbFiwsys8MauRizwveY7VtsYvjy4
+</span></span></span><span class=line><span class=cl><span class=go>QmdYwmmuUEuMMvDuMcjGX3djVHXsqh7shFYdywTCh3KeN1
+</span></span></span><span class=line><span class=cl><span class=go>QmXMQkhrouWWocU5UvEbz7JzvWSPFBtVRyUBbK5bAMnSv2
+</span></span></span><span class=line><span class=cl><span class=go>QmXMQkhrouWWocU5UvEbz7JzvWSPFBtVRyUBbK5bAMnSv2
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhcJEBMctyC2yag4LEVm7FFWmB2jbftsJxMpZPbYqPeT8X
+</span></span></span><span class=line><span class=cl><span class=go>QmPtub7JM3SL3t4oFtGpd2DWXBq29XBbcAMnfNzRxiiqT5
+</span></span></span><span class=line><span class=cl><span class=go>QmR6grEwzX4EKPbaZ2xF85cFSz9HmDBD2miPr2Nv3u1ZEK
+</span></span></span><span class=line><span class=cl><span class=go>QmaiphPA536mmjpBXymSD63DFaGXj7CKp1ntdQme9beXTK
+</span></span></span><span class=line><span class=cl><span class=go>QmSC7UiPh19fyjXRRtfdXm1ty9Eim149wuXbx75WkudSBt
+</span></span></span><span class=line><span class=cl><span class=go>QmWyXJna7aUd46oYkCNnG2FCbZeK3BNYSzYm1634iiDebu
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmNjdKSeBP39zjs44vEhV5DqexHvMY6Aa2zs89sP578KaN
+</span></span></span><span class=line><span class=cl><span class=go>QmYv33uvWpgYDgQvGhqhu3WJn4YkcBp3wCj2JGW1mZp4sv
+</span></span></span><span class=line><span class=cl><span class=go>QmYv33uvWpgYDgQvGhqhu3WJn4YkcBp3wCj2JGW1mZp4sv
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmbtwrYwdcEKkxHp2oCEkutwLvTNVn4LozCx1VRx4B2hXE
+</span></span></span><span class=line><span class=cl><span class=go>QmbCrkMtaCunhBBTSfMzoP1Tp1Se7nBG7i3YDN4UoWsAk5
+</span></span></span><span class=line><span class=cl><span class=go>QmegNe5PmJZcbH5zd3Z8WKU9Yd1YcnHW6UYGs8KSAGw1pf
+</span></span></span><span class=line><span class=cl><span class=go>QmbKh76jmDMo7Y9F6eUpQBr5sZHLvo9qLDjbfo8nU1XfQq
+</span></span></span><span class=line><span class=cl><span class=go>QmU9fszFB8PxG5xRSiBko5MK51e4bpvvw2KkM4NvAXcgkn
+</span></span></span><span class=line><span class=cl><span class=go>QmSojPvSgEtWfDBqm35bPDqKAJ7jx8JF1JdxMRqc6wSCY3
+</span></span></span><span class=line><span class=cl><span class=go>QmUWdq6dY5kWynGi6HRxVaUP9FRAynSFTdjidafr7vuGjc
+</span></span></span><span class=line><span class=cl><span class=go>QmRNAQXyWuyJHnkHMNGAgeuFgpisdtZ13otutN8hcMG5AU
+</span></span></span><span class=line><span class=cl><span class=go>QmUWdq6dY5kWynGi6HRxVaUP9FRAynSFTdjidafr7vuGjc
+</span></span></span><span class=line><span class=cl><span class=go>QmVSXfnPx8FxcTtg3ni6gkUFx2vZohiM4F18EebrptbL6A
+</span></span></span><span class=line><span class=cl><span class=go>QmbvNovbMWVec41Jo1q72Cwqb4cxTy2C1vm5dZPfEX1cP1
+</span></span></span><span class=line><span class=cl><span class=go>Qmb2ujuFej5p2vZitjZxkF2jkqsng9Tw3ki7b3LvK2adEC
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmTmGDTvgNAtMjzVYjnrPgiZN5BdnAnydQQAdC1UA5i228
+</span></span></span><span class=line><span class=cl><span class=go>QmebCTBJBYnB3GyoD5tATjfnhKvmSbqWjPT7STLgNN2egy
+</span></span></span><span class=line><span class=cl><span class=go>QmQVRMKU8ShRBihz8K5XwigT5vXLNSP4XgEPh9EHpHijRB
+</span></span></span><span class=line><span class=cl><span class=go>QmebCTBJBYnB3GyoD5tATjfnhKvmSbqWjPT7STLgNN2egy
+</span></span></span><span class=line><span class=cl><span class=go>QmebCTBJBYnB3GyoD5tATjfnhKvmSbqWjPT7STLgNN2egy
+</span></span></span><span class=line><span class=cl><span class=go>QmQVRMKU8ShRBihz8K5XwigT5vXLNSP4XgEPh9EHpHijRB
+</span></span></span><span class=line><span class=cl><span class=go>QmXKU4f4d9LhvozyPL8g6H7fiPkfsDfGBrZo9vwB2WHLNU
+</span></span></span><span class=line><span class=cl><span class=go>QmXKU4f4d9LhvozyPL8g6H7fiPkfsDfGBrZo9vwB2WHLNU
+</span></span></span><span class=line><span class=cl><span class=go>QmXKU4f4d9LhvozyPL8g6H7fiPkfsDfGBrZo9vwB2WHLNU
+</span></span></span><span class=line><span class=cl><span class=go>Qme55pTceNQJs2gD5cqEiWhXvWtgAY72weaVfBzPAf1kt1
+</span></span></span><span class=line><span class=cl><span class=go>QmbiWETVreeuHPMBXViq3etXDZhdKZ6UjsLVBfghpeJsUD
+</span></span></span><span class=line><span class=cl><span class=go>QmbiWETVreeuHPMBXViq3etXDZhdKZ6UjsLVBfghpeJsUD
+</span></span></span><span class=line><span class=cl><span class=go>QmWq9GzoYSK6Xg31pRCuB2mbjsGpWPHAnMPb6jfnTBMB4a
+</span></span></span><span class=line><span class=cl><span class=go>QmQZ2VYyYPAV3ceqSfe78D13DS8uSxxF5veQkSXi8r2bxu
+</span></span></span><span class=line><span class=cl><span class=go>QmYAoVXrNuYNMEjpcGQr5ApUCEZf9AxE73RZXJQPxrXqcR
+</span></span></span><span class=line><span class=cl><span class=go>QmcwwHU9JdNnZPUXwe7QYmBKdJxZwEgwTc2VFB7jHoVRcb
+</span></span></span><span class=line><span class=cl><span class=go>Qme8wmA1GZDnbcDvrxff9LFZtL6rZssnZ3oPUhMnYM4Fmd
+</span></span></span><span class=line><span class=cl><span class=go>QmbwCCFPUCy6S1A7qXBKfmMh6cE8XsFAv2tcDuF43gkJT2
+</span></span></span><span class=line><span class=cl><span class=go>QmbQ723wn3MZdYQsgTUgvZAGKiCp4Wgfa2V7jL4bXuB7mQ
+</span></span></span><span class=line><span class=cl><span class=go>QmPMTcGvu5eiJY1ujU1BRCzmzrF7YQSX2Wzfv5Ao5YnPBo
+</span></span></span><span class=line><span class=cl><span class=go>QmQ5C88JcZdm3MyQEZccnuGfopgw13PtRTFmY3jQD4mGsU
+</span></span></span><span class=line><span class=cl><span class=go>QmYkQN6AtFB3HN3gYRgW2pkzZVmG86RUziPpKc9VF5QnCU
+</span></span></span><span class=line><span class=cl><span class=go>QmQEF2NKBfGbeBjEtPW1CKCPhKsc3RmEKNTpQofbJfa69K
+</span></span></span><span class=line><span class=cl><span class=go>QmUwAULyGsVqN8pK5WoAV1tmZvAtttQyTmYq8xmkXML7EU
+</span></span></span><span class=line><span class=cl><span class=go>QmafT98p4BPQJ3RE6RKiwaF1WvnJ5SkZcAkK7G6fiRxWCX
+</span></span></span><span class=line><span class=cl><span class=go>QmQEF2NKBfGbeBjEtPW1CKCPhKsc3RmEKNTpQofbJfa69K
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmYzGQsw2R6zKZUduJogHy1SPCq52Nwu63CvVfAAWScW7k
+</span></span></span><span class=line><span class=cl><span class=go>QmTjaLeJkgTP5Q9dcmgTuwVpjWz8sEGRcNCTUyd9x4yxVb
+</span></span></span><span class=line><span class=cl><span class=go>QmeDxJ8jxW5xwsbY2uMsfGKpJdM4N5iNhFyxd7HunSwsKi
+</span></span></span><span class=line><span class=cl><span class=go>QmeDxJ8jxW5xwsbY2uMsfGKpJdM4N5iNhFyxd7HunSwsKi
+</span></span></span><span class=line><span class=cl><span class=go>QmeDxJ8jxW5xwsbY2uMsfGKpJdM4N5iNhFyxd7HunSwsKi
+</span></span></span><span class=line><span class=cl><span class=go>QmR6c8WnASomXVxTrjygd7NRL8aRFeMoe33A4XW4BNDz4g
+</span></span></span><span class=line><span class=cl><span class=go>QmZPgjJnby5zkc2TuJqmSynDF5ZcKDEpR4d3UmZMdBPDtu
+</span></span></span><span class=line><span class=cl><span class=go>QmckniiH8kHBiB4UNtYZoiqBAuWU5eHDjH3n99LWjMLJxY
+</span></span></span><span class=line><span class=cl><span class=go>QmaMFwnhwAdmSy4xh2mr7Y93ykq8BdK72mqiWaqmCA5MoP
+</span></span></span><span class=line><span class=cl><span class=go>QmRp2r3B1MicoGG9S9e5mS9LPRrFiVEPvpyBd1RU9viWJc
+</span></span></span><span class=line><span class=cl><span class=go>QmUvG2K1auRehPDV9A1mWmLtvEu15DLdfHUegGh4jPhnag
+</span></span></span><span class=line><span class=cl><span class=go>QmR6c8WnASomXVxTrjygd7NRL8aRFeMoe33A4XW4BNDz4g
+</span></span></span><span class=line><span class=cl><span class=go>QmZPgjJnby5zkc2TuJqmSynDF5ZcKDEpR4d3UmZMdBPDtu
+</span></span></span><span class=line><span class=cl><span class=go>QmVrpdrh5uzn8EdDhJEVTr7eLSmqcWfFgsvYGcwhm6t4xB
+</span></span></span><span class=line><span class=cl><span class=go>QmPQ8PTjzR5n643W5sSz6dojBqjBJM1Y54hWKKipHSmVN7
+</span></span></span><span class=line><span class=cl><span class=go>Qmb2He57x4cE7mvcmSccP1YgfNuWM8gvqFAaBUZPXkKyZz
+</span></span></span><span class=line><span class=cl><span class=go>QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
+</span></span></span><span class=line><span class=cl><span class=go>QmUvG2K1auRehPDV9A1mWmLtvEu15DLdfHUegGh4jPhnag
+</span></span></span><span class=line><span class=cl><span class=go>QmXzgpDNMbzGMjTfBd5H3K9hxY4T2WiKvybuFFsHnSR9ia
+</span></span></span><span class=line><span class=cl><span class=go>QmXzgpDNMbzGMjTfBd5H3K9hxY4T2WiKvybuFFsHnSR9ia
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmPtub7JM3SL3t4oFtGpd2DWXBq29XBbcAMnfNzRxiiqT5
+</span></span></span><span class=line><span class=cl><span class=go>QmZh7oKYfmzY4Gvf1seJ44ZDt7QoRtum1Uh7HUMtJxrb8D
+</span></span></span><span class=line><span class=cl><span class=go>QmZPgjJnby5zkc2TuJqmSynDF5ZcKDEpR4d3UmZMdBPDtu
+</span></span></span><span class=line><span class=cl><span class=go>QmcJZgFDLpFJUzE2PaqUFsjH3gGSvfZmy84RG5Lk6x2fge
+</span></span></span><span class=line><span class=cl><span class=go>QmaP5qHHUtj2V6dkuY83vNcCjvYSJzpZSWfxJoYnPjYDA4
+</span></span></span><span class=line><span class=cl><span class=go>QmS2s4AR8YctYoVLeZYTt4k8XPMY9qHE39rqWEocmuUuuw
+</span></span></span><span class=line><span class=cl><span class=go>QmeMoF4YAfyXPbvjr1hGo2RntLYcgtfPek4fDVY7Y7mNtz
+</span></span></span><span class=line><span class=cl><span class=go>QmPmJ44bxwoXw8SjPFRPZ8tia7GDxEaFVzHi7hsCCPBrr7
+</span></span></span><span class=line><span class=cl><span class=go>Qmd4xTKfLKSiVokoAC1pKAKcgYuirBqr9akLQeCyQBvT4y
+</span></span></span><span class=line><span class=cl><span class=go>Qmf5A4HCebbf37rZMSDkGSUBX5LcHfYf35hTB1U7Fhcw2z
+</span></span></span><span class=line><span class=cl><span class=go>QmNz9xKc5qN5y19BeG8eU1ybkrcNxsvkenW2JviUQcgapV
+</span></span></span><span class=line><span class=cl><span class=go>QmPTRT53jbt38gPBwRgo9fG7MaNa2wZ1vSUiio9qRcpCpJ
+</span></span></span><span class=line><span class=cl><span class=go>QmNz9xKc5qN5y19BeG8eU1ybkrcNxsvkenW2JviUQcgapV
+</span></span></span><span class=line><span class=cl><span class=go>QmeymSWhV4uymKB3QaBYYXTPVigBmsS6qcViMZVSwsmiHZ
+</span></span></span><span class=line><span class=cl><span class=go>QmfAPkmscpcULVL5EBXaMcPQA5rM9zbjpnjQn3fyergSq5
+</span></span></span><span class=line><span class=cl><span class=go></span><span class=go>QmZkSpqxiViGKrf1pCMVoVFJU7rvzoaYya96ZyFt7SatKL
+</span></span></span><span class=line><span class=cl><span class=go>QmeYnPaUaAVWCHueTW2M2LdhmpBXpBXTPq85Rtpr6JiM5o
+</span></span></span><span class=line><span class=cl><span class=go>QmbVePcoHDiZLiPcsJmG96ViJcxDE2z4se1Tc4K4STgNTT
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>Qmf9Aqp3WwzxcHpJNi8zafEfRs9ze3rBhSu3EQZB1PBQ6d
+</span></span></span><span class=line><span class=cl><span class=go>QmX1dCic7XsBPjR6q5hK7PDiLbnDUzJZFUgNcjpyfPvZ9w
+</span></span></span><span class=line><span class=cl><span class=go>QmeiHXMB7eDNkkG3YSJADP3vPJBYju7y29tvQx62VScxiS
+</span></span></span><span class=line><span class=cl><span class=go>QmRiJNrL5TjkyydhJAGWW9jAf38CgwZkhs3MmciLnjDc3k
+</span></span></span><span class=line><span class=cl><span class=go>QmPyy4TpXcHgv9JCMGxtdcvNnDrj1VFXcT82ZWTJNVnh1Y
+</span></span></span><span class=line><span class=cl><span class=go>QmTimP9SxACuysybbAoM2aPVJRYxcsd7rgCM4QF9Ri3Ex7
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmcRZnY13MM45VJhx5JtKsYSxuZCJVWzUawNG7HSjPuPkR
+</span></span></span><span class=line><span class=cl><span class=go>zb2rhYM79n5DCyojxo2MUfuLS3rLd1hh9KB6PSsYLfci8BRjs
+</span></span></span><span class=line><span class=cl><span class=go>Qmf9Aqp3WwzxcHpJNi8zafEfRs9ze3rBhSu3EQZB1PBQ6d
+</span></span></span><span class=line><span class=cl><span class=go>QmQMZb2AS8ssnKhDz2cUbwvvwAA66w3jEuod58zRaW19xJ
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmXypqdjrHvQY5ePn4jbAdymG6ij9FMcQu5qMwhgk8xeqE
+</span></span></span><span class=line><span class=cl><span class=go>QmRDHEjXnnR79hMS2yNsgVPYmnrT695zJdRBjFLYHkZN2x
+</span></span></span><span class=line><span class=cl><span class=go>Qma8KT2c7GaQT82BZGgZGtn4deD5gFtFd5FLfBytt15q8W
+</span></span></span><span class=line><span class=cl><span class=go>QmZTT6JS1hLhqupREUb8dwcRUkSaion4SE7F8aCGGdfSxy
+</span></span></span><span class=line><span class=cl><span class=go>Qmf2rBnUYQjazKzv7gfbirTKS6cZR192koJErNpauaJNFj
+</span></span></span><span class=line><span class=cl><span class=go>QmZ6RcsQbfpjYG5eKLFged2oUQKDVwQyE9Rzvsj4oVRKbK
+</span></span></span><span class=line><span class=cl><span class=go>QmZop9gkPTQJCr8RYDtoxzVc8okiMJRLtEVueZqTLW4G64
+</span></span></span><span class=line><span class=cl><span class=go>QmT1xRnP52NjAT1JCXwfvMyjiidZ1CCtzBQxeXFz2XCKjA
+</span></span></span><span class=line><span class=cl><span class=go>QmRKQjaybXLfnfcoDEGGfzcNa7qULQZcuVagVhHP2TjveX
+</span></span></span><span class=line><span class=cl><span class=go>QmRBD7YZYdLPCvZdn8xQF3G8czkSbw3AET7WwFbMXs8SSW
+</span></span></span></code></pre></div><p>このなかでアクセスできるハッシュだけをフィルタする。
 ゲートウェイでのアクセスに失敗した時に<code>ipfs resolve -r</code>のエラーメッセージが出ていた気がするので、それを使う。
-これまたものすごく時間がかかる。</p><pre><code class=language-console data-lang=console>$ cat hashes.txt | xargs -I hash timeout 60 ipfs resolve -r hash 2&gt;/dev/null | sed '/^$/d' &gt;&gt; resolve.txt
-$ cat resolve.txt
-/ipfs/Qmd38FX6orV498CN1Z17997R26jZUwgicb1GXZ2kp9kAmq
-/ipfs/QmaUYFPjZE4Zttrd8bWUH5aXchWSNZsCdb9aXH4zMpjreL
-/ipfs/QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
-/ipfs/zb2rhhBBo75RS1WjAjsDsne3H1dvqcGkFmmtRRPDta57NMH5T
-/ipfs/QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
-/ipfs/QmTFzjH1cC9cdj7B8WTmsQjEqWKdVFjf8gxCEFUS6S3jf5
-/ipfs/QmWWW1UuPQvu87iL1XE81BWqyPwAW7ArSgt5jpbDR39Cqd
-/ipfs/zb2rhkNQ9F9aimY19GTqUTkAy5c2AV3yzgLrKrAYnF7pgsSKv
-/ipfs/zb2rhjiXqnYwigVLuoTcYNea9LgU5G4pCFDSzjuzxMTN4sWy9
-/ipfs/zb2rhgpzJka244jia1uc7n8djXndB7tSwtfaJgX1ndf7ghMnu
-/ipfs/QmYKVG8An1a7nLFirf6QqJhZfoyPquj6xh5hYiqe6HULpF
-/ipfs/zb2rhiXhD4b5ewXPXnpyFtFuGnBKkpAy68CZdN9Zakraurg3P
-/ipfs/QmfGfPiiL9JSYAWXnLncQEW7umHh2S6Vx3wTr65cuxneT3
-/ipfs/QmfH9baorAhyAXFMi5UssmUDfxPu9VTzrtkjFe99rW6rKR
-/ipfs/QmPtxs8Lgrxq2MtzGZT8DL65jwdkjT64B24NkmdVbteNwL
-/ipfs/QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
-/ipfs/QmeHoJWmEGQPeWS1VkGDCQT2JCrzVsR4bNQwHhogDknMPV
-/ipfs/zb2rhb4hNCrLr2mYLeGk9f2zmgFevhGvhtpVH82SD1xs7PdH9
-/ipfs/Qmcs5AJvpbhZbfegsfW6oLUZpiaeHTSEDhNT9w8ZYARrw8
-/ipfs/Qmf8uT9Nz9FkC5yUJcYpTR6PyePzrvBVkh4RQi5tNJaB6R
-/ipfs/QmdgbRGSnwZ8NM2HFrGyvbT6Ay5a5KP166bYZ3vP358F7D
-/ipfs/QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
-/ipfs/QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
-/ipfs/QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
-/ipfs/QmUcSPmsgtqHpKtemor9Ti385GHFKU23joC6TTfwE4aNs8
-/ipfs/zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
-/ipfs/zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
-/ipfs/zb2rhncb5GbjCr84TC4uWP5YzzqKJ3iV3cnJWmizViEMaDZea
-/ipfs/zb2rhcJEBMctyC2yag4LEVm7FFWmB2jbftsJxMpZPbYqPeT8X
-/ipfs/QmWyXJna7aUd46oYkCNnG2FCbZeK3BNYSzYm1634iiDebu
-/ipfs/QmNjdKSeBP39zjs44vEhV5DqexHvMY6Aa2zs89sP578KaN
-/ipfs/QmbCrkMtaCunhBBTSfMzoP1Tp1Se7nBG7i3YDN4UoWsAk5
-/ipfs/QmRNAQXyWuyJHnkHMNGAgeuFgpisdtZ13otutN8hcMG5AU
-/ipfs/QmPMTcGvu5eiJY1ujU1BRCzmzrF7YQSX2Wzfv5Ao5YnPBo
-/ipfs/QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
-/ipfs/QmcJZgFDLpFJUzE2PaqUFsjH3gGSvfZmy84RG5Lk6x2fge
-/ipfs/QmPmJ44bxwoXw8SjPFRPZ8tia7GDxEaFVzHi7hsCCPBrr7
-/ipfs/QmZkSpqxiViGKrf1pCMVoVFJU7rvzoaYya96ZyFt7SatKL
-/ipfs/QmX1dCic7XsBPjR6q5hK7PDiLbnDUzJZFUgNcjpyfPvZ9w
-/ipfs/zb2rhYM79n5DCyojxo2MUfuLS3rLd1hh9KB6PSsYLfci8BRjs
-</code></pre><p>40件くらいに減ってしまった。
+これまたものすごく時間がかかる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=line><span class=cl><span class=gp>$</span> cat hashes.txt <span class=p>|</span> xargs -I <span class=nb>hash</span> timeout <span class=m>60</span> ipfs resolve -r <span class=nb>hash</span> 2&gt;/dev/null <span class=p>|</span> sed <span class=s1>&#39;/^$/d&#39;</span> &gt;&gt; resolve.txt
+</span></span><span class=line><span class=cl><span class=gp>$</span> cat resolve.txt
+</span></span><span class=line><span class=cl><span class=go>/ipfs/Qmd38FX6orV498CN1Z17997R26jZUwgicb1GXZ2kp9kAmq
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmaUYFPjZE4Zttrd8bWUH5aXchWSNZsCdb9aXH4zMpjreL
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhhBBo75RS1WjAjsDsne3H1dvqcGkFmmtRRPDta57NMH5T
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmTFzjH1cC9cdj7B8WTmsQjEqWKdVFjf8gxCEFUS6S3jf5
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmWWW1UuPQvu87iL1XE81BWqyPwAW7ArSgt5jpbDR39Cqd
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhkNQ9F9aimY19GTqUTkAy5c2AV3yzgLrKrAYnF7pgsSKv
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhjiXqnYwigVLuoTcYNea9LgU5G4pCFDSzjuzxMTN4sWy9
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhgpzJka244jia1uc7n8djXndB7tSwtfaJgX1ndf7ghMnu
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmYKVG8An1a7nLFirf6QqJhZfoyPquj6xh5hYiqe6HULpF
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhiXhD4b5ewXPXnpyFtFuGnBKkpAy68CZdN9Zakraurg3P
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmfGfPiiL9JSYAWXnLncQEW7umHh2S6Vx3wTr65cuxneT3
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmfH9baorAhyAXFMi5UssmUDfxPu9VTzrtkjFe99rW6rKR
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmPtxs8Lgrxq2MtzGZT8DL65jwdkjT64B24NkmdVbteNwL
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmeHoJWmEGQPeWS1VkGDCQT2JCrzVsR4bNQwHhogDknMPV
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhb4hNCrLr2mYLeGk9f2zmgFevhGvhtpVH82SD1xs7PdH9
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/Qmcs5AJvpbhZbfegsfW6oLUZpiaeHTSEDhNT9w8ZYARrw8
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/Qmf8uT9Nz9FkC5yUJcYpTR6PyePzrvBVkh4RQi5tNJaB6R
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmdgbRGSnwZ8NM2HFrGyvbT6Ay5a5KP166bYZ3vP358F7D
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmUc94tUkDcgj9VNJRnd36xMVtz1HqHxzC8pVmQcA1rDuX
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmVGKFVHJM3Vfg8kF1vHpYnryPpPo4d8ei84adMFTgRB7X
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmUcSPmsgtqHpKtemor9Ti385GHFKU23joC6TTfwE4aNs8
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhcy8JGBLAAu3ik75JeRZzmN99b2jxJZ5DjcPjkxQRjQyv
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhncb5GbjCr84TC4uWP5YzzqKJ3iV3cnJWmizViEMaDZea
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhcJEBMctyC2yag4LEVm7FFWmB2jbftsJxMpZPbYqPeT8X
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmWyXJna7aUd46oYkCNnG2FCbZeK3BNYSzYm1634iiDebu
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmNjdKSeBP39zjs44vEhV5DqexHvMY6Aa2zs89sP578KaN
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmbCrkMtaCunhBBTSfMzoP1Tp1Se7nBG7i3YDN4UoWsAk5
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmRNAQXyWuyJHnkHMNGAgeuFgpisdtZ13otutN8hcMG5AU
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmPMTcGvu5eiJY1ujU1BRCzmzrF7YQSX2Wzfv5Ao5YnPBo
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmdBJ16VfDpT9f8c5TH8YagBUHPcDDLcRkxuWQ6eeEdsEj
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmcJZgFDLpFJUzE2PaqUFsjH3gGSvfZmy84RG5Lk6x2fge
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmPmJ44bxwoXw8SjPFRPZ8tia7GDxEaFVzHi7hsCCPBrr7
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmZkSpqxiViGKrf1pCMVoVFJU7rvzoaYya96ZyFt7SatKL
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/QmX1dCic7XsBPjR6q5hK7PDiLbnDUzJZFUgNcjpyfPvZ9w
+</span></span></span><span class=line><span class=cl><span class=go>/ipfs/zb2rhYM79n5DCyojxo2MUfuLS3rLd1hh9KB6PSsYLfci8BRjs
+</span></span></span></code></pre></div><p>40件くらいに減ってしまった。
 ファイル名が入っているが肝心の中身にアクセスできない<a href=https://ipfs.io/ipfs/QmX1dCic7XsBPjR6q5hK7PDiLbnDUzJZFUgNcjpyfPvZ9w>壊れたディレクトリオブジェクト</a>や、
 <a href=https://ipfs.io/ipfs/QmPtxs8Lgrxq2MtzGZT8DL65jwdkjT64B24NkmdVbteNwL>フォーマットのわからないバイナリ</a>がほとんどである。
 そもそものユーザ数が少ないため、読めるデータもだいたい
@@ -336,9 +334,10 @@ $ cat resolve.txt
 面白くはない。
 あえて言うならば癒やしである。</p></article><footer><h2><a href=/tags/ipfs>#ipfs</a>
 IPFS体験記8:IPFS網漁</h2><p><time>2017-11-10</time>
-<a href=/tags/ipfs>#ipfs</a> <a href=/tags/tech>#tech</a> <a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a></p><div class=subscribe><a href=/tags/ipfs/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19C2.1045695 19 3 19.8954305 3 21H1zm6 0H5C5 18.790861 3.209139 17 1 17V15C4.3137085 15 7 17.6862915 7 21zm4 0H9C9 16.581722 5.418278 13 1 13V11C6.5228475 11 11 15.4771525 11 21z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>ipfsの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
+<a href=/tags/ipfs>#ipfs</a> <a href=/tags/tech>#tech</a> <a href=/tags/ipfs%e4%bd%93%e9%a8%93%e8%a8%98>#ipfs体験記</a></p><div class=subscribe><a href=/tags/ipfs/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>ipfsの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
 <a href=/about title=about>About</a>
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:26:55 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2023-10-16T05:36:41 UTC</div></footer></body></html>
