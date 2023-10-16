@@ -1,6 +1,6 @@
 ---
 date: 2023-10-15
-title: "20:HugoのGitInfo機能をGitHub Actionsで使う"
+title: "HugoのGitInfo機能をGitHub Actionsで使う"
 tags:
     - hugo
     - github
