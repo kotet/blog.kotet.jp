@@ -1,9 +1,9 @@
 ---
 date: 2023-10-16
-title: "curlは8.4.0からIPFSに対応している"
+title: "20:curlは8.4.0からIPFSに対応している"
 tags:
-    - ipfs
     - ipfs体験記
+    - ipfs
     - tech
 largeimage: /img/blog/2023/10/curl-release.png
 ---
