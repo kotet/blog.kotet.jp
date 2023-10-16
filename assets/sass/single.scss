@@ -7,74 +7,128 @@ main {
 
     header {
         margin: 1em;
+
+        h2 {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            span {
+                flex-grow: 1;
+            }
+        }
+
+        @media (min-width: 800px) {
+            h2 {
+                flex-direction: row-reverse;
+                gap: 1em;
+            }
+        }
     }
+
     article {
+
+        .headerimage {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 2/1;
+            object-fit: cover;
+        }
+
         margin: 1em;
+
         pre {
             overflow-x: auto;
         }
-        svg,iframe,twitter-widget {
+
+        svg,
+        iframe,
+        twitter-widget {
             display: block;
             margin-right: auto;
             margin-left: auto;
         }
+
         blockquote {
             margin: 0;
             border-left: .5em double lightgray;
             padding-left: 1em;
         }
-        table{
-            border-collapse:collapse;
-            margin:0 auto;
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
         }
-        th,td {
+
+        th,
+        td {
             padding: .5em;
-            border:1px solid #ccc;
+            border: 1px solid #ccc;
         }
+
         th {
             border-bottom: 1px solid #444;
         }
+
         div.highlight pre {
             padding: 1em;
         }
+
         code {
             background: #eee;
             padding: 0.2em;
         }
     }
+
     footer {
         color: #999;
         border-top: 1px solid #444;
         padding: 1em;
+
         a {
             color: $main_light;
         }
+
         h2 {
             color: #999;
             border: none;
             display: inline;
             font-size: 1em;
         }
+
         p {
             display: inline;
             margin-left: 1em;
+        }
+
+        .subscribe {
+            border-bottom: 1px solid $main_light;
+            width: fit-content;
+
+            svg {
+                height: 1em;
+                vertical-align: sub;
+            }
         }
     }
 }
 
 #TableOfContents {
     word-break: break-all;
+
     >ul {
         /* h1 */
         padding: 0;
     }
+
     >ul>li>ul {
         /* h2 */
         padding: 0;
     }
+
     li {
         list-style: none;
     }
+
     >ul>li>ul>li>ul li {
         list-style-type: initial;
     }

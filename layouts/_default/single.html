@@ -43,14 +43,18 @@
 {{ end }}
 <header>
     <h2>
-        {{ if isset .Params "tags" }}
-        <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
-        {{ end }}
-        {{ .Title }}
+        <span>
+            {{ if isset .Params "tags" }}
+            <a href="/tags/{{ index .Params.tags 0 }}">#{{ index .Params.tags 0 }}</a>
+            {{ end }}
+            {{ .Title }}
+        </span>
+        {{ if isset .Params "image" }}<img height="200" width="200" src="{{ .Site.BaseURL }}{{ .Params.image }}"></img> {{ end }}
     </h2>
     <p>
         {{ if isset .Params "date" }}
-            Created: <time>{{ .Date.Format "2006-01-02" }}</time>
+            Created: <time>{{ .Date.Format "2006-01-02" }}</time>,
+            Last modified: <time>{{ .GitInfo.AuthorDate.Format "2006-01-02" }}</time>
             <br />
         {{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
@@ -58,7 +62,10 @@
     {{ partial "old-post" . }}
     {{ partial "toc" . }}
 </header>
-<article>{{ .Content }}</article>
+<article>
+    {{ if isset .Params "largeimage" }}<img class="headerimage" src="{{ .Site.BaseURL }}{{ .Params.largeimage }}"></img>{{ end }}
+    {{ .Content }}
+</article>
 <footer>
     <h2>
         {{ if isset .Params "tags" }}
@@ -70,5 +77,10 @@
         {{ if isset .Params "date" }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
     </p>
+    {{ if isset .Params "tags" }}
+    <div class="subscribe">
+        <a href="/tags/{{ index .Params.tags 0 }}/index.xml">{{ partial "svg/feed" "lightsalmon" }}{{ index .Params.tags 0 }}の記事を購読</a>
+    </div>
+    {{ end }}
 </footer>
 {{ end }}

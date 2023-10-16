@@ -7,7 +7,7 @@ title: "dlibでマンデルブロ集合を描く"
 tags:
 - dlang
 - tech
-image: 2017/04/22/mandel.png
+image: /assets/2017/04/22/mandel.png
 excerpt: "前回に続いて、マンデルブロ集合の画像をD言語で描くことができた。 pngの取り扱いはdlibを使った。"
 ---
 
@@ -89,7 +89,7 @@ SuperImage draw(real center_x, real center_y, real height, real width, uint row,
 	return img;
 }
 
-/** 
+/**
 	A function that determines whether a sequence diverges.
 	Returns: 0 (if Sequence diverges) or Speed to diverge
 */

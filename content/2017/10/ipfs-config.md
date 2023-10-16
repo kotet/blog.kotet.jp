@@ -8,7 +8,7 @@ tags:
 - tech
 - log
 - ipfs体験記
-image: 2017/10/19/twitter.png
+image: /assets/2017/10/19/twitter.png
 excerpt: "今回はWebUI上で設定を確認する。 最初から最後まで全部読んでみたので、質的なものは別として量的に有用な日本語情報源として機能しそうな記事になったと思う。"
 ---
 
@@ -180,7 +180,7 @@ APIサーバのレスポンスヘッダを設定するものらしい。
   }
 ```
 
-先ほど少し触れたゲートウェイの設定。  
+先ほど少し触れたゲートウェイの設定。
 `ipfs cat /ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/readme`とコマンドを打つ代わりにブラウザで
 `http://localhost:8080/ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/readme`にアクセスできる。
 gateway.ipfs.ioというパブリックゲートウェイがあるので、今誰かにIPFS上のファイルを見せようと思ったら
@@ -218,10 +218,10 @@ Inter-Planetary Naming Systemだそうだ。
 IPFSではファイルのハッシュでデータにアクセス（ちょっとこの部分リズムが良くて声に出して読みたくなる）するため、ウェブサイト等変化するコンテンツを追うことができない。
 IPNSはgitのブランチのように、PKI IDを変化するコンテンツの最新版へのポインタにできる。
 
-- `RecordLifetime`: IPNSレコードの生存時間。デフォルトは24時間になっている。  
+- `RecordLifetime`: IPNSレコードの生存時間。デフォルトは24時間になっている。
     ひょっとしてIPFS上でウェブサイトをホストするには定期的にIPNSレコードを送り続けなければならないのだろうか？
     ファイル自体は残り続けるとはいえ、自分の永遠に残るウェブサイト計画に暗雲が立ち込めてきた……
-- `RepublishPeriod`: IPNSレコードをrepublishする頻度を指定する。デフォルトでは12時間。  
+- `RepublishPeriod`: IPNSレコードをrepublishする頻度を指定する。デフォルトでは12時間。
     やはりIPNSレコードは定期的に送り続けなければならないらしい。
     まあ考えてみたらサーバ無しでいくらでも利用できたらネットワークの負担がどんどん増えていってしまうので当然のことではある。
     それでも普通にWebサーバを運営するより低負荷なのだろう。

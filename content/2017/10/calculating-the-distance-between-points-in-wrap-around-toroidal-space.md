@@ -8,7 +8,7 @@ tags:
 - translation
 excerpt: "2次元上の2点間の距離を求めたいとしましょう、ただし点は古いテレビゲームのような“ラップアラウンド”の世界にあります – スクリーンの上下左右から出ると、反対側から現れるのです。"
 mathjax: on
-image: 2017/10/04/wraparound.png
+image: /assets/2017/10/04/wraparound.png
 ---
 
 この記事は、
@@ -149,13 +149,13 @@ float ToroidalDistance (float x1, float y1, float x2, float y2)
 {
     float dx = std::abs(x2 - x1);
     float dy = std::abs(y2 - y1);
- 
+
     if (dx > 0.5f)
         dx = 1.0f - dx;
- 
+
     if (dy > 0.5f)
         dy = 1.0f - dy;
- 
+
     return std::sqrt(dx*dx + dy*dy);
 }
 ``` -->
@@ -165,13 +165,13 @@ float ToroidalDistance (float x1, float y1, float x2, float y2)
 {
     float dx = std::abs(x2 - x1);
     float dy = std::abs(y2 - y1);
- 
+
     if (dx > 0.5f)
         dx = 1.0f - dx;
- 
+
     if (dy > 0.5f)
         dy = 1.0f - dy;
- 
+
     return std::sqrt(dx*dx + dy*dy);
 }
 ```

@@ -5,7 +5,7 @@ aliases:
 title: "オリンピック懐炉"
 tags:
 - log
-image: "2017/02/18/pocket-warmer.jpg"
+image: "/assets/2017/02/18/pocket-warmer.jpg"
 ---
 使い捨て懐炉と合わせて燃料式の懐炉を使っている。
 おそらく同年代ではどんなものか知っている人の方が少ないのではないだろうか。

@@ -4,10 +4,6 @@ timeZone: "Asia/Tokyo"
 
 title: "Kotet's Personal Blog"
 
-params:
-    description: "Kotetのサイト。主にブログ。"
-    GoogleAnalytics: UA-88180620-1
-
 taxonomies:
   tag: "tags"
 
@@ -25,7 +21,11 @@ enableGitInfo: true
 Languages:
   en:
     params:
+      description: "Kotetのサイト。主にブログ。"
+      GoogleAnalytics: UA-88180620-1
   ja:
     params:
+      description: "Kotetのサイト。主にブログ。"
+      GoogleAnalytics: UA-88180620-1
 
 pygmentsUseClasses: true

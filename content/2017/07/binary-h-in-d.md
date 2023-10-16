@@ -8,7 +8,7 @@ tags:
 - tech
 excerpt: "C言語にはなぜか二進数リテラルがないため、そういうことをしたい場合自分で何とかする必要がある。
         D言語には普通に二進数リテラルがあるが、同じことをするコードを書いてTemplate Mixinの練習をすることにした。"
-image: 2017/07/05/twitter.png
+image: /assets/2017/07/05/twitter.png
 ---
 
 <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">なんか、見てはいけないものを見てしまった気がする <a href="https://t.co/MP4aw9gXqg">pic.twitter.com/MP4aw9gXqg</a></p>&mdash; すぱっしゅ＠こーせんちほーぐらし！ (@hajime__725) <a href="https://twitter.com/hajime__725/status/882048385791832064">2017年7月4日</a></blockquote>

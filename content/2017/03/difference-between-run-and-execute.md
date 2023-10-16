@@ -6,7 +6,7 @@ title: "Run と Execute の違いは何か"
 tags:
 - english
 - translation
-image: "2017/03/22/twitter.png"
+image: "/assets/2017/03/22/twitter.png"
 excerpt: "要約: 2つに意味の違いはほぼない。ただし、executeはより専門用語的なニュアンスがあり、知識のない人にはrunを使う。 いきさつ: 今日も日課のDlang Tourの翻訳をしていた。 いつものようにRunを「実行」と訳し、Executeも「実行」と訳していたところ……"
 ---
 
@@ -19,7 +19,7 @@ excerpt: "要約: 2つに意味の違いはほぼない。ただし、executeは
 今日も日課の[Dlang Tour](http://tour.dlang.org/)の翻訳をしていた。
 いつものようにRunを「実行」と訳し、Executeも「実行」と訳していたところこんな文章に遭遇してしまった。
 
- > Run & execute `unittest` blocks  
+ > Run & execute `unittest` blocks
  > -- [Unittesting - Dlang Tour](http://tour.dlang.org/tour/en/gems/unittesting)
 
 これはどうしたものか……普通に訳すなら
@@ -42,15 +42,15 @@ excerpt: "要約: 2つに意味の違いはほぼない。ただし、executeは
 
 [What is the difference between Run and Execute ? - HiNative](https://hinative.com/en-US/questions/2101570)
 
- > They can be used interchangeably. 
- > 
- > In order to run/execute the program, press the enter key.   
+ > They can be used interchangeably.
+ >
+ > In order to run/execute the program, press the enter key.
  >  -- iamaseacupcake
 
- > I don't think there's any meaningful difference. The terms are used interchangeably as far as I know (and I worked at a software company for a few years). 
- > 
- > Wiki confirms:  
- > https://en.wikipedia.org/wiki/Execution_(computing)  
+ > I don't think there's any meaningful difference. The terms are used interchangeably as far as I know (and I worked at a software company for a few years).
+ >
+ > Wiki confirms:
+ > https://en.wikipedia.org/wiki/Execution_(computing)
  >  -- jlaw
 
 ネイティブも特に使い分けているわけではなさそうである。
@@ -75,7 +75,7 @@ excerpt: "要約: 2つに意味の違いはほぼない。ただし、executeは
 
 さて、細かなニュアンスの違いははっきりしたが、最初の疑問への答えは出ていない。
 
- > Run & execute `unittest` blocks  
+ > Run & execute `unittest` blocks
  > -- [Unittesting - Dlang Tour](http://tour.dlang.org/tour/en/gems/unittesting)
 
 ここで、"run / execute"や"run (execute)"という表現を見たことを思い出す。

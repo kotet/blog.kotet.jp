@@ -9,7 +9,7 @@ tags:
 - log
 - ipfs体験記
 excerpt: 今回は普通に使ってみようと思う。
-image: 2017/10/25/twitter.png
+image: /assets/2017/10/25/twitter.png
 ---
 
 今回は普通に使ってみようと思う。

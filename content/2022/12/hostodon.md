@@ -1,10 +1,11 @@
 ---
-title: "HostodonでひとりMastodonサーバーを立てる"
+title: "HostdonでひとりMastodonサーバーを立てる"
 date: 2022-12-28
 tags:
     - advent_calendar
     - fediverse
     - tech
+image: /img/blog/2022/12/hostodon-card.png
 ---
 
 <script src="https://mastodon.kotet.jp/embed.js" async="async"></script>
@@ -16,8 +17,8 @@ tags:
 
 ---
 
-Hostodonの使い方を詳細に書いた記事が見つけられなかったので書く。
-Hostodonを使ってみたいけど情報が無くて不安な人は参考にしてほしい。
+~~Hostodon~~ Hostdonの使い方を詳細に書いた記事が見つけられなかったので書く。
+Hostdonを使ってみたいけど情報が無くて不安な人は参考にしてほしい。
 
 ### いきさつ
 
@@ -33,13 +34,13 @@ Hostodonを使ってみたいけど情報が無くて不安な人は参考にし
 というわけで慌ててMastodonを始めることになってしまった。
 自分が持っているドメインであるkotet.jpでアカウントを作るためには、自前のサーバーを作らなくてはならない。
 ちょっと今の自分はサーバーの運用に多くの労力を割くことができないので、ホスティングサービスがあればそれを使いたい。
-そう思って探してみるとHostodonというホスティングサービスがあった。
+そう思って探してみるとHostdonというホスティングサービスがあった。
 
 ### アカウント登録
 
 まず、[トップページ](https://hostdon.jp/)の「アカウント登録」を押すと**仮登録フォーム**に飛ぶ。
 仮登録フォームにメールアドレスを記入し、送信する。
-するとHostodonから**仮登録のお知らせメール**が来るので、そのメールに貼られているリンクから本登録を行う。
+するとHostdonから**仮登録のお知らせメール**が来るので、そのメールに貼られているリンクから本登録を行う。
 
 本登録ではパスワードの設定や、クレジットカード情報の登録を行う。
 本登録が完了すると、**本登録のお知らせメール**が届き、コントロールパネルが開けるようになる。
@@ -59,9 +60,9 @@ Sidekiqスレッド数は25スレッドから100スレッドまで選択肢が�
 - インスタンスタイプ
 - ディスク増量: 申し込むとストレージが50GB増えるらしい。330円/月。
 - 日本語検索機能: 申し込むと全文検索が使えるらしい。165円/月。
-- ドメイン: 独自ドメインを利用するか、なければ`{好きな文字列}.hostodon.ne.jp`というドメインが利用できる。
+- ドメイン: 独自ドメインを利用するか、なければ`{好きな文字列}.hostdon.ne.jp`というドメインが利用できる。
 
-hostodonのドメインを利用してしまうと、hostodonの利用をやめることがサーバーの閉鎖と同義になってしまう。
+hostdonのドメインを利用してしまうと、hostdonの利用をやめることがサーバーの閉鎖と同義になってしまう。
 できれば独自ドメインを使いたい。
 自分はここで`mastodon.kotet.jp`というドメインを使うことにして入力した。
 `m.kotet.jp`でも良かったかもしれないが、自分はTwitterが本当にヤバいことになるまでMastodonアカウントを作れなかった人間である。
@@ -79,8 +80,8 @@ hostodonのドメインを利用してしまうと、hostodonの利用をやめ�
 [YUKIMOCHI Toot Relay Service](https://relay.toot.yukimochi.jp/)という日本最大級のリレーサーバーに登録してみた。
 
 <iframe src="https://mastodon.kotet.jp/@kotet/109619833664812586/embed" class="mastodon-embed" style="max-width: 100%; border: 0" width="400" allowfullscreen="allowfullscreen"></iframe>
-<!-- 
-YUKIMOCHI Toot Relayに接続してみたが思ったより負荷は重くないな。ひとりサーバーならHostodonの最安プランでも割とやりたい事全部やれる感じっぽい
+<!--
+YUKIMOCHI Toot Relayに接続してみたが思ったより負荷は重くないな。ひとりサーバーならHostdonの最安プランでも割とやりたい事全部やれる感じっぽい
 Kotet --verbose (@kotet@mastodon.kotet.jp)
 -->
 
@@ -109,7 +110,7 @@ DNSサーバーの`CNAME`レコードをメールで指示されたとおりに�
 後でこれを管理者アカウントにする。
 `@owner`とか`@admin`にしてもかっこよかったかもしれないが、ざっと調べた感じ名前がドメイン名に入っていても普通に自分の名前をユーザー名にしている人が多かった。
 登録したアドレスに確認メールが届くので、リンクを踏めばアカウントが有効化される。
-ちなみにメールは`hostodon.jp`から来る。
+ちなみにメールは`hostdon.jp`から来る。
 
 アカウントを作ったら再びインスタンス管理画面に移る。
 「各種タスクの実行」の管理者登録フォームに作ったアカウントのユーザー名を入力することで、そのユーザーを管理者にできる。
@@ -139,6 +140,32 @@ botアカウント等は作るのでMastodonの設定画面の「管理」→「
 
 管理者登録はこのパネルから行う。
 その他したいことがある場合は申請フォームで運営に申請する必要があるようだ。
+
+**追記:**
+
+絵文字追加機能が追加されたようだ。
+
+![](/img/blog/2022/12/hostdon-emoji-form.png)
+
+まず、作りたい絵文字の画像ファイルをtarballにする。
+このときのファイル名が絵文字の名前になる。
+
+```console
+$ tar czf emojis.tar.gz kotet.png
+```
+
+ファイルをアップロードすると以下のようになり、処理が始まる。
+処理は数分で完了する。
+完了したときはタスク完了メールが届く。
+
+![](/img/blog/2022/12/hostdon-emoji-processing.png)
+
+実際に追加された絵文字が以下の通り。ファイル名が`kotet.png`なので`:kotet:`と入力することで表示できる。
+
+<iframe src="https://mastodon.kotet.jp/@kotet/110654645788971078/embed" class="mastodon-embed" style="max-width: 100%; border: 0" width="400" allowfullscreen="allowfullscreen"></iframe><script src="https://mastodon.kotet.jp/embed.js" async="async"></script>
+<!-- Kotet
+@kotet@mastodon.kotet.jp
+test :kotet: -->
 
 #### カスタマイズ
 
@@ -215,6 +242,6 @@ Kotet --verbose (@kotet@mastodon.kotet.jp)
 -->
 
 
-HostodonはどうもAWSのような自動化されたサービスというより、人間がサーバーの運営をしてくれるMastodonサーバー運営代行サービスといった使い勝手だ。
+HostdonはどうもAWSのような自動化されたサービスというより、人間がサーバーの運営をしてくれるMastodonサーバー運営代行サービスといった使い勝手だ。
 ともかくこれでMastodonの世界と、それにつながるFediverseに入門できた。
 一度ブームが過ぎ去ってしまっていろんなサーバーや関連ウェブサイトが閉鎖してリンク切れになってしまっていて悲しかったので、このサーバーは細々とでもできるだけ長く運用していきたい。
