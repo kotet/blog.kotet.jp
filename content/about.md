@@ -20,7 +20,12 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 という場合、[IssueやPull requestを投げつけてくれると](https://github.com/kotet/blog.kotet.jp)喜ぶ。
 
+<section>
+
+<img src="/img/common/logo.png" style="float: left; height:100%">
+
 ### Kotet
+
 
 名前の読み方は自分でも決めていないので、いまタイトルを頭の中で読み上げた時の発音で読んでくれればいい。
 
@@ -29,6 +34,8 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 主にD言語を書いている。
 書いているが詳しいかというとそんなこともない気がする。
+
+</section>
 
 ### 坂 一哲 : Ban Kazutoshi
 
@@ -43,9 +50,11 @@ excerpt: このサイトと自分について、それと関連するサイト�
 
 Twitter : [@kotetttt](https://twitter.com/kotetttt)
 
-Mastodon : [@kotet@mastodon.kotet.jp](https://mastodon.kotet.jp/@kotet)
+ActivityPub (Mastodon、Misskey等) : [@kotet@mastodon.kotet.jp](https://misskey.io/@kotet@mastodon.kotet.jp)
 
 GitHub : [@kotet](https://github.com/kotet)
+
+Wikipedia: [@Kotet](https://ja.wikipedia.org/wiki/%E7%89%B9%E5%88%A5:%E6%8A%95%E7%A8%BF%E8%A8%98%E9%8C%B2/Kotetttt)
 
 AtCoder : [@kotet](https://atcoder.jp/users/kotet)
 
