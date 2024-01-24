@@ -4,13 +4,20 @@
 
 set -e
 
+function usage {
+    echo "Usage: $0 <input>"
+    echo "  -d    Date of the image (default: $(date +%Y-%m-%d))"
+    echo "  -n    Name of the image (default: input filename)"
+    echo "  -h    Show this help"
+}
+
 ROOT=$(dirname $0)
 BASEPATH="/static/img/blog"
 BLOG_BASEPATH="/img/blog"
 COPY_CLIPBOARD=${COPY_CLIPBOARD:-clip.exe}
 
-OPT=$(getopt -o dn: --long date,name: -- "$@")
-if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+OPT=$(getopt -o d:n:h -- "$@")
+if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; usage ; exit 1 ; fi
 
 eval set -- "$OPT"
 
@@ -19,12 +26,18 @@ NAME=""
 
 while true; do
     case "$1" in
-        -d | --date ) DATE="$2"; shift 3 ;;
-        -n | --name ) NAME="$2"; shift 3 ;;
-        -- ) shift; break ;;
-        * ) break ;;
+        -d) DATE="$2"; shift 2;;
+        -n) NAME="$2"; shift 2;;
+        -h) usage; exit 0;;
+        --) shift; break;;
+        *) shift; break;;
     esac
 done
+
+if [ $# -ne 1 ]; then
+    usage
+    exit 1
+fi
 
 INPUT="$1"
 INPUT_EXT="${INPUT##*.}"
