@@ -3,12 +3,20 @@ $main_light: rgb(0, 166, 214); // giotto blue
 
 body,
 html {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans Japanese", "BIZ UDPGothic", sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
     font-size: 16px;
     color: #444;
+}
+
+pre,code {
+    font-family: "Noto Sans Mono", Consolas, monospace;
+}
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
