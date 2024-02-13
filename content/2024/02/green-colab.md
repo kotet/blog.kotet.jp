@@ -5,10 +5,9 @@ tags:
     - python
     - tech
 image: /img/blog/2024/02/cover.png
+highlights:
+    - python
 ---
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
-
 
 "Building Green Software"という本が発売されるらしい。
 
