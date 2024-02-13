@@ -6,9 +6,9 @@ tags:
     - tech
 mathjax: true
 image: /img/blog/2024/01/tikz-cover.png
+highlights:
+    - tex
 ---
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/tex.min.js"></script>
 
 修士論文を提出し、その後の各種イベントもだいたい終わって落ち着いてきた~~ことにしたい~~ので、執筆中に出会った問題とその解決策について書く。
 たしか自分が調べたときには日本語の情報がなくて、なんらかの英語の、しかも間接的な情報を参考にしたはずだ。
