@@ -1,4 +1,4 @@
-FROM golang:1.21
+FROM golang:1.21 AS build-hugo
 
 # https://github.com/AarynSmith/vscode-dev-container-hugo/blob/master/.devcontainer/Dockerfile
 # VARIANT can be either 'hugo' for the standard version or 'hugo_extended' for the extended version.
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y ca-certificates openssl git curl && \
     go install github.com/yaegashi/muslstack@latest && \
     muslstack -s 0x800000 /usr/bin/hugo
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04 as devcontainer
 
 RUN apt-get update && \
     apt-get update \
@@ -30,6 +30,7 @@ RUN apt-get update && \
     && apt-get -y upgrade \
     git \
     imagemagick \
+    bash-completion \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 ARG USERNAME=vscode
@@ -42,4 +43,4 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 USER $USERNAME
 
-COPY --from=0 /usr/bin/hugo /usr/bin
+COPY --from=build-hugo /usr/bin/hugo /usr/bin/hugo
