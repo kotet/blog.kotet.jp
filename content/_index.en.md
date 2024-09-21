@@ -5,7 +5,7 @@ excerpt: Kotet is Japanese student of Computer and Information Science.
 
 ---
 
-Kotet is Japanese student of Computer and Information Science.
+Random thoughts of a software engineer Kotet.
 
 <a href="/" hreflang="ja">日本語/Japanese version</a>
 
