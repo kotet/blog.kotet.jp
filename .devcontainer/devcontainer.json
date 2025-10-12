@@ -1,5 +1,5 @@
 {
-    "name": "github-pages",
+    "name": "${localWorkspaceFolderBasename}",
     "build": {
         "dockerfile": "Dockerfile",
         "context": ".",
