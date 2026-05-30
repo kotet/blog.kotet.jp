@@ -238,14 +238,12 @@ Lama 3,Lama 3,Lama 3,Lama 3,Lama 3,Lama 3,Lama 3,Lama 3,Lama 3
 
 ```
 
-## 今後の展望
+## Future Development Plans
 
-今回はOpen-Dubbingをとりあえず動作可能な状態に整備しました。
-しかし、英語から日本語への吹き替え用途で使用するには、まだ多くの課題が残っています。
-時間の余裕があれば、以下のような機能の実装を検討していきたいと考えています。
+In this iteration, we have successfully implemented Open-Dubbing in a functional state. However, several key challenges remain before it can be used effectively for English-to-Japanese dubbing.
+With additional time available, we plan to explore and implement the following features:
 
-- 現状では`--pyannote_device`以外の方法で処理ごとにデバイスを指定できないため、大規模な翻訳モデルだけをCPUで実行するといった柔軟な設定ができません。Pull Requestを提出して改善を提案したいと考えています。
-- 翻訳モデルの各種バリエーションを試す。ローカル環境ではPlaMoを使用してみたいと考えています。難しい場合は、Google翻訳APIなどを接続できるようにすることも検討します。
-- 音声合成モデルの各種バリエーションを試す。
-- Googleには翻訳と音声合成のAPIが用意されており、無料枠もあります。もし様々な機能を試すための労力を割けない場合は、一旦すべての処理をGoogleにオフロードするという方法も選択肢として考えられるかもしれません。
-
+- Currently, only the `--pyannote_device` option allows specifying processing devices for each task. This limitation prevents flexible configurations like running only large-scale translation models on CPU. We intend to submit a pull request to propose improvements.
+- Experiment with various translation model variants. For local testing, we plan to experiment with PlaMo. If this proves challenging, we may also consider integrating connections to services like Google Translate API.
+- Test different variants of speech synthesis models.
+- Google provides both translation and speech synthesis APIs, with free usage tiers. If we're unable to dedicate sufficient time to experimenting with various features, offloading all processing to Google could serve as a viable alternative approach.
