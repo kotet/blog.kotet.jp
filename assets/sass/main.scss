@@ -200,20 +200,53 @@ code.hljs {
     border: 1px solid #444;
 }
 
-.translated {
-    border: .1em solid $main_dark;
-    padding: .5em;
+.banner {
+    --accent: #999;
+    display: flex;
+    align-items: flex-start;
+    gap: .75em;
+    margin: 1em 0;
+    padding: .75em 1em;
+    border-left: .3em solid var(--accent);
+}
+
+.banner svg {
+    flex-shrink: 0;
+    width: 1.4em;
+    height: 1.4em;
+    margin-top: .2em;
+}
+
+.banner svg,
+.banner svg * {
+    fill: var(--accent);
+}
+
+.banner p {
+    margin: 0;
+}
+
+.banner p+p {
+    margin-top: .25em;
+}
+
+.banner-title {
     font-weight: bold;
+}
 
-    ul {
-        list-style: none;
-        display: inline;
-        padding: 0;
+.banner--info {
+    --accent: #{$main_light};
+    background: rgba(0, 166, 214, .06);
+}
 
-        li {
-            display: inline;
-        }
-    }
+.banner--translated {
+    --accent: #{$main_dark};
+    background: rgba(0, 90, 170, .05);
+}
+
+.banner--old {
+    --accent: #999;
+    background: #f5f5f5;
 }
 
 .entry-item {
