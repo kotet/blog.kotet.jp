@@ -26,7 +26,7 @@
 <div class="banner banner--translated">
     {{ partial "namespaced-svg" "globe" }}
     <p>
-        <span class="banner-title">Translation available:</span>
+        <span class="banner-title">Also available in:</span>
         {{ range $i, $t := .Translations }}{{ if $i }}, {{ end }}<a href="{{ $t.Permalink }}" hreflang="{{ $t.Lang }}">{{ $t.Lang }}</a>{{ end }}
     </p>
 </div>
