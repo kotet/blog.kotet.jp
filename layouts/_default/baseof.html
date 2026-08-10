@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ .Site.Language.Lang }}">
 
 <head>
     <meta charset="utf-8" />
@@ -22,15 +22,15 @@
     <header class="site">
         <nav>
             <ul>{{ block "header" . }}
-                <li><span class="text-bottom">HOME</span><a href="{{ .Site.LanguagePrefix }}/" title="tag">{{ partial "svg/home" }}</a></li>
+                <li><span class="text-bottom">HOME</span><a href="{{ .Site.LanguagePrefix }}/" aria-label="HOME">{{ partial "svg/home" }}</a></li>
                 <li><span class="text-up">ABOUT</span><a href="{{ .Site.LanguagePrefix }}/about"
-                        title="about">{{ partial "svg/about" }}</a></li>
+                        aria-label="ABOUT">{{ partial "svg/about" }}</a></li>
                 {{ if eq .Lang "ja" }}
                 <li><span class="text-bottom">DOWNLOAD</span><a href="/products"
-                        title="download">{{ partial "svg/download" }}</a></li>
+                        aria-label="DOWNLOAD">{{ partial "svg/download" }}</a></li>
                 {{ end }}
-                <li><span class="text-up">TAG</span><a href="{{ .Site.LanguagePrefix }}/tags" title="tag">{{ partial "svg/tags" }}</a></li>
-                <li><span class="text-bottom">FEED</span><a href="{{ .Site.LanguagePrefix }}/index.xml" title="feed">{{ partial "svg/feed" "black" }}</a></li>
+                <li><span class="text-up">TAG</span><a href="{{ .Site.LanguagePrefix }}/tags" aria-label="TAG">{{ partial "svg/tags" }}</a></li>
+                <li><span class="text-bottom">FEED</span><a href="{{ .Site.LanguagePrefix }}/index.xml" aria-label="FEED">{{ partial "svg/feed" "black" }}</a></li>
                 {{ end }}
             </ul>
         </nav>
