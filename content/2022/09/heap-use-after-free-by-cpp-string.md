@@ -7,9 +7,6 @@ tags:
   - log
 ---
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/cpp.min.js"></script>
-
 C++はCと互換性がある。
 つまり、どれだけC++が進化して安全な書き方ができるようになっても、Cのような書き方ができてしまうということだ。
 自分は大学でC++を使ったプロジェクトに2つ関わっているが、その両方でそれが原因の問題が起きている。

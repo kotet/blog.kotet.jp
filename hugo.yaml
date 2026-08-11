@@ -11,6 +11,10 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+  highlight:
+    # スタイルは assets/sass/_chroma.scss 参照
+    guessSyntax: true
+    noClasses: false # インラインスタイルを使わない
 
 hasCJKLanguage: true
 
@@ -27,5 +31,3 @@ Languages:
     params:
       description: "Kotetのサイト。主にブログ。"
       GoogleAnalytics: UA-88180620-1
-
-pygmentsUseClasses: true

@@ -5,8 +5,6 @@
 {{ $style := resources.Get "/sass/single.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
 <link rel="stylesheet" href="{{ $style.Permalink }}">
 
-{{ partial "head/hljs" . }}
-
 {{ partial "head/mathjax" . }}
 
 <script>
