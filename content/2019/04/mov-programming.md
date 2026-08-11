@@ -6,8 +6,6 @@ tags:
 - tech
 ---
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/x86asm.min.js"></script>
-
 ### TL;DR
 
 チューリング完全じゃないかもしれない

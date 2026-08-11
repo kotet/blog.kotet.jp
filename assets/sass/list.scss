@@ -8,6 +8,12 @@ main {
 main>article {
     margin: 1em;
 }
+main>article>h2 {
+    // タイトルを左、フィード購読アイコンを右へ
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 main>article>h2 svg {
     height: 1.5ex;
     fill: #444;

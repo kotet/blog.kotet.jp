@@ -15,16 +15,15 @@
                 </svg>
             </a>
         </h2>
-        <p>{{ .Content }}</p>
-        <ul>
+        {{ if .Content }}{{ .Content }}{{ end }}
+        <ul class="tag-list">
             {{ $type := .Type }}
             {{ range $key, $value := .Data.Terms.ByCount }}
                 {{ $name := .Name }}
                 {{ $count := .Count }}
                 {{ with $.Site.GetPage (printf "/%s/%s" $type $name) }}
                 <li>
-                    <h3><a href="{{.Permalink}}">#{{ .Title }}</a></h3>
-                    <p>{{ $count }} posts</p>
+                    <h3><a href="{{ .Permalink }}">#{{ .Title }}</a> <span class="tag-count">({{ $count }})</span></h3>
                     {{ .Content }}
                 </li>
                 {{ end }}

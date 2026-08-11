@@ -9,8 +9,6 @@ tags:
 - tech
 ---
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/brainfuck.min.js"></script>
-
 Brainfuckはしばしば難解言語と呼ばれます。
 Brainfuckをまともに書こうと思う人は少なく、
 多くの場合既存のプログラムをコピペしてきて楽しむだけで終わります。

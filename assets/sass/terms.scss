@@ -8,6 +8,12 @@ main {
 main>article {
     margin: 1em;
 }
+main>article>h2 {
+    // タイトルを左、フィード購読アイコンを右へ
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 main>article>h2 svg {
     height: 1.5ex;
     fill: #444;
@@ -17,4 +23,39 @@ main ul {
 }
 main li {
     list-style: none;
+}
+
+.tag-list {
+    padding: 0;
+}
+
+.tag-list li {
+    list-style: none;
+    padding: .7em 0;
+    border-bottom: 1px solid #ccc;
+    line-height: 1.6;
+}
+
+.tag-list li:last-child {
+    border-bottom: none;
+}
+
+.tag-list h3 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0;
+    // ラテン用フォントを CJK フォントより前に置き、"_" を含むラテン文字を良好なグリフに解決させる。
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans Japanese", "BIZ UDPGothic", sans-serif;
+}
+
+.tag-list .tag-count {
+    margin-left: .3em;
+    font-size: .8em;
+    font-weight: normal;
+    color: #888;
+}
+
+.tag-list p {
+    margin: .2em 0 0;
+    color: #555;
 }

@@ -8,8 +8,6 @@ tags:
 image: /img/blog/2023/10/rootless-vine.png
 ---
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
-
 Next to each article's creation date field on this blog, you'll notice a "Last Modified" timestamp.
 
 ![](/img/blog/2023/10/screenshot-lastchanged.png)

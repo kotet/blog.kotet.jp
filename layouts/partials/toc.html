@@ -1,4 +1,7 @@
-<aside>
-    <p>Table of Contents</p>
-    {{ .TableOfContents }}
+<aside class="banner banner--info">
+    {{ partial "svg/info" }}
+    <div>
+        <p class="banner-title">{{ i18n "tocTitle" }}</p>
+        {{ .TableOfContents }}
+    </div>
 </aside>

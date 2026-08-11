@@ -8,8 +8,6 @@ tags:
 mathjax: on
 ---
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/x86asm.min.js"></script>
-
 ### gccの最適化
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">GCC is now transforming: ((x % CONSTANT) == 0)<br>to mod inverse and using rotate when it&#39;s even. <br>Not in clang yet though<a href="https://t.co/nfywTIrTe0">https://t.co/nfywTIrTe0</a></p>&mdash; Marc B. Reynolds (@marc_b_reynolds) <a href="https://twitter.com/marc_b_reynolds/status/1125180264479694848?ref_src=twsrc%5Etfw">May 5, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

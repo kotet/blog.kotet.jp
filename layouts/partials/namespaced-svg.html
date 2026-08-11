@@ -1,0 +1,6 @@
+{{- $name := . -}}
+{{- $icon := partial (printf "svg/%s" $name) -}}
+{{- $icon := replaceRE `id="([\w-]+)"` (printf `id="%s-icon-$1"` $name) $icon -}}
+{{- $icon := replaceRE `href="#([\w-]+)"` (printf `href="#%s-icon-$1"` $name) $icon -}}
+{{- $icon := $icon | safeHTML -}}
+{{- return $icon -}}

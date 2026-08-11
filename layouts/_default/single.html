@@ -5,8 +5,6 @@
 {{ $style := resources.Get "/sass/single.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
 <link rel="stylesheet" href="{{ $style.Permalink }}">
 
-{{ partial "head/hljs" . }}
-
 {{ partial "head/mathjax" . }}
 
 <script>
@@ -23,15 +21,12 @@
 
 {{ end }}{{ define "main" }}
 {{ if .IsTranslated }}
-<div class="translated">
-    <span>Translation available:</span>
-    <ul>
-        {{ range .Translations }}
-        <li>
-            <a href="{{ .Permalink }}" hreflang="{{ .Lang }}">{{ .Lang }}</a>
-        </li>
-        {{ end}}
-    </ul>
+<div class="banner banner--translated">
+    {{ partial "namespaced-svg" "globe" }}
+    <p>
+        <span class="banner-title">Also available in:</span>
+        {{ range $i, $t := .Translations }}{{ if $i }}, {{ end }}<a href="{{ $t.Permalink }}" hreflang="{{ $t.Lang }}">{{ $t.Lang }}</a>{{ end }}
+    </p>
 </div>
 {{ end }}
 <header>
