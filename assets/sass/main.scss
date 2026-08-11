@@ -137,7 +137,7 @@ header.site .site-nav a {
 
 header.site .site-nav svg {
     height: clamp(18px, 5.2vw, 20px);
-    width: auto;
+    width: clamp(18px, 5.2vw, 20px);
 }
 
 header.site .site-nav svg path,
@@ -216,6 +216,7 @@ header.site .site-nav a[aria-current="page"]::after {
 
     header.site .site-nav svg {
         height: 20px;
+        width: 20px;
     }
 
     header.site .site-nav .label {
