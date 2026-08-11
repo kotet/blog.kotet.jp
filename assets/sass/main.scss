@@ -333,10 +333,38 @@ code.hljs {
 }
 
 .entry-item {
-    margin-bottom: 2em;
+    padding: .9em 0;
+    border-bottom: 1px solid #e4e4e4;
+
+    &:last-child {
+        border-bottom: none;
+    }
 
     h3 {
         font-size: 1.2em;
+        font-weight: 600;
         margin: 0;
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+
+        a:first-child {
+            margin-right: .5em;
+        }
+    }
+
+    time {
+        margin-left: .6em;
+        font-size: .8em;
+    }
+
+    > a {
+        text-decoration: none;
+        font-size: .8em;
+        color: #777;
+
+        &:hover {
+            color: $main_dark;
+        }
     }
 }
