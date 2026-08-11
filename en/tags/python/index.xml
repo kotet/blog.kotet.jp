@@ -2,4 +2,7 @@
 Building Green Software [Book]
 I watched a video of Sara Bergman, one of the book&amp;rsquo;s authors, delivering a lecture on Green Software principles.
 What is Green Software? The main points from the lecture that directly relate to software development are as follows:
-Given the rapid increase in global carbon dioxide levels, we need to actively reduce CO2 emissions from our software as well.</description></item></channel></rss>
+Given the rapid increase in global carbon dioxide levels, we need to actively reduce CO2 emissions from our software as well.</description></item><item><title>Generating ICS Files to Display Sunrise and Sunset Times on Google Calendar</title><link>https://blog.kotet.jp/en/2022/04/suntime-ics/</link><pubDate>Sun, 17 Apr 2022 00:00:00 +0900</pubDate><guid>https://blog.kotet.jp/en/2022/04/suntime-ics/</guid><description>I developed a tool to calculate sunrise and sunset times for any given location and generate files in a format compatible with Google Calendar. This article documents the development process and provides usage instructions.
+Update: Since this page appears to be getting some traffic, I&amp;rsquo;ve created a simplified ICS file distribution site for non-programmers.
+World and Japanese Sunrise/Sunset Calendar - ICS File Distribution
+You can copy iCal calendar URLs for various regions.</description></item></channel></rss>

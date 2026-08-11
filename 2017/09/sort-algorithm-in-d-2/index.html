@@ -1,10 +1,7 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=description content=" 前回の続き。 今週は挿入ソート、コムソート、マージソートを書いた。 ここ一週間あまり体調が良くなかったため、気力と思考力の面であまりソートが書けなかった。 "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.4766c569d312c6d675e91283a04d164a4e46fcd5e2f6daffd92725bf5007d3e8.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
-<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/d.min.js></script>
-<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js></script>
-<script>hljs.configure({languages:[]}),hljs.initHighlightingOnLoad()</script><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#log Dで巡るソートアルゴリズム その2 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/09/sort-algorithm-in-d-2/><link rel=icon href=/favicon.ico><link href=https://github.com/kotet rel=me><link rel=webmention href=https://webmention.io/blog.kotet.jp/webmention><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#log Dで巡るソートアルゴリズム その2 - Kotet's Personal Blog"><meta name=og:description content=" 前回の続き。 今週は挿入ソート、コムソート、マージソートを書いた。 ここ一週間あまり体調が良くなかったため、気力と思考力の面であまりソートが書けなかった。  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/09/sort-algorithm-in-d-2/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
-<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><nav><ul><li><span class=text-bottom>HOME</span><a href=/ title=tag><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-up>ABOUT</span><a href=/about title=about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>DOWNLOAD</span><a href=/products title=download><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg></a></li><li><span class=text-up>TAG</span><a href=/tags title=tag><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg></a></li><li><span class=text-bottom>FEED</span><a href=/index.xml title=feed><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg></a></li></ul></nav><h1><a href=/>KOTET'S PERSONAL BLOG</a></h1></header><main><header><h2><span><a href=/tags/log>#log</a>
+<!doctype html><html lang=ja><head><meta charset=utf-8><meta name=description content=" 前回の続き。 今週は挿入ソート、コムソート、マージソートを書いた。 ここ一週間あまり体調が良くなかったため、気力と思考力の面であまりソートが書けなかった。 "><link rel=stylesheet href=https://blog.kotet.jp/sass/single.min.9ddbdb347668f7d25d9d8b7d0a8f47f040f93ca17bab82c67af9724a6141ba1c.css><script>document.addEventListener("DOMContentLoaded",function(){if(document.body.querySelector("math")||document.body.textContent.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/)){let t=document.createElement("script");t.type="text/x-mathjax-config",t[window.opera?"innerHTML":"text"]="MathJax.Hub.Config({\n  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']],\n  displayMath: [['$$','$$']],\n  processEscapes: true\n }\n});",document.head.appendChild(t);var e=document.createElement("script");e.async="async",e.src="//cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML",document.head.appendChild(e)}})</script><script>document.addEventListener("DOMContentLoaded",function(){let e=document.querySelectorAll(".footnote-ref");for(const t of e){let n=new URL(t.href),s=document.getElementById(n.hash.substr(1)),o=s.innerText.trim().replace("↩︎","");t.title=o}})</script><title>#log Dで巡るソートアルゴリズム その2 - Kotet's Personal Blog</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://blog.kotet.jp/2017/09/sort-algorithm-in-d-2/><link rel=icon href=/favicon.ico><link href=https://github.com/kotet rel=me><link rel=webmention href=https://webmention.io/blog.kotet.jp/webmention><meta name=twitter:card content="summary"><meta property="og:type" content="article"><meta property="og:site_name" content="Kotet's Personal Blog"><meta name=og:title content="#log Dで巡るソートアルゴリズム その2 - Kotet's Personal Blog"><meta name=og:description content=" 前回の続き。 今週は挿入ソート、コムソート、マージソートを書いた。 ここ一週間あまり体調が良くなかったため、気力と思考力の面であまりソートが書けなかった。  "><meta property="og:locale" content="ja_JP"><meta name=og:image content="https://blog.kotet.jp/img/common/logo.png"><meta name=twitter:url content="https://blog.kotet.jp/2017/09/sort-algorithm-in-d-2/"><meta name=twitter:site content="@kotetttt"><meta name=twitter:creator content="@kotetttt"><meta name=generator content="Hugo 0.119.0"><script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-8443812672116269",enable_page_level_ads:!0})</script></head><body><header class=site><div class=site-inner><h1 class=site-title><a href=/>KOTET'S PERSONAL BLOG</a></h1><nav class=site-nav aria-label=メインナビゲーション><ul><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="20" viewBox="0 0 22 20"><title>home</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="home" transform="translate(-1.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M18.0013141 10 11.9999857 3.99867157 5.99865727 10H6V20H18V10H18.0013141zM20 11.9986859V20c0 1.1045695-.8954305 2-2 2H6c-1.1045695.0-2-.8954305-2-2V11.9986573L2.52318352 13.4754737 1.10998535 12.0622756 10.5869711 2.5852898c.780386400000001-.7803864 2.0456428-.7803864 2.8260292.0l9.4769857 9.4769858-1.4131981 1.4131981L20 11.9986859z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg><span class=label>HOME</span></a></li><li><a href=/about><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg><span class=label>ABOUT</span></a></li><li><a href=/products><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="download" transform="translate(-2.000000, -2.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M22 16v4c0 1.1045695-.8954305 2-2 2H4c-1.1045695.0-2-.8954305-2-2V16H4v4H20V16h2zm-9-3.4142136 3.2928932-3.29289318 1.4142136 1.41421358L12 16.4142136 6.29289322 10.7071068 7.70710678 9.29289322 11 12.5857864V2h2V12.5857864z" id="Combined-Shape" fill="#000"/></g></g></svg><span class=label>DOWNLOAD</span></a></li><li><a href=/tags><svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="tag" transform="translate(-1.000000, -5.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M6.53518376 5H21c1.1045695.0 2 .8954305 2 2V17c0 1.1045695-.8954305 2-2 2H6.53518376C5.86647738 19 5.24201473 18.6657977 4.87108317 18.1094004L1.16794971 12.5547002c-.223932945-.335899399999999-.223932945-.773501.0-1.1094004L4.87108317 5.89059961C5.24201473 5.33420227 5.86647738 5 6.53518376 5zM3.20185043 12l3.33333333 5H21V7H6.53518376L3.20185043 12zM7 13C6.44771525 13 6 12.5522847 6 12s.44771525-1 1-1S8 11.4477153 8 12s-.44771525 1-1 1z" id="Rectangle-29" fill="#000" fill-rule="nonzero"/></g></g></svg><span class=label>TAG</span></a></li><li><a href=/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#000" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg><span class=label>FEED</span></a></li></ul></nav></div></header><main><header><h2><span><a href=/tags/log>#log</a>
 Dで巡るソートアルゴリズム その2</span></h2><p>Created: <time>2017-09-16</time>,
-Last modified: <time>2018-09-01</time><br><a href=/tags/log>#log</a> <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><div style="border:.5em solid gold;padding:1em;margin-bottom:1em"><p style=font-weight:700;margin:0>これは1年以上前の記事です</p><p style=margin:0>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div><aside><p>Table of Contents</p><nav id=TableOfContents><ul><li><ul><li><a href=#テストの変更>テストの変更</a></li><li><a href=#挿入ソートhttpsjawikipediaorgwikie68cbfe585a5e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E6%8C%BF%E5%85%A5%E3%82%BD%E3%83%BC%E3%83%88>挿入ソート</a></a></li><li><a href=#マージソートhttpsjawikipediaorgwikie3839ee383bce382b8e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>マージソート</a></a></li><li><a href=#コムソートhttpsjawikipediaorgwikie382b3e383a0e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%88>コムソート</a></a></li><li><a href=#テスト結果全文>テスト結果全文</a></li></ul></li></ul></nav></aside></header><article><p><a href=/2017/09/sort-algorithm-in-d>前回</a>の続き。
+Last modified: <time>2018-09-01</time><br><a href=/tags/log>#log</a> <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><div class="banner banner--old"><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>time-history</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="time-history" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M5.11409306 6H8V8H2V1.99121094H4V4.25644966C6.23707736 1.91055844 8.78662625 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11C5.92486775 23 1 18.0751322 1 12H3c0 4.9705627 4.02943725 9 9 9 4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-2.8407848.0-4.95534431.7913744-6.88590694 3zM13 11h4v2H11V6h2v5z" id="Combined-Shape" fill="#000" fill-rule="nonzero"/></g></g></svg><div><p class=banner-title>これは1年以上前の記事です</p><p>ここに書かれている情報、見解は現在のものとは異なっている場合があります。</p></div></div><aside class="banner banner--info"><svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>info</title><desc>Created with Sketch.</desc><defs/><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="info" transform="translate(-1.000000, -1.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><path d="M12 23C5.92486775 23 1 18.0751322 1 12 1 5.92486775 5.92486775 1 12 1c6.0751322.0 11 4.92486775 11 11 0 6.0751322-4.9248678 11-11 11zm0-2c4.9705627.0 9-4.0294373 9-9 0-4.97056275-4.0294373-9-9-9-4.97056275.0-9 4.02943725-9 9 0 4.9705627 4.02943725 9 9 9zm1.0036109-7.0016536h.9993435v2h-4v-2h1v-2h-1V9.99834639h3.0006565V13.9983464zM12.0003283 8.99834639c-.5524661.0-1.0003283-.44771525-1.0003283-1s.447862199999999-1 1.0003283-1c.552466000000001.0 1.0003282.44771525 1.0003282 1s-.447862199999999 1-1.0003282 1z" id="Oval-17" fill="#000" fill-rule="nonzero"/></g></g></svg><div><p class=banner-title>目次</p><nav id=TableOfContents><ul><li><ul><li><a href=#テストの変更>テストの変更</a></li><li><a href=#挿入ソートhttpsjawikipediaorgwikie68cbfe585a5e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E6%8C%BF%E5%85%A5%E3%82%BD%E3%83%BC%E3%83%88>挿入ソート</a></a></li><li><a href=#マージソートhttpsjawikipediaorgwikie3839ee383bce382b8e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>マージソート</a></a></li><li><a href=#コムソートhttpsjawikipediaorgwikie382b3e383a0e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%88>コムソート</a></a></li><li><a href=#テスト結果全文>テスト結果全文</a></li></ul></li></ul></nav></div></aside></header><article><p><a href=/2017/09/sort-algorithm-in-d>前回</a>の続き。
 今週は挿入ソート、コムソート、マージソートを書いた。
 ここ一週間あまり体調が良くなかったため、気力と思考力の面であまりソートが書けなかった。</p><h3 id=テストの変更>テストの変更</h3><p>要素数が1の時もテストするようにした。
 また、配列が正しくソートされているかの検証に<a href=https://dlang.org/library/std/algorithm/sorting/is_sorted.html><code>std.algorithm.sorting.isSorted</code></a>を使うようにした。</p><h4 id=sorttestd-at-ed9ad93c433ee210171b6358fad302f6116b9df1--kotetsorthttpsgithubcomkotetsortblobed9ad93c433ee210171b6358fad302f6116b9df1sourcetesttestd><a href=https://github.com/kotet/sort/blob/ed9ad93c433ee210171b6358fad302f6116b9df1/source/test/test.d>sort/test.d at ed9ad93c433ee210171b6358fad302f6116b9df1 · kotet/sort</a></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=c1>/// 前略
@@ -108,14 +105,14 @@ Last modified: <time>2018-09-01</time><br><a href=/tags/log>#log</a> <a href=/ta
 </span></span><span class=line><span class=cl>        <span class=n>array</span><span class=o>[</span><span class=n>i</span><span class=o>]</span> <span class=o>=</span> <span class=n>array</span><span class=o>[</span><span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=o>];</span>
 </span></span><span class=line><span class=cl>    <span class=o>}</span>
 </span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></div><p>要素数が少ない時のオーバーヘッドは比較的小さいがそんなに速くはない。</p><pre tabindex=0><code>Test insertion.v1.sort:
-    N = 10^^0 avg: 2.52021e-05 msecs (sample: 361305)
-    N = 10^^1 avg: 0.000356714 msecs (sample: 73572)
-    N = 10^^2 avg: 0.0109691 msecs (sample: 5237)
-    N = 10^^3 avg: 0.604773 msecs (sample: 147)
-    N = 10^^4 avg: 53.3391 msecs (sample: 2)
-    N = 10^^5 avg: 5295.32 msecs (sample: 1)
-</code></pre><h3 id=マージソートhttpsjawikipediaorgwikie3839ee383bce382b8e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>マージソート</a></h3><h4 id=v4>v4</h4><p>並列バージョン。
+</span></span></code></pre></div><p>要素数が少ない時のオーバーヘッドは比較的小さいがそんなに速くはない。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Test insertion.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.52021e-05 msecs (sample: 361305)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000356714 msecs (sample: 73572)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0109691 msecs (sample: 5237)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.604773 msecs (sample: 147)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 53.3391 msecs (sample: 2)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 5295.32 msecs (sample: 1)
+</span></span></code></pre></div><h3 id=マージソートhttpsjawikipediaorgwikie3839ee383bce382b8e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88>マージソート</a></h3><h4 id=v4>v4</h4><p>並列バージョン。
 v3では要素数が一定以下になるまでタスクを分割していたが、今回は<code>std.parallelism.totalCPUs</code>をもとに分割するようにした。
 <code>totalCPUs</code>以上のタスクは生成されない。</p><h5 id=sortv4d-at-7ce8383662e16377d796d19b2d3105f72bd48f5c--kotetsorthttpsgithubcomkotetsortblob7ce8383662e16377d796d19b2d3105f72bd48f5csourcemergev4d><a href=https://github.com/kotet/sort/blob/7ce8383662e16377d796d19b2d3105f72bd48f5c/source/merge/v4.d>sort/v4.d at 7ce8383662e16377d796d19b2d3105f72bd48f5c · kotet/sort</a></h5><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kn>module</span> <span class=nn>merge.v4</span><span class=o>;</span>
 </span></span><span class=line><span class=cl>
@@ -186,15 +183,15 @@ v3では要素数が一定以下になるまでタスクを分割していたが
 </span></span><span class=line><span class=cl>    <span class=o>}</span>
 </span></span><span class=line><span class=cl><span class=o>}</span>
 </span></span></code></pre></div><p>速くなるどころかむしろ実行時間は増えている。
-どうやら問題は別のところにあるらしい。</p><pre tabindex=0><code>Test merge.v4.sort:
-    N = 10^^0 avg: 2.87828e-05 msecs (sample: 372201)
-    N = 10^^1 avg: 0.119522 msecs (sample: 824)
-    N = 10^^2 avg: 0.15737 msecs (sample: 600)
-    N = 10^^3 avg: 1.94974 msecs (sample: 49)
-    N = 10^^4 avg: 4.96305 msecs (sample: 17)
-    N = 10^^5 avg: 32.614 msecs (sample: 3)
-    N = 10^^6 avg: 277.655 msecs (sample: 1)
-</code></pre><h4 id=v5>v5</h4><p>v3の<code>serialSort</code>が内部で<code>serialSort</code>ではなく<code>sort</code>を呼んでいるというバグを修正した。
+どうやら問題は別のところにあるらしい。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Test merge.v4.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.87828e-05 msecs (sample: 372201)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.119522 msecs (sample: 824)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.15737 msecs (sample: 600)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 1.94974 msecs (sample: 49)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 4.96305 msecs (sample: 17)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 32.614 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 277.655 msecs (sample: 1)
+</span></span></code></pre></div><h4 id=v5>v5</h4><p>v3の<code>serialSort</code>が内部で<code>serialSort</code>ではなく<code>sort</code>を呼んでいるというバグを修正した。
 結果的にシリアルソートになってはいたが、無駄な再帰と配列の長さチェックが発生していた。</p><h5 id=sortv5d-at-42a8c920931f54231d1fa79a0816346bf372ce0d--kotetsorthttpsgithubcomkotetsortblob42a8c920931f54231d1fa79a0816346bf372ce0dsourcemergev5d><a href=https://github.com/kotet/sort/blob/42a8c920931f54231d1fa79a0816346bf372ce0d/source/merge/v5.d>sort/v5.d at 42a8c920931f54231d1fa79a0816346bf372ce0d · kotet/sort</a></h5><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=c1>/// 前略
 </span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span> <span class=nf>serialSort</span><span class=o>(</span><span class=n>T</span><span class=o>)(</span><span class=n>T</span><span class=o>[]</span> <span class=n>array</span><span class=o>)</span>
 </span></span><span class=line><span class=cl><span class=o>{</span>
@@ -205,15 +202,15 @@ v3では要素数が一定以下になるまでタスクを分割していたが
 </span></span><span class=line><span class=cl>    <span class=n>merge</span><span class=o>(</span><span class=n>array</span><span class=o>);</span>
 </span></span><span class=line><span class=cl><span class=o>}</span>
 </span></span><span class=line><span class=cl><span class=c1>/// 後略
-</span></span></span></code></pre></div><p>ちょっと速くなった。</p><pre tabindex=0><code>Test merge.v5.sort:
-    N = 10^^0 avg: 2.80161e-05 msecs (sample: 373704)
-    N = 10^^1 avg: 0.00148437 msecs (sample: 40508)
-    N = 10^^2 avg: 0.0189592 msecs (sample: 3594)
-    N = 10^^3 avg: 0.247173 msecs (sample: 310)
-    N = 10^^4 avg: 3.2127 msecs (sample: 25)
-    N = 10^^5 avg: 28.4651 msecs (sample: 3)
-    N = 10^^6 avg: 236.172 msecs (sample: 1)
-</code></pre><h3 id=コムソートhttpsjawikipediaorgwikie382b3e383a0e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%88>コムソート</a></h3><h4 id=v2>v2</h4><p>改良版アルゴリズム"Comb sort 11"。</p><h5 id=sortv2d-at-f3ae0a59444d99ef91f48e54d775cfadd54c382a--kotetsorthttpsgithubcomkotetsortblobf3ae0a59444d99ef91f48e54d775cfadd54c382asourcecombv2d><a href=https://github.com/kotet/sort/blob/f3ae0a59444d99ef91f48e54d775cfadd54c382a/source/comb/v2.d>sort/v2.d at f3ae0a59444d99ef91f48e54d775cfadd54c382a · kotet/sort</a></h5><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kn>module</span> <span class=nn>comb.v2</span><span class=o>;</span>
+</span></span></span></code></pre></div><p>ちょっと速くなった。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Test merge.v5.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.80161e-05 msecs (sample: 373704)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.00148437 msecs (sample: 40508)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0189592 msecs (sample: 3594)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.247173 msecs (sample: 310)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 3.2127 msecs (sample: 25)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 28.4651 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 236.172 msecs (sample: 1)
+</span></span></code></pre></div><h3 id=コムソートhttpsjawikipediaorgwikie382b3e383a0e382bde383bce38388><a href=https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%88>コムソート</a></h3><h4 id=v2>v2</h4><p>改良版アルゴリズム"Comb sort 11"。</p><h5 id=sortv2d-at-f3ae0a59444d99ef91f48e54d775cfadd54c382a--kotetsorthttpsgithubcomkotetsortblobf3ae0a59444d99ef91f48e54d775cfadd54c382asourcecombv2d><a href=https://github.com/kotet/sort/blob/f3ae0a59444d99ef91f48e54d775cfadd54c382a/source/comb/v2.d>sort/v2.d at f3ae0a59444d99ef91f48e54d775cfadd54c382a · kotet/sort</a></h5><div class=highlight><pre tabindex=0 class=chroma><code class=language-d data-lang=d><span class=line><span class=cl><span class=kn>module</span> <span class=nn>comb.v2</span><span class=o>;</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>test</span><span class=o>;</span>
 </span></span><span class=line><span class=cl>
@@ -243,118 +240,118 @@ v3では要素数が一定以下になるまでタスクを分割していたが
 </span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=o>(!(</span><span class=n>complete</span> <span class=o>&amp;&amp;</span> <span class=o>(</span><span class=n>gap</span> <span class=o>==</span> <span class=mi>1</span><span class=o>)));</span>
 </span></span><span class=line><span class=cl><span class=o>}</span>
 </span></span></code></pre></div><p>あまり変化が無いようだ。
-入力の性質によっては速くなったりするんだろうか?</p><pre tabindex=0><code>Test comb.v2.sort:
-    N = 10^^0 avg: 2.67903e-05 msecs (sample: 365209)
-    N = 10^^1 avg: 0.000319247 msecs (sample: 75567)
-    N = 10^^2 avg: 0.00595804 msecs (sample: 6994)
-    N = 10^^3 avg: 0.0932101 msecs (sample: 581)
-    N = 10^^4 avg: 1.29673 msecs (sample: 49)
-    N = 10^^5 avg: 17.0905 msecs (sample: 4)
-    N = 10^^6 avg: 215.109 msecs (sample: 1)
-</code></pre><h3 id=テスト結果全文>テスト結果全文</h3><p>前回から再計測したので新しい物以外もすべて載せる。</p><pre tabindex=0><code>Test bubble.v1.sort:
-    N = 10^^0 avg: 5.29931e-05 msecs (sample: 187446)
-    N = 10^^1 avg: 0.000469878 msecs (sample: 54081)
-    N = 10^^2 avg: 0.0246636 msecs (sample: 3006)
-    N = 10^^3 avg: 1.93576 msecs (sample: 50)
-    N = 10^^4 avg: 253.616 msecs (sample: 1)
-Test comb.v1.sort:
-    N = 10^^0 avg: 2.83461e-05 msecs (sample: 345246)
-    N = 10^^1 avg: 0.00033584 msecs (sample: 72120)
-    N = 10^^2 avg: 0.00584063 msecs (sample: 7137)
-    N = 10^^3 avg: 0.0960004 msecs (sample: 571)
-    N = 10^^4 avg: 1.40355 msecs (sample: 46)
-    N = 10^^5 avg: 17.2058 msecs (sample: 4)
-    N = 10^^6 avg: 213.241 msecs (sample: 1)
-Test comb.v2.sort:
-    N = 10^^0 avg: 2.67903e-05 msecs (sample: 365209)
-    N = 10^^1 avg: 0.000319247 msecs (sample: 75567)
-    N = 10^^2 avg: 0.00595804 msecs (sample: 6994)
-    N = 10^^3 avg: 0.0932101 msecs (sample: 581)
-    N = 10^^4 avg: 1.29673 msecs (sample: 49)
-    N = 10^^5 avg: 17.0905 msecs (sample: 4)
-    N = 10^^6 avg: 215.109 msecs (sample: 1)
-Test heap.v1.sort:
-    N = 10^^0 avg: 3.79266e-05 msecs (sample: 353480)
-    N = 10^^1 avg: 0.000509833 msecs (sample: 66684)
-    N = 10^^2 avg: 0.0111968 msecs (sample: 5159)
-    N = 10^^3 avg: 0.169005 msecs (sample: 403)
-    N = 10^^4 avg: 2.23825 msecs (sample: 34)
-    N = 10^^5 avg: 28.8483 msecs (sample: 3)
-    N = 10^^6 avg: 353.321 msecs (sample: 1)
-Test heap.v2.sort:
-    N = 10^^0 avg: 3.79672e-05 msecs (sample: 351500)
-    N = 10^^1 avg: 0.000521347 msecs (sample: 65592)
-    N = 10^^2 avg: 0.0110731 msecs (sample: 5186)
-    N = 10^^3 avg: 0.166295 msecs (sample: 407)
-    N = 10^^4 avg: 3.76569 msecs (sample: 20)
-    N = 10^^5 avg: 34.9103 msecs (sample: 3)
-    N = 10^^6 avg: 350.389 msecs (sample: 1)
-Test insertion.v1.sort:
-    N = 10^^0 avg: 2.52021e-05 msecs (sample: 361305)
-    N = 10^^1 avg: 0.000356714 msecs (sample: 73572)
-    N = 10^^2 avg: 0.0109691 msecs (sample: 5237)
-    N = 10^^3 avg: 0.604773 msecs (sample: 147)
-    N = 10^^4 avg: 53.3391 msecs (sample: 2)
-    N = 10^^5 avg: 5295.32 msecs (sample: 1)
-Test merge.v1.sort:
-    N = 10^^0 avg: 0.000139909 msecs (sample: 263457)
-    N = 10^^1 avg: 0.00515314 msecs (sample: 16317)
-    N = 10^^2 avg: 0.0690787 msecs (sample: 1235)
-    N = 10^^3 avg: 0.918572 msecs (sample: 101)
-    N = 10^^4 avg: 10.6631 msecs (sample: 9)
-    N = 10^^5 avg: 119.999 msecs (sample: 1)
-Test merge.v2.sort:
-    N = 10^^0 avg: 2.52686e-05 msecs (sample: 367750)
-    N = 10^^1 avg: 0.00140687 msecs (sample: 41870)
-    N = 10^^2 avg: 0.0198551 msecs (sample: 3611)
-    N = 10^^3 avg: 0.246737 msecs (sample: 310)
-    N = 10^^4 avg: 2.98116 msecs (sample: 27)
-    N = 10^^5 avg: 34.7099 msecs (sample: 3)
-    N = 10^^6 avg: 410.145 msecs (sample: 1)
-Test merge.v3.sort:
-    N = 10^^0 avg: 2.93532e-05 msecs (sample: 347662)
-    N = 10^^1 avg: 0.00159352 msecs (sample: 37780)
-    N = 10^^2 avg: 0.022345 msecs (sample: 3286)
-    N = 10^^3 avg: 0.270993 msecs (sample: 287)
-    N = 10^^4 avg: 2.99265 msecs (sample: 27)
-    N = 10^^5 avg: 26.6875 msecs (sample: 3)
-    N = 10^^6 avg: 244.773 msecs (sample: 1)
-Test merge.v4.sort:
-    N = 10^^0 avg: 2.87828e-05 msecs (sample: 372201)
-    N = 10^^1 avg: 0.119522 msecs (sample: 824)
-    N = 10^^2 avg: 0.15737 msecs (sample: 600)
-    N = 10^^3 avg: 1.94974 msecs (sample: 49)
-    N = 10^^4 avg: 4.96305 msecs (sample: 17)
-    N = 10^^5 avg: 32.614 msecs (sample: 3)
-    N = 10^^6 avg: 277.655 msecs (sample: 1)
-Test merge.v5.sort:
-    N = 10^^0 avg: 2.80161e-05 msecs (sample: 373704)
-    N = 10^^1 avg: 0.00148437 msecs (sample: 40508)
-    N = 10^^2 avg: 0.0189592 msecs (sample: 3594)
-    N = 10^^3 avg: 0.247173 msecs (sample: 310)
-    N = 10^^4 avg: 3.2127 msecs (sample: 25)
-    N = 10^^5 avg: 28.4651 msecs (sample: 3)
-    N = 10^^6 avg: 236.172 msecs (sample: 1)
-Test selection.v1.sort:
-    N = 10^^0 avg: 3.51754e-05 msecs (sample: 361900)
-    N = 10^^1 avg: 0.000402748 msecs (sample: 69040)
-    N = 10^^2 avg: 0.0151206 msecs (sample: 4323)
-    N = 10^^3 avg: 1.08129 msecs (sample: 87)
-    N = 10^^4 avg: 104.767 msecs (sample: 1)
-Test stooge.v1.sort:
-    N = 10^^0 avg: 2.59603e-05 msecs (sample: 372583)
-    N = 10^^1 avg: 0.0047156 msecs (sample: 17523)
-    N = 10^^2 avg: 3.36548 msecs (sample: 30)
-    N = 10^^3 avg: 790.58 msecs (sample: 1)
-Test std.algorithm.sorting.sort:
-    N = 10^^0 avg: 4.18741e-05 msecs (sample: 332640)
-    N = 10^^1 avg: 0.000464241 msecs (sample: 67533)
-    N = 10^^2 avg: 0.0161509 msecs (sample: 3978)
-    N = 10^^3 avg: 0.177627 msecs (sample: 390)
-    N = 10^^4 avg: 2.08512 msecs (sample: 35)
-    N = 10^^5 avg: 24.1715 msecs (sample: 4)
-    N = 10^^6 avg: 272.243 msecs (sample: 1)
-</code></pre></article><footer><h2><a href=/tags/log>#log</a>
+入力の性質によっては速くなったりするんだろうか?</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Test comb.v2.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.67903e-05 msecs (sample: 365209)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000319247 msecs (sample: 75567)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.00595804 msecs (sample: 6994)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.0932101 msecs (sample: 581)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 1.29673 msecs (sample: 49)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 17.0905 msecs (sample: 4)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 215.109 msecs (sample: 1)
+</span></span></code></pre></div><h3 id=テスト結果全文>テスト結果全文</h3><p>前回から再計測したので新しい物以外もすべて載せる。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Test bubble.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 5.29931e-05 msecs (sample: 187446)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000469878 msecs (sample: 54081)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0246636 msecs (sample: 3006)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 1.93576 msecs (sample: 50)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 253.616 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test comb.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.83461e-05 msecs (sample: 345246)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.00033584 msecs (sample: 72120)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.00584063 msecs (sample: 7137)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.0960004 msecs (sample: 571)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 1.40355 msecs (sample: 46)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 17.2058 msecs (sample: 4)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 213.241 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test comb.v2.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.67903e-05 msecs (sample: 365209)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000319247 msecs (sample: 75567)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.00595804 msecs (sample: 6994)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.0932101 msecs (sample: 581)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 1.29673 msecs (sample: 49)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 17.0905 msecs (sample: 4)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 215.109 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test heap.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 3.79266e-05 msecs (sample: 353480)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000509833 msecs (sample: 66684)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0111968 msecs (sample: 5159)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.169005 msecs (sample: 403)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 2.23825 msecs (sample: 34)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 28.8483 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 353.321 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test heap.v2.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 3.79672e-05 msecs (sample: 351500)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000521347 msecs (sample: 65592)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0110731 msecs (sample: 5186)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.166295 msecs (sample: 407)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 3.76569 msecs (sample: 20)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 34.9103 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 350.389 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test insertion.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.52021e-05 msecs (sample: 361305)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000356714 msecs (sample: 73572)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0109691 msecs (sample: 5237)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.604773 msecs (sample: 147)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 53.3391 msecs (sample: 2)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 5295.32 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test merge.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 0.000139909 msecs (sample: 263457)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.00515314 msecs (sample: 16317)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0690787 msecs (sample: 1235)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.918572 msecs (sample: 101)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 10.6631 msecs (sample: 9)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 119.999 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test merge.v2.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.52686e-05 msecs (sample: 367750)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.00140687 msecs (sample: 41870)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0198551 msecs (sample: 3611)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.246737 msecs (sample: 310)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 2.98116 msecs (sample: 27)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 34.7099 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 410.145 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test merge.v3.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.93532e-05 msecs (sample: 347662)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.00159352 msecs (sample: 37780)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.022345 msecs (sample: 3286)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.270993 msecs (sample: 287)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 2.99265 msecs (sample: 27)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 26.6875 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 244.773 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test merge.v4.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.87828e-05 msecs (sample: 372201)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.119522 msecs (sample: 824)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.15737 msecs (sample: 600)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 1.94974 msecs (sample: 49)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 4.96305 msecs (sample: 17)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 32.614 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 277.655 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test merge.v5.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.80161e-05 msecs (sample: 373704)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.00148437 msecs (sample: 40508)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0189592 msecs (sample: 3594)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.247173 msecs (sample: 310)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 3.2127 msecs (sample: 25)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 28.4651 msecs (sample: 3)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 236.172 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test selection.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 3.51754e-05 msecs (sample: 361900)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000402748 msecs (sample: 69040)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0151206 msecs (sample: 4323)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 1.08129 msecs (sample: 87)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 104.767 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test stooge.v1.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 2.59603e-05 msecs (sample: 372583)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.0047156 msecs (sample: 17523)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 3.36548 msecs (sample: 30)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 790.58 msecs (sample: 1)
+</span></span><span class=line><span class=cl>Test std.algorithm.sorting.sort:
+</span></span><span class=line><span class=cl>    N = 10^^0 avg: 4.18741e-05 msecs (sample: 332640)
+</span></span><span class=line><span class=cl>    N = 10^^1 avg: 0.000464241 msecs (sample: 67533)
+</span></span><span class=line><span class=cl>    N = 10^^2 avg: 0.0161509 msecs (sample: 3978)
+</span></span><span class=line><span class=cl>    N = 10^^3 avg: 0.177627 msecs (sample: 390)
+</span></span><span class=line><span class=cl>    N = 10^^4 avg: 2.08512 msecs (sample: 35)
+</span></span><span class=line><span class=cl>    N = 10^^5 avg: 24.1715 msecs (sample: 4)
+</span></span><span class=line><span class=cl>    N = 10^^6 avg: 272.243 msecs (sample: 1)
+</span></span></code></pre></div></article><footer><h2><a href=/tags/log>#log</a>
 Dで巡るソートアルゴリズム その2</h2><p><time>2017-09-16</time>
 <a href=/tags/log>#log</a> <a href=/tags/dlang>#dlang</a> <a href=/tags/tech>#tech</a></p><div class=subscribe><a href=/tags/log/index.xml><svg width="22" height="18" viewBox="6 8 .5 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc>Created with Sketch.</desc><defs><path d="M1 21V19c1.1045695.0 2 .8954305 2 2H1zm6 0H5c0-2.209139-1.790861-4-4-4V15c3.3137085.0 6 2.6862915 6 6zm4 0H9c0-4.418278-3.581722-8-8-8V11c5.5228475.0 10 4.4771525 10 10z" id="path-1"/></defs><g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cast" transform="translate(-1.000000, -3.000000)"><rect id="placeholder" fill-opacity="0" fill="#fff" x="0" y="0" width="24" height="24"/><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"/></mask><use id="Combined-Shape" fill="#ffa07a" fill-rule="nonzero" xlink:href="#path-1"/></g></g></svg>logの記事を購読</a></div></footer><div class=ad-wrapper><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8443812672116269 data-ad-slot=2914874272 data-ad-format=horizontal data-full-width-responsive=true></ins>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div></main><footer class=site><div class=link-wrapper><a href=/ title=tag>Home</a>
@@ -362,4 +359,4 @@ Dで巡るソートアルゴリズム その2</h2><p><time>2017-09-16</time>
 <a href=/products title=download>Download</a>
 <a href=/tags title=tag>Tag</a>
 <a href=/index.xml title=feed>Feed</a>
-<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2026-05-30T03:38:58 UTC</div></footer></body></html>
+<a href=/privacy-policy>Privacy Policy</a></div><div class=generated>Generated: 2026-08-11T12:08:34 UTC</div></footer></body></html>
