@@ -20,21 +20,21 @@
 
 <body>
     <header class="site">
-        <nav>
-            <ul>{{ block "header" . }}
-                <li><span class="text-bottom">HOME</span><a href="{{ .Site.LanguagePrefix }}/" aria-label="HOME">{{ partial "svg/home" }}</a></li>
-                <li><span class="text-up">ABOUT</span><a href="{{ .Site.LanguagePrefix }}/about"
-                        aria-label="ABOUT">{{ partial "svg/about" }}</a></li>
-                {{ if eq .Lang "ja" }}
-                <li><span class="text-bottom">DOWNLOAD</span><a href="/products"
-                        aria-label="DOWNLOAD">{{ partial "svg/download" }}</a></li>
-                {{ end }}
-                <li><span class="text-up">TAG</span><a href="{{ .Site.LanguagePrefix }}/tags" aria-label="TAG">{{ partial "svg/tags" }}</a></li>
-                <li><span class="text-bottom">FEED</span><a href="{{ .Site.LanguagePrefix }}/index.xml" aria-label="FEED">{{ partial "svg/feed" "black" }}</a></li>
-                {{ end }}
-            </ul>
-        </nav>
-        <h1><a href="{{ .Site.LanguagePrefix }}/">KOTET'S PERSONAL BLOG</a></h1>
+        <div class="site-inner">
+            <h1 class="site-title"><a href="{{ .Site.LanguagePrefix }}/">KOTET'S PERSONAL BLOG</a></h1>
+            <nav class="site-nav" aria-label="メインナビゲーション">
+                <ul>{{ block "header" . }}
+                    <li><a href="{{ .Site.LanguagePrefix }}/"{{ if .IsHome }} aria-current="page"{{ end }}>{{ partial "svg/home" }}<span class="label">HOME</span></a></li>
+                    <li><a href="{{ .Site.LanguagePrefix }}/about"{{ if hasPrefix .RelPermalink (printf "%s/about" .Site.LanguagePrefix) }} aria-current="page"{{ end }}>{{ partial "svg/about" }}<span class="label">ABOUT</span></a></li>
+                    {{ if eq .Lang "ja" }}
+                    <li><a href="/products"{{ if hasPrefix .RelPermalink "/products" }} aria-current="page"{{ end }}>{{ partial "svg/download" }}<span class="label">DOWNLOAD</span></a></li>
+                    {{ end }}
+                    <li><a href="{{ .Site.LanguagePrefix }}/tags"{{ if hasPrefix .RelPermalink (printf "%s/tags" .Site.LanguagePrefix) }} aria-current="page"{{ end }}>{{ partial "svg/tags" }}<span class="label">TAG</span></a></li>
+                    <li><a href="{{ .Site.LanguagePrefix }}/index.xml">{{ partial "svg/feed" "black" }}<span class="label">FEED</span></a></li>
+                    {{ end }}
+                </ul>
+            </nav>
+        </div>
     </header>
     <main>
         {{ block "main" . }}{{ end }}
