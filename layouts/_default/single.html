@@ -41,8 +41,9 @@
     </h2>
     <p>
         {{ if isset .Params "date" }}
-            Created: <time>{{ .Date.Format "2006-01-02" }}</time>,
-            Last modified: <time>{{ .GitInfo.AuthorDate.Format "2006-01-02" }}</time>
+            {{ i18n "created" }}<time>{{ .Date.Format "2006-01-02" }}</time>,
+            {{ i18n "lastModified" }}<time>{{ .GitInfo.AuthorDate.Format "2006-01-02" }}</time>,
+            {{ i18n "accountable" }}{{ if isset .Params "author" }}{{ .Params.author }}{{ else }}{{ i18n "defaultAuthor" }}{{ end }}
             <br />
         {{ end }}
         {{ range .Params.tags }} <a href="/tags/{{ . }}">#{{ . }}</a> {{ end }}
