@@ -86,6 +86,8 @@ fi
 
 echo "Done."
 
+echo "Internal path: $BLOG_BASEPATH/$FILENAME"
+
 $COPY_CLIPBOARD < <(echo -n "$BLOG_BASEPATH/$FILENAME")
 
-echo "Path copied to clipboard: $BLOG_BASEPATH/$FILENAME"
+echo "Path copied to clipboard."
