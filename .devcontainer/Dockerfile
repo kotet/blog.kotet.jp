@@ -19,6 +19,13 @@ RUN apt-get update && apt-get install -y ca-certificates openssl git curl && \
     go install github.com/yaegashi/muslstack@latest && \
     muslstack -s 0x800000 /usr/bin/hugo
 
+# make check-links で使うリンク検査ツール。CI(.github/workflows/build-and-deploy.yml)と版を合わせる
+# 静的リンクされていて glibc の版に左右されない musl 版を使う
+ARG LYCHEE_VERSION=0.24.2
+RUN wget -O lychee.tar.gz https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-musl.tar.gz && \
+    tar xf lychee.tar.gz --strip-components=1 lychee-x86_64-unknown-linux-musl/lychee && \
+    mv lychee /usr/bin/lychee
+
 FROM ubuntu:22.04 as devcontainer
 
 RUN apt-get update && \
@@ -26,6 +33,7 @@ RUN apt-get update && \
     && apt-get install -y \
     tzdata \
     jq \
+    make \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && echo 'Asia/Tokyo' >/etc/timezone \
     && apt-get -y upgrade \
@@ -45,3 +53,4 @@ RUN groupadd --gid $USER_GID $USERNAME \
 USER $USERNAME
 
 COPY --from=build-hugo /usr/bin/hugo /usr/bin/hugo
+COPY --from=build-hugo /usr/bin/lychee /usr/bin/lychee

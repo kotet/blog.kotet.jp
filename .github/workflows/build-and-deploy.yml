@@ -24,15 +24,18 @@ jobs:
         with:
           fetch-depth: 0
           filter: blob:none
+      - name: install lychee
+        # 版は .devcontainer/Dockerfile の LYCHEE_VERSION と合わせる
+        run: curl -sSL https://github.com/lycheeverse/lychee/releases/download/lychee-v0.24.2/lychee-x86_64-unknown-linux-musl.tar.gz | sudo tar -xz -C /usr/local/bin --strip-components=1 lychee-x86_64-unknown-linux-musl/lychee
+      - name: lint
+        # タグ表記の検査とリンク切れの検査
+        run: make lint
       - name: install pngquant
         run: sudo apt-get -y install pngquant
       - name: hugo build (test)
         run: |
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
           find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
-        env:
-          # タグ表記の検査(layouts/partials/lint/tags.html)を有効にする
-          HUGO_PARAMS_LINTTAGS: "true"
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'

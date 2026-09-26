@@ -28,7 +28,7 @@ tags:
 ---
 
 これは[GCシリーズ](https://dlang.org/blog/category/gc/)
-(訳注: [翻訳版](/tags/#dlang_gc_series))の3番めの投稿です。
+(訳注: [翻訳版](/tags/dlang_gc_series/))の3番めの投稿です。
 [最初の投稿](https://dlang.org/blog/2017/03/20/dont-fear-the-reaper/)
 (訳注: [翻訳版](/2017/04/dont-fear-the-reaper))で、
 私はDのガベージコレクタとそれを必要とする言語機能を紹介し、
