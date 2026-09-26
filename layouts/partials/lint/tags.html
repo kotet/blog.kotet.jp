@@ -1,0 +1,100 @@
+{{- /*
+  タグ表記の検査をまとめたパーシャル。違反があれば errorf でビルドを失敗させる。
+
+  フロントマターは Hugo が解釈済みの .Params.tags をそのまま読むため、
+  自前の YAML パーサを持たない。サイト本体とまったく同じ解釈で検査できる。
+
+  呼び出しは layouts/index.html の main ブロックの1行だけ。ホームページは
+  言語ごとに1回描画されるので、このパーシャルも言語の数だけ実行される。
+*/ -}}
+
+{{- /*
+  site.Params.lintTags が真のときだけ検査する。タグページをまだ作っていない
+  執筆中に hugo server が落ちると邪魔なので、既定では無効にしておき、
+  CI のビルドだけが HUGO_PARAMS_LINTTAGS=true で有効化する。
+
+  あわせて既定言語のときだけ実行する。検査はどれもサイト全体を対象とするので、
+  言語ごとに走らせると同じ違反が言語の数だけ報告されてしまう。既定言語は
+  URL に言語プレフィックスが付かない言語、つまり site.LanguagePrefix が空の言語。
+  全言語を見る必要がある検査は、この中から site.Sites を辿って行う。
+*/ -}}
+{{- if and site.Params.lintTags (eq site.LanguagePrefix "") -}}
+
+  {{- /* 元データとして許すタグ名。英語小文字の語をアンダースコアでつないだ形だけを通す */ -}}
+  {{- $tagPattern := `^[a-z0-9]+(_[a-z0-9]+)*$` -}}
+
+  {{- /*
+    検査1: タグの元データが上のパターンに合っているか。
+    ついでに、以降の検査が使う「実際に使われているタグ名の一覧」もここで作る。
+    記事は自分の言語のサイトにしか現れないため、全言語のサイトを順に見る必要がある。
+  */ -}}
+  {{- $usedTags := slice -}}
+  {{- range site.Sites -}}
+    {{- /* 1つの言語サイトに属する全記事を見る。タクソノミーページなどは対象外でよい */ -}}
+    {{- range .RegularPages -}}
+      {{- /* range の中では . がタグ文字列に変わるので、エラー表示用に記事を退避しておく */ -}}
+      {{- $article := . -}}
+      {{- range .Params.tags -}}
+        {{- $usedTags = $usedTags | append . -}}
+        {{- /* findRE は一致しなければ空スライスを返し、これは偽として扱われる */ -}}
+        {{- if not (findRE $tagPattern .) -}}
+          {{- errorf "%s: タグ %q が英語小文字とアンダースコア区切りになっていません" $article.File.Path . -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- /* 複数の記事や言語から同じタグが集まるため、ここで重複を落とす */ -}}
+  {{- $usedTags = $usedTags | uniq -}}
+
+  {{- /*
+    検査2: 使われているタグすべてに、各言語のタグページ本文があるか。
+    Hugo は本文が無くても term ページ自体は自動で作るので、ページの有無では判定できない。
+    本文ファイルに裏付けられていない term ページは .File が nil になる、という性質を使う。
+  */ -}}
+  {{- range $language := site.Sites -}}
+    {{- /* 既定言語の本文は _index.md、それ以外は _index.<言語コード>.md という命名になる */ -}}
+    {{- $indexName := cond (eq $language.LanguagePrefix "") "_index.md" (printf "_index.%s.md" $language.Language.Lang) -}}
+    {{- /* 使用中のタグを1つずつ、その言語サイトから引いて本文の有無を見る */ -}}
+    {{- range $tag := $usedTags -}}
+      {{- $term := $language.GetPage (printf "/tags/%s" $tag) -}}
+      {{- if or (not $term) (eq $term.File nil) -}}
+        {{- errorf "content/tags/%s/%s がありません" $tag $indexName -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /*
+    検査3: 検査2の逆で、本文はあるのにどの記事からも参照されていないタグページを探す。
+    記事を消したときにタグページだけが残る、という取りこぼしを拾う。
+  */ -}}
+  {{- with site.GetPage "/tags" -}}
+    {{- /* タグ一覧ページの子ページが term ページ1つ1つに対応する */ -}}
+    {{- range .Pages -}}
+      {{- /* .Title は表示名なので突き合わせには使えない。元データのタグ名は .Data.Term */ -}}
+      {{- if not (in $usedTags .Data.Term) -}}
+        {{- errorf "content/tags/%s/ はどの記事からも参照されていません" .Data.Term -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /*
+    検査4: 対訳記事どうしでタグ集合が一致しているか。
+    翻訳の対応付けはファイル名から推測せず Hugo の .Translations に任せる。
+    既定言語の記事からだけ見るので、1組につき1回だけ報告される。
+  */ -}}
+  {{- range site.RegularPages -}}
+    {{- /* range の中で . が翻訳ページに変わるため、比較元を退避しておく */ -}}
+    {{- $article := . -}}
+    {{- $tags := .Params.tags | default slice -}}
+    {{- range .Translations -}}
+      {{- $otherTags := .Params.tags | default slice -}}
+      {{- /* complement は最後の引数のうち、先行する引数に含まれない要素を返す */ -}}
+      {{- $missingInOther := complement $otherTags $tags -}}
+      {{- $missingInThis := complement $tags $otherTags -}}
+      {{- if or $missingInOther $missingInThis -}}
+        {{- errorf "%s: %s版とタグが一致しません (%s のみ: %v / %s のみ: %v)" $article.File.Path .Lang site.Language.Lang $missingInOther .Lang $missingInThis -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- end -}}
