@@ -11,7 +11,7 @@
 {{- /*
   site.Params.lintTags が真のときだけ検査する。タグページをまだ作っていない
   執筆中に hugo server が落ちると邪魔なので、既定では無効にしておき、
-  CI のビルドだけが HUGO_PARAMS_LINTTAGS=true で有効化する。
+  make check-tags (CI では make lint から呼ばれる)だけが HUGO_PARAMS_LINTTAGS=true で有効化する。
 
   あわせて既定言語のときだけ実行する。検査はどれもサイト全体を対象とするので、
   言語ごとに走らせると同じ違反が言語の数だけ報告されてしまう。既定言語は

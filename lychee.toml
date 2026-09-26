@@ -1,0 +1,15 @@
+# make check-links が使う lychee の設定。lychee はカレントディレクトリの lychee.toml を自動で読む。
+# 絶対パスが必要な root_dir と remap は、リポジトリの場所に依存するため Makefile から渡す。
+
+# 目的はサイト内のリンク切れの検出なので、ネットワークには出ずローカルのファイルだけを見る。
+# 外部サイトへのリンクは除外(Excluded)として扱われ、失敗にはならない
+offline = true
+
+# 記事中のリンクは /{year}/{month}/{slug} とディレクトリを指す形で書くので、index.html で解決する。
+# 指定しないとディレクトリが存在するだけで成功扱いになってしまう
+index_files = ["index.html"]
+
+# リンク先のページに # のアンカーがあるかも検査する
+include_fragments = "full"
+
+no_progress = true
