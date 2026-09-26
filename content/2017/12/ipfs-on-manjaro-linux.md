@@ -6,7 +6,7 @@ title: "IPFS体験記10: `pacman -S go-ipfs`"
 tags:
 - ipfs
 - tech
-- ipfs体験記
+- ipfs_diary
 excerpt: "いままでUbuntuを使っていたのだが、Manjaro Linuxに乗り換えて、こうして記事がかけるところまで環境構築ができた。"
 ---
 

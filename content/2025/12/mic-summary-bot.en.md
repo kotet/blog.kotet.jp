@@ -4,7 +4,7 @@ date: 2025-12-16T12:06:59+09:00
 tags:
     - fediverse
     - golang
-    - technology
+    - tech
 ---
 
 This article documents my experience creating the "Ministry of Internal Affairs and Communications News & Updates AI Bot" (@micsummary@mastodon.kotet.jp). This Mastodon bot monitors the Ministry of Internal Affairs and Communications' RSS feed for new announcements and automatically summarizes any attached PDF documents before posting them to Mastodon.

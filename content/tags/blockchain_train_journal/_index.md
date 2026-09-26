@@ -1,5 +1,5 @@
 ---
-title: "Blockchain_train_journal"
+title: "Blockchain Train Journal"
 ---
 
 Blockchain Train Journalというサイトの翻訳記事。

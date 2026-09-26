@@ -7,7 +7,7 @@ tags:
 - ipfs
 - tech
 - log
-- ipfs体験記
+- ipfs_diary
 excerpt: 今回は普通に使ってみようと思う。
 image: /assets/2017/10/25/twitter.png
 ---

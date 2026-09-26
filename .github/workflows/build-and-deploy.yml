@@ -26,6 +26,8 @@ jobs:
           filter: blob:none
       - name: install pngquant
         run: sudo apt-get -y install pngquant
+      - name: lint tags
+        run: node scripts/lint-tags.mjs
       - name: hugo build (test)
         run: |
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints

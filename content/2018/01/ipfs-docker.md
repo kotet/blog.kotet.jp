@@ -4,7 +4,7 @@ aliases:
 - /2018/01/25/ipfs-docker.html
 title: "14:IPFSとDocker"
 tags:
-- ipfs体験記
+- ipfs_diary
 - ipfs
 - tech
 excerpt: go-ipfsはdockerコンテナを提供している。 たとえば以下のようにコマンド一つでIPFSデーモンが動かせる。
