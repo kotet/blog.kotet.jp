@@ -1,5 +1,5 @@
 ---
-title: "C and C++"
+title: "C++"
 ---
 
 Posts about C or C++.
