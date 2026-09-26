@@ -25,6 +25,7 @@ RUN apt-get update && \
     apt-get update \
     && apt-get install -y \
     tzdata \
+    jq \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && echo 'Asia/Tokyo' >/etc/timezone \
     && apt-get -y upgrade \
