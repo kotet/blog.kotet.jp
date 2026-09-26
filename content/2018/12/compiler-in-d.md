@@ -5,7 +5,7 @@ tags:
 - dlang
 - assembly
 - tech
-- advent-calendar
+- advent_calendar
 ---
 
 これは、強い人が多すぎてもはやCコンパイラ書いた程度では面白味がない気がしてくる

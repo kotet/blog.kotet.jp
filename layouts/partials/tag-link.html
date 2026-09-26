@@ -1,0 +1,10 @@
+{{- /* タグ文字列を受け取り、タグページへのハッシュタグ風リンクを出力する。 */ -}}
+{{- $tag := . -}}
+{{- /* タグページが引けなかったときの保険。通常はこの値が使われることはない */ -}}
+{{- $url := printf "/tags/%s/" $tag -}}
+{{- /* URLを組み立てずタグページの RelPermalink を使うことで、
+       Hugo 側のURL正規化(小文字化など)とずれてリンク切れになるのを防ぐ */ -}}
+{{- with site.GetPage (printf "/tags/%s" $tag) -}}
+{{- $url = .RelPermalink -}}
+{{- end -}}
+<a href="{{ $url }}">#{{ partial "tag-label" $tag }}</a>

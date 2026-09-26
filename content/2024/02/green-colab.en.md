@@ -3,7 +3,7 @@ date: 2024-02-05
 title: "Creating a Night-Only Colab Notebook to Pursue Green Software Principles"
 tags:
     - python
-    - technology
+    - tech
 image: /img/blog/2024/02/cover.png
 highlights:
     - python

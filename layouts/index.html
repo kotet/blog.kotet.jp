@@ -3,7 +3,7 @@
 
 {{ $style := resources.Get "/sass/index.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
 <link rel="stylesheet" href="{{ $style.Permalink }}">
-{{ end }}{{ define "main" }}
+{{ end }}{{ define "main" }}{{ partial "lint/tags" . }}
 <article>
     <p>{{ .Content }}</p>
     

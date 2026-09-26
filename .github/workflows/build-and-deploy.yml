@@ -30,6 +30,9 @@ jobs:
         run: |
           hugo --minify --buildFuture --templateMetrics --templateMetricsHints
           find public -name '*.png' | xargs -P8 pngquant --speed 1 --ext .png --force
+        env:
+          # タグ表記の検査(layouts/partials/lint/tags.html)を有効にする
+          HUGO_PARAMS_LINTTAGS: "true"
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'

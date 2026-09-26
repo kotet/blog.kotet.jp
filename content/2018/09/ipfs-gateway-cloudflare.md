@@ -2,7 +2,7 @@
 title: "18:CloudflareがIPFSゲートウェイとホスティング支援サービスを提供"
 date: 2018-09-18
 tags:
-- ipfs体験記
+- ipfs_diary
 - log
 - tech
 excerpt: "Cloudflare がIPFSゲートウェイを公開したようだ。この機会に自分のIPFSパブリックゲートウェイの使い方について書く。"

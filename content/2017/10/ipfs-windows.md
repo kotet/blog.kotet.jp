@@ -8,7 +8,7 @@ tags:
 - ipfs
 - tech
 - log
-- ipfs体験記
+- ipfs_diary
 excerpt: "今回はWindowsでIPFSを使ってみる。
 一応ローカルゲートウェイを動かすことに成功した。"
 ---

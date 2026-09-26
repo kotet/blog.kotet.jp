@@ -1,5 +1,5 @@
 ---
-title: "Cpplang"
+title: "C++"
 ---
 
 C、もしくはC++についての記事。

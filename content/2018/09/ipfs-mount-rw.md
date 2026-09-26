@@ -2,7 +2,7 @@
 title: "17:普通のファイルシステムのようにIPFSで読み書き"
 date: 2018-09-11
 tags:
-- ipfs体験記
+- ipfs_diary
 - ipfs
 - tech
 - log

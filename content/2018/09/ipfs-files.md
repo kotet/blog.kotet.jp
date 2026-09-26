@@ -2,7 +2,7 @@
 title: "19:ipfs filesコマンドでディレクトリを構築する"
 date: 2018-09-26
 tags:
-- ipfs体験記
+- ipfs_diary
 - ipfs
 - tech
 excerpt: "ipfs filesコマンドの使い方を理解したので書く。 これはIPFS上のディレクトリ構造の編集を支援するためのコマンドである。"

@@ -4,7 +4,7 @@ aliases:
 - /2017/12/22/ipfs-dnslink-support.html
 title: "12:ブラウザ拡張のDNSLINKサポート"
 tags:
-- ipfs体験記
+- ipfs_diary
 - ipfs
 - tech
 excerpt: "IPFSのブラウザ拡張について書いた以前の記事 には理解できなかったものが抜けている。 ipfs体験記12回めのこの記事ではその中のDNSLINK Supportという項目を理解できたので書く。"
@@ -12,7 +12,7 @@ excerpt: "IPFSのブラウザ拡張について書いた以前の記事 には�
 
 [IPFSのブラウザ拡張について書いた以前の記事](/2017/10/ipfs-browser-extention)
 には理解できなかったものが抜けている。
-[ipfs体験記](/tags/#ipfs体験記)12回めのこの記事ではその中のDNSLINK Supportという項目を理解できたので書く。
+[IPFS体験記](/tags/ipfs_diary/)12回めのこの記事ではその中のDNSLINK Supportという項目を理解できたので書く。
 
 IPNSには普通のドメインを使ってコンテンツにアクセスする機能もある。
 TXTレコードを読んで指定されたIPFS/IPNSアドレスを読むことができるのだ。

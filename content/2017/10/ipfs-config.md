@@ -7,7 +7,7 @@ tags:
 - ipfs
 - tech
 - log
-- ipfs体験記
+- ipfs_diary
 image: /assets/2017/10/19/twitter.png
 excerpt: "今回はWebUI上で設定を確認する。 最初から最後まで全部読んでみたので、質的なものは別として量的に有用な日本語情報源として機能しそうな記事になったと思う。"
 ---

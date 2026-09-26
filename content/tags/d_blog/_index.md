@@ -1,5 +1,5 @@
 ---
-title: "D_blog"
+title: "D blog"
 ---
 
 D言語ブログ（

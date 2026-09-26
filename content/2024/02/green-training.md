@@ -2,7 +2,7 @@
 date: 2024-02-20
 title: "Linux財団のGreen Softwareに関するコースを受講した"
 tags:
-    - レビュー
+    - review
     - tech
 image: /img/blog/2024/02/green-cert-cover.png
 ---

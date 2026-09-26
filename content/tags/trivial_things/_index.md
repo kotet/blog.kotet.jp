@@ -1,5 +1,5 @@
 ---
-title: "Trivial_things"
+title: "Trivial things"
 ---
 
 1つの記事の中ですら内容がバラバラになっているような、

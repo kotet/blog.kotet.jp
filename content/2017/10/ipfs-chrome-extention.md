@@ -7,7 +7,7 @@ tags:
 - ipfs
 - tech
 - log
-- ipfs体験記
+- ipfs_diary
 excerpt: 引き続き公式ブラウザ拡張の機能を見ていく。
 ---
 

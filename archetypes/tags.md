@@ -1,3 +1,3 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"
+title: "{{ replace .Name "_" " " | humanize }}"
 ---

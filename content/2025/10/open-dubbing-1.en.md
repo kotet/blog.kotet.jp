@@ -3,7 +3,7 @@ title: "Using Open-Dubbing to Enjoy English Videos and Podcasts in Japanese"
 date: 2025-10-12T14:22:25+09:00
 tags:
   - opendubbing
-  - technology
+  - tech
   - english
 image: /img/blog/2025/10/open-dubbing-cover.png
 ---
